@@ -15,6 +15,7 @@
     "tabs": [
       {
         "tab": "Documentation", 
+        "icon": "book",
         "groups": [
           {
             "group": "Introduction",
@@ -62,6 +63,7 @@
       },
       {
         "tab": "FAQ",
+        "icon": "question",
         "groups": [
           {
             "group": "FAQ",
@@ -152,6 +154,7 @@
       },
       {
         "tab": "API reference",
+        "icon": "code",
         "groups": [
           {
             "group": "API documentation",
