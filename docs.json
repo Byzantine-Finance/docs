@@ -67,11 +67,11 @@
           {
             "group": "FAQ",
             "icon": "question",
-            "expanded": false,
             "pages": [
               "faq/what-is-byzantine-prime-at-a-glance",
               {
                 "group": "Digital asset primer",
+                "icon": "coins",
                 "pages": [
                   "faq/digital-asset-primer/what-are-decentralised-protocols",
                   "faq/digital-asset-primer/what-are-lending-markets",
@@ -83,6 +83,7 @@
               },
               {
                 "group": "Yield & revenues",
+                "icon": "chart-line",
                 "pages": [
                   "faq/yield-and-revenues/how-are-returns-generated",
                   "faq/yield-and-revenues/how-are-returns-split",
@@ -97,6 +98,7 @@
               },
               {
                 "group": "How it works (flow)",
+                "icon": "gears",
                 "pages": [
                   "faq/how-it-works-flow/governance-and-control-rights",
                   "faq/how-it-works-flow/how-are-assets-segregated-by-client",
@@ -108,6 +110,7 @@
               },
               {
                 "group": "Risk framework",
+                "icon": "helmet-safety",
                 "pages": [
                   "faq/risk-framework/what-exactly-is-keyrocks-mandate",
                   "faq/risk-framework/what-is-my-counterparty-risk-towards-the-borrower",
@@ -116,7 +119,8 @@
                 ]
               },
               {
-                "group": "Risk framework",
+                "group": "Collateral & liquidation mechanism",
+                "icon": "shield-halved",
                 "pages": [
                   "faq/collateral-and-liquidation-mechanism/how-does-the-liquidation-mechanism-function-exactly",
                   "faq/collateral-and-liquidation-mechanism/is-there-the-potential-for-bad-debt-or-loss-of-funds-how-is-it-mitigated",
@@ -125,6 +129,7 @@
               },
               {
                 "group": "Liquidity and redemption",
+                "icon": "water",
                 "pages": [
                   
                   "faq/liquidity-and-redemption/are-there-delays-to-convert-stablecoins-to-fiat-currency",
@@ -133,14 +138,15 @@
                 ]
               },
               {
-            "group": "Governance & audit",
-            "pages": [
-              "faq/governance-and-audit/what-is-a-smart-contract-audit-and-what-does-it-check-for",
-              "faq/governance-and-audit/what-smart-contract-audits-have-been-completed-what-were-their-findings",
-              "faq/governance-and-audit/what-other-audits-are-of-relevance",
-              "faq/governance-and-audit/is-there-continuous-monitoring-of-active-systems"
-            ]
-          }
+                "group": "Governance & audit",
+                "icon": "magnifying-glass",
+                "pages": [
+                  "faq/governance-and-audit/what-is-a-smart-contract-audit-and-what-does-it-check-for",
+                  "faq/governance-and-audit/what-smart-contract-audits-have-been-completed-what-were-their-findings",
+                  "faq/governance-and-audit/what-other-audits-are-of-relevance",
+                  "faq/governance-and-audit/is-there-continuous-monitoring-of-active-systems"
+                ]
+              }
             ]
           }
         ]
