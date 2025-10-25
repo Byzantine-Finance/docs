@@ -64,62 +64,7 @@
       {
         "tab": "FAQ",
         "pages": [
-          "faq/what-is-byzantine-prime-at-a-glance",
-          {
-            "group": "Digital asset primer",
-            "pages": [
-              "faq/digital-asset-primer/what-are-decentralised-protocols.md",
-              "faq/digital-asset-primer/what-are-lending-markets.md",
-              "faq/digital-asset-primer/what-are-smart-contracts.md",
-              "faq/digital-asset-primer/what-are-stablecoins.md",
-              "faq/digital-asset-primer/what-is-digital-credit.md",
-              "faq/digital-asset-primer/what-is-over-collateralisation.md"
-            ]
-          },
-          {
-            "group": "Yield & revenues",
-            "pages": [
-              "faq/yield-and-revenues/how-are-returns-generated.md",
-              "faq/yield-and-revenues/how-are-returns-split.md",
-              "faq/yield-and-revenues/how-can-byzantine-prime-consistently-offer-base-+-400-bps.md",
-              "faq/yield-and-revenues/what-exactly-is-the-base-rate.md",
-              "faq/yield-and-revenues/what-is-the-currency-of-returns.md",
-              "faq/yield-and-revenues/what-is-the-point-of-overcollateralised-lending.md",
-              "faq/yield-and-revenues/what-kind-of-loans-are-these.md",
-              "faq/yield-and-revenues/who-are-the-borrowers.md",
-              "faq/yield-and-revenues/why-would-borrowers-pay-8-10"
-            ]
-          },
-          {
-            "group": "How it works (flow)",
-            "pages": [
-              ""
-            ]
-          },
-          {
-            "group": "Risk framework",
-            "pages": [
-              ""
-            ]
-          },
-          {
-            "group": "Collateral & liquidation mechanism",
-            "pages": [
-              ""
-            ]
-          },
-          {
-            "group": "Liquidity & redemption",
-            "pages": [
-              ""
-            ]
-          },
-          {
-            "group": "Governance & audit",
-            "pages": [
-              ""
-            ]
-          }
+          "faq/what-is-byzantine-prime-at-a-glance"
         ]
       },
       {
