@@ -62,7 +62,16 @@
         ]
       },
       {
-        "tab": "FAQ"
+        "tab": "FAQ",
+        "pages": [
+          "faq/what-is-byzantine-prime-at-a-glance"
+        ],
+        "groups": [
+          {
+            "group": "INTRODUCTION",
+            "pages": []
+          }
+        ]
       },
       {
         "tab": "API reference",
