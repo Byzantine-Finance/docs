@@ -1,11 +1,6 @@
 ---
 title: "What risks are relevant for depositors into Byzantine Prime?"
-description: "Copy"
 ---
-
-1. [INTRODUCTION](/documentation/introduction)
-2. [FAQ](/documentation/introduction/faq)
-3. [Risk framework](/documentation/introduction/faq/risk-framework)
 
 Risk in Byzantine Prime is not abstract. Every material risk is mapped to a measurable control. We cannot eliminate smart-contract or market risk entirely, but we can quantify, insure, and continuously monitor it. This philosophy mirrors institutional credit risk management, expressed through code.
 
@@ -19,27 +14,21 @@ Risk in Byzantine Prime is not abstract. Every material risk is mapped to a meas
 
     The vault has undergone seven independent audits by industry-leading firms:
 
-    * [Zellic](https://github.com/Byzantine-Finance/debt-fund-vault-v2/blob/main/audits/2025-07-15-zellic.pdf)
-
-    * 2x Spearbit (reports to be released soon)
-
-    * [Blackthorn](https://github.com/Byzantine-Finance/debt-fund-vault-v2/blob/main/audits/2025-09-06-blackthorn.pdf)
-
-    * [Chainsecurity](https://github.com/Byzantine-Finance/debt-fund-vault-v2/blob/main/audits/2025-09-06-chainsecurity.pdf)
-
-    * Cantina competition (report to be released soon).
+    - [Zellic](https://github.com/Byzantine-Finance/debt-fund-vault-v2/blob/main/audits/2025-07-15-zellic.pdf)
+    - 2x Spearbit ([report #1](https://github.com/Byzantine-Finance/credit-vault-v2/blob/main/audits/2025-05-19-spearbit.pdf), [report #2](https://github.com/Byzantine-Finance/credit-vault-v2/blob/main/audits/2025-08-11-spearbit.pdf))
+    - [Blackthorn](https://github.com/Byzantine-Finance/debt-fund-vault-v2/blob/main/audits/2025-09-06-blackthorn.pdf)
+    - [Chainsecurity](https://github.com/Byzantine-Finance/debt-fund-vault-v2/blob/main/audits/2025-09-06-chainsecurity.pdf)
+    - Cantina competition (report to be released soon).
 
     All custom adapters have been additionally audited by Spearbit. Find the full report [here](https://github.com/Byzantine-Finance/debt-fund-vault-v2/blob/main/audits/adapters/CompoundV3%20and%20ERC4626Merkl%20Adapters%20-%20Cantina%20-%20Sept%202025.pdf). Byzantine also integrates with [Hypernative](https://www.hypernative.io/), a real-time DeFi risk monitoring platform that continuously detects threats and anomalies, helping to prevent exploits before they impact client funds.
 
     Additionally, two live bug bounty programs are in place. Bug bounty programs reward would-be hackers with large sums of money for finding and reporting a vulnerability, serving both as an incentive to prevent exploits as well as a statement of confidence about the correctness of a protocol’s code. For the Byzantine vault, two such programs are live:
 
-    * [Immunefi - $2,500,000](https://immunefi.com/bounty/morpho/)
-
-    * [Cantina - $2,500,000](https://cantina.xyz/bounties/35a5f0a1-2ffd-432c-8f3b-77d169add8c3)
+    - [Immunefi - \$2,500,000](https://immunefi.com/bounty/morpho/)
+    - [Cantina - \$2,500,000](https://cantina.xyz/bounties/35a5f0a1-2ffd-432c-8f3b-77d169add8c3)
 
     Finally, clients can take out optional insurance to protect against any kind of smart contract failure. **This insurance policy is the ultimate recourse against any code-related loss.**
   </Accordion>
-
   <Accordion title="Borrower counterparty risk">
     #### Definition
 
@@ -51,11 +40,10 @@ Risk in Byzantine Prime is not abstract. Every material risk is mapped to a meas
 
     To ensure the functioning of this liquidation mechanism, only battle-tested, heavily audited credit marketplaces with an excellent operating history are used - in this case Morpho, Aave, and Maker/Sky.
 
-    On Friday, Oct 10 2025, Morpho, Aave, and Maker saw liquidations of over $400m in a few hours - with no bad debt and no outages.
+    On Friday, Oct 10 2025, Morpho, Aave, and Maker saw liquidations of over \$400m in a few hours - with no bad debt and no outages.
 
     Details on the liquidation mechanism are found in the upcoming sections.
   </Accordion>
-
   <Accordion title="Byzantine counterparty risk">
     #### Definition
 
@@ -67,7 +55,6 @@ Risk in Byzantine Prime is not abstract. Every material risk is mapped to a meas
 
     Byzantine has the ability to change the asset manager (Keyrock), but this is subject to a lengthy timelock - a period during which Byzantine and third-party monitors can veto this change, or, in the worst case, during which clients have ample time to withdraw their assets.
   </Accordion>
-
   <Accordion title="Marketplace counterparty risk (bankruptcy)">
     #### Definition
 
@@ -79,7 +66,6 @@ Risk in Byzantine Prime is not abstract. Every material risk is mapped to a meas
 
     Once deployed, even these organisations themselves have no control over their smart contracts. This ensures bankruptcy-remoteness - not just financially, but also operationally.
   </Accordion>
-
   <Accordion title="Marketplace counterparty risk (criminal)">
     #### Definition
 
@@ -91,7 +77,6 @@ Risk in Byzantine Prime is not abstract. Every material risk is mapped to a meas
 
     They physically cannot edit deployed smart contracts even if they wanted to.
   </Accordion>
-
   <Accordion title="Liquidity risk">
     #### Definition
 
@@ -103,7 +88,6 @@ Risk in Byzantine Prime is not abstract. Every material risk is mapped to a meas
 
     Additionally, Keyrock has the duty to monitor the portfolio for full liquidity, entering and exiting markets based on their ability to allow clients to redeem in full at any time.
   </Accordion>
-
   <Accordion title="Custody risk">
     #### Definition
 
@@ -118,5 +102,3 @@ Risk in Byzantine Prime is not abstract. Every material risk is mapped to a meas
     Custody risk can be minimised by working with a qualified custodian. Such organisations are insured against breaches of their security.
   </Accordion>
 </AccordionGroup>
-
-[PreviousWhat exactly is Keyrock’s mandate?](/documentation/introduction/faq/risk-framework/what-exactly-is-keyrocks-mandate)[NextWhat is my counterparty risk towards the borrower?](/documentation/introduction/faq/risk-framework/what-is-my-counterparty-risk-towards-the-borrower)
