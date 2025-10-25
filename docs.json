@@ -67,7 +67,58 @@
           "faq/what-is-byzantine-prime-at-a-glance",
           {
             "group": "Digital asset primer",
-            "pages": []
+            "pages": [
+              "what-are-decentralised-protocols.md",
+              "what-are-lending-markets.md",
+              "what-are-smart-contracts.md",
+              "what-are-stablecoins.md",
+              "what-is-digital-credit.md",
+              "what-is-over-collateralisation.md"
+            ]
+          },
+          {
+            "group": "Yield & revenues",
+            "pages": [
+              "how-are-returns-generated.md",
+              "how-are-returns-split.md",
+              "how-can-byzantine-prime-consistently-offer-base-+-400-bps.md",
+              "what-exactly-is-the-base-rate.md",
+              "what-is-the-currency-of-returns.md",
+              "what-is-the-point-of-overcollateralised-lending.md",
+              "what-kind-of-loans-are-these.md",
+              "who-are-the-borrowers.md",
+              "why-would-borrowers-pay-8-10"
+            ]
+          },
+          {
+            "group": "How it works (flow)",
+            "pages": [
+              ""
+            ]
+          },
+          {
+            "group": "Risk framework",
+            "pages": [
+              ""
+            ]
+          },
+          {
+            "group": "Collateral & liquidation mechanism",
+            "pages": [
+              ""
+            ]
+          },
+          {
+            "group": "Liquidity & redemption",
+            "pages": [
+              ""
+            ]
+          },
+          {
+            "group": "Governance & audit",
+            "pages": [
+              ""
+            ]
           }
         ]
       },
