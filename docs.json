@@ -1,0 +1,62 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "aspen",
+  "name": "Byzantine Finance - Credit Funds",
+  "colors": {
+    "primary": "#0D9373",
+    "light": "#55D799",
+    "dark": "#0D9373"
+  },
+  "favicon": "/files%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Forganizations%252FnYXePBi8Rf0BoSVlgEPe%252Fsites%252Fsite_FzOqL%252Ficon%252F4UNtFE58OQqufPEOU4Oo%252Ftransparent-logoByz.png",
+  "navigation": {
+    "groups": [
+      {
+        "group": "INTRODUCTION",
+        "pages": [
+          "documentation",
+          "documentation/introduction/faq"
+        ]
+      },
+      {
+        "group": "ABOUT BYZANTINE",
+        "pages": [
+          "documentation/about-byzantine/quickstart",
+          "documentation/about-byzantine/the-digital-asset-opportunity",
+          "documentation/about-byzantine/publish-your-docs",
+          "documentation/about-byzantine/deposits-and-withdrawals",
+          "documentation/about-byzantine/fees"
+        ]
+      },
+      {
+        "group": "Asset protection",
+        "pages": [
+          "documentation/asset-protection/security-mechanisms",
+          "documentation/asset-protection/stakeholders",
+          "documentation/asset-protection/regulatory-framework",
+          "documentation/asset-protection/security-audits"
+        ]
+      },
+      {
+        "group": "ACCOUNT MANAGEMENT",
+        "pages": [
+          "documentation/account-management/editor",
+          "documentation/account-management/markdown"
+        ]
+      },
+      {
+        "group": "DIGITAL ASSETS 101",
+        "pages": [
+          "documentation/digital-assets-101/whats-a-stablecoin",
+          "documentation/digital-assets-101/how-are-stablecoins-kept-at-usd1-eur1",
+          "documentation/digital-assets-101/what-is-mica",
+          "documentation/digital-assets-101/what-is-digital-credit",
+          "documentation/digital-assets-101/what-is-a-smart-contract-vault"
+        ]
+      }
+    ]
+  },
+  "logo": {
+    "light": "/images/files%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Forganizations%252FnYXePBi8Rf0BoSVlgEPe%252Fsites%252Fsite_FzOqL%252Flogo%252FS248rv5RQWvHJVEJaDoU%252Fbyzantinelogo.svg",
+    "dark": "/images/files%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Forganizations%252FnYXePBi8Rf0BoSVlgEPe%252Fsites%252Fsite_FzOqL%252Flogo%252Fnv8cSxj4X26UdQnGRJSE%252F%255BLIGHT%255D%2520Head%2520%252B%2520text.png"
+  }
+}
