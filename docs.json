@@ -17,18 +17,17 @@
         "tab": "Documentation", 
         "groups": [
           {
-            "group": "INTRODUCTION",
+            "group": "Introduction",
             "pages": [
-              "documentation",
-              "documentation/introduction/faq"
+              "documentation/welcome"
             ]
           },
           {
-            "group": "ABOUT BYZANTINE",
+            "group": "About Byzantine",
             "pages": [
-              "documentation/about-byzantine/quickstart",
+              "documentation/about-byzantine/what-is-byzantine",
               "documentation/about-byzantine/the-digital-asset-opportunity",
-              "documentation/about-byzantine/publish-your-docs",
+              "documentation/about-byzantine/product-details",
               "documentation/about-byzantine/deposits-and-withdrawals",
               "documentation/about-byzantine/fees"
             ]
