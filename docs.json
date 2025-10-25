@@ -62,99 +62,85 @@
         ]
       },
       {
-        "tab": "Testing",
+        "tab": "FAQ",
         "groups": [
           {
-            "group": "Getting started",
-            "icon": "play",
+            "group": "FAQ",
+            "icon": "question",
             "expanded": false,
             "pages": [
-              "quickstart",
+              "faq/what-is-byzantine-prime-at-a-glance",
               {
-                "group": "Editing",
-                "icon": "pencil",
+                "group": "Digital asset primer",
                 "pages": [
-                  "installation",
-                  "editor"
+                  "faq/digital-asset-primer/what-are-decentralised-protocols",
+                  "faq/digital-asset-primer/what-are-lending-markets",
+                  "faq/digital-asset-primer/what-are-smart-contracts",
+                  "faq/digital-asset-primer/what-are-stablecoins",
+                  "faq/digital-asset-primer/what-is-digital-credit",
+                  "faq/digital-asset-primer/what-is-over-collateralisation"
                 ]
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "FAQ",
-        "pages": [
-          "faq/what-is-byzantine-prime-at-a-glance",
-          {
-            "group": "Digital asset primer",
-            "pages": [
-              "faq/digital-asset-primer/what-are-decentralised-protocols",
-              "faq/digital-asset-primer/what-are-lending-markets",
-              "faq/digital-asset-primer/what-are-smart-contracts",
-              "faq/digital-asset-primer/what-are-stablecoins",
-              "faq/digital-asset-primer/what-is-digital-credit",
-              "faq/digital-asset-primer/what-is-over-collateralisation"
-            ]
-          },
-          {
-            "group": "Yield & revenues",
-            "pages": [
-              "faq/yield-and-revenues/how-are-returns-generated",
-              "faq/yield-and-revenues/how-are-returns-split",
-              "faq/yield-and-revenues/how-can-byzantine-prime-consistently-offer-base-+-400-bps",
-              "faq/yield-and-revenues/what-exactly-is-the-base-rate",
-              "faq/yield-and-revenues/what-is-the-currency-of-returns",
-              "faq/yield-and-revenues/what-is-the-point-of-overcollateralised-lending",
-              "faq/yield-and-revenues/what-kind-of-loans-are-these",
-              "faq/yield-and-revenues/who-are-the-borrowers",
-              "faq/yield-and-revenues/why-would-borrowers-pay-8-10"
-            ]
-          },
-          {
-            "group": "How it works (flow)",
-            "pages": [
-              "faq/how-it-works-flow/governance-and-control-rights",
-              "faq/how-it-works-flow/how-are-assets-segregated-by-client",
-              "faq/how-it-works-flow/how-do-funds-flow-in-byzantine-prime",
-              "faq/how-it-works-flow/step-by-step-flow-of-funds",
-              "faq/how-it-works-flow/what-visibility-over-fund-flows-is-there",
-              "faq/how-it-works-flow/who-can-move-assets"
-            ]
-          },
-          {
-            "group": "Risk framework",
-            "pages": [
-              "faq/risk-framework/what-exactly-is-keyrocks-mandate",
-              "faq/risk-framework/what-is-my-counterparty-risk-towards-the-borrower",
-              "faq/risk-framework/what-risks-are-relevant-for-depositors-into-byzantine-prime",
-              "faq/risk-framework/whats-my-counterparty-risk-towards-the-strategy-curator"
-            ]
-          },
-          {
-            "group": "Risk framework",
-            "pages": [
-              "faq/collateral-and-liquidation-mechanism/how-does-the-liquidation-mechanism-function-exactly",
-              "faq/collateral-and-liquidation-mechanism/is-there-the-potential-for-bad-debt-or-loss-of-funds-how-is-it-mitigated",
-              "faq/collateral-and-liquidation-mechanism/what-collateral-risk-am-i-exposed-to"
-            ]
-          },
-          {
-            "group": "Liquidity and redemption",
-            "pages": [
-              
-              "faq/liquidity-and-redemption/are-there-delays-to-convert-stablecoins-to-fiat-currency",
-              "faq/liquidity-and-redemption/how-fast-can-i-withdraw-in-case-of-emergency",
-              "faq/liquidity-and-redemption/where-are-my-stablecoins-held"
-            ]
-          },
-          {
+              },
+              {
+                "group": "Yield & revenues",
+                "pages": [
+                  "faq/yield-and-revenues/how-are-returns-generated",
+                  "faq/yield-and-revenues/how-are-returns-split",
+                  "faq/yield-and-revenues/how-can-byzantine-prime-consistently-offer-base-+-400-bps",
+                  "faq/yield-and-revenues/what-exactly-is-the-base-rate",
+                  "faq/yield-and-revenues/what-is-the-currency-of-returns",
+                  "faq/yield-and-revenues/what-is-the-point-of-overcollateralised-lending",
+                  "faq/yield-and-revenues/what-kind-of-loans-are-these",
+                  "faq/yield-and-revenues/who-are-the-borrowers",
+                  "faq/yield-and-revenues/why-would-borrowers-pay-8-10"
+                ]
+              },
+              {
+                "group": "How it works (flow)",
+                "pages": [
+                  "faq/how-it-works-flow/governance-and-control-rights",
+                  "faq/how-it-works-flow/how-are-assets-segregated-by-client",
+                  "faq/how-it-works-flow/how-do-funds-flow-in-byzantine-prime",
+                  "faq/how-it-works-flow/step-by-step-flow-of-funds",
+                  "faq/how-it-works-flow/what-visibility-over-fund-flows-is-there",
+                  "faq/how-it-works-flow/who-can-move-assets"
+                ]
+              },
+              {
+                "group": "Risk framework",
+                "pages": [
+                  "faq/risk-framework/what-exactly-is-keyrocks-mandate",
+                  "faq/risk-framework/what-is-my-counterparty-risk-towards-the-borrower",
+                  "faq/risk-framework/what-risks-are-relevant-for-depositors-into-byzantine-prime",
+                  "faq/risk-framework/whats-my-counterparty-risk-towards-the-strategy-curator"
+                ]
+              },
+              {
+                "group": "Risk framework",
+                "pages": [
+                  "faq/collateral-and-liquidation-mechanism/how-does-the-liquidation-mechanism-function-exactly",
+                  "faq/collateral-and-liquidation-mechanism/is-there-the-potential-for-bad-debt-or-loss-of-funds-how-is-it-mitigated",
+                  "faq/collateral-and-liquidation-mechanism/what-collateral-risk-am-i-exposed-to"
+                ]
+              },
+              {
+                "group": "Liquidity and redemption",
+                "pages": [
+                  
+                  "faq/liquidity-and-redemption/are-there-delays-to-convert-stablecoins-to-fiat-currency",
+                  "faq/liquidity-and-redemption/how-fast-can-i-withdraw-in-case-of-emergency",
+                  "faq/liquidity-and-redemption/where-are-my-stablecoins-held"
+                ]
+              },
+              {
             "group": "Governance & audit",
             "pages": [
               "faq/governance-and-audit/what-is-a-smart-contract-audit-and-what-does-it-check-for",
               "faq/governance-and-audit/what-smart-contract-audits-have-been-completed-what-were-their-findings",
               "faq/governance-and-audit/what-other-audits-are-of-relevance",
               "faq/governance-and-audit/is-there-continuous-monitoring-of-active-systems"
+            ]
+          }
             ]
           }
         ]
