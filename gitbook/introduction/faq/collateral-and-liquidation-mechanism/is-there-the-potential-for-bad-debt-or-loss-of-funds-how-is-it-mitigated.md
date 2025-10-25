@@ -1,0 +1,14 @@
+# Is there the potential for bad debt or loss of funds? How is it mitigated?
+
+Theoretically, bad debt could occur if collateral prices fall faster than liquidation mechanisms can react or if markets become temporarily illiquid.
+
+In practice, this scenario has been extremely rare on the integrated protocols (Aave, Morpho, Maker), each maintaining a record of zero or near-zero bad debt after billions of dollars of loans.
+
+Mitigations include:
+
+* Conservative collateral ratios (120-150%) to provide a safety buffer.
+* Real-time price feeds from decentralised oracles (e.g. Chainlink) updating every few seconds.
+* Distributed liquidator network with automated bots competing to execute liquidations instantly.
+* Continuous protocol risk monitoring by Byzantine Prime and partner asset managers.
+
+As a result, even in extreme volatility, losses to lenders have historically been limited to fractions of a percent, and typically recovered through liquidation profits or insurance coverage.

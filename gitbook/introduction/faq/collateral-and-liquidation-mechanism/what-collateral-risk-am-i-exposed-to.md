@@ -1,0 +1,12 @@
+# What collateral risk am I exposed to?
+
+Investor exposure is limited to the value of the collateral backing each loan.
+
+Collateral risk arises if a market shock causes collateral value to fall faster than it can be liquidated.
+
+The efficiency of liquidation depends on two key factors:
+
+* **Collateral price volatility:** How quickly the asset’s market value moves, and
+* **Collateral liquidity:** How deep the market is at any given time.
+
+The consideration of investing exclusively into markets with blue-chip collateral tokens is baked into Keyrock’s investment mandate. As a result, Byzantine Prime only uses collateral types with high trading volumes and deep order books (such as ETH, stETH, WBTC) to minimise both risks. They have high liquidity, low volatility, and extremely high trading volumes allowing for quick liquidations in case of emergency.

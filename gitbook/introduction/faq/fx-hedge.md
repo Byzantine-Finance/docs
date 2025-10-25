@@ -1,0 +1,6 @@
+---
+hidden: true
+---
+
+# Fx hedge
+
