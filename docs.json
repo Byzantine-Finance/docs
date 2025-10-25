@@ -10,7 +10,7 @@
   "background": {
     "decoration": "gradient"
   },
-  "favicon": "/files%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Forganizations%252FnYXePBi8Rf0BoSVlgEPe%252Fsites%252Fsite_FzOqL%252Ficon%252F4UNtFE58OQqufPEOU4Oo%252Ftransparent-logoByz.png",
+  "favicon": "favicon.ico",
   "navigation": {
     "tabs": [
       {
@@ -178,13 +178,13 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "mailto:info@byzantine.fi"
       }
     ],
     "primary": {
       "type": "button",
       "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "href": "https://byzantine.fi"
     }
   }
 }
