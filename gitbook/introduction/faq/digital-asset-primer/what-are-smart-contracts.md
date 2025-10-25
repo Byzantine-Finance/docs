@@ -1,0 +1,7 @@
+# What are smart contracts?
+
+A smart contract is a program stored on a blockchain that runs automatically when certain conditions are met. This piece of code replaces manual operations or human discretion: Once deployed, no one can alter its rules. Any interaction with this program is publicly visible on the blockchain.
+
+Unlike a traditional asset manager that holds your funds, the Byzantine Prime smart contract never takes custody - it only executes instructions exactly as written. In this case, our asset manager partner Keyrock writes a specific investment strategy into such a smart contract based on a strict mandate. Every time a client makes a deposit, this strategy is automatically executed as written by Keyrock.
+
+This is how Byzantine Prime enforces how deposits, lending, and withdrawals work, without relying on intermediaries.

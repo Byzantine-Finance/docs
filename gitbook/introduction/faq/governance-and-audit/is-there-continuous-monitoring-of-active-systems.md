@@ -1,0 +1,16 @@
+# Is there continuous monitoring of active systems?
+
+Yes. Beyond periodic audits, Byzantine Prime maintains real-time automated monitoring of all deployed contracts and protocol interactions. For this, we use [Hypernative](https://www.hypernative.io/), the market-leading third-party monitoring tool.
+
+Hypernative’s capacities include recognising and preventing on-chain attacks, and triggering response measures.
+
+Triggers include:
+
+* High liquidity utilisation of an underlying market.
+* Unusually high amount of liquidations in an underlying protocol.
+* Unusual asset movements, especially in large quantities, within and underlying market or marketplace.
+* Suspected attack patterns in newly deployed on-chain code.
+
+In most cases, Hypernative notifies Byzantine Finance and Keyrock of any irregularities. However, in rare, urgent emergencies, Hyperactive has the power to trigger a special function that withdraws funds from an underlying credit marketplace into the safety of the Byzantine main vault.
+
+This continuous assurance framework, in which all critical system components are enrolled, ensures that operational and code-level risks remain visible and controlled at all times. Any protocol upgrade or dependency change automatically triggers a new independent audit before redeployment.

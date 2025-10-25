@@ -1,0 +1,5 @@
+# What exactly is the “Base” rate?
+
+In this case, “Base” is defined as the Federal Funds Rate for USD-stablecoin-denominated products and the ECB rate for EUR-stablecoin-denominated products.
+
+Note that Byzantine Prime does not include any T-bills or other traditional finance products - the Base rate is simply used as a benchmark.

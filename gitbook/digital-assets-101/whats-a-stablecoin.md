@@ -1,0 +1,25 @@
+# What's a stablecoin?
+
+{% hint style="info" %}
+**In short:** Stablecoins are real money, in digital form - stable, transparent, and always redeemable 1:1.
+{% endhint %}
+
+Stablecoins are digital versions of traditional currencies, like the euro or the dollar.
+
+Each stablecoin is backed 1:1 by real assets (cash or short-term government bonds) held by regulated institutions.
+
+{% hint style="info" %}
+1 digital euro = 1 real euro in reserve.
+{% endhint %}
+
+## Why do stablecoins exist?
+
+They combine the stability of traditional money with the speed and efficiency of digital infrastructure - moving instantly, 24/7, anywhere in the world.
+
+## Are stablecoins safe?
+
+Yes. They are:
+
+* Fully backed by real reserves.
+* Audited and transparent, with public reporting.
+* Increasingly managed and custodied by regulated institutions.

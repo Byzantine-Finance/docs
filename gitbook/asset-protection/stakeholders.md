@@ -1,0 +1,19 @@
+# Stakeholders
+
+## Keyrock
+
+Keyrock is our regulated partner acting as strategy curator. They:
+
+* Design and manage the strategy (rebalancing, risk limits, etc.).
+* Hold the regulatory license under MiCA and AML/CFT requirements.
+* Oversee reporting, audits, and compliance.
+
+Keyrock is registered with the French Autorité des Marchés Financiers (AMF) as a Digital Assets Services Provider under number E2024-115, and in England and Wales with the company number 13722013 and has the legal entity identifier number 9845001FL1012D640C61. Keyrock is also regulated under the Switzerland’s and Belgium’s financial regulators.&#x20;
+
+## Byzantine Finance
+
+Byzantine Finance serves exclusively as technology provider linking partner systems together.
+
+{% hint style="info" %}
+**Important:** Client assets are never touched by Byzantine itself.
+{% endhint %}

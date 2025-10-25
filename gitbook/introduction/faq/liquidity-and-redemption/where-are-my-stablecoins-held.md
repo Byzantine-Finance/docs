@@ -1,0 +1,9 @@
+# Where are my stablecoins held?
+
+Stablecoins are held on-chain within Byzantine Prime’s smart contracts and, when deployed, within the lending markets integrated into the protocol (e.g. Aave, Morpho).
+
+These contracts are non-custodial, meaning no intermediary or asset manager has discretionary access to the funds.
+
+Each depositor’s position is fully traceable, and total on-chain balances can be verified at any time.
+
+When withdrawals occur, the contracts unwind the relevant share of lending positions and transfer stablecoins directly back to the investor’s wallet.

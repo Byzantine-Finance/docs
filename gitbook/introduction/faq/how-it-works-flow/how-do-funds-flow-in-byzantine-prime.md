@@ -1,0 +1,11 @@
+# How do funds flow in Byzantine Prime?
+
+In essence, Byzantine Prime is a digital overcollateralised credit product. It functions like a digital credit facility whose processes are automated through transparent smart contracts that replicate the mechanics of a money-market instrument.
+
+This blockchain automation has three key advantages:
+
+* Automated back-office and transaction processing via smart contracts
+* Removal of counterparty risk via smart contracts
+* Massive reduction of credit risk via 100% overcollateralisation
+
+All operations (deposits, interest accrual, collateral management, and redemptions) are executed automatically, 24/7, with full on-chain visibility.

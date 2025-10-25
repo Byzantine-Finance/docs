@@ -1,0 +1,5 @@
+# Fees
+
+## Annual fees on performance
+
+Byzantine charges a fixed **10% of interest earned**, calculated daily and deducted directly from interest earned. Account balances are always displayed net of all fees.

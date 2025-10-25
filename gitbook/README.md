@@ -1,0 +1,19 @@
+# Welcome!
+
+Byzantine Prime is a new way to put company cash to work - same safety, same compliance, just with returns that actually make CFOs smile – for the first time.
+
+Byzantine offers a low-risk, institutional-grade digital credit product built for corporate cash. It combines the safety of traditional finance with the efficiency and returns of digital markets.
+
+## Byzantine offers:
+
+* Stable returns: Target yield of Base (T-Bills) + 400bps (so around 8% per year)
+* Overcollateralised lending in USD-backed digital assets.
+* 24/7 liquidity: Assets are always accessible
+* Safety and compliance: Managed by Keyrock, a regulated EU & US asset manager, under full AML, KYC, MiCA, and SOC 2 Type II frameworks.
+* Institutional grade custody and insurance on 100% of the capital invested
+* Active risk monitoring: Continuous rebalancing and diversification to preserve capital.
+* Transparent reporting: Real-time visibility on portfolio and performance.
+
+{% hint style="success" %}
+Byzantine Prime is built to deliver MMF-like safety, S\&P-level returns, and modern liquidity - without forcing treasurers to compromise between performance and trust.
+{% endhint %}

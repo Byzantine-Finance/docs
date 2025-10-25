@@ -1,0 +1,9 @@
+# How fast can I withdraw in case of emergency?
+
+Byzantine Prime is designed for daily liquidity with near-instant settlement on-chain.
+
+Investors can request withdrawals at any time, as there are no lock-ups or redemption windows.
+
+Under normal conditions, withdrawals in stablecoins settle in under one minute, depending on blockchain network congestion.
+
+This is comparable to intraday liquidity in a money-market fund, but with automated 24/7 availability rather than business-hour constraints.
