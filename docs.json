@@ -167,7 +167,8 @@
             "openapi": "api-reference/openapi-integrator3.json",
             "pages": [
               "welcome",
-              "development"
+              "development",
+              "POST /api/v1/query/get-approve-body"
             ]
           }
         ]
