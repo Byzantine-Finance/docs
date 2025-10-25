@@ -164,7 +164,14 @@
           },
           {
             "group": "Endpoint examples",
-            "openapi": "api-reference/openapi-integrator3.json"
+            
+            "openapi": "api-reference/openapi-integrator3.json",
+            "pages": [
+              "welcome",
+              "development",
+              "GET /users",
+              "POST /users"
+            ]
           }
         ]
       }
