@@ -163,7 +163,7 @@
             ]
           },
           {
-            "group": "Endpoint examples",
+            "group": "API endpoints",
             "openapi": "api-reference/openapi-integrator3.json"
           }
         ]
