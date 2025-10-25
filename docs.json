@@ -1,9 +1,9 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "aspen",
-  "name": "Byzantine Finance - Credit Funds",
+  "theme": "mint",
+  "name": "Byzantine Finance",
   "colors": {
-    "primary": "#0D9373",
+    "primary": "#702963",
     "light": "#55D799",
     "dark": "#0D9373"
   },
@@ -56,7 +56,7 @@
     ]
   },
   "logo": {
-    "light": "/images/files%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Forganizations%252FnYXePBi8Rf0BoSVlgEPe%252Fsites%252Fsite_FzOqL%252Flogo%252FS248rv5RQWvHJVEJaDoU%252Fbyzantinelogo.svg",
-    "dark": "/images/files%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Forganizations%252FnYXePBi8Rf0BoSVlgEPe%252Fsites%252Fsite_FzOqL%252Flogo%252Fnv8cSxj4X26UdQnGRJSE%252F%255BLIGHT%255D%2520Head%2520%252B%2520text.png"
+    "light": "/logo/dark_logo.png",
+    "dark": "/logo/light_logo.png"
   }
 }
