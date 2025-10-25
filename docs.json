@@ -119,6 +119,15 @@
             ]
           },
           {
+            "group": "Liquidity and redemption",
+            "pages": [
+              
+              "faq/liquidity-and-redemption/are-there-delays-to-convert-stablecoins-to-fiat-currency",
+              "faq/liquidity-and-redemption/how-fast-can-i-withdraw-in-case-of-emergency",
+              "faq/liquidity-and-redemption/where-are-my-stablecoins-held"
+            ]
+          },
+          {
             "group": "Governance & audit",
             "pages": [
               "faq/governance-and-audit/what-is-a-smart-contract-audit-and-what-does-it-check-for",
