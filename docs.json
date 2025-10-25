@@ -62,8 +62,29 @@
         ]
       },
       {
-        "tab": "FAQ",
+        "tab": "Testing",
         "groups": [
+          {
+            "group": "Getting started",
+            "icon": "play",
+            "expanded": false,
+            "pages": [
+              "quickstart",
+              {
+                "group": "Editing",
+                "icon": "pencil",
+                "pages": [
+                  "installation",
+                  "editor"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "FAQ",
+        "pages": [
           "faq/what-is-byzantine-prime-at-a-glance",
           {
             "group": "Digital asset primer",
