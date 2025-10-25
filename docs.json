@@ -42,14 +42,14 @@
             ]
           },
           {
-            "group": "ACCOUNT MANAGEMENT",
+            "group": "Account management",
             "pages": [
-              "documentation/account-management/editor",
-              "documentation/account-management/markdown"
+              "documentation/account-management/account-creation",
+              "documentation/account-management/kyc-and-kyb"
             ]
           },
           {
-            "group": "DIGITAL ASSETS 101",
+            "group": "Digital assets 101",
             "pages": [
               "documentation/digital-assets-101/whats-a-stablecoin",
               "documentation/digital-assets-101/how-are-stablecoins-kept-at-usd1-eur1",
