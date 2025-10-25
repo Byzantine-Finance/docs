@@ -68,26 +68,26 @@
           {
             "group": "Digital asset primer",
             "pages": [
-              "what-are-decentralised-protocols.md",
-              "what-are-lending-markets.md",
-              "what-are-smart-contracts.md",
-              "what-are-stablecoins.md",
-              "what-is-digital-credit.md",
-              "what-is-over-collateralisation.md"
+              "faq/digital-asset-primer/what-are-decentralised-protocols.md",
+              "faq/digital-asset-primer/what-are-lending-markets.md",
+              "faq/digital-asset-primer/what-are-smart-contracts.md",
+              "faq/digital-asset-primer/what-are-stablecoins.md",
+              "faq/digital-asset-primer/what-is-digital-credit.md",
+              "faq/digital-asset-primer/what-is-over-collateralisation.md"
             ]
           },
           {
             "group": "Yield & revenues",
             "pages": [
-              "how-are-returns-generated.md",
-              "how-are-returns-split.md",
-              "how-can-byzantine-prime-consistently-offer-base-+-400-bps.md",
-              "what-exactly-is-the-base-rate.md",
-              "what-is-the-currency-of-returns.md",
-              "what-is-the-point-of-overcollateralised-lending.md",
-              "what-kind-of-loans-are-these.md",
-              "who-are-the-borrowers.md",
-              "why-would-borrowers-pay-8-10"
+              "faq/yield-and-revenues/how-are-returns-generated.md",
+              "faq/yield-and-revenues/how-are-returns-split.md",
+              "faq/yield-and-revenues/how-can-byzantine-prime-consistently-offer-base-+-400-bps.md",
+              "faq/yield-and-revenues/what-exactly-is-the-base-rate.md",
+              "faq/yield-and-revenues/what-is-the-currency-of-returns.md",
+              "faq/yield-and-revenues/what-is-the-point-of-overcollateralised-lending.md",
+              "faq/yield-and-revenues/what-kind-of-loans-are-these.md",
+              "faq/yield-and-revenues/who-are-the-borrowers.md",
+              "faq/yield-and-revenues/why-would-borrowers-pay-8-10"
             ]
           },
           {
