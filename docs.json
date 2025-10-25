@@ -68,12 +68,26 @@
           {
             "group": "Digital asset primer",
             "pages": [
-              "faq/digital-asset-primer/what-are-decentralised-protocols.md",
-              "faq/digital-asset-primer/what-are-lending-markets.md",
-              "faq/digital-asset-primer/what-are-smart-contracts.md",
-              "faq/digital-asset-primer/what-are-stablecoins.md",
-              "faq/digital-asset-primer/what-is-digital-credit.md",
-              "faq/digital-asset-primer/what-is-over-collateralisation.md"
+              "faq/digital-asset-primer/what-are-decentralised-protocols",
+              "faq/digital-asset-primer/what-are-lending-markets",
+              "faq/digital-asset-primer/what-are-smart-contracts",
+              "faq/digital-asset-primer/what-are-stablecoins",
+              "faq/digital-asset-primer/what-is-digital-credit",
+              "faq/digital-asset-primer/what-is-over-collateralisation"
+            ]
+          },
+          {
+            "group": "Yield & revenues",
+            "pages": [
+              "faq/yield-and-revenues/how-are-returns-generated",
+              "faq/yield-and-revenues/how-are-returns-split",
+              "faq/yield-and-revenues/how-can-byzantine-prime-consistently-offer-base-+-400-bps",
+              "faq/yield-and-revenues/what-exactly-is-the-base-rate",
+              "faq/yield-and-revenues/what-is-the-currency-of-returns",
+              "faq/yield-and-revenues/what-is-the-point-of-overcollateralised-lending",
+              "faq/yield-and-revenues/what-kind-of-loans-are-these",
+              "faq/yield-and-revenues/who-are-the-borrowers",
+              "faq/yield-and-revenues/why-would-borrowers-pay-8-10"
             ]
           }
         ]
