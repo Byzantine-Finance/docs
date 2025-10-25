@@ -9,41 +9,44 @@
   },
   "favicon": "/files%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Forganizations%252FnYXePBi8Rf0BoSVlgEPe%252Fsites%252Fsite_FzOqL%252Ficon%252F4UNtFE58OQqufPEOU4Oo%252Ftransparent-logoByz.png",
   "navigation": {
-    "groups": [
+    "tabs": [
       {
-        "group": "INTRODUCTION",
-        "pages": [
-          "documentation",
-          "documentation/introduction/faq"
-        ]
-      },
-      {
-        "group": "ABOUT BYZANTINE",
-        "pages": [
-          "documentation/about-byzantine/quickstart",
-          "documentation/about-byzantine/the-digital-asset-opportunity",
-          "documentation/about-byzantine/publish-your-docs",
-          "documentation/about-byzantine/deposits-and-withdrawals",
-          "documentation/about-byzantine/fees"
-        ]
-      },
-      {
-        "group": "Asset protection",
-        "pages": [
-          "documentation/asset-protection/security-mechanisms",
-          "documentation/asset-protection/stakeholders",
-          "documentation/asset-protection/regulatory-framework",
-          "documentation/asset-protection/security-audits"
-        ]
-      },
-      {
-        "group": "ACCOUNT MANAGEMENT",
-        "pages": [
-          "documentation/account-management/editor",
-          "documentation/account-management/markdown"
-        ]
-      },
-      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "INTRODUCTION",
+            "pages": [
+              "documentation",
+              "documentation/introduction/faq"
+            ]
+          },
+          {
+            "group": "ABOUT BYZANTINE",
+            "pages": [
+              "documentation/about-byzantine/quickstart",
+              "documentation/about-byzantine/the-digital-asset-opportunity",
+              "documentation/about-byzantine/publish-your-docs",
+              "documentation/about-byzantine/deposits-and-withdrawals",
+              "documentation/about-byzantine/fees"
+            ]
+          },
+          {
+            "group": "Asset protection",
+            "pages": [
+              "documentation/asset-protection/security-mechanisms",
+              "documentation/asset-protection/stakeholders",
+              "documentation/asset-protection/regulatory-framework",
+              "documentation/asset-protection/security-audits"
+            ]
+          },
+          {
+            "group": "ACCOUNT MANAGEMENT",
+            "pages": [
+              "documentation/account-management/editor",
+              "documentation/account-management/markdown"
+            ]
+          },
+          {
         "group": "DIGITAL ASSETS 101",
         "pages": [
           "documentation/digital-assets-101/whats-a-stablecoin",
@@ -51,6 +54,26 @@
           "documentation/digital-assets-101/what-is-mica",
           "documentation/digital-assets-101/what-is-digital-credit",
           "documentation/digital-assets-101/what-is-a-smart-contract-vault"
+        ]
+      }
+        ]
+      },
+      {
+        "tab": "FAQ"
+      },
+      {
+        "tab": "API reference",
+        "groups": [
+          {
+            "group": "API documentation",
+            "pages": [
+              "api-reference/introduction"
+            ]
+          },
+          {
+            "group": "Endpoint examples",
+            "openapi": "api-reference/openapi-integrator3.json"
+          }
         ]
       }
     ]
