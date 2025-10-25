@@ -64,11 +64,9 @@
       {
         "tab": "FAQ",
         "pages": [
-          "faq/what-is-byzantine-prime-at-a-glance"
-        ],
-        "groups": [
+          "faq/what-is-byzantine-prime-at-a-glance",
           {
-            "group": "INTRODUCTION",
+            "group": "Digital asset primer",
             "pages": []
           }
         ]
