@@ -3,39 +3,31 @@ title: "Step-by-step flow of funds"
 description: "Copy"
 ---
 
-1. [INTRODUCTION](/documentation/introduction)
-2. [FAQ](/documentation/introduction/faq)
-3. [How it works (flow)](/documentation/introduction/faq/how-it-works-flow)
-
 ### Preparation: Strategy creation
 
 Keyrock prepares the Byzantine Prime smart contract to receive deposits by writing an investment strategy onto it, in accordance with a strict investment mandate.
 
-1
 
-#### Deposit
+### Step 1A: Deposit
 
 A depositor transfers capital in the form of stablecoins (e.g. USDC) to Byzantine Prime - tokens that represent a digital equivalent of U.S. dollars.
 
-2
 
-### Deployment to underlying credit markets
+### Step 1B: Deployment to underlying credit markets
 
 As part of this same transaction, the depositor’s assets flow into the underlying credit marketplaces (Morpho, Aave, or Maker), according to the strategy set by Keyrock.
 
 Note that in this process, the Byzantine Prime smart contract does not hold any assets - it only acts as an automated routing agent for client assets as well as a fund registrar.
 
-3
 
-### Issuance of receipt tokens
+### Step 1C: Issuance of receipt tokens
 
 Byzantine Prime records the deposit and issues an electronic receipt representing the investor’s position - similar to a fund unit. Issuance of these receipt tokens is handled by the smart contract as well, fully automatically.
 
 This automated process happens as part of the user’s deposit transaction. The smart contract security audits primarily exist to ensure the accuracy of these steps.
 
-4
 
-### Deployment of assets
+### Step 2: Deployment of assets
 
 Deposited assets have already been distributed to the underlying credit marketplaces as part of step 2.
 
@@ -45,30 +37,25 @@ Immediately after deposit, assets become available for borrowing. Borrowers may 
 
 Borrowers are usually market makers, traders, or other entities in need of capital. Loans are indefinitely rolling, short-term, overcollateralised loans.
 
-5
 
-### Interest generation
+### Step 3: Interest generation
 
 As borrowers take such loans, they draw stablecoin liquidity and pay interest in real time.
 
 The interest rate is variable and determined by supply and demand, broadly comparable to floating-rate notes or commercial paper spreads in traditional markets. Exact interest rates are pre-determined via an interest rate curve that is specific to each market, which adapts interest rates to a specific % of liquidity utilisation.
 
-6
 
-### Continued interest accrual and reporting
+### Step 4: Continued interest accrual and reporting
 
 The smart contracts automatically collect borrower interest and attribute it to each investor’s account.
 
 Returns are calculated and credited continuously, forming a daily mark-to-market yield visible on the investor dashboard or via API.
 
-7
 
-### Withdrawal and redemption
+### Step 5: Withdrawal and redemption
 
 Depositors may redeem their position at any time.
 
 The contracts unwind the corresponding share of assets from the underlying credit markets and return the stablecoins to the investor’s wallet.
 
 The process is equivalent to a same-day redemption from a money-market fund, except this time at the speed of the blockchain: Exits are settled in under a minute.
-
-[PreviousWho can move assets?](/documentation/introduction/faq/how-it-works-flow/who-can-move-assets)[NextGovernance and control rights](/documentation/introduction/faq/how-it-works-flow/governance-and-control-rights)
