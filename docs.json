@@ -66,6 +66,17 @@
         "pages": [
           "faq/what-is-byzantine-prime-at-a-glance",
           {
+            "group": "Digital asset primer",
+            "pages": [
+              "faq/digital-asset-primer/what-are-decentralised-protocols",
+              "faq/digital-asset-primer/what-are-lending-markets",
+              "faq/digital-asset-primer/what-are-smart-contracts",
+              "faq/digital-asset-primer/what-are-stablecoins",
+              "faq/digital-asset-primer/what-is-digital-credit",
+              "faq/digital-asset-primer/what-is-over-collateralisation"
+            ]
+          },
+          {
             "group": "Yield & revenues",
             "pages": [
               "faq/yield-and-revenues/how-are-returns-generated",
@@ -77,6 +88,43 @@
               "faq/yield-and-revenues/what-kind-of-loans-are-these",
               "faq/yield-and-revenues/who-are-the-borrowers",
               "faq/yield-and-revenues/why-would-borrowers-pay-8-10"
+            ]
+          },
+          {
+            "group": "How it works (flow)",
+            "pages": [
+              "faq/how-it-works-flow/governance-and-control-rights",
+              "faq/how-it-works-flow/how-are-assets-segregated-by-client",
+              "faq/how-it-works-flow/how-do-funds-flow-in-byzantine-prime",
+              "faq/how-it-works-flow/step-by-step-flow-of-funds",
+              "faq/how-it-works-flow/what-visibility-over-fund-flows-is-there",
+              "faq/how-it-works-flow/who-can-move-assets"
+            ]
+          },
+          {
+            "group": "Risk framework",
+            "pages": [
+              "faq/risk-framework/what-exactly-is-keyrocks-mandate",
+              "faq/risk-framework/what-is-my-counterparty-risk-towards-the-borrower",
+              "faq/risk-framework/what-risks-are-relevant-for-depositors-into-byzantine-prime",
+              "faq/risk-framework/whats-my-counterparty-risk-towards-the-strategy-curator"
+            ]
+          },
+          {
+            "group": "Risk framework",
+            "pages": [
+              "faq/collateral-and-liquidation-mechanism/how-does-the-liquidation-mechanism-function-exactly",
+              "faq/collateral-and-liquidation-mechanism/is-there-the-potential-for-bad-debt-or-loss-of-funds-how-is-it-mitigated",
+              "faq/collateral-and-liquidation-mechanism/what-collateral-risk-am-i-exposed-to"
+            ]
+          },
+          {
+            "group": "Governance & audit",
+            "pages": [
+              "faq/governance-and-audit/what-is-a-smart-contract-audit-and-what-does-it-check-for",
+              "faq/governance-and-audit/what-smart-contract-audits-have-been-completed-what-were-their-findings",
+              "faq/governance-and-audit/what-other-audits-are-of-relevance",
+              "faq/governance-and-audit/is-there-continuous-monitoring-of-active-systems"
             ]
           }
         ]
