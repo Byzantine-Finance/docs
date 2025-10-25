@@ -3,7 +3,7 @@
   "theme": "mint",
   "name": "Byzantine Finance",
   "colors": {
-    "primary": "#702963",
+    "primary": "#702962",
     "light": "#702963",
     "dark": "#702963"
   },
@@ -81,5 +81,18 @@
   "logo": {
     "light": "/logo/dark_logo.png",
     "dark": "/logo/light_logo.png"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Support",
+        "href": "mailto:hi@mintlify.com"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Dashboard",
+      "href": "https://dashboard.mintlify.com"
+    }
   }
 }
