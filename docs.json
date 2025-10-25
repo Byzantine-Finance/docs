@@ -168,8 +168,7 @@
             "pages": [
               "welcome",
               "development",
-              "GET /users",
-              "POST /users"
+              "POST /approve"
             ]
           }
         ]
