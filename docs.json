@@ -64,7 +64,18 @@
       {
         "tab": "FAQ",
         "pages": [
-          "faq/what-is-byzantine-prime-at-a-glance"
+          "faq/what-is-byzantine-prime-at-a-glance",
+          {
+            "group": "Digital asset primer",
+            "pages": [
+              "faq/digital-asset-primer/what-are-decentralised-protocols.md",
+              "faq/digital-asset-primer/what-are-lending-markets.md",
+              "faq/digital-asset-primer/what-are-smart-contracts.md",
+              "faq/digital-asset-primer/what-are-stablecoins.md",
+              "faq/digital-asset-primer/what-is-digital-credit.md",
+              "faq/digital-asset-primer/what-is-over-collateralisation.md"
+            ]
+          }
         ]
       },
       {
