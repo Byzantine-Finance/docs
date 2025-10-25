@@ -1,5 +1,0 @@
-# How are returns split?
-
-Byzantine charges 10% of returns as fees. This covers our operations, access to the platform, asset manager fees, custody fees, and all internal rebalancing transactions.
-
-The remainder goes directly to our clients.

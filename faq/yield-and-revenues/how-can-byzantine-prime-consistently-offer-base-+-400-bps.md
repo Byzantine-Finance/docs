@@ -1,7 +1,0 @@
-# How can Byzantine Prime consistently offer Base + 400 bps?
-
-Byzantine Prime’s returns track the natural instant credit rate of on-chain overcollateralised credit markets, which typically sits several hundred basis points above traditional money markets. This premium exists because capital on-chain is still scarce relative to borrower demand - particularly for market-neutral strategies, market makers, and institutions financing crypto-native activity - all of whom are willing to pay materially higher rates for fully collateralised liquidity.
-
-Because yields are set algorithmically by utilisation rather than by discretionary fund management, this premium has remained structurally stable over time. When global rates move, DeFi lending rates move with them and the utilisation-driven spread (≈ +400 bps above Base) persists as a function of demand for liquidity.
-
-Byzantine Prime captures this spread without leverage or duration risk, simply by allocating stablecoins into medium-utilisation, over-collateralised credit markets screened and monitored by Keyrock. Liquidity parameters are continuously checked to ensure that clients can redeem their full balance at any time, even while benefiting from these structurally higher on-chain rates.

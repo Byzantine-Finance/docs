@@ -1,7 +1,0 @@
-# What kind of loans are these?
-
-Indefinite, short-term rolling loans. They can be repaid or renewed at any time.
-
-Interest accrual and collateral ratio monitoring happens at each _block_ (every six seconds). If collateral value falls too far, the system automatically sells it to cover the loan.
-
-This makes the lending market highly solvent and callable on demand.

@@ -50,32 +50,21 @@
             ]
           },
           {
-        "group": "DIGITAL ASSETS 101",
-        "pages": [
-          "documentation/digital-assets-101/whats-a-stablecoin",
-          "documentation/digital-assets-101/how-are-stablecoins-kept-at-usd1-eur1",
-          "documentation/digital-assets-101/what-is-mica",
-          "documentation/digital-assets-101/what-is-digital-credit",
-          "documentation/digital-assets-101/what-is-a-smart-contract-vault"
-        ]
-      }
+            "group": "DIGITAL ASSETS 101",
+            "pages": [
+              "documentation/digital-assets-101/whats-a-stablecoin",
+              "documentation/digital-assets-101/how-are-stablecoins-kept-at-usd1-eur1",
+              "documentation/digital-assets-101/what-is-mica",
+              "documentation/digital-assets-101/what-is-digital-credit",
+              "documentation/digital-assets-101/what-is-a-smart-contract-vault"
+            ]
+          }
         ]
       },
       {
         "tab": "FAQ",
         "pages": [
           "faq/what-is-byzantine-prime-at-a-glance",
-          {
-            "group": "Digital asset primer",
-            "pages": [
-              "faq/digital-asset-primer/what-are-decentralised-protocols",
-              "faq/digital-asset-primer/what-are-lending-markets",
-              "faq/digital-asset-primer/what-are-smart-contracts",
-              "faq/digital-asset-primer/what-are-stablecoins",
-              "faq/digital-asset-primer/what-is-digital-credit",
-              "faq/digital-asset-primer/what-is-over-collateralisation"
-            ]
-          },
           {
             "group": "Yield & revenues",
             "pages": [

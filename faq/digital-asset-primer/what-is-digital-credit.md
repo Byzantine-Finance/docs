@@ -1,7 +1,0 @@
-# What is digital credit?
-
-Digital credit is simply lending stablecoins against collateral on the blockchain.
-
-Borrowers put up more collateral than they borrow, and interest is paid to lenders. More on overcollateralisation below.
-
-It works like a secured money-market loan, but instead of banks or custodians, everything happens through transparent, automated code - via the aforementioned smart contracts - which eliminates the counterparty risk of working with traditional institutions. **Smart contracts continue operating even in case of a bankruptcy of their parent organisation.**

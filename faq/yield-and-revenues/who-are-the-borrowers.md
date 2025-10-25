@@ -1,9 +1,0 @@
-# Who are the borrowers?
-
-Typical borrowers include:
-
-* **Market makers** and **liquidity providers**, borrowing to provide liquidity across exchanges.
-* **Arbitrage traders**, exploiting short-term price differences between assets.
-* **DeFi funds** and **staking operators**, using stablecoin credit to optimise returns across positions.
-
-These borrowers are usually large, well-capitalised entities that use collateral efficiently but cannot or do not wish to convert it to cash.
