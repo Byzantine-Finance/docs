@@ -158,7 +158,6 @@
           {
             "group": "Integrator API",
             "pages": [
-              "api-reference/welcome",
               "api-reference/getting-started",
               "api-reference/concepts",
               "api-reference/account-creation",
