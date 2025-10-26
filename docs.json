@@ -161,6 +161,7 @@
               "api-reference/getting-started",
               "api-reference/concepts",
               "api-reference/account-creation",
+              "api-reference/wallet-authentication",
               "api-reference/deposit-flow"
             ]
           },

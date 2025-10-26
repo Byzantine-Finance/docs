@@ -1,0 +1,20 @@
+---
+title: "Wallet authentication"
+description: "Methods to ensure user ownership over their wallet."
+---
+
+When a user account is created in Byzantine, either they themselves or their entity are set up with a digital wallet. This wallet is linked to either the end user's device or email address, meaning no intermediaries (Byzantine or the integrator) could ever make transactions on their behalf.
+
+## Authentication methods
+
+Integrators have two options when creating a client account.
+
+### Method 1: OTP via email
+
+This method is easier to implement, but is a little less secure, since it relies on access to the end user's email account.
+
+### Method 2: Passkey authentication
+
+This method is more cryptographically secure, since it directly links the end user's device to authentication, but is a bit more technically challenging to implement.
+
+## Defining the authentication method

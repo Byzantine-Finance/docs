@@ -7,10 +7,27 @@ Below are some of the key concepts and terms used in the Byzantine API.
 
 Some of these relate to blockchain technology. Basic knowledge of blockchain will be helpful in understanding Byzantine, but it is not required. Integrating Byzantine is 100% API-based.
 
-| **Concept**          | **Explainer**                                                                                                                                                                                                                                                                                                    |
-| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **User account**     | Every individual user of Byzantine has a user account, associated with a unique **user_id**. User accounts can be tied to legal entities.                                                                                                                                                                        |
-| **Entity**           | A legal entity. At least one user account needs to be tied to each legal entity to be able to make transactions.                                                                                                                                                                                                 |
-| **Wallet**           | A wallet is the digital access point to the blockchain - it is where user assets are stored and how they make transactions. Every entity has one wallet.                                                                                                                                                         |
-| **Vault**            | Byzantine products, like Byzantine Prime USDC, are smart contracts known as _vaults_. These smart contracts are blockchain-based code that automatically handles all administration work surrounding a client's deposit. These vaults are what make Byzantine's high security and non-custodial nature possible. |
-| **Non-custodiality** | At no point in any interaction does Byzantine take custody or hold control over user funds.                                                                                                                                                                                                                      |
+## Key terms
+
+| **Concept**      | **Explainer**                                                                                                                                                                                                                                                                                                    |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **User account** | Every individual user of Byzantine has a user account, associated with a unique **user_id**. User accounts can be tied to legal entities.                                                                                                                                                                        |
+| **Entity**       | A legal entity. At least one user account needs to be tied to each legal entity to be able to make transactions.                                                                                                                                                                                                 |
+| **Wallet**       | A wallet is the digital access point to the blockchain - it is where user assets are stored and how they make transactions. Every entity has one wallet.                                                                                                                                                         |
+| **Vault**        | Byzantine products, like Byzantine Prime USDC, are smart contracts known as _vaults_. These smart contracts are blockchain-based code that automatically handles all administration work surrounding a client's deposit. These vaults are what make Byzantine's high security and non-custodial nature possible. |
+
+## Wallet authentication
+
+Even if the client accesses the blockchain through an integrator's interface and Byzantine's API, the client is \*\*sole owner and controller \*\*of their assets. Each time a transaction is to be made, the client must themselves approve it with one of the available signature methods.
+
+Without this signature tied to the client device or the client's identity, nobody could physically make transactions. In this way, client ownership and control are programatically guaranteed.
+
+## Two-step transactions
+
+Since the user is the sole controller of the wallet, they need to sign every transaction themselves.
+
+For details on how this process works, see [Wallet authentication](/api-reference/wallet-authentication).
+
+## Non-custodiality
+
+At no point in any interaction does Byzantine take custody or hold control over user funds.
