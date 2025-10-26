@@ -790,7 +790,7 @@
           }
         }
       }
-    }
+    },
     "/api/v1/health": {
       "get": {
         "tags": [
@@ -812,7 +812,7 @@
           }
         }
       }
-    },
+    }
   },
   "components": {
     "schemas": {
