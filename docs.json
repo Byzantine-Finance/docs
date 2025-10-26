@@ -14,7 +14,7 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Documentation", 
+        "tab": "Documentation",
         "icon": "book",
         "groups": [
           {
@@ -132,7 +132,6 @@
                 "group": "Liquidity and redemption",
                 "icon": "water",
                 "pages": [
-                  
                   "faq/liquidity-and-redemption/are-there-delays-to-convert-stablecoins-to-fiat-currency",
                   "faq/liquidity-and-redemption/how-fast-can-i-withdraw-in-case-of-emergency",
                   "faq/liquidity-and-redemption/where-are-my-stablecoins-held"
@@ -157,9 +156,12 @@
         "icon": "code",
         "groups": [
           {
-            "group": "API documentation",
+            "group": "Integrator API",
             "pages": [
-              "api-reference/introduction"
+              "api-reference/getting-started",
+              "api-reference/concepts",
+              "api-reference/account-creation",
+              "api-reference/deposit-flow"
             ]
           },
           {
