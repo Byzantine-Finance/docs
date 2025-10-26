@@ -206,9 +206,9 @@
     "/api/v1/submit/approve": {
       "post": {
         "tags": [
-          "Submit approval transaction"
+          "Approve vault for deposit"
         ],
-        "summary": "Approve a vault for user",
+        "summary": "Submit approval transaction",
         "description": "Submit the transaction that approves a vault to accept USDC from specific user wallet (mandatory step before depositing).",
         "operationId": "approve_vault",
         "parameters": [
