@@ -1,34 +1,42 @@
 ---
 title: "Getting started"
-description: "Welcome to the Byzantine API documentation."
+icon: "play"
+sidebarTitle: "Welcome!"
 ---
 
 <Note>
-  If you're not looking to build API reference documentation, you can delete this section by removing the api-reference folder.
+  If you're looking to learn more about Byzantine generally, have a look at our [General Documentation](/index).
 </Note>
 
-## Welcome
+Byzantine is a modular infrastructure layer for institutional digital credit - built for integrators, fintechs, and developers who want to embed better institutional-grade yield directly into their platforms.
 
-Byzantine is built in a highly modular way that is easy to integrate
+The Byzantine API is unified, composable, and simple to use. With one endpoint structure, integrators can retrieve vault data, create and manage accounts, and handle deposits and withdrawals programmatically - all through a single integration.
 
-Byzantine for integrators
+| **What you can do**                 |                                                                                       |
+| ----------------------------------- | ------------------------------------------------------------------------------------- |
+| **Retrieve Vault Data**             | Access live information on vaults, supported assets, strategies, and yields.          |
+| **Create and Manage Accounts**      | Programmatically create investor accounts, fetch balances, and track user portfolios. |
+| **Handle Deposits and Withdrawals** | Submit and reconcile transactions securely through a unified workflow.                |
+| **Access User Data**                | Retrieve user-specific performance, transaction history, and positions in real time.  |
 
-Contact support
+### Getting Access
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+Access to the Byzantine API requires an **Integrator API Key**.\
+Get in touch to learn more about integrating Byzantine — we’ll verify your use case and generate your key manually.
 
-<Card title="Plant Store Endpoints" icon="leaf" href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json">
-  View the OpenAPI specification file
+<Card title="Get in touch" icon="sparkles" horizontal href="mailto:info@byzantine.fi" cta="Testing123">
+  
 </Card>
 
-## Authentication
+### Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+Our API uses **Basic authentication** with your `client_id` and `client_secret`.
 
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
 ```
+curl -X GET https://api.byzantine.fi/v1/vaults \
+  -u "client_id:client_secret"
+```
+
+### OpenAPI Specification
+
+Explore the full structure and generate your own client using our [OpenAPI specification](http://docs.byzantine.fi/api-reference/openapi-integrator.json).
