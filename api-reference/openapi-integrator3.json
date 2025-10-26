@@ -15,7 +15,7 @@
         "tags": [
           "User accounts"
         ],
-        "summary": "Create entity 123",
+        "summary": "Create entity",
         "operationId": "create_entity",
         "parameters": [
           {
