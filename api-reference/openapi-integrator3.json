@@ -10,26 +10,148 @@
     "version": "0.2.0"
   },
   "paths": {
-    "/api/v1/health": {
-      "get": {
+    "/api/v1/submit/create-entity": {
+      "post": {
         "tags": [
-          "Query API health"
+          "User accounts"
         ],
-        "summary": "Health check endpoint",
-        "description": "Returns the health status of the API",
-        "operationId": "health_check",
+        "summary": "Create entity",
+        "operationId": "create_entity",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Byzantine entity creation body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEntityRequest"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
-            "description": "Service is healthy",
+            "description": "Entity created successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HealthResponse"
+                  "$ref": "#/components/schemas/SumsubApplicantData"
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid request payload"
+          },
+          "500": {
+            "description": "Internal server error"
           }
-        }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/submit/create-user": {
+      "post": {
+        "tags": [
+          "User accounts"
+        ],
+        "summary": "Create user",
+        "operationId": "create_user",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Byzantine user creation body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "User created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SumsubApplicantData"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request payload"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
       }
     },
     "/api/v1/query/get-approve-body": {
@@ -59,55 +181,6 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/ApproveRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Transaction created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SignTransactionRequest"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid chain ID"
-          }
-        }
-      }
-    },
-    "/api/v1/query/get-deposit-body": {
-      "post": {
-        "tags": [
-          "Make deposit"
-        ],
-        "summary": "Get deposit transaction",
-        "description": "Get the transaction body to sign, in order to make a deposit.",
-        "operationId": "get_deposit_body",
-        "parameters": [
-          {
-            "name": "chain_id",
-            "in": "query",
-            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "minimum": 0
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Deposit request body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DepositRequestBody"
               }
             }
           },
@@ -220,48 +293,33 @@
         ]
       }
     },
-    "/api/v1/submit/create-entity": {
+    "/api/v1/query/get-deposit-body": {
       "post": {
         "tags": [
-          "User accounts"
+          "Make deposit"
         ],
-        "summary": "Create a Byzantine entity",
-        "operationId": "create_entity",
+        "summary": "Get deposit transaction",
+        "description": "Get the transaction body to sign, in order to make a deposit.",
+        "operationId": "get_deposit_body",
         "parameters": [
           {
-            "name": "X-Pubkey",
-            "in": "header",
-            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "name": "chain_id",
+            "in": "query",
+            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
             "required": true,
             "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0
             }
           }
         ],
         "requestBody": {
-          "description": "Byzantine entity creation body",
+          "description": "Deposit request body",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateEntityRequest"
+                "$ref": "#/components/schemas/DepositRequestBody"
               }
             }
           },
@@ -269,99 +327,19 @@
         },
         "responses": {
           "200": {
-            "description": "Entity created successfully",
+            "description": "Transaction created successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SumsubApplicantData"
+                  "$ref": "#/components/schemas/SignTransactionRequest"
                 }
               }
             }
           },
           "400": {
-            "description": "Invalid request payload"
-          },
-          "500": {
-            "description": "Internal server error"
+            "description": "Invalid chain ID"
           }
-        },
-        "security": [
-          {
-            "integrator_auth": []
-          }
-        ]
-      }
-    },
-    "/api/v1/submit/create-user": {
-      "post": {
-        "tags": [
-          "User accounts"
-        ],
-        "summary": "Create a Byzantine user",
-        "operationId": "create_user",
-        "parameters": [
-          {
-            "name": "X-Pubkey",
-            "in": "header",
-            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Byzantine user creation body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateUserRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "User created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SumsubApplicantData"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request payload"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        },
-        "security": [
-          {
-            "integrator_auth": []
-          }
-        ]
+        }
       }
     },
     "/api/v1/submit/deposit": {
@@ -813,6 +791,28 @@
         }
       }
     }
+    "/api/v1/health": {
+      "get": {
+        "tags": [
+          "Query API health"
+        ],
+        "summary": "Health check endpoint",
+        "description": "Returns the health status of the API",
+        "operationId": "health_check",
+        "responses": {
+          "200": {
+            "description": "Service is healthy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
   },
   "components": {
     "schemas": {
@@ -863,6 +863,14 @@
             "nullable": true
           }
         }
+      },
+      "ApplicantType": {
+        "type": "string",
+        "description": "Type of applicant for Sumsub verification",
+        "enum": [
+          "individual",
+          "company"
+        ]
       },
       "ApproveRequestBody": {
         "type": "object",
