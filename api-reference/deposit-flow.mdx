@@ -15,11 +15,16 @@ Approving a vault is an additional security measure to ensure that the client's 
 
 The integrator must call two functions:
 
-1. [Get approval transaction](/api-reference/approve-vault-for-deposit/get-approval-transaction)
-2. [Make approval transaction](/api-reference/approve-vault-for-deposit/submit-approval-transaction)
+1. [Get approval transaction](/api-reference/approve-vault-for-deposit/get-approval-transaction), which requests the transaction body to sign.
+2. [Submit approval transaction](/api-reference/approve-vault-for-deposit/submit-approval-transaction), which submits the signed transaction.
 
 ## On-ramping assets
 
 On-ramping assets is done via [Bridge](https://www.bridge.xyz/), our on- and off-ramping partner.
 
 ## Depositing into a Byzantine vault
+
+Making the deposit is once again a two-step transaction.
+
+1. [Get deposit transaction](/api-reference/make-deposit/get-deposit-transaction), which requests the transaction body to sign.
+2. [Submit deposit transaction](/api-reference/make-deposit/submit-deposit-transaction), which submits the signed transaction.

@@ -24,7 +24,10 @@ Without this signature tied to the client device or the client's identity, nobod
 
 ## Two-step transactions
 
-Since the user is the sole controller of the wallet, they need to sign every transaction themselves.
+Since the user is the sole controller of the wallet, they need to sign every transaction themselves. Therefore, making a transaction via the Byzantine API is split into two steps:
+
+1. Requesting the transaction body
+2. Submitting the signed transaction
 
 For details on how this process works, see [Wallet authentication](/api-reference/wallet-authentication).
 
