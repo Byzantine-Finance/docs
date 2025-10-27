@@ -13,10 +13,22 @@ A user deposit happens in three stages:
 
 Approving a vault is an additional security measure to ensure that the client's wallet cannot interact with fraudulent smart contracts.
 
+This approval is a one-time requirement per vault, typically performed when a user interacts with a specific vault for the first time. Once approved, the user does not need to repeat this step for subsequent deposits into the same vault.
+
 The integrator must call two functions:
 
 1. [Get approval transaction](/api-reference/approve-vault-for-deposit/get-approval-transaction), which requests the transaction body to sign.
 2. [Submit approval transaction](/api-reference/approve-vault-for-deposit/submit-approval-transaction), which submits the signed transaction.
+
+<Tabs>
+    <Tab title="OTP">
+        <img src="/images/approve-otp.png" alt="Flow to approve a vault with OTP" />
+    </Tab>
+    <Tab title="Passkey">
+        <img src="/images/approve-passkey.png" alt="Flow to approve a vault with Passkey" />
+    </Tab>
+</Tabs>
+
 
 ## On-ramping assets
 
@@ -28,3 +40,12 @@ Making the deposit is once again a two-step transaction.
 
 1. [Get deposit transaction](/api-reference/make-deposit/get-deposit-transaction), which requests the transaction body to sign.
 2. [Submit deposit transaction](/api-reference/make-deposit/submit-deposit-transaction), which submits the signed transaction.
+
+<Tabs>
+    <Tab title="OTP">
+        <img src="/images/deposit-otp.png" alt="Flow to deposit with OTP" />
+    </Tab>
+    <Tab title="Passkey">
+        <img src="/images/deposit-passkey.png" alt="Flow to deposit with Passkey" />
+    </Tab>
+</Tabs>
