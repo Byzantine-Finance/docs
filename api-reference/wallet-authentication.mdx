@@ -7,7 +7,7 @@ When a user account is created in Byzantine, either they themselves or their ent
 
 ## Authentication methods
 
-Integrators have two options when creating a client account.
+Integrators have two options when creating a client account. This method will be used in the future to authenticate the user when making transactions.
 
 ### Method 1: OTP via email
 
@@ -18,3 +18,30 @@ This method is easier to implement, but is a little less secure, since it relies
 This method is more cryptographically secure, since it directly links the end user's device to authentication, but is a bit more technically challenging to implement.
 
 ## Defining the authentication method
+
+### Method 1: OTP via email
+
+**Method setup:**
+
+User does not need to do anything to set up this method.
+
+**Making transactions:**
+
+1. **Prepare the transaction:** The user calls the `/query/get-[action]` endpoint to receive an OTP via email.
+2. **Authenticate with OTP:** The user will receive an OTP code via email and needs to enter it in the client interface.
+3. **Complete the transaction:** The user calls the `/submit/[action]` endpoint to sign and execute the transaction with the OTP code.
+
+### Method 2: Passkey authentication
+
+**Method setup:**
+
+By choosing this method, the user will be prompted to add their passkey to their device, either through the browser's built-in passkey management, through a third-party passkey manager, or through their mobile device's passkey management.
+
+This passkey will be used to authenticate the user when making transactions. A same user can have multiple passkeys, and can use different passkeys for different purposes.
+
+**Making transactions:**
+
+1. **Prepare the transaction:** The user calls the `/query/get-[action]` endpoint to receive the passkey authentication options.
+2. **Authenticate with passkey:** The user will be prompted to authenticate with their device's passkey previously added (finger print, face recognition, etc.).
+3. **Complete the transaction:** The user calls the `/submit/[action]` endpoint to sign and execute the transaction with the passkey.
+
