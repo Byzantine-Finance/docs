@@ -1,193 +1,191 @@
 {
-  "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Byzantine Finance",
-  "colors": {
-    "primary": "#702963",
-    "light": "#E199D3",
-    "dark": "#cd55b7"
-  },
-  "background": {
-    "decoration": "gradient"
-  },
-  "favicon": "favicon.ico",
-  "navigation": {
-    "tabs": [
-      {
-        "tab": "Documentation",
-        "icon": "book",
-        "groups": [
-          {
-            "group": "Introduction",
-            "pages": [
-              "index"
-            ]
-          },
-          {
-            "group": "About Byzantine",
-            "pages": [
-              "documentation/about-byzantine/what-is-byzantine",
-              "documentation/about-byzantine/the-digital-asset-opportunity",
-              "documentation/about-byzantine/product-details",
-              "documentation/about-byzantine/deposits-and-withdrawals",
-              "documentation/about-byzantine/fees"
-            ]
-          },
-          {
-            "group": "Asset protection",
-            "pages": [
-              "documentation/asset-protection/security-mechanisms",
-              "documentation/asset-protection/stakeholders",
-              "documentation/asset-protection/regulatory-framework",
-              "documentation/asset-protection/security-audits"
-            ]
-          },
-          {
-            "group": "Account management",
-            "pages": [
-              "documentation/account-management/account-creation",
-              "documentation/account-management/kyc-and-kyb"
-            ]
-          },
-          {
-            "group": "Digital assets 101",
-            "pages": [
-              "documentation/digital-assets-101/whats-a-stablecoin",
-              "documentation/digital-assets-101/how-are-stablecoins-kept-at-usd1-eur1",
-              "documentation/digital-assets-101/what-is-mica",
-              "documentation/digital-assets-101/what-is-digital-credit",
-              "documentation/digital-assets-101/what-is-a-smart-contract-vault"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "FAQ",
-        "icon": "question",
-        "groups": [
-          {
-            "group": "FAQ",
-            "icon": "question",
-            "pages": [
-              "faq/what-is-byzantine-prime-at-a-glance",
-              {
-                "group": "Digital asset primer",
-                "icon": "coins",
-                "pages": [
-                  "faq/digital-asset-primer/what-are-decentralised-protocols",
-                  "faq/digital-asset-primer/what-are-lending-markets",
-                  "faq/digital-asset-primer/what-are-smart-contracts",
-                  "faq/digital-asset-primer/what-are-stablecoins",
-                  "faq/digital-asset-primer/what-is-digital-credit",
-                  "faq/digital-asset-primer/what-is-over-collateralisation"
-                ]
-              },
-              {
-                "group": "Yield & revenues",
-                "icon": "chart-line",
-                "pages": [
-                  "faq/yield-and-revenues/how-are-returns-generated",
-                  "faq/yield-and-revenues/how-are-returns-split",
-                  "faq/yield-and-revenues/how-can-byzantine-prime-consistently-offer-base-+-400-bps",
-                  "faq/yield-and-revenues/what-exactly-is-the-base-rate",
-                  "faq/yield-and-revenues/what-is-the-currency-of-returns",
-                  "faq/yield-and-revenues/what-is-the-point-of-overcollateralised-lending",
-                  "faq/yield-and-revenues/what-kind-of-loans-are-these",
-                  "faq/yield-and-revenues/who-are-the-borrowers",
-                  "faq/yield-and-revenues/why-would-borrowers-pay-8-10"
-                ]
-              },
-              {
-                "group": "How it works (flow)",
-                "icon": "gears",
-                "pages": [
-                  "faq/how-it-works-flow/governance-and-control-rights",
-                  "faq/how-it-works-flow/how-are-assets-segregated-by-client",
-                  "faq/how-it-works-flow/how-do-funds-flow-in-byzantine-prime",
-                  "faq/how-it-works-flow/step-by-step-flow-of-funds",
-                  "faq/how-it-works-flow/what-visibility-over-fund-flows-is-there",
-                  "faq/how-it-works-flow/who-can-move-assets"
-                ]
-              },
-              {
-                "group": "Risk framework",
-                "icon": "helmet-safety",
-                "pages": [
-                  "faq/risk-framework/what-exactly-is-keyrocks-mandate",
-                  "faq/risk-framework/what-is-my-counterparty-risk-towards-the-borrower",
-                  "faq/risk-framework/what-risks-are-relevant-for-depositors-into-byzantine-prime",
-                  "faq/risk-framework/whats-my-counterparty-risk-towards-the-strategy-curator"
-                ]
-              },
-              {
-                "group": "Collateral & liquidation mechanism",
-                "icon": "shield-halved",
-                "pages": [
-                  "faq/collateral-and-liquidation-mechanism/how-does-the-liquidation-mechanism-function-exactly",
-                  "faq/collateral-and-liquidation-mechanism/is-there-the-potential-for-bad-debt-or-loss-of-funds-how-is-it-mitigated",
-                  "faq/collateral-and-liquidation-mechanism/what-collateral-risk-am-i-exposed-to"
-                ]
-              },
-              {
-                "group": "Liquidity and redemption",
-                "icon": "water",
-                "pages": [
-                  "faq/liquidity-and-redemption/are-there-delays-to-convert-stablecoins-to-fiat-currency",
-                  "faq/liquidity-and-redemption/how-fast-can-i-withdraw-in-case-of-emergency",
-                  "faq/liquidity-and-redemption/where-are-my-stablecoins-held"
-                ]
-              },
-              {
-                "group": "Governance & audit",
-                "icon": "magnifying-glass",
-                "pages": [
-                  "faq/governance-and-audit/what-is-a-smart-contract-audit-and-what-does-it-check-for",
-                  "faq/governance-and-audit/what-smart-contract-audits-have-been-completed-what-were-their-findings",
-                  "faq/governance-and-audit/what-other-audits-are-of-relevance",
-                  "faq/governance-and-audit/is-there-continuous-monitoring-of-active-systems"
-                ]
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "API reference",
-        "icon": "code",
-        "groups": [
-          {
-            "group": "Integrator API",
-            "pages": [
-              "api-reference/getting-started",
-              "api-reference/concepts",
-              "api-reference/account-creation",
-              "api-reference/wallet-authentication",
-              "api-reference/deposit-flow"
-            ]
-          },
-          {
-            "group": "API endpoints",
-            "openapi": "api-reference/openapi-integrator.json"
-          }
-        ]
-      }
-    ]
-  },
-  "logo": {
-    "light": "/logo/dark_logo.png",
-    "dark": "/logo/light_logo.png"
-  },
-  "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:info@byzantine.fi"
-      }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://byzantine.fi"
-    }
-  }
+	"$schema": "https://mintlify.com/docs.json",
+	"theme": "mint",
+	"name": "Byzantine Finance",
+	"colors": {
+		"primary": "#702963",
+		"light": "#E199D3",
+		"dark": "#cd55b7"
+	},
+	"background": {
+		"decoration": "gradient"
+	},
+	"favicon": "favicon.ico",
+	"navigation": {
+		"tabs": [
+			{
+				"tab": "Documentation",
+				"icon": "book",
+				"groups": [
+					{
+						"group": "Introduction",
+						"pages": ["index"]
+					},
+					{
+						"group": "About Byzantine",
+						"pages": [
+							"documentation/about-byzantine/what-is-byzantine",
+							"documentation/about-byzantine/the-digital-asset-opportunity",
+							"documentation/about-byzantine/product-details",
+							"documentation/about-byzantine/deposits-and-withdrawals",
+							"documentation/about-byzantine/fees"
+						]
+					},
+					{
+						"group": "Asset protection",
+						"pages": [
+							"documentation/asset-protection/security-mechanisms",
+							"documentation/asset-protection/stakeholders",
+							"documentation/asset-protection/regulatory-framework",
+							"documentation/asset-protection/security-audits"
+						]
+					},
+					{
+						"group": "Account management",
+						"pages": [
+							"documentation/account-management/account-creation",
+							"documentation/account-management/kyc-and-kyb"
+						]
+					},
+					{
+						"group": "Digital assets 101",
+						"pages": [
+							"documentation/digital-assets-101/whats-a-stablecoin",
+							"documentation/digital-assets-101/how-are-stablecoins-kept-at-usd1-eur1",
+							"documentation/digital-assets-101/what-is-mica",
+							"documentation/digital-assets-101/what-is-digital-credit",
+							"documentation/digital-assets-101/what-is-a-smart-contract-vault"
+						]
+					}
+				]
+			},
+			{
+				"tab": "FAQ",
+				"icon": "question",
+				"groups": [
+					{
+						"group": "FAQ",
+						"icon": "question",
+						"pages": [
+							"faq/what-is-byzantine-prime-at-a-glance",
+							{
+								"group": "Digital asset primer",
+								"icon": "coins",
+								"pages": [
+									"faq/digital-asset-primer/what-are-decentralised-protocols",
+									"faq/digital-asset-primer/what-are-lending-markets",
+									"faq/digital-asset-primer/what-are-smart-contracts",
+									"faq/digital-asset-primer/what-are-stablecoins",
+									"faq/digital-asset-primer/what-is-digital-credit",
+									"faq/digital-asset-primer/what-is-over-collateralisation"
+								]
+							},
+							{
+								"group": "Yield & revenues",
+								"icon": "chart-line",
+								"pages": [
+									"faq/yield-and-revenues/how-are-returns-generated",
+									"faq/yield-and-revenues/how-are-returns-split",
+									"faq/yield-and-revenues/how-can-byzantine-prime-consistently-offer-base-+-400-bps",
+									"faq/yield-and-revenues/what-exactly-is-the-base-rate",
+									"faq/yield-and-revenues/what-is-the-currency-of-returns",
+									"faq/yield-and-revenues/what-is-the-point-of-overcollateralised-lending",
+									"faq/yield-and-revenues/what-kind-of-loans-are-these",
+									"faq/yield-and-revenues/who-are-the-borrowers",
+									"faq/yield-and-revenues/why-would-borrowers-pay-8-10"
+								]
+							},
+							{
+								"group": "How it works (flow)",
+								"icon": "gears",
+								"pages": [
+									"faq/how-it-works-flow/governance-and-control-rights",
+									"faq/how-it-works-flow/how-are-assets-segregated-by-client",
+									"faq/how-it-works-flow/how-do-funds-flow-in-byzantine-prime",
+									"faq/how-it-works-flow/step-by-step-flow-of-funds",
+									"faq/how-it-works-flow/what-visibility-over-fund-flows-is-there",
+									"faq/how-it-works-flow/who-can-move-assets"
+								]
+							},
+							{
+								"group": "Risk framework",
+								"icon": "helmet-safety",
+								"pages": [
+									"faq/risk-framework/what-exactly-is-keyrocks-mandate",
+									"faq/risk-framework/what-is-my-counterparty-risk-towards-the-borrower",
+									"faq/risk-framework/what-risks-are-relevant-for-depositors-into-byzantine-prime",
+									"faq/risk-framework/whats-my-counterparty-risk-towards-the-strategy-curator"
+								]
+							},
+							{
+								"group": "Collateral & liquidation mechanism",
+								"icon": "shield-halved",
+								"pages": [
+									"faq/collateral-and-liquidation-mechanism/how-does-the-liquidation-mechanism-function-exactly",
+									"faq/collateral-and-liquidation-mechanism/is-there-the-potential-for-bad-debt-or-loss-of-funds-how-is-it-mitigated",
+									"faq/collateral-and-liquidation-mechanism/what-collateral-risk-am-i-exposed-to"
+								]
+							},
+							{
+								"group": "Liquidity and redemption",
+								"icon": "water",
+								"pages": [
+									"faq/liquidity-and-redemption/are-there-delays-to-convert-stablecoins-to-fiat-currency",
+									"faq/liquidity-and-redemption/how-fast-can-i-withdraw-in-case-of-emergency",
+									"faq/liquidity-and-redemption/where-are-my-stablecoins-held"
+								]
+							},
+							{
+								"group": "Governance & audit",
+								"icon": "magnifying-glass",
+								"pages": [
+									"faq/governance-and-audit/what-is-a-smart-contract-audit-and-what-does-it-check-for",
+									"faq/governance-and-audit/what-smart-contract-audits-have-been-completed-what-were-their-findings",
+									"faq/governance-and-audit/what-other-audits-are-of-relevance",
+									"faq/governance-and-audit/is-there-continuous-monitoring-of-active-systems"
+								]
+							}
+						]
+					}
+				]
+			},
+			{
+				"tab": "API reference",
+				"icon": "code",
+				"groups": [
+					{
+						"group": "Integrator API",
+						"pages": [
+							"api-reference/getting-started",
+							"api-reference/concepts",
+							"api-reference/account-creation",
+							"api-reference/wallet-authentication",
+							"api-reference/deposit-and-withdraw-flow"
+						]
+					},
+					{
+						"group": "API endpoints",
+						"openapi": "api-reference/openapi-integrator.json"
+					}
+				]
+			}
+		]
+	},
+	"logo": {
+		"light": "/logo/dark_logo.png",
+		"dark": "/logo/light_logo.png"
+	},
+	"navbar": {
+		"links": [
+			{
+				"label": "Support",
+				"href": "mailto:info@byzantine.fi"
+			}
+		],
+		"primary": {
+			"type": "button",
+			"label": "Dashboard",
+			"href": "https://byzantine.fi"
+		}
+	}
 }
