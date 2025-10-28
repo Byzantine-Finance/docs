@@ -397,7 +397,7 @@
           "Transactions with OTP"
         ],
         "summary": "Complete a transaction (OTP auth)",
-        "description": "Submit a signed transaction to execute it on the blockchain.",
+        "description": "Complete a transaction to execute it on the blockchain.",
         "operationId": "complete_transaction",
         "parameters": [
           {
