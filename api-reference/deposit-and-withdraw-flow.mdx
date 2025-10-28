@@ -1,6 +1,6 @@
 ---
-title: "Deposit and withdraw flow"
-description: "A rundown of how users make deposits."
+title: "Deposit and withdrawal flow"
+description: "A rundown of how users make deposits and withdrawals."
 ---
 
 A user deposit happens in three stages:
@@ -13,7 +13,7 @@ A user deposit happens in three stages:
 
 Approving a vault is an additional security measure to ensure that the client's wallet cannot interact with fraudulent smart contracts.
 
-This approval is a one-time requirement per vault, typically performed when a user interacts with a specific vault for the first time. Once approved, the user does not need to repeat this step for subsequent deposits into the same vault.
+This approval is a **one-time requirement per vault**, typically performed when a user interacts with a specific vault for the first time. Once approved, the user does not need to repeat this step for subsequent deposits into the same vault.
 
 The integrator must call two functions:
 
@@ -21,14 +21,13 @@ The integrator must call two functions:
 2. [Submit approval transaction](/api-reference/approve-vault-for-deposit/submit-approval-transaction), which submits the signed transaction.
 
 <Tabs>
-    <Tab title="OTP">
-        <img src="/images/approve-otp.png" alt="Flow to approve a vault with OTP" />
-    </Tab>
-    <Tab title="Passkey">
-        <img src="/images/approve-passkey.png" alt="Flow to approve a vault with Passkey" />
-    </Tab>
+  <Tab title="OTP">
+    ![Flow to approve a vault with OTP](/images/approve-otp.png)
+  </Tab>
+  <Tab title="Passkey">
+    ![Flow to approve a vault with Passkey](/images/approve-passkey.png)
+  </Tab>
 </Tabs>
-
 
 ## On-ramping assets
 
@@ -42,12 +41,12 @@ Making the deposit is once again a two-step transaction.
 2. [Submit deposit transaction](/api-reference/make-deposit/submit-deposit-transaction), which submits the signed transaction.
 
 <Tabs>
-    <Tab title="OTP">
-        <img src="/images/deposit-otp.png" alt="Flow to deposit with OTP" />
-    </Tab>
-    <Tab title="Passkey">
-        <img src="/images/deposit-passkey.png" alt="Flow to deposit with Passkey" />
-    </Tab>
+  <Tab title="OTP">
+    ![Flow to deposit with OTP](/images/deposit-otp.png)
+  </Tab>
+  <Tab title="Passkey">
+    ![Flow to deposit with Passkey](/images/deposit-passkey.png)
+  </Tab>
 </Tabs>
 
 ## Withdrawing from a Byzantine vault
@@ -60,10 +59,10 @@ The withdrawal process follows the same two-step transaction pattern as deposits
 2. [Submit withdrawal transaction](/api-reference/make-withdrawal/submit-withdrawal-transaction), which submits the signed transaction.
 
 <Tabs>
-    <Tab title="OTP">
-        <img src="/images/withdraw-otp.png" alt="Flow to withdraw with OTP" />
-    </Tab>
-    <Tab title="Passkey">
-        <img src="/images/withdraw-passkey.png" alt="Flow to withdraw with Passkey" />
-    </Tab>
+  <Tab title="OTP">
+    ![Flow to withdraw with OTP](/images/withdraw-otp.png)
+  </Tab>
+  <Tab title="Passkey">
+    ![Flow to withdraw with Passkey](/images/withdraw-passkey.png)
+  </Tab>
 </Tabs>
