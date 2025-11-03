@@ -33,7 +33,7 @@ So, company cash ends up exactly where it’s always been: Safe, stagnant, and s
 
 ## Byzantine Prime
 
-Byzantine Prime is a digital credit product designed to help companies and investors earn safe, predictable returns on their cash or digital assets. Assets are deployed only into blue-chip, overcollateralised credit opportunities.
+Byzantine Prime is a digital credit product designed to help users earn safe, predictable returns on their cash or digital assets. Assets are deployed only into blue-chip, overcollateralised credit opportunities.
 
 Byzantine Prime permits instant deposits and withdrawals, making it both a safe choice for treasuries & funds and a preferred choice for short-term capital allocations.
 
@@ -56,7 +56,7 @@ Think of it as similar to a high-quality savings account or money market fund, b
 
 ### Our Company
 
-Byzantine Finance was founded to help companies and investors earn safe, predictable returns on their assets. Our mission is to build trusted financial solutions for modern investors.
+Byzantine Finance was founded to help users earn safe, predictable returns on their assets. Our mission is to build trusted financial solutions for modern treasuries.
 
 We created Byzantine after realizing that many organizations leave significant amounts of capital sitting idle. Our goal is to put that unused cash to work through secure, compliant strategies that generate consistent returns without compromising liquidity.
 
@@ -90,7 +90,7 @@ Somewhere here, explain where returns come from.
 
 
 
-Byzantine Prime is a digital credit product designed to help companies and investors earn safe, predictable returns on their cash or digital assets. Assets are deployed only into blue-chip, overcollateralised credit opportunities.
+Byzantine Prime is a digital credit product designed to help users earn safe, predictable returns on their cash or digital assets. Assets are deployed only into blue-chip, overcollateralised credit opportunities.
 
 Byzantine Prime permits instant deposits and withdrawals, making it both a safe choice for treasuries & funds and a preferred choice for short-term capital allocations.
 
@@ -103,7 +103,7 @@ Think of it as similar to a high-quality savings account or money market fund, b
 FIX IMAGE
 
 * Convert them into stablecoins (digital dollars or euros that are always 1:1 with fiat currency)
-* Invest them across secure, audited lending markets
+* Deploy them across secure, audited lending markets
 * Manage everything for you: currency hedging, risk monitoring, and liquidity. You simply deposit, watch your balance grow, and withdraw whenever needed.
 
 <figure><img src="../.gitbook/assets/unknown.png" alt=""><figcaption></figcaption></figure>

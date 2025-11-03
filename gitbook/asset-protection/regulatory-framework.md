@@ -6,9 +6,9 @@ Byzantine Prime is fully MiCA-compliant.
 
 ## Structure and legal nature
 
-Byzantine Finance SAS acts solely as a technical service provider, offering the software and interfaces enabling clients to access regulated counterparties and on-chain investment strategies. Byzantine does not hold, control, or intermediate client assets, nor does it execute transactions on behalf of users.
+Byzantine Finance SAS acts solely as a technical service provider, offering the software and interfaces enabling clients to access regulated counterparties and on-chain credit strategies. Byzantine does not hold, control, or intermediate client assets, nor does it execute transactions on behalf of users.
 
-Byzantine Prime operates through a decentralised smart contract vault architecture. The product is a non-custodial, technology-based investment infrastructure, not a collective investment scheme or managed fund.
+Byzantine Prime operates through a decentralised smart contract vault architecture. The product is a non-custodial, technology-based infrastructure, not a collective investment scheme or managed fund.
 
 ## Partner oversight and licensing
 

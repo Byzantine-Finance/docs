@@ -12,7 +12,7 @@ title: "Step-by-step flow of funds"
   <Step title="Deployment to underlying credit markets" titleSize="h3">
     As part of this same transaction, the depositor’s assets flow into the underlying credit marketplaces (Morpho, Aave, or Maker), according to the strategy set by Keyrock.
 
-    Note that in this process, the Byzantine Prime smart contract does not hold any assets - it only acts as an automated routing agent for client assets as well as a fund registrar.
+    Note that in this process, the Byzantine Prime smart contract does not hold any assets - it only acts as an automated routing agent for user assets as well as a fund registrar.
   </Step>
   <Step title="Issuance of receipt tokens" titleSize="h3">
     The Byzantine Prime smart contract automatically records the deposit and issues an electronic receipt representing the depositor's position - similar to a fund unit. Issuance of these receipt tokens is handled by the smart contract as well, fully automatically.
@@ -36,7 +36,7 @@ title: "Step-by-step flow of funds"
   <Step title="Continued interest accrual and reporting" titleSize="h3">
     The smart contracts automatically collect borrower interest and attribute it to each depositor's position.
 
-    Returns are calculated and credited continuously, forming a daily mark-to-market yield visible on the client dashboard or via API.
+    Returns are calculated and credited continuously, forming a daily mark-to-market yield visible on the user dashboard or via API.
   </Step>
   <Step title="Withdrawal and redemption" titleSize="h3">
     Depositors may redeem their position at any time.

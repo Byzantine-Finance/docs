@@ -2,7 +2,7 @@
 
 ## Deposits in USD
 
-Every client is able to invest directly in fiat USD thanks to a digital asset _on-ramping partner._ Reconciliation is handled automatically. You will be notified when your transfer is completed.
+Every client is able to deposit directly in fiat USD thanks to a digital asset _on-ramping partner._ Reconciliation is handled automatically. You will be notified when your transfer is completed.
 
 ## Deposits in USDC
 

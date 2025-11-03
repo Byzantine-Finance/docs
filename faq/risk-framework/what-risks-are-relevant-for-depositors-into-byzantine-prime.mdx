@@ -20,14 +20,14 @@ Risk in Byzantine Prime is not abstract. Every material risk is mapped to a meas
     - [Chainsecurity](https://github.com/Byzantine-Finance/debt-fund-vault-v2/blob/main/audits/2025-09-06-chainsecurity.pdf)
     - Cantina competition (report to be released soon).
 
-    All custom adapters have been additionally audited by Spearbit. Find the full report [here](https://github.com/Byzantine-Finance/debt-fund-vault-v2/blob/main/audits/adapters/CompoundV3%20and%20ERC4626Merkl%20Adapters%20-%20Cantina%20-%20Sept%202025.pdf). Byzantine also integrates with [Hypernative](https://www.hypernative.io/), a real-time DeFi risk monitoring platform that continuously detects threats and anomalies, helping to prevent exploits before they impact client funds.
+    All custom adapters have been additionally audited by Spearbit. Find the full report [here](https://github.com/Byzantine-Finance/debt-fund-vault-v2/blob/main/audits/adapters/CompoundV3%20and%20ERC4626Merkl%20Adapters%20-%20Cantina%20-%20Sept%202025.pdf). Byzantine also integrates with [Hypernative](https://www.hypernative.io/), a real-time DeFi risk monitoring platform that continuously detects threats and anomalies, helping to prevent exploits before they impact user funds.
 
     Additionally, two live bug bounty programs are in place. Bug bounty programs reward would-be hackers with large sums of money for finding and reporting a vulnerability, serving both as an incentive to prevent exploits as well as a statement of confidence about the correctness of a protocol’s code. For the Byzantine vault, two such programs are live:
 
     - [Immunefi - \$2,500,000](https://immunefi.com/bounty/morpho/)
     - [Cantina - \$2,500,000](https://cantina.xyz/bounties/35a5f0a1-2ffd-432c-8f3b-77d169add8c3)
 
-    Finally, clients can take out optional insurance to protect against any kind of smart contract failure. **This insurance policy is the ultimate recourse against any code-related loss.**
+    Finally, users can take out optional insurance to protect against any kind of smart contract failure. **This insurance policy is the ultimate recourse against any code-related loss.**
   </Accordion>
   <Accordion title="Borrower counterparty risk">
     #### Definition
@@ -53,7 +53,7 @@ Risk in Byzantine Prime is not abstract. Every material risk is mapped to a meas
 
     Byzantine has no ability to upgrade the smart contract that administers user funds. Additionally, Byzantine never touches or routes user funds. In other words, there is no Byzantine insider risk.
 
-    Byzantine has the ability to change the strategy curator(Keyrock), but this is subject to a lengthy timelock - a period during which Byzantine and third-party monitors can veto this change, or, in the worst case, during which clients have ample time to withdraw their assets.
+    Byzantine has the ability to change the strategy curator(Keyrock), but this is subject to a lengthy timelock - a period during which Byzantine and third-party monitors can veto this change, or, in the worst case, during which users have ample time to withdraw their assets.
   </Accordion>
   <Accordion title="Marketplace counterparty risk (bankruptcy)">
     #### Definition
@@ -86,18 +86,18 @@ Risk in Byzantine Prime is not abstract. Every material risk is mapped to a meas
 
     The credit marketplaces Byzantine works with are extensively battle-tested and have an excellent operating history. Loans are short-term and callable. Even in the rare case that an underlying market runs into liquidity constraints, the market’s automatic withdrawal queue executes withdrawals the second that liquidity is available again.
 
-    Additionally, Keyrock has the duty to monitor the portfolio for full liquidity, entering and exiting markets based on their ability to allow clients to redeem in full at any time.
+    Additionally, Keyrock has the duty to monitor the portfolio for full liquidity, entering and exiting markets based on their ability to allow users to redeem in full at any time.
   </Accordion>
   <Accordion title="Custody risk">
     #### Definition
 
-    Compromise of keys or unauthorised access to client wallets.
+    Compromise of keys or unauthorised access to user wallets.
 
     #### **Mitigation strategy**
 
     This risk exists wholly outside of the purview of Byzantine.
 
-    Byzantine Prime allows clients to freely choose their way of holding the receipt tokens - the keys to withdrawing deposited assets.
+    Byzantine Prime allows users to freely choose their way of holding the receipt tokens - the keys to withdrawing deposited assets.
 
     Custody risk can be minimised by working with a qualified custodian. Such organisations are insured against breaches of their security.
   </Accordion>
