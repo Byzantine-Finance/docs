@@ -158,12 +158,22 @@
 						"pages": [
 							"api-reference/getting-started",
 							"api-reference/concepts",
-							"api-reference/account-creation",
                             {
-                              "group": "Lists",
+                              "group": "Account creation",
                               "pages": [
-                                "api-reference/account-creation",
-                                "api-reference/account-creation"
+                                "api-reference/kyc",
+                                "api-reference/kyb",
+                                "api-reference/documents",
+                                "api-reference/verification-statuses",
+                                {
+                                  "group": "Lists",
+                                  "pages": [
+                                    "api-reference/lists/countries",
+                                    "api-reference/lists/occupation-codes",
+                                    "api-reference/lists/industry-codes",
+                                    "api-reference/lists/company-number-types"
+                                  ]
+                                }
                               ]
                             },
 							"api-reference/wallet-authentication",
