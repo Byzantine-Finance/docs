@@ -1,0 +1,830 @@
+[
+  {
+    "identifier_type": "Census Number",
+    "identifier_type_shorthand": "cn",
+    "region": "Aruba",
+    "region_shorthand": "ABW"
+  },
+  {
+    "identifier_type": "Tax Identification Number",
+    "identifier_type_shorthand": "tin",
+    "region": "Afghanistan",
+    "region_shorthand": "AFG"
+  },
+  {
+    "identifier_type": "Número de Identificação Fiscal",
+    "identifier_type_shorthand": "nif",
+    "region": "Angola",
+    "region_shorthand": "AGO"
+  },
+  {
+    "identifier_type": "Numri i Identifikimit për Personin e Tatueshëm",
+    "identifier_type_shorthand": "nipt",
+    "region": "Albania",
+    "region_shorthand": "ALB"
+  },
+  {
+    "identifier_type": "Número de Registre Tributari",
+    "identifier_type_shorthand": "nrt",
+    "region": "Andorra",
+    "region_shorthand": "AND"
+  },
+  {
+    "identifier_type": "Clave Única de Identificación Tributaria",
+    "identifier_type_shorthand": "cuit",
+    "region": "Argentina",
+    "region_shorthand": "ARG"
+  },
+  {
+    "identifier_type": "Tax Identification Number",
+    "identifier_type_shorthand": "tin",
+    "region": "Armenia",
+    "region_shorthand": "ARM"
+  },
+  {
+    "identifier_type": "Australian Company Number",
+    "identifier_type_shorthand": "acn",
+    "region": "Australia",
+    "region_shorthand": "AUS"
+  },
+  {
+    "identifier_type": "Firmenbuchnummer",
+    "identifier_type_shorthand": "fn",
+    "region": "Austria",
+    "region_shorthand": "AUT"
+  },
+  {
+    "identifier_type": "Vergi Ödəyicisinin Eyniləşdirmə Nömrəsi",
+    "identifier_type_shorthand": "voen",
+    "region": "Azerbaijan",
+    "region_shorthand": "AZE"
+  },
+  {
+    "identifier_type": "Banque-Carrefour des Entreprises",
+    "identifier_type_shorthand": "bce",
+    "region": "Belgium",
+    "region_shorthand": "BEL"
+  },
+  {
+    "identifier_type": "Business Identification Number",
+    "identifier_type_shorthand": "bin",
+    "region": "Bangladesh",
+    "region_shorthand": "BGD"
+  },
+  {
+    "identifier_type": "Unified Identification Code",
+    "identifier_type_shorthand": "uic",
+    "region": "Bulgaria",
+    "region_shorthand": "BGR"
+  },
+  {
+    "identifier_type": "Company/Commercial Registration Number",
+    "identifier_type_shorthand": "crn",
+    "region": "Bahrain",
+    "region_shorthand": "BHR"
+  },
+  {
+    "identifier_type": "Tax Identification Number",
+    "identifier_type_shorthand": "tin",
+    "region": "Bahamas",
+    "region_shorthand": "BHS"
+  },
+  {
+    "identifier_type": "ID Broj (Identification Number)",
+    "identifier_type_shorthand": "id_broj",
+    "region": "Bosnia and Herzegovina",
+    "region_shorthand": "BIH"
+  },
+  {
+    "identifier_type": "Tax Identification Number",
+    "identifier_type_shorthand": "tin",
+    "region": "Belize",
+    "region_shorthand": "BLZ"
+  },
+  {
+    "identifier_type": "Company/Commercial Registration Number",
+    "identifier_type_shorthand": "crn",
+    "region": "Bermuda",
+    "region_shorthand": "BMU"
+  },
+  {
+    "identifier_type": "Número de Identificación Tributaria",
+    "identifier_type_shorthand": "nit",
+    "region": "Bolivia (Plurinational State of)",
+    "region_shorthand": "BOL"
+  },
+  {
+    "identifier_type": "Cadastro Nacional da Pessoa Jurídica",
+    "identifier_type_shorthand": "cnpj",
+    "region": "Brazil",
+    "region_shorthand": "BRA"
+  },
+  {
+    "identifier_type": "Tax Identification Number",
+    "identifier_type_shorthand": "tin",
+    "region": "Barbados",
+    "region_shorthand": "BRB"
+  },
+  {
+    "identifier_type": "Company/Commercial Registration Number",
+    "identifier_type_shorthand": "crn",
+    "region": "Botswana",
+    "region_shorthand": "BWA"
+  },
+  {
+    "identifier_type": "Business Identification Number",
+    "identifier_type_shorthand": "bin",
+    "region": "Canada",
+    "region_shorthand": "CAN"
+  },
+  {
+    "identifier_type": "Registro Único Tributario",
+    "identifier_type_shorthand": "rut",
+    "region": "Chile",
+    "region_shorthand": "CHL"
+  },
+  {
+    "identifier_type": "Unified Social Credit Code",
+    "identifier_type_shorthand": "usc",
+    "region": "China",
+    "region_shorthand": "CHN"
+  },
+  {
+    "identifier_type": "Número de Identificação Fiscal",
+    "identifier_type_shorthand": "nif",
+    "region": "Cote d'Ivoire",
+    "region_shorthand": "CIV"
+  },
+  {
+    "identifier_type": "Número de Identificação Fiscal",
+    "identifier_type_shorthand": "nif",
+    "region": "Cameroon",
+    "region_shorthand": "CMR"
+  },
+  {
+    "identifier_type": "Número de Identificación Tributaria",
+    "identifier_type_shorthand": "nit",
+    "region": "Colombia",
+    "region_shorthand": "COL"
+  },
+  {
+    "identifier_type": "Número de Identificação Fiscal",
+    "identifier_type_shorthand": "nif",
+    "region": "Comoros",
+    "region_shorthand": "COM"
+  },
+  {
+    "identifier_type": "Cédula Jurídica",
+    "identifier_type_shorthand": "cedula_juridica",
+    "region": "Costa Rica",
+    "region_shorthand": "CRI"
+  },
+  {
+    "identifier_type": "Central Registratie en Informatiebureau",
+    "identifier_type_shorthand": "crib",
+    "region": "Curacao",
+    "region_shorthand": "CUW"
+  },
+  {
+    "identifier_type": "Australian Business Number",
+    "identifier_type_shorthand": "abn",
+    "region": "Christmas Island",
+    "region_shorthand": "CXR"
+  },
+  {
+    "identifier_type": "Company/Commercial Registration Number",
+    "identifier_type_shorthand": "crn",
+    "region": "Cayman Islands",
+    "region_shorthand": "CYM"
+  },
+  {
+    "identifier_type": "Company/Commercial Registration Number",
+    "identifier_type_shorthand": "crn",
+    "region": "Cyprus",
+    "region_shorthand": "CYP"
+  },
+  {
+    "identifier_type": "Identifikační Číslo Organizace (Organization Identification Number)",
+    "identifier_type_shorthand": "ico",
+    "region": "Czechia",
+    "region_shorthand": "CZE"
+  },
+  {
+    "identifier_type": "Company/Commercial Registration Number",
+    "identifier_type_shorthand": "crn",
+    "region": "Germany",
+    "region_shorthand": "DEU"
+  },
+  {
+    "identifier_type": "Tax Identification Number",
+    "identifier_type_shorthand": "tin",
+    "region": "Dominica",
+    "region_shorthand": "DMA"
+  },
+  {
+    "identifier_type": "Central Virksomhedsregister (Central Business Register)",
+    "identifier_type_shorthand": "cvr",
+    "region": "Denmark",
+    "region_shorthand": "DNK"
+  },
+  {
+    "identifier_type": "Registro Nacional de Contribuyentes (National Taxpayer Registry)",
+    "identifier_type_shorthand": "rnc",
+    "region": "Dominican Republic",
+    "region_shorthand": "DOM"
+  },
+  {
+    "identifier_type": "Número de Identificação Fiscal",
+    "identifier_type_shorthand": "nif",
+    "region": "Algeria",
+    "region_shorthand": "DZA"
+  },
+  {
+    "identifier_type": "Registro Único de Contribuyentes",
+    "identifier_type_shorthand": "ruc",
+    "region": "Ecuador",
+    "region_shorthand": "ECU"
+  },
+  {
+    "identifier_type": "Tax Identification Number",
+    "identifier_type_shorthand": "tin",
+    "region": "Egypt",
+    "region_shorthand": "EGY"
+  },
+  {
+    "identifier_type": "Número de Identificação Fiscal",
+    "identifier_type_shorthand": "nif",
+    "region": "Spain",
+    "region_shorthand": "ESP"
+  },
+  {
+    "identifier_type": "Register Code",
+    "identifier_type_shorthand": "rc",
+    "region": "Estonia",
+    "region_shorthand": "EST"
+  },
+  {
+    "identifier_type": "Tax Identification Number",
+    "identifier_type_shorthand": "tin",
+    "region": "Ethiopia",
+    "region_shorthand": "ETH"
+  },
+  {
+    "identifier_type": "Business ID",
+    "identifier_type_shorthand": "y_tunnus",
+    "region": "Finland",
+    "region_shorthand": "FIN"
+  },
+  {
+    "identifier_type": "Tax Identification Number",
+    "identifier_type_shorthand": "tin",
+    "region": "Fiji",
+    "region_shorthand": "FJI"
+  },
+  {
+    "identifier_type": "Système d’Identification du Répertoire des Entreprises",
+    "identifier_type_shorthand": "siren",
+    "region": "France",
+    "region_shorthand": "FRA"
+  },
+  {
+    "identifier_type": "Company/Commercial Registration Number",
+    "identifier_type_shorthand": "crn",
+    "region": "United Kingdom",
+    "region_shorthand": "GBR"
+  },
+  {
+    "identifier_type": "Identification Code",
+    "identifier_type_shorthand": "ic",
+    "region": "Georgia",
+    "region_shorthand": "GEO"
+  },
+  {
+    "identifier_type": "Tax Identification Number",
+    "identifier_type_shorthand": "tin",
+    "region": "Ghana",
+    "region_shorthand": "GHA"
+  },
+  {
+    "identifier_type": "Company/Commercial Registration Number",
+    "identifier_type_shorthand": "crn",
+    "region": "Gibraltar",
+    "region_shorthand": "GIB"
+  },
+  {
+    "identifier_type": "Αριθμός Οικονομικής Μονάδας",
+    "identifier_type_shorthand": "aom",
+    "region": "Greece",
+    "region_shorthand": "GRC"
+  },
+  {
+    "identifier_type": "Número de Identificación Tributaria",
+    "identifier_type_shorthand": "nit",
+    "region": "Guatemala",
+    "region_shorthand": "GTM"
+  },
+  {
+    "identifier_type": "Business Registration Number",
+    "identifier_type_shorthand": "brn",
+    "region": "Hong Kong",
+    "region_shorthand": "HKG"
+  },
+  {
+    "identifier_type": "Registro Tributario Nacional",
+    "identifier_type_shorthand": "rtn",
+    "region": "Honduras",
+    "region_shorthand": "HND"
+  },
+  {
+    "identifier_type": "Osobni Identifikacijski Broj",
+    "identifier_type_shorthand": "oib",
+    "region": "Croatia",
+    "region_shorthand": "HRV"
+  },
+  {
+    "identifier_type": "Número de Identificação Fiscal",
+    "identifier_type_shorthand": "nif",
+    "region": "Haiti",
+    "region_shorthand": "HTI"
+  },
+  {
+    "identifier_type": "Tax Identification Number",
+    "identifier_type_shorthand": "tin",
+    "region": "Hungary",
+    "region_shorthand": "HUN"
+  },
+  {
+    "identifier_type": "Nomor Pokok Wajib Pajak",
+    "identifier_type_shorthand": "npwp",
+    "region": "Indonesia",
+    "region_shorthand": "IDN"
+  },
+  {
+    "identifier_type": "Company/Commercial Registration Number",
+    "identifier_type_shorthand": "crn",
+    "region": "Isle of Man",
+    "region_shorthand": "IMN"
+  },
+  {
+    "identifier_type": "Personal Account Number",
+    "identifier_type_shorthand": "pan",
+    "region": "India",
+    "region_shorthand": "IND"
+  },
+  {
+    "identifier_type": "Company Registration Office Number",
+    "identifier_type_shorthand": "cro",
+    "region": "Ireland",
+    "region_shorthand": "IRL"
+  },
+  {
+    "identifier_type": "Tax Identification Number",
+    "identifier_type_shorthand": "tin",
+    "region": "Iraq",
+    "region_shorthand": "IRQ"
+  },
+  {
+    "identifier_type": "Identification Number",
+    "identifier_type_shorthand": "id",
+    "region": "Iceland",
+    "region_shorthand": "ISL"
+  },
+  {
+    "identifier_type": "Company/Commercial Registration Number",
+    "identifier_type_shorthand": "crn",
+    "region": "Israel",
+    "region_shorthand": "ISR"
+  },
+  {
+    "identifier_type": "Partita IVA",
+    "identifier_type_shorthand": "partita_iva",
+    "region": "Italy",
+    "region_shorthand": "ITA"
+  },
+  {
+    "identifier_type": "Tax Registration Number",
+    "identifier_type_shorthand": "trn",
+    "region": "Jamaica",
+    "region_shorthand": "JAM"
+  },
+  {
+    "identifier_type": "Tax Identification Number",
+    "identifier_type_shorthand": "tin",
+    "region": "Jordan",
+    "region_shorthand": "JOR"
+  },
+  {
+    "identifier_type": "Hojin Number",
+    "identifier_type_shorthand": "hn",
+    "region": "Japan",
+    "region_shorthand": "JPN"
+  },
+  {
+    "identifier_type": "Business Identification Number",
+    "identifier_type_shorthand": "bin",
+    "region": "Kazakhstan",
+    "region_shorthand": "KAZ"
+  },
+  {
+    "identifier_type": "Personal Identification Number",
+    "identifier_type_shorthand": "pin",
+    "region": "Kenya",
+    "region_shorthand": "KEN"
+  },
+  {
+    "identifier_type": "Taxpayer Identification Number",
+    "identifier_type_shorthand": "inn",
+    "region": "Kyrgyzstan",
+    "region_shorthand": "KGZ"
+  },
+  {
+    "identifier_type": "Tax Identification Number",
+    "identifier_type_shorthand": "tin",
+    "region": "Cambodia",
+    "region_shorthand": "KHM"
+  },
+  {
+    "identifier_type": "Tax Identification Number",
+    "identifier_type_shorthand": "tin",
+    "region": "Saint Kitts and Nevis",
+    "region_shorthand": "KNA"
+  },
+  {
+    "identifier_type": "Business Registration Number",
+    "identifier_type_shorthand": "brn",
+    "region": "Korea (Republic of)",
+    "region_shorthand": "KOR"
+  },
+  {
+    "identifier_type": "Company/Commercial Registration Number",
+    "identifier_type_shorthand": "crn",
+    "region": "Kuwait",
+    "region_shorthand": "KWT"
+  },
+  {
+    "identifier_type": "Tax Identification Number",
+    "identifier_type_shorthand": "tin",
+    "region": "Lao People's Democratic Republic",
+    "region_shorthand": "LAO"
+  },
+  {
+    "identifier_type": "Company/Commercial Registration Number",
+    "identifier_type_shorthand": "crn",
+    "region": "Lebanon",
+    "region_shorthand": "LBN"
+  },
+  {
+    "identifier_type": "Tax Identification Number",
+    "identifier_type_shorthand": "tin",
+    "region": "Liberia",
+    "region_shorthand": "LBR"
+  },
+  {
+    "identifier_type": "Tax Identification Number",
+    "identifier_type_shorthand": "tin",
+    "region": "Saint Lucia",
+    "region_shorthand": "LCA"
+  },
+  {
+    "identifier_type": "Business Registration Number",
+    "identifier_type_shorthand": "brn",
+    "region": "Sri Lanka",
+    "region_shorthand": "LKA"
+  },
+  {
+    "identifier_type": "Company Code",
+    "identifier_type_shorthand": "cc",
+    "region": "Lithuania",
+    "region_shorthand": "LTU"
+  },
+  {
+    "identifier_type": "Matricule",
+    "identifier_type_shorthand": "matricule",
+    "region": "Luxembourg",
+    "region_shorthand": "LUX"
+  },
+  {
+    "identifier_type": "Reģistrācijas Numurs",
+    "identifier_type_shorthand": "rn",
+    "region": "Latvia",
+    "region_shorthand": "LVA"
+  },
+  {
+    "identifier_type": "Identifiant Fiscal",
+    "identifier_type_shorthand": "if",
+    "region": "Morocco",
+    "region_shorthand": "MAR"
+  },
+  {
+    "identifier_type": "Company/Commercial Registration Number",
+    "identifier_type_shorthand": "crn",
+    "region": "Monaco",
+    "region_shorthand": "MCO"
+  },
+  {
+    "identifier_type": "Identification Number of Organization",
+    "identifier_type_shorthand": "idno",
+    "region": "Moldova",
+    "region_shorthand": "MDA"
+  },
+  {
+    "identifier_type": "Número de Identificação Fiscal",
+    "identifier_type_shorthand": "nif",
+    "region": "Madagascar",
+    "region_shorthand": "MDG"
+  },
+  {
+    "identifier_type": "Registro Federal de Contribuyentes",
+    "identifier_type_shorthand": "rfc",
+    "region": "Mexico",
+    "region_shorthand": "MEX"
+  },
+  {
+    "identifier_type": "Entity Number",
+    "identifier_type_shorthand": "en",
+    "region": "Marshall Islands",
+    "region_shorthand": "MHL"
+  },
+  {
+    "identifier_type": "Tax Identification Number",
+    "identifier_type_shorthand": "tin",
+    "region": "North Macedonia",
+    "region_shorthand": "MKD"
+  },
+  {
+    "identifier_type": "Company/Commercial Registration Number",
+    "identifier_type_shorthand": "crn",
+    "region": "Malta",
+    "region_shorthand": "MLT"
+  },
+  {
+    "identifier_type": "Company/Commercial Registration Number",
+    "identifier_type_shorthand": "crn",
+    "region": "Montenegro",
+    "region_shorthand": "MNE"
+  },
+  {
+    "identifier_type": "Personal Identification of the Business",
+    "identifier_type_shorthand": "pib",
+    "region": "Mozambique",
+    "region_shorthand": "MOZ"
+  },
+  {
+    "identifier_type": "Número de Identificação Fiscal",
+    "identifier_type_shorthand": "nif",
+    "region": "Mauritania",
+    "region_shorthand": "MRT"
+  },
+  {
+    "identifier_type": "Business Registration Number",
+    "identifier_type_shorthand": "brn",
+    "region": "Mauritius",
+    "region_shorthand": "MUS"
+  },
+  {
+    "identifier_type": "Taxpayer Identification Number",
+    "identifier_type_shorthand": "tpin",
+    "region": "Malawi",
+    "region_shorthand": "MWI"
+  },
+  {
+    "identifier_type": "Suruhanjaya Syarikat Malaysia",
+    "identifier_type_shorthand": "ssm",
+    "region": "Malaysia",
+    "region_shorthand": "MYS"
+  },
+  {
+    "identifier_type": "Value Added Tax Number",
+    "identifier_type_shorthand": "vat",
+    "region": "Namibia",
+    "region_shorthand": "NAM"
+  },
+  {
+    "identifier_type": "Corporate Affairs Commission Registration Certificate Number",
+    "identifier_type_shorthand": "cac",
+    "region": "Nigeria",
+    "region_shorthand": "NGA"
+  },
+  {
+    "identifier_type": "Registro Único de Contribuyentes",
+    "identifier_type_shorthand": "ruc",
+    "region": "Nicaragua",
+    "region_shorthand": "NIC"
+  },
+  {
+    "identifier_type": "Kamer van Koophandel",
+    "identifier_type_shorthand": "kvk",
+    "region": "Netherlands",
+    "region_shorthand": "NLD"
+  },
+  {
+    "identifier_type": "Organisasjonsnummer",
+    "identifier_type_shorthand": "orgnr",
+    "region": "Norway",
+    "region_shorthand": "NOR"
+  },
+  {
+    "identifier_type": "Personal Account Number",
+    "identifier_type_shorthand": "pan",
+    "region": "Nepal",
+    "region_shorthand": "NPL"
+  },
+  {
+    "identifier_type": "Goods and Services Tax Number",
+    "identifier_type_shorthand": "gst",
+    "region": "New Zealand",
+    "region_shorthand": "NZL"
+  },
+  {
+    "identifier_type": "Company/Commercial Registration Number",
+    "identifier_type_shorthand": "crn",
+    "region": "Oman",
+    "region_shorthand": "OMN"
+  },
+  {
+    "identifier_type": "Registro Único de Contribuyentes",
+    "identifier_type_shorthand": "ruc",
+    "region": "Panama",
+    "region_shorthand": "PAN"
+  },
+  {
+    "identifier_type": "Registro Único de Contribuyentes",
+    "identifier_type_shorthand": "ruc",
+    "region": "Peru",
+    "region_shorthand": "PER"
+  },
+  {
+    "identifier_type": "Tax Identification Number",
+    "identifier_type_shorthand": "tin",
+    "region": "Philippines",
+    "region_shorthand": "PHL"
+  },
+  {
+    "identifier_type": "National Tax Number",
+    "identifier_type_shorthand": "ntn",
+    "region": "Pakistan",
+    "region_shorthand": "PAK"
+  },
+  {
+    "identifier_type": "Krajowy Rejestr Sądowy",
+    "identifier_type_shorthand": "krs",
+    "region": "Poland",
+    "region_shorthand": "POL"
+  },
+  {
+    "identifier_type": "Número de Identificação de Pessoa Coletiva",
+    "identifier_type_shorthand": "nipc",
+    "region": "Portugal",
+    "region_shorthand": "PRT"
+  },
+  {
+    "identifier_type": "Company/Commercial Registration Number",
+    "identifier_type_shorthand": "crn",
+    "region": "Qatar",
+    "region_shorthand": "QAT"
+  },
+  {
+    "identifier_type": "Cod Unic de Înregistrare",
+    "identifier_type_shorthand": "cui",
+    "region": "Romania",
+    "region_shorthand": "ROU"
+  },
+  {
+    "identifier_type": "Primary State Registration Number",
+    "identifier_type_shorthand": "ogrn",
+    "region": "Russia",
+    "region_shorthand": "RUS"
+  },
+  {
+    "identifier_type": "Company/Commercial Registration Number",
+    "identifier_type_shorthand": "crn",
+    "region": "Saudi Arabia",
+    "region_shorthand": "SAU"
+  },
+  {
+    "identifier_type": "Numéro d’Identification Nationale des Entreprises et des Associations",
+    "identifier_type_shorthand": "ninea",
+    "region": "Senegal",
+    "region_shorthand": "SEN"
+  },
+  {
+    "identifier_type": "Unique Entity Number",
+    "identifier_type_shorthand": "uen",
+    "region": "Singapore",
+    "region_shorthand": "SGP"
+  },
+  {
+    "identifier_type": "Identifikační Číslo Organizace (Organization Identification Number)",
+    "identifier_type_shorthand": "ico",
+    "region": "Slovakia",
+    "region_shorthand": "SVK"
+  },
+  {
+    "identifier_type": "Matična Številka",
+    "identifier_type_shorthand": "maticna",
+    "region": "Slovenia",
+    "region_shorthand": "SVN"
+  },
+  {
+    "identifier_type": "Tax Identification Number",
+    "identifier_type_shorthand": "tin",
+    "region": "South Africa",
+    "region_shorthand": "ZAF"
+  },
+  {
+    "identifier_type": "Organisasjonsnummer",
+    "identifier_type_shorthand": "orgnr",
+    "region": "Sweden",
+    "region_shorthand": "SWE"
+  },
+  {
+    "identifier_type": "Umsatzsteuer-Identifikationsnummer",
+    "identifier_type_shorthand": "uid",
+    "region": "Switzerland",
+    "region_shorthand": "CHE"
+  },
+  {
+    "identifier_type": "Tax Identification Number",
+    "identifier_type_shorthand": "tin",
+    "region": "Thailand",
+    "region_shorthand": "THA"
+  },
+  {
+    "identifier_type": "Matricule Fiscale",
+    "identifier_type_shorthand": "mf",
+    "region": "Tunisia",
+    "region_shorthand": "TUN"
+  },
+  {
+    "identifier_type": "Vergi Kimlik Numarası",
+    "identifier_type_shorthand": "vkn",
+    "region": "Turkey",
+    "region_shorthand": "TUR"
+  },
+  {
+    "identifier_type": "Tax Identification Number",
+    "identifier_type_shorthand": "tin",
+    "region": "Uganda",
+    "region_shorthand": "UGA"
+  },
+  {
+    "identifier_type": "ЄДРПОУ",
+    "identifier_type_shorthand": "edrpou",
+    "region": "Ukraine",
+    "region_shorthand": "UKR"
+  },
+  {
+    "identifier_type": "Tax Registration Number",
+    "identifier_type_shorthand": "trn",
+    "region": "United Arab Emirates",
+    "region_shorthand": "ARE"
+  },
+  {
+    "identifier_type": "Employer Identification Number",
+    "identifier_type_shorthand": "ein",
+    "region": "United States",
+    "region_shorthand": "USA"
+  },
+  {
+    "identifier_type": "Registro Único Tributario",
+    "identifier_type_shorthand": "rut",
+    "region": "Uruguay",
+    "region_shorthand": "URY"
+  },
+  {
+    "identifier_type": "Taxpayer Identification Number",
+    "identifier_type_shorthand": "inn",
+    "region": "Uzbekistan",
+    "region_shorthand": "UZB"
+  },
+  {
+    "identifier_type": "Registro de Información Fiscal",
+    "identifier_type_shorthand": "rif",
+    "region": "Venezuela",
+    "region_shorthand": "VEN"
+  },
+  {
+    "identifier_type": "Mã số thuế",
+    "identifier_type_shorthand": "mst",
+    "region": "Vietnam",
+    "region_shorthand": "VNM"
+  },
+  {
+    "identifier_type": "Tax Identification Number",
+    "identifier_type_shorthand": "tin",
+    "region": "Yemen",
+    "region_shorthand": "YEM"
+  },
+  {
+    "identifier_type": "Taxpayer Identification Number",
+    "identifier_type_shorthand": "tpin",
+    "region": "Zambia",
+    "region_shorthand": "ZMB"
+  },
+  {
+    "identifier_type": "Business Partner Number",
+    "identifier_type_shorthand": "bp",
+    "region": "Zimbabwe",
+    "region_shorthand": "ZWE"
+  }
+]
