@@ -190,7 +190,7 @@
 					},
 					{
 						"group": "API endpoints",
-						"openapi": "api-reference/openapi-integrator.json"
+						"openapi": "https://api.byzantine.fi/api-docs/openapi-integrator.json"
 					}
 				]
 			}
