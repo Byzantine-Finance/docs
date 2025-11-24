@@ -11,7 +11,7 @@ A deposit into a Byzantine vault proceeeds in the following steps:
 4. Execute the deposit transaction to transfer the stablecoins into a Byzantine vault.
 
 <Info>
-The integrator will have to call different API endpoints based on the authentication method used.
+  The integrator will have to call different API endpoints based on the authentication method used.
 </Info>
 
 ## 1. Approving a vault
@@ -36,7 +36,6 @@ This approval is a **one-time requirement per vault**, typically performed when 
     2. [Submit approval transaction](/api-reference/transactions-with-passkey/submit-a-transaction-passkey-auth), which submits the signed transaction.
 
     ![Flow to approve a vault with Passkey](/images/approve-passkey.png)
-
   </Tab>
 </Tabs>
 
@@ -70,20 +69,23 @@ A dedicated bank account is automatically created for each user based on their f
 The user must deposit fiat into this dedicated bank account to convert it to stablecoins. Any funds sent to the bank account are automatically converted into the vault's currency.
 
 <Info>
-This step can be skipped if user is depositing stablecoins directly.
+  This step can be skipped if user is depositing stablecoins directly.
 </Info>
 
 ## 4. Executing the deposit transaction
 
-As soon as the on-ramping is complete, the signed deposit transaction will be executed automatically which means user's money is transferred into the Byzantine vault.
+As soon as the on-ramping is complete, the signed deposit transaction will be executed automatically, which means user's money is transferred into the Byzantine vault.
 
 <Note>
-Note that signing the deposit transaction or depositing fiat into bank account does not complete the deposit. Funds are only transferred into the Byzantine vault after on-ramping is complete.
+  Note that signing the deposit transaction or depositing fiat into the bank account does not complete the deposit. Funds are only transferred into the Byzantine vault after on-ramping is complete. Transactions go through the following statuses:
 
-Every transaction has one of the following statuses:
-- Created: The transaction has been created and is waiting to be signed.
-- Pending: The transaction has been signed and is waiting to be broadcasted.
-- Broadcasted: The transaction has been broadcasted and executed.
+  - `created`: The transaction has been created and is waiting to be signed.
+  - `waiting_for_funds`: The transaction has been signed. The system is waiting for the bank transfer to trigger the broadcasting of the transaction.
+  - `funds_in_transfer`: The funds have been scheduled to arrive with Bridge soon.
+  - `processing`: The funds have arrived with Bridge and are currently being on-ramped.
+  - `completed`: The transaction has been broadcasted and executed.
 
-The transaction status can be checked by calling the [Get transaction status](/api-reference/account-data/get-a-single-transaction-by-id) endpoint.
+  For users depositing stablecoins, the transaction is immediately broadcasted, i.e. the status is set to `completed`.
+
+  The transaction status can be checked by calling the [Get transaction status](/api-reference/account-data/get-a-single-transaction-by-id) endpoint.
 </Note>
