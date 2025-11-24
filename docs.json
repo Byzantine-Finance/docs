@@ -159,6 +159,13 @@
 							"api-reference/getting-started",
 							"api-reference/concepts",
 							"api-reference/account-creation",
+                            {
+                              "group": "Lists",
+                              "pages": [
+                                "api-reference/account-creation",
+                                "api-reference/account-creation"
+                              ]
+                            },
 							"api-reference/wallet-authentication",
 							"api-reference/deposit-and-withdraw-flow"
 						]
