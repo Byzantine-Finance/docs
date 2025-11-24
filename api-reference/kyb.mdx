@@ -6,10 +6,20 @@ Creating an account for an entity means submitting company information and compa
 
 To facilitate this process for integrators, on the Byzantine API, this happens through a single API call.
 
-<Card title="Create an entity - API call" icon="plus" horizontal href="/api-reference/user-accounts/create-entity">
+<Card title="Create an entity" icon="plus" horizontal href="/api-reference/user-accounts/create-a-byzantine-entity">
   
 </Card>
 
+The following information needs to be provided:
+- company details
+- personal data about every beneficiary/representative of the company
+- company documents
+- optional - it is possible to add a list of `authenticators` to register beneficiary's passkey to their device
+
+The entity will receive an `account_id` and an `entity_id`. Every beneficiary/representative of the entity will have a `user_id`.
+
 <Info>
   When creating an entity, the user creating it **must** add themselves as one of the beneficiaries/representatives.
+  
+  Please refer to the related endpoint page for more details about the requirements.
 </Info>

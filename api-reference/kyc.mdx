@@ -1,3 +1,23 @@
 ---
 title: "Individuals - KYC"
 ---
+
+In order to use the Byzantine Prime application, an individual user needs to go through a KYC process. This is a regulatory obligation for individuals.
+
+The creation of the user account is done by calling this API endpoint:
+
+<Card title="Create a user account" icon="plus" horizontal href="/api-reference/user-accounts/create-a-byzantine-user">
+  
+</Card>
+
+The following information needs to be provided:
+- personal data about the user
+- ID documents (passport or national ID card)
+- proof of address
+- optional - it is possible to add a list of `authenticators` to register user's passkey to their device
+
+The individual user will receive an `account_id` and a `user_id`.
+
+<Info>  
+  Please refer to the related endpoint page for more details about the requirements.
+</Info>
