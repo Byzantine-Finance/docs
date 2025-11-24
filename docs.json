@@ -186,7 +186,7 @@
 							},
 							"api-reference/wallet-authentication",
 							{
-								"group": "Deposit and withdrawal flow",
+								"group": "Deposits & withdrawals",
 								"pages": [
 									"api-reference/deposit",
 									"api-reference/withdrawal"
