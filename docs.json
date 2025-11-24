@@ -19,7 +19,9 @@
 				"groups": [
 					{
 						"group": "Introduction",
-						"pages": ["index"]
+						"pages": [
+							"index"
+						]
 					},
 					{
 						"group": "About Byzantine",
@@ -156,26 +158,32 @@
 					{
 						"group": "Integrator API",
 						"pages": [
-							"api-reference/getting-started",
+							{
+								"group": "Getting started",
+								"pages": [
+									"api-reference/getting-started",
+									"api-reference/api-authentication"
+								]
+							},
 							"api-reference/concepts",
-                            {
-                              "group": "Account creation",
-                              "pages": [
-                                "api-reference/kyc",
-                                "api-reference/kyb",
-                                "api-reference/documents",
-                                "api-reference/verification-statuses",
-                                {
-                                  "group": "Lists",
-                                  "pages": [
-                                    "api-reference/lists/countries",
-                                    "api-reference/lists/occupation-codes",
-                                    "api-reference/lists/industry-codes",
-                                    "api-reference/lists/company-number-types"
-                                  ]
-                                }
-                              ]
-                            },
+							{
+								"group": "Account creation",
+								"pages": [
+									"api-reference/kyc",
+									"api-reference/kyb",
+									"api-reference/documents",
+									"api-reference/verification-statuses",
+									{
+										"group": "Lists",
+										"pages": [
+											"api-reference/lists/countries",
+											"api-reference/lists/occupation-codes",
+											"api-reference/lists/industry-codes",
+											"api-reference/lists/company-number-types"
+										]
+									}
+								]
+							},
 							"api-reference/wallet-authentication",
 							"api-reference/deposit-and-withdraw-flow"
 						]
