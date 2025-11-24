@@ -1,0 +1,89 @@
+---
+title: "Deposit"
+description: "How to make a deposit into a Byzantine vault."
+---
+
+A deposit into a Byzantine vault proceeeds in the following steps:
+
+1. Approve a Byzantine vault as a valid interaction target. This is a **one-time requirement per vault**.
+2. Sign the deposit transaction.
+3. Deposit fiat into a dedicated bank account to convert it to stablecoins, known as _on-ramping_.
+4. Execute the deposit transaction to transfer the stablecoins into a Byzantine vault.
+
+<Info>
+The integrator will have to call different API endpoints based on the authentication method used.
+</Info>
+
+## 1. Approving a vault
+
+Approving a vault is an additional security measure to ensure that user's wallet cannot interact with fraudulent smart contracts.
+
+This approval is a **one-time requirement per vault**, typically performed when a user interacts with a specific vault for the first time. Once approved, user does not need to repeat this step for subsequent deposits into the same vault.
+
+<Tabs>
+  <Tab title="OTP">
+    The integrator must call two API endpoints:
+
+    1. [Get approval transaction](/api-reference/transactions-with-otp/initiate-approval-otp-auth), which sends an OTP code to user's email address.
+    2. [Submit approval transaction](/api-reference/transactions-with-otp/send-a-transaction-otp-auth), which submits the OTP code to complete the approval.
+
+    ![Flow to approve a vault with OTP](/images/approve-otp.png)
+  </Tab>
+  <Tab title="Passkey">
+    The integrator must call two API endpoints:
+
+    1. [Get approval transaction](/api-reference/transactions-with-passkey/get-approval-transaction-passkey-auth), which requests the transaction body to sign.
+    2. [Submit approval transaction](/api-reference/transactions-with-passkey/submit-a-transaction-passkey-auth), which submits the signed transaction.
+
+    ![Flow to approve a vault with Passkey](/images/approve-passkey.png)
+
+  </Tab>
+</Tabs>
+
+## 2. Signing the deposit transaction
+
+<Tabs>
+  <Tab title="OTP">
+    Initiating the deposit is once again a two-step transaction.
+
+    1. [Get deposit transaction](/api-reference/transactions-with-otp/initiate-a-deposit-otp-auth), which sends an OTP code to user's email address.
+    2. [Submit deposit transaction](/api-reference/transactions-with-otp/send-a-transaction-otp-auth), which submits the OTP code to sign the deposit transaction.
+
+    ![Flow to deposit with OTP](/images/deposit-otp.png)
+  </Tab>
+  <Tab title="Passkey">
+    Initiating the deposit is once again a two-step transaction.
+
+    1. [Get deposit transaction](/api-reference/transactions-with-passkey/get-deposit-transaction-passkey-auth), which requests the transaction body to sign.
+    2. [Submit deposit transaction](/api-reference/transactions-with-passkey/submit-a-transaction-passkey-auth), which submits the signed transaction.
+
+    ![Flow to deposit with Passkey](/images/deposit-passkey.png)
+  </Tab>
+</Tabs>
+
+## 3. Depositing fiat into bank account (on-ramping)
+
+On-ramping assets is done via [Bridge](https://www.bridge.xyz/), our on- and off-ramping partner.
+
+A dedicated bank account is automatically created for each user based on their fiat currency and the vault's currency. Once the deposit transaction is signed, the bank account details are provided to the user.
+
+The user must deposit fiat into this dedicated bank account to convert it to stablecoins. Any funds sent to the bank account are automatically converted into the vault's currency.
+
+<Info>
+This step can be skipped if user is depositing stablecoins directly.
+</Info>
+
+## 4. Executing the deposit transaction
+
+As soon as the on-ramping is complete, the signed deposit transaction will be executed automatically which means user's money is transferred into the Byzantine vault.
+
+<Note>
+Note that signing the deposit transaction or depositing fiat into bank account does not complete the deposit. Funds are only transferred into the Byzantine vault after on-ramping is complete.
+
+Every transaction has one of the following statuses:
+- Created: The transaction has been created and is waiting to be signed.
+- Pending: The transaction has been signed and is waiting to be broadcasted.
+- Broadcasted: The transaction has been broadcasted and executed.
+
+The transaction status can be checked by calling the [Get transaction status](/api-reference/account-data/get-a-single-transaction-by-id) endpoint.
+</Note>

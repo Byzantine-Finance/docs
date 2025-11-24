@@ -1,0 +1,31 @@
+---
+title: "Withdrawal"
+description: "How to make a withdrawal from a Byzantine vault."
+---
+
+## Withdrawing from a Byzantine vault
+
+Withdrawing funds from a Byzantine vault is a streamlined process that does not require vault approval. Withdrawals are available at any time, allowing users to access their funds whenever needed.
+
+<Info>
+The integrator will have to call different API endpoints based on the authentication method used.
+</Info>
+
+<Tabs>
+  <Tab title="OTP">
+    The withdrawal process follows the same two-step transaction pattern as deposits:
+
+    1. [Get withdrawal transaction](/api-reference/transactions-with-otp/initiate-a-withdrawal-otp-auth), which which sends an OTP code to the user's email address.
+    2. [Submit withdrawal transaction](/api-reference/transactions-with-otp/send-a-transaction-otp-auth), which submits the OTP code to sign the withdrawal transaction.
+
+    ![Flow to withdraw with OTP](/images/withdraw-otp.png)
+  </Tab>
+  <Tab title="Passkey">
+    The withdrawal process follows the same two-step transaction pattern as deposits:
+
+    1. [Get withdrawal transaction](/api-reference/transactions-with-passkey/get-withdraw-transaction-passkey-auth), which requests the transaction body to sign.
+    2. [Submit withdrawal transaction](/api-reference/transactions-with-passkey/submit-a-transaction-passkey-auth), which submits the signed transaction.
+
+    ![Flow to withdraw with Passkey](/images/withdraw-passkey.png)
+  </Tab>
+</Tabs>

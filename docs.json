@@ -185,7 +185,13 @@
 								]
 							},
 							"api-reference/wallet-authentication",
-							"api-reference/deposit-and-withdraw-flow"
+							{
+								"group": "Deposit and withdrawal flow",
+								"pages": [
+									"api-reference/deposit",
+									"api-reference/withdrawal"
+								]
+							}
 						]
 					},
 					{
