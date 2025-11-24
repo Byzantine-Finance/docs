@@ -1,0 +1,554 @@
+[
+  {
+    "region": "Aruba",
+    "region_shorthand": "ABW"
+  },
+  {
+    "region": "Afghanistan",
+    "region_shorthand": "AFG"
+  },
+  {
+    "region": "Angola",
+    "region_shorthand": "AGO"
+  },
+  {
+    "region": "Albania",
+    "region_shorthand": "ALB"
+  },
+  {
+    "region": "Andorra",
+    "region_shorthand": "AND"
+  },
+  {
+    "region": "Argentina",
+    "region_shorthand": "ARG"
+  },
+  {
+    "region": "Armenia",
+    "region_shorthand": "ARM"
+  },
+  {
+    "region": "Australia",
+    "region_shorthand": "AUS"
+  },
+  {
+    "region": "Austria",
+    "region_shorthand": "AUT"
+  },
+  {
+    "region": "Azerbaijan",
+    "region_shorthand": "AZE"
+  },
+  {
+    "region": "Belgium",
+    "region_shorthand": "BEL"
+  },
+  {
+    "region": "Bangladesh",
+    "region_shorthand": "BGD"
+  },
+  {
+    "region": "Bulgaria",
+    "region_shorthand": "BGR"
+  },
+  {
+    "region": "Bahrain",
+    "region_shorthand": "BHR"
+  },
+  {
+    "region": "Bahamas",
+    "region_shorthand": "BHS"
+  },
+  {
+    "region": "Bosnia and Herzegovina",
+    "region_shorthand": "BIH"
+  },
+  {
+    "region": "Belize",
+    "region_shorthand": "BLZ"
+  },
+  {
+    "region": "Bermuda",
+    "region_shorthand": "BMU"
+  },
+  {
+    "region": "Bolivia (Plurinational State of)",
+    "region_shorthand": "BOL"
+  },
+  {
+    "region": "Brazil",
+    "region_shorthand": "BRA"
+  },
+  {
+    "region": "Barbados",
+    "region_shorthand": "BRB"
+  },
+  {
+    "region": "Botswana",
+    "region_shorthand": "BWA"
+  },
+  {
+    "region": "Canada",
+    "region_shorthand": "CAN"
+  },
+  {
+    "region": "Chile",
+    "region_shorthand": "CHL"
+  },
+  {
+    "region": "China",
+    "region_shorthand": "CHN"
+  },
+  {
+    "region": "Cote d'Ivoire",
+    "region_shorthand": "CIV"
+  },
+  {
+    "region": "Cameroon",
+    "region_shorthand": "CMR"
+  },
+  {
+    "region": "Colombia",
+    "region_shorthand": "COL"
+  },
+  {
+    "region": "Comoros",
+    "region_shorthand": "COM"
+  },
+  {
+    "region": "Costa Rica",
+    "region_shorthand": "CRI"
+  },
+  {
+    "region": "Curacao",
+    "region_shorthand": "CUW"
+  },
+  {
+    "region": "Christmas Island",
+    "region_shorthand": "CXR"
+  },
+  {
+    "region": "Cayman Islands",
+    "region_shorthand": "CYM"
+  },
+  {
+    "region": "Cyprus",
+    "region_shorthand": "CYP"
+  },
+  {
+    "region": "Czechia",
+    "region_shorthand": "CZE"
+  },
+  {
+    "region": "Germany",
+    "region_shorthand": "DEU"
+  },
+  {
+    "region": "Dominica",
+    "region_shorthand": "DMA"
+  },
+  {
+    "region": "Denmark",
+    "region_shorthand": "DNK"
+  },
+  {
+    "region": "Dominican Republic",
+    "region_shorthand": "DOM"
+  },
+  {
+    "region": "Algeria",
+    "region_shorthand": "DZA"
+  },
+  {
+    "region": "Ecuador",
+    "region_shorthand": "ECU"
+  },
+  {
+    "region": "Egypt",
+    "region_shorthand": "EGY"
+  },
+  {
+    "region": "Spain",
+    "region_shorthand": "ESP"
+  },
+  {
+    "region": "Estonia",
+    "region_shorthand": "EST"
+  },
+  {
+    "region": "Ethiopia",
+    "region_shorthand": "ETH"
+  },
+  {
+    "region": "Finland",
+    "region_shorthand": "FIN"
+  },
+  {
+    "region": "Fiji",
+    "region_shorthand": "FJI"
+  },
+  {
+    "region": "France",
+    "region_shorthand": "FRA"
+  },
+  {
+    "region": "United Kingdom",
+    "region_shorthand": "GBR"
+  },
+  {
+    "region": "Georgia",
+    "region_shorthand": "GEO"
+  },
+  {
+    "region": "Ghana",
+    "region_shorthand": "GHA"
+  },
+  {
+    "region": "Gibraltar",
+    "region_shorthand": "GIB"
+  },
+  {
+    "region": "Greece",
+    "region_shorthand": "GRC"
+  },
+  {
+    "region": "Guatemala",
+    "region_shorthand": "GTM"
+  },
+  {
+    "region": "Hong Kong",
+    "region_shorthand": "HKG"
+  },
+  {
+    "region": "Honduras",
+    "region_shorthand": "HND"
+  },
+  {
+    "region": "Croatia",
+    "region_shorthand": "HRV"
+  },
+  {
+    "region": "Haiti",
+    "region_shorthand": "HTI"
+  },
+  {
+    "region": "Hungary",
+    "region_shorthand": "HUN"
+  },
+  {
+    "region": "Indonesia",
+    "region_shorthand": "IDN"
+  },
+  {
+    "region": "Isle of Man",
+    "region_shorthand": "IMN"
+  },
+  {
+    "region": "India",
+    "region_shorthand": "IND"
+  },
+  {
+    "region": "Ireland",
+    "region_shorthand": "IRL"
+  },
+  {
+    "region": "Iraq",
+    "region_shorthand": "IRQ"
+  },
+  {
+    "region": "Iceland",
+    "region_shorthand": "ISL"
+  },
+  {
+    "region": "Israel",
+    "region_shorthand": "ISR"
+  },
+  {
+    "region": "Italy",
+    "region_shorthand": "ITA"
+  },
+  {
+    "region": "Jamaica",
+    "region_shorthand": "JAM"
+  },
+  {
+    "region": "Jordan",
+    "region_shorthand": "JOR"
+  },
+  {
+    "region": "Japan",
+    "region_shorthand": "JPN"
+  },
+  {
+    "region": "Kazakhstan",
+    "region_shorthand": "KAZ"
+  },
+  {
+    "region": "Kenya",
+    "region_shorthand": "KEN"
+  },
+  {
+    "region": "Kyrgyzstan",
+    "region_shorthand": "KGZ"
+  },
+  {
+    "region": "Cambodia",
+    "region_shorthand": "KHM"
+  },
+  {
+    "region": "Saint Kitts and Nevis",
+    "region_shorthand": "KNA"
+  },
+  {
+    "region": "Korea (Republic of)",
+    "region_shorthand": "KOR"
+  },
+  {
+    "region": "Kuwait",
+    "region_shorthand": "KWT"
+  },
+  {
+    "region": "Lao People's Democratic Republic",
+    "region_shorthand": "LAO"
+  },
+  {
+    "region": "Lebanon",
+    "region_shorthand": "LBN"
+  },
+  {
+    "region": "Liberia",
+    "region_shorthand": "LBR"
+  },
+  {
+    "region": "Saint Lucia",
+    "region_shorthand": "LCA"
+  },
+  {
+    "region": "Sri Lanka",
+    "region_shorthand": "LKA"
+  },
+  {
+    "region": "Lithuania",
+    "region_shorthand": "LTU"
+  },
+  {
+    "region": "Luxembourg",
+    "region_shorthand": "LUX"
+  },
+  {
+    "region": "Latvia",
+    "region_shorthand": "LVA"
+  },
+  {
+    "region": "Morocco",
+    "region_shorthand": "MAR"
+  },
+  {
+    "region": "Monaco",
+    "region_shorthand": "MCO"
+  },
+  {
+    "region": "Moldova",
+    "region_shorthand": "MDA"
+  },
+  {
+    "region": "Madagascar",
+    "region_shorthand": "MDG"
+  },
+  {
+    "region": "Mexico",
+    "region_shorthand": "MEX"
+  },
+  {
+    "region": "Marshall Islands",
+    "region_shorthand": "MHL"
+  },
+  {
+    "region": "North Macedonia",
+    "region_shorthand": "MKD"
+  },
+  {
+    "region": "Malta",
+    "region_shorthand": "MLT"
+  },
+  {
+    "region": "Montenegro",
+    "region_shorthand": "MNE"
+  },
+  {
+    "region": "Mozambique",
+    "region_shorthand": "MOZ"
+  },
+  {
+    "region": "Mauritania",
+    "region_shorthand": "MRT"
+  },
+  {
+    "region": "Mauritius",
+    "region_shorthand": "MUS"
+  },
+  {
+    "region": "Malawi",
+    "region_shorthand": "MWI"
+  },
+  {
+    "region": "Malaysia",
+    "region_shorthand": "MYS"
+  },
+  {
+    "region": "Namibia",
+    "region_shorthand": "NAM"
+  },
+  {
+    "region": "Nigeria",
+    "region_shorthand": "NGA"
+  },
+  {
+    "region": "Nicaragua",
+    "region_shorthand": "NIC"
+  },
+  {
+    "region": "Netherlands",
+    "region_shorthand": "NLD"
+  },
+  {
+    "region": "Norway",
+    "region_shorthand": "NOR"
+  },
+  {
+    "region": "Nepal",
+    "region_shorthand": "NPL"
+  },
+  {
+    "region": "New Zealand",
+    "region_shorthand": "NZL"
+  },
+  {
+    "region": "Oman",
+    "region_shorthand": "OMN"
+  },
+  {
+    "region": "Panama",
+    "region_shorthand": "PAN"
+  },
+  {
+    "region": "Peru",
+    "region_shorthand": "PER"
+  },
+  {
+    "region": "Philippines",
+    "region_shorthand": "PHL"
+  },
+  {
+    "region": "Pakistan",
+    "region_shorthand": "PAK"
+  },
+  {
+    "region": "Poland",
+    "region_shorthand": "POL"
+  },
+  {
+    "region": "Portugal",
+    "region_shorthand": "PRT"
+  },
+  {
+    "region": "Qatar",
+    "region_shorthand": "QAT"
+  },
+  {
+    "region": "Romania",
+    "region_shorthand": "ROU"
+  },
+  {
+    "region": "Russia",
+    "region_shorthand": "RUS"
+  },
+  {
+    "region": "Saudi Arabia",
+    "region_shorthand": "SAU"
+  },
+  {
+    "region": "Senegal",
+    "region_shorthand": "SEN"
+  },
+  {
+    "region": "Singapore",
+    "region_shorthand": "SGP"
+  },
+  {
+    "region": "Slovakia",
+    "region_shorthand": "SVK"
+  },
+  {
+    "region": "Slovenia",
+    "region_shorthand": "SVN"
+  },
+  {
+    "region": "South Africa",
+    "region_shorthand": "ZAF"
+  },
+  {
+    "region": "Sweden",
+    "region_shorthand": "SWE"
+  },
+  {
+    "region": "Switzerland",
+    "region_shorthand": "CHE"
+  },
+  {
+    "region": "Thailand",
+    "region_shorthand": "THA"
+  },
+  {
+    "region": "Tunisia",
+    "region_shorthand": "TUN"
+  },
+  {
+    "region": "Turkey",
+    "region_shorthand": "TUR"
+  },
+  {
+    "region": "Uganda",
+    "region_shorthand": "UGA"
+  },
+  {
+    "region": "Ukraine",
+    "region_shorthand": "UKR"
+  },
+  {
+    "region": "United Arab Emirates",
+    "region_shorthand": "ARE"
+  },
+  {
+    "region": "United States",
+    "region_shorthand": "USA"
+  },
+  {
+    "region": "Uruguay",
+    "region_shorthand": "URY"
+  },
+  {
+    "region": "Uzbekistan",
+    "region_shorthand": "UZB"
+  },
+  {
+    "region": "Venezuela",
+    "region_shorthand": "VEN"
+  },
+  {
+    "region": "Vietnam",
+    "region_shorthand": "VNM"
+  },
+  {
+    "region": "Yemen",
+    "region_shorthand": "YEM"
+  },
+  {
+    "region": "Zambia",
+    "region_shorthand": "ZMB"
+  },
+  {
+    "region": "Zimbabwe",
+    "region_shorthand": "ZWE"
+  }
+]

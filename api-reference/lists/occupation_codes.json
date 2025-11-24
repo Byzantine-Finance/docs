@@ -1,0 +1,2278 @@
+[
+  {
+    "code": "132011",
+    "occupation": "Accountant and auditor"
+  },
+  {
+    "code": "272011",
+    "occupation": "Actor"
+  },
+  {
+    "code": "152011",
+    "occupation": "Actuary"
+  },
+  {
+    "code": "291291",
+    "occupation": "Acupuncturist"
+  },
+  {
+    "code": "519191",
+    "occupation": "Adhesive bonding machine operator and tender"
+  },
+  {
+    "code": "113012",
+    "occupation": "Administrative services manager"
+  },
+  {
+    "code": "112011",
+    "occupation": "Advertising and promotions manager"
+  },
+  {
+    "code": "413011",
+    "occupation": "Advertising sales agent"
+  },
+  {
+    "code": "172011",
+    "occupation": "Aerospace engineer"
+  },
+  {
+    "code": "131011",
+    "occupation": "Agent and business manager of artists, performers, and athletes"
+  },
+  {
+    "code": "194010",
+    "occupation": "Agricultural and food science technician"
+  },
+  {
+    "code": "191010",
+    "occupation": "Agricultural and food scientist"
+  },
+  {
+    "code": "172021",
+    "occupation": "Agricultural engineer"
+  },
+  {
+    "code": "452011",
+    "occupation": "Agricultural inspector"
+  },
+  {
+    "code": "532020",
+    "occupation": "Air traffic controller and airfield operations specialist"
+  },
+  {
+    "code": "493011",
+    "occupation": "Aircraft mechanic and service technician"
+  },
+  {
+    "code": "532010",
+    "occupation": "Aircraft pilots and flight engineer"
+  },
+  {
+    "code": "512011",
+    "occupation": "Aircraft structure, surfaces, rigging, and systems assembler"
+  },
+  {
+    "code": "533011",
+    "occupation": "Ambulance driver and attendant, except emergency medical technician"
+  },
+  {
+    "code": "452021",
+    "occupation": "Animal breeder"
+  },
+  {
+    "code": "392021",
+    "occupation": "Animal caretaker"
+  },
+  {
+    "code": "339011",
+    "occupation": "Animal control worker"
+  },
+  {
+    "code": "392011",
+    "occupation": "Animal trainer"
+  },
+  {
+    "code": "171011",
+    "occupation": "Architect, except landscape and naval"
+  },
+  {
+    "code": "173011",
+    "occupation": "Architectural and civil drafter"
+  },
+  {
+    "code": "119041",
+    "occupation": "Architectural and engineering manager"
+  },
+  {
+    "code": "254010",
+    "occupation": "Archivist, curator, and museum technician"
+  },
+  {
+    "code": "271010",
+    "occupation": "Artist and related worker"
+  },
+  {
+    "code": "192010",
+    "occupation": "Astronomer and physicist"
+  },
+  {
+    "code": "272021",
+    "occupation": "Athletes and sports competitor"
+  },
+  {
+    "code": "192021",
+    "occupation": "Atmospheric and space scientist"
+  },
+  {
+    "code": "291181",
+    "occupation": "Audiologist"
+  },
+  {
+    "code": "492097",
+    "occupation": "Audiovisual equipment installer and repairer"
+  },
+  {
+    "code": "493021",
+    "occupation": "Automotive body and related repairer"
+  },
+  {
+    "code": "493022",
+    "occupation": "Automotive glass installer and repairer"
+  },
+  {
+    "code": "493023",
+    "occupation": "Automotive service technician and mechanic"
+  },
+  {
+    "code": "492091",
+    "occupation": "Avionics technician"
+  },
+  {
+    "code": "396010",
+    "occupation": "Baggage porter, bellhop, and concierge"
+  },
+  {
+    "code": "333011",
+    "occupation": "Bailiff"
+  },
+  {
+    "code": "513011",
+    "occupation": "Baker"
+  },
+  {
+    "code": "395011",
+    "occupation": "Barber"
+  },
+  {
+    "code": "353011",
+    "occupation": "Bartender"
+  },
+  {
+    "code": "433011",
+    "occupation": "Bill and account collector"
+  },
+  {
+    "code": "433021",
+    "occupation": "Billing and posting clerk"
+  },
+  {
+    "code": "172031",
+    "occupation": "Bioengineer and biomedical engineer"
+  },
+  {
+    "code": "191020",
+    "occupation": "Biological scientist"
+  },
+  {
+    "code": "194021",
+    "occupation": "Biological technician"
+  },
+  {
+    "code": "472011",
+    "occupation": "Boilermaker"
+  },
+  {
+    "code": "433031",
+    "occupation": "Bookkeeping, accounting, and auditing clerk"
+  },
+  {
+    "code": "472020",
+    "occupation": "Brickmason, blockmason, and stonemason"
+  },
+  {
+    "code": "273011",
+    "occupation": "Broadcast announcer and radio disc jockey"
+  },
+  {
+    "code": "274010",
+    "occupation": "Broadcast, sound, and lighting technician"
+  },
+  {
+    "code": "434011",
+    "occupation": "Brokerage clerk"
+  },
+  {
+    "code": "132031",
+    "occupation": "Budget analyst"
+  },
+  {
+    "code": "493031",
+    "occupation": "Bus and truck mechanic and diesel engine specialist"
+  },
+  {
+    "code": "131199",
+    "occupation": "Business operations specialist, other"
+  },
+  {
+    "code": "513020",
+    "occupation": "Butcher and other meat, poultry, and fish processing worker"
+  },
+  {
+    "code": "131021",
+    "occupation": "Buyer and purchasing agent, farm products"
+  },
+  {
+    "code": "517011",
+    "occupation": "Cabinetmaker and bench carpenter"
+  },
+  {
+    "code": "292031",
+    "occupation": "Cardiovascular technologist and technician"
+  },
+  {
+    "code": "435011",
+    "occupation": "Cargo and freight agent"
+  },
+  {
+    "code": "472031",
+    "occupation": "Carpenter"
+  },
+  {
+    "code": "472040",
+    "occupation": "Carpet, floor, and tile installer and finisher"
+  },
+  {
+    "code": "412010",
+    "occupation": "Cashier"
+  },
+  {
+    "code": "472050",
+    "occupation": "Cement mason, concrete finisher, and terrazzo worker"
+  },
+  {
+    "code": "351011",
+    "occupation": "Chef and head cook"
+  },
+  {
+    "code": "172041",
+    "occupation": "Chemical engineer"
+  },
+  {
+    "code": "519010",
+    "occupation": "Chemical processing machine setter, operator, and tender"
+  },
+  {
+    "code": "194031",
+    "occupation": "Chemical technician"
+  },
+  {
+    "code": "192030",
+    "occupation": "Chemist and materials scientist"
+  },
+  {
+    "code": "111011",
+    "occupation": "Chief executive"
+  },
+  {
+    "code": "211021",
+    "occupation": "Child, family, and school social worker"
+  },
+  {
+    "code": "399011",
+    "occupation": "Childcare worker"
+  },
+  {
+    "code": "291011",
+    "occupation": "Chiropractor"
+  },
+  {
+    "code": "172051",
+    "occupation": "Civil engineer"
+  },
+  {
+    "code": "131030",
+    "occupation": "Claims adjuster, appraiser, examiner, and investigator"
+  },
+  {
+    "code": "537061",
+    "occupation": "Cleaner of vehicles and equipment"
+  },
+  {
+    "code": "212011",
+    "occupation": "Clergy"
+  },
+  {
+    "code": "193033",
+    "occupation": "Clinical and counseling psychologist"
+  },
+  {
+    "code": "292010",
+    "occupation": "Clinical laboratory technologist and technician"
+  },
+  {
+    "code": "272022",
+    "occupation": "Coaches and scout"
+  },
+  {
+    "code": "499091",
+    "occupation": "Coin, vending, and amusement machine servicer and repairer"
+  },
+  {
+    "code": "271021",
+    "occupation": "Commercial and industrial designer"
+  },
+  {
+    "code": "499092",
+    "occupation": "Commercial diver"
+  },
+  {
+    "code": "432099",
+    "occupation": "Communications equipment operator, other"
+  },
+  {
+    "code": "113111",
+    "occupation": "Compensation and benefits manager"
+  },
+  {
+    "code": "131141",
+    "occupation": "Compensation, benefits, and job analysis specialist"
+  },
+  {
+    "code": "131041",
+    "occupation": "Compliance officer"
+  },
+  {
+    "code": "151221",
+    "occupation": "Computer and information research scientist"
+  },
+  {
+    "code": "113021",
+    "occupation": "Computer and information systems manager"
+  },
+  {
+    "code": "172061",
+    "occupation": "Computer hardware engineer"
+  },
+  {
+    "code": "151241",
+    "occupation": "Computer network architect"
+  },
+  {
+    "code": "519160",
+    "occupation": "Computer numerically controlled tool operator and programmer"
+  },
+  {
+    "code": "151299",
+    "occupation": "Computer occupation, other"
+  },
+  {
+    "code": "151251",
+    "occupation": "Computer programmer"
+  },
+  {
+    "code": "151230",
+    "occupation": "Computer support specialist"
+  },
+  {
+    "code": "151211",
+    "occupation": "Computer systems analyst"
+  },
+  {
+    "code": "492011",
+    "occupation": "Computer, automated teller, and office machine repairer"
+  },
+  {
+    "code": "191030",
+    "occupation": "Conservation scientist and forester"
+  },
+  {
+    "code": "474011",
+    "occupation": "Construction and building inspector"
+  },
+  {
+    "code": "472070",
+    "occupation": "Construction equipment operator"
+  },
+  {
+    "code": "472061",
+    "occupation": "Construction laborer"
+  },
+  {
+    "code": "119021",
+    "occupation": "Construction manager"
+  },
+  {
+    "code": "499010",
+    "occupation": "Control and valve installer and repairer"
+  },
+  {
+    "code": "5370XX",
+    "occupation": "Conveyor, dredge, and hoist and winch operator"
+  },
+  {
+    "code": "352010",
+    "occupation": "Cook"
+  },
+  {
+    "code": "333012",
+    "occupation": "Correctional officer and jailer"
+  },
+  {
+    "code": "434021",
+    "occupation": "Correspondence clerk"
+  },
+  {
+    "code": "131051",
+    "occupation": "Cost estimator"
+  },
+  {
+    "code": "211019",
+    "occupation": "Counselor, other"
+  },
+  {
+    "code": "412021",
+    "occupation": "Counter and rental clerk"
+  },
+  {
+    "code": "435021",
+    "occupation": "Courier and messenger"
+  },
+  {
+    "code": "273092",
+    "occupation": "Court reporter and simultaneous captioner"
+  },
+  {
+    "code": "434031",
+    "occupation": "Court, municipal, and license clerk"
+  },
+  {
+    "code": "537021",
+    "occupation": "Crane and tower operator"
+  },
+  {
+    "code": "132041",
+    "occupation": "Credit analyst"
+  },
+  {
+    "code": "434041",
+    "occupation": "Credit authorizer, checker, and clerk"
+  },
+  {
+    "code": "132070",
+    "occupation": "Credit counselor and loan officer"
+  },
+  {
+    "code": "339091",
+    "occupation": "Crossing guard and flagger"
+  },
+  {
+    "code": "519020",
+    "occupation": "Crushing, grinding, polishing, mixing, and blending worker"
+  },
+  {
+    "code": "434051",
+    "occupation": "Customer service representative"
+  },
+  {
+    "code": "519030",
+    "occupation": "Cutting worker"
+  },
+  {
+    "code": "514031",
+    "occupation": "Cutting, punching, and press machine setter, operator, and tender, metal and plastic"
+  },
+  {
+    "code": "272030",
+    "occupation": "Dancer and choreographer"
+  },
+  {
+    "code": "439021",
+    "occupation": "Data labeler and data entry keyer"
+  },
+  {
+    "code": "15124X",
+    "occupation": "Database administrator and architect"
+  },
+  {
+    "code": "519080",
+    "occupation": "Dental and ophthalmic laboratory technician and medical appliance technician"
+  },
+  {
+    "code": "319091",
+    "occupation": "Dental assistant"
+  },
+  {
+    "code": "291292",
+    "occupation": "Dental hygienist"
+  },
+  {
+    "code": "291020",
+    "occupation": "Dentist"
+  },
+  {
+    "code": "475010",
+    "occupation": "Derrick, rotary drill, and service unit operator, oil and gas"
+  },
+  {
+    "code": "439031",
+    "occupation": "Desktop publisher"
+  },
+  {
+    "code": "333021",
+    "occupation": "Detective and criminal investigator"
+  },
+  {
+    "code": "292032",
+    "occupation": "Diagnostic medical sonographer"
+  },
+  {
+    "code": "29205X",
+    "occupation": "Dietetic technician and ophthalmic medical technician"
+  },
+  {
+    "code": "291031",
+    "occupation": "Dietitian and nutritionist"
+  },
+  {
+    "code": "359011",
+    "occupation": "Dining room and cafeteria attendant and bartender helper"
+  },
+  {
+    "code": "212021",
+    "occupation": "Director, religious activities and educatio"
+  },
+  {
+    "code": "272091",
+    "occupation": "Disc jockey, except radio"
+  },
+  {
+    "code": "359021",
+    "occupation": "Dishwasher"
+  },
+  {
+    "code": "435032",
+    "occupation": "Dispatcher, except police, fire, and ambulance"
+  },
+  {
+    "code": "419091",
+    "occupation": "Door-to-door sales worker, news and street vendor, and related worker"
+  },
+  {
+    "code": "533030",
+    "occupation": "Driver/sales worker and truck driver"
+  },
+  {
+    "code": "472080",
+    "occupation": "Drywall installer, ceiling tile installer, and taper"
+  },
+  {
+    "code": "475023",
+    "occupation": "Earth driller, except oil and gas"
+  },
+  {
+    "code": "193011",
+    "occupation": "Economist"
+  },
+  {
+    "code": "273041",
+    "occupation": "Editor"
+  },
+  {
+    "code": "119030",
+    "occupation": "Education and childcare administrator"
+  },
+  {
+    "code": "211012",
+    "occupation": "Educational, guidance, and career counselor and advisor"
+  },
+  {
+    "code": "492092",
+    "occupation": "Electric motor, power tool, and related repairer"
+  },
+  {
+    "code": "173023",
+    "occupation": "Electrical and electronic engineering technologist and technician"
+  },
+  {
+    "code": "172070",
+    "occupation": "Electrical and electronics engineer"
+  },
+  {
+    "code": "492093",
+    "occupation": "Electrical and electronics installer and repairer, transportation equipment"
+  },
+  {
+    "code": "49209X",
+    "occupation": "Electrical and electronics repairer, industrial and utility"
+  },
+  {
+    "code": "499051",
+    "occupation": "Electrical power-line installer and repairer"
+  },
+  {
+    "code": "512020",
+    "occupation": "Electrical, electronics, and electromechanical assembler"
+  },
+  {
+    "code": "472111",
+    "occupation": "Electrician"
+  },
+  {
+    "code": "492096",
+    "occupation": "Electronic equipment installer and repairer, motor vehicles"
+  },
+  {
+    "code": "252020",
+    "occupation": "Elementary and middle school teacher"
+  },
+  {
+    "code": "474021",
+    "occupation": "Elevator and escalator installer and repairer"
+  },
+  {
+    "code": "434061",
+    "occupation": "Eligibility interviewer, government programs"
+  },
+  {
+    "code": "3940XX",
+    "occupation": "Embalmer, crematory operator and funeral attendant"
+  },
+  {
+    "code": "119161",
+    "occupation": "Emergency management director"
+  },
+  {
+    "code": "292042",
+    "occupation": "Emergency medical technician"
+  },
+  {
+    "code": "291214",
+    "occupation": "Emergency medicine physician"
+  },
+  {
+    "code": "512031",
+    "occupation": "Engine and other machine assembler"
+  },
+  {
+    "code": "172199",
+    "occupation": "Engineer, other"
+  },
+  {
+    "code": "272099",
+    "occupation": "Entertainer and performer, sports and related worker, other"
+  },
+  {
+    "code": "119070",
+    "occupation": "Entertainment and recreation manager"
+  },
+  {
+    "code": "172081",
+    "occupation": "Environmental engineer"
+  },
+  {
+    "code": "194040",
+    "occupation": "Environmental science and geoscience technician"
+  },
+  {
+    "code": "192041",
+    "occupation": "Environmental scientist and specialist, including health"
+  },
+  {
+    "code": "519194",
+    "occupation": "Etcher and engraver"
+  },
+  {
+    "code": "475022",
+    "occupation": "Excavating and loading machine and dragline operator, surface mining"
+  },
+  {
+    "code": "436011",
+    "occupation": "Executive secretary and executive administrative assistant"
+  },
+  {
+    "code": "291128",
+    "occupation": "Exercise physiologist"
+  },
+  {
+    "code": "399031",
+    "occupation": "Exercise trainer and group fitness instructor"
+  },
+  {
+    "code": "475032",
+    "occupation": "Explosives worker, ordnance handling expert, and blaster"
+  },
+  {
+    "code": "519041",
+    "occupation": "Extruding, forming, pressing, and compacting machine setter, operator, and tender"
+  },
+  {
+    "code": "113013",
+    "occupation": "Facilities manager"
+  },
+  {
+    "code": "119013",
+    "occupation": "Farmer, rancher, and other agricultural manager"
+  },
+  {
+    "code": "271022",
+    "occupation": "Fashion designer"
+  },
+  {
+    "code": "353023",
+    "occupation": "Fast food and counter worker"
+  },
+  {
+    "code": "474031",
+    "occupation": "Fence erector"
+  },
+  {
+    "code": "434071",
+    "occupation": "File clerk"
+  },
+  {
+    "code": "132051",
+    "occupation": "Financial and investment analyst"
+  },
+  {
+    "code": "433099",
+    "occupation": "Financial clerk, other"
+  },
+  {
+    "code": "132061",
+    "occupation": "Financial examiner"
+  },
+  {
+    "code": "113031",
+    "occupation": "Financial manager"
+  },
+  {
+    "code": "332020",
+    "occupation": "Fire inspector"
+  },
+  {
+    "code": "332011",
+    "occupation": "Firefighter"
+  },
+  {
+    "code": "552010",
+    "occupation": "First-line enlisted military supervisor"
+  },
+  {
+    "code": "471011",
+    "occupation": "First-line supervisor of construction trades and extraction worker"
+  },
+  {
+    "code": "331011",
+    "occupation": "First-line supervisor of correctional officer"
+  },
+  {
+    "code": "451011",
+    "occupation": "First-line supervisor of farming, fishing, and forestry worker"
+  },
+  {
+    "code": "331021",
+    "occupation": "First-line supervisor of firefighting and prevention worker"
+  },
+  {
+    "code": "351012",
+    "occupation": "First-line supervisor of food preparation and serving workers"
+  },
+  {
+    "code": "371011",
+    "occupation": "First-line supervisor of housekeeping and janitorial workers"
+  },
+  {
+    "code": "371012",
+    "occupation": "First-line supervisor of landscaping, lawn service, and groundskeeping workers"
+  },
+  {
+    "code": "491011",
+    "occupation": "First-line supervisor of mechanics, installers, and repairers"
+  },
+  {
+    "code": "411012",
+    "occupation": "First-line supervisor of non-retail sales workers"
+  },
+  {
+    "code": "431011",
+    "occupation": "First-line supervisor of office and administrative support workers"
+  },
+  {
+    "code": "331012",
+    "occupation": "First-line supervisor of police and detective"
+  },
+  {
+    "code": "511011",
+    "occupation": "First-line supervisor of production and operating worker"
+  },
+  {
+    "code": "331099",
+    "occupation": "First-line supervisor of protective service worker, other"
+  },
+  {
+    "code": "411011",
+    "occupation": "First-line supervisor of retail sales workers"
+  },
+  {
+    "code": "331091",
+    "occupation": "First-line supervisor of security worker"
+  },
+  {
+    "code": "333031",
+    "occupation": "Fish and game warden"
+  },
+  {
+    "code": "453031",
+    "occupation": "Fishing and hunting worker"
+  },
+  {
+    "code": "532031",
+    "occupation": "Flight attendant"
+  },
+  {
+    "code": "271023",
+    "occupation": "Floral designer"
+  },
+  {
+    "code": "513091",
+    "occupation": "Food and tobacco roasting, baking, and drying machine operator and tender"
+  },
+  {
+    "code": "513092",
+    "occupation": "Food batchmaker"
+  },
+  {
+    "code": "513093",
+    "occupation": "Food cooking machine operator and tender"
+  },
+  {
+    "code": "359099",
+    "occupation": "Food preparation and serving related worker, other"
+  },
+  {
+    "code": "352021",
+    "occupation": "Food preparation worker"
+  },
+  {
+    "code": "513099",
+    "occupation": "Food processing worker, other"
+  },
+  {
+    "code": "353041",
+    "occupation": "Food server, nonrestaurant"
+  },
+  {
+    "code": "119051",
+    "occupation": "Food service manager"
+  },
+  {
+    "code": "454011",
+    "occupation": "Forest and conservation worker"
+  },
+  {
+    "code": "514020",
+    "occupation": "Forming machine setter, operator, and tender, metal and plastic"
+  },
+  {
+    "code": "131131",
+    "occupation": "Fundraiser"
+  },
+  {
+    "code": "119171",
+    "occupation": "Funeral home manager"
+  },
+  {
+    "code": "519051",
+    "occupation": "Furnace, kiln, oven, drier, and kettle operator and tender"
+  },
+  {
+    "code": "517021",
+    "occupation": "Furniture finisher"
+  },
+  {
+    "code": "433041",
+    "occupation": "Gambling cage worker"
+  },
+  {
+    "code": "393010",
+    "occupation": "Gambling services worker"
+  },
+  {
+    "code": "111021",
+    "occupation": "General and operations manager"
+  },
+  {
+    "code": "19204X",
+    "occupation": "Geoscientist and hydrologist, except geographer"
+  },
+  {
+    "code": "472121",
+    "occupation": "Glazier"
+  },
+  {
+    "code": "452041",
+    "occupation": "Grader and sorter, agricultural product"
+  },
+  {
+    "code": "271024",
+    "occupation": "Graphic designer"
+  },
+  {
+    "code": "514033",
+    "occupation": "Grinding, lapping, polishing, and buffing machine tool setter, operator, and tender, metal and plastic"
+  },
+  {
+    "code": "395012",
+    "occupation": "Hairdresser, hairstylist, and cosmetologist"
+  },
+  {
+    "code": "474041",
+    "occupation": "Hazardous materials removal worker"
+  },
+  {
+    "code": "291299",
+    "occupation": "Healthcare diagnosing or treating practitioner, other"
+  },
+  {
+    "code": "211022",
+    "occupation": "Healthcare social worker"
+  },
+  {
+    "code": "499021",
+    "occupation": "Heating, air conditioning, and refrigeration mechanic and installer"
+  },
+  {
+    "code": "493040",
+    "occupation": "Heavy vehicle and mobile equipment service technician and mechanic"
+  },
+  {
+    "code": "499098",
+    "occupation": "Helper—installation, maintenance, and repair worker"
+  },
+  {
+    "code": "519198",
+    "occupation": "Helper—production worker"
+  },
+  {
+    "code": "473010",
+    "occupation": "Helper, construction trade"
+  },
+  {
+    "code": "474051",
+    "occupation": "Highway maintenance worker"
+  },
+  {
+    "code": "499031",
+    "occupation": "Home appliance repairer"
+  },
+  {
+    "code": "311121",
+    "occupation": "Home health aide"
+  },
+  {
+    "code": "359031",
+    "occupation": "Host and hostess, restaurant, lounge, and coffee shop"
+  },
+  {
+    "code": "434081",
+    "occupation": "Hotel, motel, and resort desk clerk"
+  },
+  {
+    "code": "434161",
+    "occupation": "Human resources assistant, except payroll and timekeeping"
+  },
+  {
+    "code": "113121",
+    "occupation": "Human resources manager"
+  },
+  {
+    "code": "131070",
+    "occupation": "Human resources worker"
+  },
+  {
+    "code": "49904X",
+    "occupation": "Industrial and refractory machinery mechanic"
+  },
+  {
+    "code": "172110",
+    "occupation": "Industrial engineer, including health and safety"
+  },
+  {
+    "code": "113051",
+    "occupation": "Industrial production manager"
+  },
+  {
+    "code": "537051",
+    "occupation": "Industrial truck and tractor operator"
+  },
+  {
+    "code": "434199",
+    "occupation": "Information and record clerk, other"
+  },
+  {
+    "code": "151212",
+    "occupation": "Information security analyst"
+  },
+  {
+    "code": "519061",
+    "occupation": "Inspector, tester, sorter, sampler, and weigher"
+  },
+  {
+    "code": "472130",
+    "occupation": "Insulation worker"
+  },
+  {
+    "code": "439041",
+    "occupation": "Insurance claims and policy processing clerk"
+  },
+  {
+    "code": "413021",
+    "occupation": "Insurance sales agent"
+  },
+  {
+    "code": "132053",
+    "occupation": "Insurance underwriter"
+  },
+  {
+    "code": "271025",
+    "occupation": "Interior designer"
+  },
+  {
+    "code": "273091",
+    "occupation": "Interpreter and translator"
+  },
+  {
+    "code": "434111",
+    "occupation": "Interviewer, except eligibility and loan"
+  },
+  {
+    "code": "37201X",
+    "occupation": "Janitor and building cleaner"
+  },
+  {
+    "code": "519071",
+    "occupation": "Jeweler and precious stone and metal worker"
+  },
+  {
+    "code": "231020",
+    "occupation": "Judge, magistrate, and other judicial worker"
+  },
+  {
+    "code": "231012",
+    "occupation": "Judicial law clerk"
+  },
+  {
+    "code": "537062",
+    "occupation": "Laborer and freight, stock, and material mover, hand"
+  },
+  {
+    "code": "171012",
+    "occupation": "Landscape architect"
+  },
+  {
+    "code": "373011",
+    "occupation": "Landscaping and groundskeeping worker"
+  },
+  {
+    "code": "516011",
+    "occupation": "Laundry and dry-cleaning worker"
+  },
+  {
+    "code": "231011",
+    "occupation": "Lawyer"
+  },
+  {
+    "code": "436012",
+    "occupation": "Legal secretary and administrative assistant"
+  },
+  {
+    "code": "232099",
+    "occupation": "Legal support worker, other"
+  },
+  {
+    "code": "111031",
+    "occupation": "Legislator"
+  },
+  {
+    "code": "254022",
+    "occupation": "Librarian and media collections specialist"
+  },
+  {
+    "code": "434121",
+    "occupation": "Library assistant, clerical"
+  },
+  {
+    "code": "254031",
+    "occupation": "Library technician"
+  },
+  {
+    "code": "292061",
+    "occupation": "Licensed practical and licensed vocational nurse"
+  },
+  {
+    "code": "191099",
+    "occupation": "Life scientist, other"
+  },
+  {
+    "code": "434131",
+    "occupation": "Loan interviewer and clerk"
+  },
+  {
+    "code": "499094",
+    "occupation": "Locksmith and safe repairer"
+  },
+  {
+    "code": "534010",
+    "occupation": "Locomotive engineer and operator"
+  },
+  {
+    "code": "119081",
+    "occupation": "Lodging manager"
+  },
+  {
+    "code": "454020",
+    "occupation": "Logging worker"
+  },
+  {
+    "code": "131081",
+    "occupation": "Logistician"
+  },
+  {
+    "code": "537063",
+    "occupation": "Machine feeder and offbearer"
+  },
+  {
+    "code": "514041",
+    "occupation": "Machinist"
+  },
+  {
+    "code": "292035",
+    "occupation": "Magnetic resonance imaging technologist"
+  },
+  {
+    "code": "372012",
+    "occupation": "Maids and housekeeping cleaner"
+  },
+  {
+    "code": "439051",
+    "occupation": "Mail clerk and mail machine operator, except postal service"
+  },
+  {
+    "code": "499071",
+    "occupation": "Maintenance and repair worker, general"
+  },
+  {
+    "code": "499043",
+    "occupation": "Maintenance worker, machinery"
+  },
+  {
+    "code": "131111",
+    "occupation": "Management analyst"
+  },
+  {
+    "code": "119199",
+    "occupation": "Manager, other"
+  },
+  {
+    "code": "395092",
+    "occupation": "Manicurist and pedicurist"
+  },
+  {
+    "code": "499095",
+    "occupation": "Manufactured building and mobile home installer"
+  },
+  {
+    "code": "172121",
+    "occupation": "Marine engineer and naval architect"
+  },
+  {
+    "code": "131161",
+    "occupation": "Market research analyst and marketing specialist"
+  },
+  {
+    "code": "112021",
+    "occupation": "Marketing manager"
+  },
+  {
+    "code": "211013",
+    "occupation": "Marriage and family therapist"
+  },
+  {
+    "code": "319011",
+    "occupation": "Massage therapist"
+  },
+  {
+    "code": "172131",
+    "occupation": "Materials engineer"
+  },
+  {
+    "code": "152021",
+    "occupation": "Mathematician"
+  },
+  {
+    "code": "172141",
+    "occupation": "Mechanical engineer"
+  },
+  {
+    "code": "274099",
+    "occupation": "Media and communication equipment worker, other"
+  },
+  {
+    "code": "273099",
+    "occupation": "Media and communication worker, other"
+  },
+  {
+    "code": "119111",
+    "occupation": "Medical and health services manager"
+  },
+  {
+    "code": "319092",
+    "occupation": "Medical assistant"
+  },
+  {
+    "code": "292072",
+    "occupation": "Medical records specialist"
+  },
+  {
+    "code": "191040",
+    "occupation": "Medical scientist"
+  },
+  {
+    "code": "436013",
+    "occupation": "Medical secretary and administrative assistant"
+  },
+  {
+    "code": "319094",
+    "occupation": "Medical transcriptionist"
+  },
+  {
+    "code": "131121",
+    "occupation": "Meeting, convention, and event planner"
+  },
+  {
+    "code": "211023",
+    "occupation": "Mental health and substance abuse social worker"
+  },
+  {
+    "code": "211014",
+    "occupation": "Mental health counselor"
+  },
+  {
+    "code": "271026",
+    "occupation": "Merchandise displayer and window trimmer"
+  },
+  {
+    "code": "514050",
+    "occupation": "Metal furnace operator, tender, pourer, and caster"
+  },
+  {
+    "code": "435041",
+    "occupation": "Meter reader, utilities"
+  },
+  {
+    "code": "553010",
+    "occupation": "Military enlisted tactical operations and air/weapons specialist and crew member"
+  },
+  {
+    "code": "551010",
+    "occupation": "Military officer special and tactical operations leader"
+  },
+  {
+    "code": "554010",
+    "occupation": "Military, rank not specified"
+  },
+  {
+    "code": "499044",
+    "occupation": "Millwright"
+  },
+  {
+    "code": "172151",
+    "occupation": "Mining and geological engineer, including mining safety engineer"
+  },
+  {
+    "code": "452090",
+    "occupation": "Miscellaneous agricultural worker"
+  },
+  {
+    "code": "474090",
+    "occupation": "Miscellaneous construction and related worker"
+  },
+  {
+    "code": "292090",
+    "occupation": "Miscellaneous health technologist and technician"
+  },
+  {
+    "code": "518090",
+    "occupation": "Miscellaneous plant and system operator"
+  },
+  {
+    "code": "193090",
+    "occupation": "Miscellaneous social scientist and related worker"
+  },
+  {
+    "code": "493090",
+    "occupation": "Miscellaneous vehicle and mobile equipment mechanic, installer, and repairer"
+  },
+  {
+    "code": "514060",
+    "occupation": "Model maker and patternmaker, metal and plastic"
+  },
+  {
+    "code": "419010",
+    "occupation": "Model, demonstrator, and product promoter"
+  },
+  {
+    "code": "514070",
+    "occupation": "Molder and molding machine setter, operator, and tender, metal and plastic"
+  },
+  {
+    "code": "519195",
+    "occupation": "Molder, shaper, and caster, except metal and plastic"
+  },
+  {
+    "code": "394031",
+    "occupation": "Mortician, undertaker, and funeral arranger"
+  },
+  {
+    "code": "533099",
+    "occupation": "Motor vehicle operator, other"
+  },
+  {
+    "code": "272041",
+    "occupation": "Music director and composer"
+  },
+  {
+    "code": "272042",
+    "occupation": "Musician and singer"
+  },
+  {
+    "code": "119121",
+    "occupation": "Natural sciences manager"
+  },
+  {
+    "code": "151244",
+    "occupation": "Network and computer systems administrator"
+  },
+  {
+    "code": "434141",
+    "occupation": "New accounts clerk"
+  },
+  {
+    "code": "273023",
+    "occupation": "News analyst, reporter, and journalist"
+  },
+  {
+    "code": "172161",
+    "occupation": "Nuclear engineer"
+  },
+  {
+    "code": "29203X",
+    "occupation": "Nuclear medicine technologist and medical dosimetrist"
+  },
+  {
+    "code": "194051",
+    "occupation": "Nuclear technician"
+  },
+  {
+    "code": "291151",
+    "occupation": "Nurse anesthetist"
+  },
+  {
+    "code": "291161",
+    "occupation": "Nurse midwife"
+  },
+  {
+    "code": "291171",
+    "occupation": "Nurse practitioner"
+  },
+  {
+    "code": "311131",
+    "occupation": "Nursing assistant"
+  },
+  {
+    "code": "195010",
+    "occupation": "occupational health and safety specialist and technician"
+  },
+  {
+    "code": "291122",
+    "occupation": "occupational therapist"
+  },
+  {
+    "code": "312010",
+    "occupation": "occupational therapy assistant and aide"
+  },
+  {
+    "code": "439199",
+    "occupation": "Office and administrative support worker, other"
+  },
+  {
+    "code": "439061",
+    "occupation": "Office clerk, general"
+  },
+  {
+    "code": "439071",
+    "occupation": "Office machine operator, except computer"
+  },
+  {
+    "code": "152031",
+    "occupation": "Operations research analyst"
+  },
+  {
+    "code": "292081",
+    "occupation": "Optician, dispensing"
+  },
+  {
+    "code": "291041",
+    "occupation": "Optometrist"
+  },
+  {
+    "code": "434151",
+    "occupation": "Order clerk"
+  },
+  {
+    "code": "31113X",
+    "occupation": "Orderly and psychiatric aide"
+  },
+  {
+    "code": "5120XX",
+    "occupation": "Other assembler and fabricator"
+  },
+  {
+    "code": "21109X",
+    "occupation": "Other community and social service specialist"
+  },
+  {
+    "code": "27102X",
+    "occupation": "Other designer"
+  },
+  {
+    "code": "17301X",
+    "occupation": "Other drafter"
+  },
+  {
+    "code": "2590XX",
+    "occupation": "Other educational instruction and library worker"
+  },
+  {
+    "code": "17302X",
+    "occupation": "Other engineering technologist and technician"
+  },
+  {
+    "code": "3930XX",
+    "occupation": "Other entertainment attendant and related worker"
+  },
+  {
+    "code": "4750XX",
+    "occupation": "Other extraction worker"
+  },
+  {
+    "code": "1320XX",
+    "occupation": "Other financial specialist"
+  },
+  {
+    "code": "37301X",
+    "occupation": "Other grounds maintenance worker"
+  },
+  {
+    "code": "299000",
+    "occupation": "Other healthcare practitioner and technical occupation"
+  },
+  {
+    "code": "31909X",
+    "occupation": "Other healthcare support worker"
+  },
+  {
+    "code": "49909X",
+    "occupation": "Other installation, maintenance, and repair worker"
+  },
+  {
+    "code": "1940XX",
+    "occupation": "Other life, physical, and social science technician"
+  },
+  {
+    "code": "51403X",
+    "occupation": "Other machine tool setter, operator, and tender, metal and plastic"
+  },
+  {
+    "code": "5371XX",
+    "occupation": "Other material moving worker"
+  },
+  {
+    "code": "1520XX",
+    "occupation": "Other mathematical science occupation"
+  },
+  {
+    "code": "514XXX",
+    "occupation": "Other metal worker and plastic worker"
+  },
+  {
+    "code": "39509X",
+    "occupation": "Other personal appearance worker"
+  },
+  {
+    "code": "2912XX",
+    "occupation": "Other physician"
+  },
+  {
+    "code": "51919X",
+    "occupation": "Other production equipment operator and tender"
+  },
+  {
+    "code": "5191XX",
+    "occupation": "Other production worker"
+  },
+  {
+    "code": "33909X",
+    "occupation": "Other protective service worker"
+  },
+  {
+    "code": "19303X",
+    "occupation": "Other psychologist"
+  },
+  {
+    "code": "5340XX",
+    "occupation": "Other rail transportation worker"
+  },
+  {
+    "code": "2530XX",
+    "occupation": "Other teacher and instructor"
+  },
+  {
+    "code": "51609X",
+    "occupation": "Other textile, apparel, and furnishings worker"
+  },
+  {
+    "code": "5360XX",
+    "occupation": "Other transportation worker"
+  },
+  {
+    "code": "5170XX",
+    "occupation": "Other woodworker"
+  },
+  {
+    "code": "519111",
+    "occupation": "Packaging and filling machine operator and tender"
+  },
+  {
+    "code": "537064",
+    "occupation": "Packer and packager, hand"
+  },
+  {
+    "code": "472140",
+    "occupation": "Painter and paperhanger"
+  },
+  {
+    "code": "519120",
+    "occupation": "Painting worker"
+  },
+  {
+    "code": "519196",
+    "occupation": "Paper goods machine setter, operator, and tender"
+  },
+  {
+    "code": "232011",
+    "occupation": "Paralegal and legal assistant"
+  },
+  {
+    "code": "292043",
+    "occupation": "Paramedic"
+  },
+  {
+    "code": "536021",
+    "occupation": "Parking attendant"
+  },
+  {
+    "code": "333041",
+    "occupation": "Parking enforcement worker"
+  },
+  {
+    "code": "412022",
+    "occupation": "Parts salesperson"
+  },
+  {
+    "code": "536061",
+    "occupation": "Passenger attendant"
+  },
+  {
+    "code": "433051",
+    "occupation": "Payroll and timekeeping clerk"
+  },
+  {
+    "code": "399099",
+    "occupation": "Personal care and service worker, other"
+  },
+  {
+    "code": "132052",
+    "occupation": "Personal financial advisor"
+  },
+  {
+    "code": "119179",
+    "occupation": "Personal service manager, other"
+  },
+  {
+    "code": "372021",
+    "occupation": "Pest control worker"
+  },
+  {
+    "code": "172171",
+    "occupation": "Petroleum engineer"
+  },
+  {
+    "code": "291051",
+    "occupation": "Pharmacist"
+  },
+  {
+    "code": "319095",
+    "occupation": "Pharmacy aide"
+  },
+  {
+    "code": "292052",
+    "occupation": "Pharmacy technician"
+  },
+  {
+    "code": "319097",
+    "occupation": "Phlebotomist"
+  },
+  {
+    "code": "274021",
+    "occupation": "Photographer"
+  },
+  {
+    "code": "519151",
+    "occupation": "Photographic process worker and processing machine operator"
+  },
+  {
+    "code": "192099",
+    "occupation": "Physical scientist, other"
+  },
+  {
+    "code": "291123",
+    "occupation": "Physical therapist"
+  },
+  {
+    "code": "312020",
+    "occupation": "Physical therapist assistant and aide"
+  },
+  {
+    "code": "291071",
+    "occupation": "Physician assistant"
+  },
+  {
+    "code": "472151",
+    "occupation": "Pipelayer"
+  },
+  {
+    "code": "472161",
+    "occupation": "Plasterer and stucco mason"
+  },
+  {
+    "code": "472152",
+    "occupation": "Plumber, pipefitter, and steamfitter"
+  },
+  {
+    "code": "291081",
+    "occupation": "Podiatrist"
+  },
+  {
+    "code": "333050",
+    "occupation": "Police officer"
+  },
+  {
+    "code": "435051",
+    "occupation": "Postal service clerk"
+  },
+  {
+    "code": "435052",
+    "occupation": "Postal service mail carrier"
+  },
+  {
+    "code": "435053",
+    "occupation": "Postal service mail sorter, processor, and processing machine operator"
+  },
+  {
+    "code": "119131",
+    "occupation": "Postmaster and mail superintendent"
+  },
+  {
+    "code": "251000",
+    "occupation": "Postsecondary teacher"
+  },
+  {
+    "code": "518010",
+    "occupation": "Power plant operator, distributor, and dispatcher"
+  },
+  {
+    "code": "499060",
+    "occupation": "Precision instrument and equipment repairer"
+  },
+  {
+    "code": "515111",
+    "occupation": "Prepress technician and worker"
+  },
+  {
+    "code": "252010",
+    "occupation": "Preschool and kindergarten teacher"
+  },
+  {
+    "code": "516021",
+    "occupation": "Presser, textile, garment, and related material"
+  },
+  {
+    "code": "515113",
+    "occupation": "Print binding and finishing worker"
+  },
+  {
+    "code": "515112",
+    "occupation": "Printing press operator"
+  },
+  {
+    "code": "339021",
+    "occupation": "Private detective and investigator"
+  },
+  {
+    "code": "211092",
+    "occupation": "Probation officer and correctional treatment specialist"
+  },
+  {
+    "code": "433061",
+    "occupation": "Procurement clerk"
+  },
+  {
+    "code": "272012",
+    "occupation": "Producer and director"
+  },
+  {
+    "code": "435061",
+    "occupation": "Production, planning, and expediting clerk"
+  },
+  {
+    "code": "131082",
+    "occupation": "Project management specialist"
+  },
+  {
+    "code": "439081",
+    "occupation": "Proofreader and copy marker"
+  },
+  {
+    "code": "132020",
+    "occupation": "Property appraiser and assessor"
+  },
+  {
+    "code": "119141",
+    "occupation": "Property, real estate, and community association manager"
+  },
+  {
+    "code": "292053",
+    "occupation": "Psychiatric technician"
+  },
+  {
+    "code": "112030",
+    "occupation": "Public relations and fundraising manager"
+  },
+  {
+    "code": "273031",
+    "occupation": "Public relations specialist"
+  },
+  {
+    "code": "435031",
+    "occupation": "Public safety telecommunicator"
+  },
+  {
+    "code": "537070",
+    "occupation": "Pumping station operator"
+  },
+  {
+    "code": "131023",
+    "occupation": "Purchasing agent, except wholesale, retail, and farm products"
+  },
+  {
+    "code": "113061",
+    "occupation": "Purchasing manager"
+  },
+  {
+    "code": "291124",
+    "occupation": "Radiation therapist"
+  },
+  {
+    "code": "492020",
+    "occupation": "Radio and telecommunications equipment installer and repairer"
+  },
+  {
+    "code": "292034",
+    "occupation": "Radiologic technologist and technician"
+  },
+  {
+    "code": "291224",
+    "occupation": "Radiologist"
+  },
+  {
+    "code": "474061",
+    "occupation": "Rail-track laying and maintenance equipment operator"
+  },
+  {
+    "code": "534031",
+    "occupation": "Railroad conductor and yardmaster"
+  },
+  {
+    "code": "419020",
+    "occupation": "Real estate broker and sales agent"
+  },
+  {
+    "code": "434171",
+    "occupation": "Receptionist and information clerk"
+  },
+  {
+    "code": "399032",
+    "occupation": "Recreation worker"
+  },
+  {
+    "code": "291125",
+    "occupation": "Recreational therapist"
+  },
+  {
+    "code": "537081",
+    "occupation": "Refuse and recyclable material collector"
+  },
+  {
+    "code": "291141",
+    "occupation": "Registered nurse"
+  },
+  {
+    "code": "211015",
+    "occupation": "Rehabilitation counselor"
+  },
+  {
+    "code": "472171",
+    "occupation": "Reinforcing iron and rebar worker"
+  },
+  {
+    "code": "212099",
+    "occupation": "Religious worker, other"
+  },
+  {
+    "code": "434181",
+    "occupation": "Reservation and transportation ticket agent and travel clerk"
+  },
+  {
+    "code": "399041",
+    "occupation": "Residential advisor"
+  },
+  {
+    "code": "291126",
+    "occupation": "Respiratory therapist"
+  },
+  {
+    "code": "412031",
+    "occupation": "Retail salesperson"
+  },
+  {
+    "code": "499096",
+    "occupation": "Rigger"
+  },
+  {
+    "code": "472181",
+    "occupation": "Roofer"
+  },
+  {
+    "code": "475071",
+    "occupation": "Roustabout, oil and gas"
+  },
+  {
+    "code": "535011",
+    "occupation": "Sailor and marine oiler"
+  },
+  {
+    "code": "419099",
+    "occupation": "Sales and related worker, other"
+  },
+  {
+    "code": "419031",
+    "occupation": "Sales engineer"
+  },
+  {
+    "code": "112022",
+    "occupation": "Sales manager"
+  },
+  {
+    "code": "413091",
+    "occupation": "Sales representative of services, except advertising, insurance, financial services, and travel"
+  },
+  {
+    "code": "414010",
+    "occupation": "Sales representatives, wholesale and manufacturing"
+  },
+  {
+    "code": "517041",
+    "occupation": "Sawing machine setter, operator, and tender, wood"
+  },
+  {
+    "code": "533051",
+    "occupation": "School bus driver"
+  },
+  {
+    "code": "339094",
+    "occupation": "School bus monitor"
+  },
+  {
+    "code": "193034",
+    "occupation": "School psychologist"
+  },
+  {
+    "code": "252030",
+    "occupation": "Secondary school teacher"
+  },
+  {
+    "code": "436014",
+    "occupation": "Secretary and administrative assistant, except legal, medical, and executive"
+  },
+  {
+    "code": "413031",
+    "occupation": "Securities, commodities, and financial services sales agent"
+  },
+  {
+    "code": "492098",
+    "occupation": "Security and fire alarm systems installer"
+  },
+  {
+    "code": "339030",
+    "occupation": "Security guard and gambling surveillance officer"
+  },
+  {
+    "code": "474071",
+    "occupation": "Septic tank servicer and sewer pipe cleaner"
+  },
+  {
+    "code": "516031",
+    "occupation": "Sewing machine operator"
+  },
+  {
+    "code": "472211",
+    "occupation": "Sheet metal worker"
+  },
+  {
+    "code": "535020",
+    "occupation": "Ship and boat captain and operator"
+  },
+  {
+    "code": "535031",
+    "occupation": "Ship engineer"
+  },
+  {
+    "code": "435071",
+    "occupation": "Shipping, receiving, and inventory clerk"
+  },
+  {
+    "code": "516040",
+    "occupation": "Shoe and leather worker"
+  },
+  {
+    "code": "533053",
+    "occupation": "Shuttle driver and chauffeur"
+  },
+  {
+    "code": "395094",
+    "occupation": "Skincare specialist"
+  },
+  {
+    "code": "493050",
+    "occupation": "Small engine mechanic"
+  },
+  {
+    "code": "119151",
+    "occupation": "Social and community service manager"
+  },
+  {
+    "code": "211093",
+    "occupation": "Social and human service assistant"
+  },
+  {
+    "code": "194061",
+    "occupation": "Social science research assistant"
+  },
+  {
+    "code": "211029",
+    "occupation": "Social worker, other"
+  },
+  {
+    "code": "193041",
+    "occupation": "Sociologist"
+  },
+  {
+    "code": "151252",
+    "occupation": "Software developer"
+  },
+  {
+    "code": "151253",
+    "occupation": "Software quality assurance analyst and tester"
+  },
+  {
+    "code": "472231",
+    "occupation": "Solar photovoltaic installer"
+  },
+  {
+    "code": "252050",
+    "occupation": "Special education teacher"
+  },
+  {
+    "code": "291127",
+    "occupation": "Speech-language pathologist"
+  },
+  {
+    "code": "518021",
+    "occupation": "Stationary engineer and boiler operator"
+  },
+  {
+    "code": "439111",
+    "occupation": "Statistical assistant"
+  },
+  {
+    "code": "152041",
+    "occupation": "Statistician"
+  },
+  {
+    "code": "537065",
+    "occupation": "Stocker and order filler"
+  },
+  {
+    "code": "472221",
+    "occupation": "Structural iron and steel worker"
+  },
+  {
+    "code": "512041",
+    "occupation": "Structural metal fabricator and fitter"
+  },
+  {
+    "code": "211011",
+    "occupation": "Substance abuse and behavioral disorder counselor"
+  },
+  {
+    "code": "391000",
+    "occupation": "Supervisor of personal care and service worker"
+  },
+  {
+    "code": "531000",
+    "occupation": "Supervisor of transportation and material moving worker"
+  },
+  {
+    "code": "291240",
+    "occupation": "Surgeon"
+  },
+  {
+    "code": "292055",
+    "occupation": "Surgical technologist"
+  },
+  {
+    "code": "193022",
+    "occupation": "Survey researcher"
+  },
+  {
+    "code": "173031",
+    "occupation": "Surveying and mapping technician"
+  },
+  {
+    "code": "171020",
+    "occupation": "Surveyor, cartographer, and photogrammetrist"
+  },
+  {
+    "code": "432011",
+    "occupation": "Switchboard operator, including answering service"
+  },
+  {
+    "code": "516050",
+    "occupation": "Tailor, dressmaker, and sewer"
+  },
+  {
+    "code": "132081",
+    "occupation": "Tax examiner and collector, and revenue agent"
+  },
+  {
+    "code": "132082",
+    "occupation": "Tax preparer"
+  },
+  {
+    "code": "533054",
+    "occupation": "Taxi driver"
+  },
+  {
+    "code": "259040",
+    "occupation": "Teaching assistant"
+  },
+  {
+    "code": "273042",
+    "occupation": "Technical writer"
+  },
+  {
+    "code": "499052",
+    "occupation": "Telecommunications line installer and repairer"
+  },
+  {
+    "code": "419041",
+    "occupation": "Telemarketer"
+  },
+  {
+    "code": "432021",
+    "occupation": "Telephone operator"
+  },
+  {
+    "code": "274030",
+    "occupation": "Television, video, and film camera operator and editor"
+  },
+  {
+    "code": "433071",
+    "occupation": "Teller"
+  },
+  {
+    "code": "516060",
+    "occupation": "Textile machine setter, operator, and tender"
+  },
+  {
+    "code": "291129",
+    "occupation": "Therapist, other"
+  },
+  {
+    "code": "519197",
+    "occupation": "Tire builder"
+  },
+  {
+    "code": "232093",
+    "occupation": "Title examiner, abstractor, and searcher"
+  },
+  {
+    "code": "514111",
+    "occupation": "Tool and die maker"
+  },
+  {
+    "code": "397010",
+    "occupation": "Tour and travel guide"
+  },
+  {
+    "code": "113131",
+    "occupation": "Training and development manager"
+  },
+  {
+    "code": "131151",
+    "occupation": "Training and development specialist"
+  },
+  {
+    "code": "533052",
+    "occupation": "Transit and intercity bus driver"
+  },
+  {
+    "code": "536051",
+    "occupation": "Transportation inspector"
+  },
+  {
+    "code": "339093",
+    "occupation": "Transportation security screener"
+  },
+  {
+    "code": "536030",
+    "occupation": "Transportation service attendant"
+  },
+  {
+    "code": "113071",
+    "occupation": "Transportation, storage, and distribution manager"
+  },
+  {
+    "code": "413041",
+    "occupation": "Travel agent"
+  },
+  {
+    "code": "373013",
+    "occupation": "Tree trimmer and pruner"
+  },
+  {
+    "code": "253041",
+    "occupation": "Tutor"
+  },
+  {
+    "code": "272023",
+    "occupation": "Umpire, referee, and other sports official"
+  },
+  {
+    "code": "475040",
+    "occupation": "Underground mining machine operator"
+  },
+  {
+    "code": "999999",
+    "occupation": "Unemployed, with no work experience in the last 5 years or earlier or never worked"
+  },
+  {
+    "code": "516093",
+    "occupation": "Upholsterer"
+  },
+  {
+    "code": "193051",
+    "occupation": "Urban and regional planner"
+  },
+  {
+    "code": "393031",
+    "occupation": "Usher, lobby attendant, and ticket taker"
+  },
+  {
+    "code": "291131",
+    "occupation": "Veterinarian"
+  },
+  {
+    "code": "319096",
+    "occupation": "Veterinary assistant and laboratory animal caretaker"
+  },
+  {
+    "code": "292056",
+    "occupation": "Veterinary technologist and technician"
+  },
+  {
+    "code": "353031",
+    "occupation": "Waiter or waitress"
+  },
+  {
+    "code": "518031",
+    "occupation": "Water and wastewater treatment plant and system operator"
+  },
+  {
+    "code": "151255",
+    "occupation": "Web and digital interface designer"
+  },
+  {
+    "code": "151254",
+    "occupation": "Web developer"
+  },
+  {
+    "code": "435111",
+    "occupation": "Weigher, measurer, checker, and sampler, recordkeeping"
+  },
+  {
+    "code": "514120",
+    "occupation": "Welding, soldering, and brazing worker"
+  },
+  {
+    "code": "131022",
+    "occupation": "Wholesale and retail buyer, except farm products"
+  },
+  {
+    "code": "499081",
+    "occupation": "Wind turbine service technician"
+  },
+  {
+    "code": "517042",
+    "occupation": "Woodworking machine setter, operator, and tender, except sawing"
+  },
+  {
+    "code": "439022",
+    "occupation": "Word processor and typist"
+  },
+  {
+    "code": "273043",
+    "occupation": "Writer and author"
+  }
+]
