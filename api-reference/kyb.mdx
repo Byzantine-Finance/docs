@@ -12,11 +12,11 @@ The following endpoint should be used to obtain a Terms of Service acceptance li
   
 </Card>
 
-<Warning>  
+<Warning>
   The user must accept the Bridge Terms of Service before creating the user account. Note that the returned ToS agreement ID will be used in the next step to create the entity account.
 </Warning>
 
-<Info>  
+<Info>
   Please refer to [Account Creation](/documentation/account-management/account-creation) for more details about the Bridge ToS.
 </Info>
 
@@ -29,15 +29,26 @@ The creation of the entity account is done by calling this API endpoint:
 </Card>
 
 The following information needs to be provided:
-- company details
-- personal data about every beneficiary/representative of the company
-- company documents
-- optional - it is possible to add a list of `authenticators` to register beneficiary's passkey to their device
+
+- Company details
+- Personal data about every ultimate beneficial owner (UBO)/representative of the company
+- Company documents
+- (Optional) A list of `authenticators` to register a beneficiary's passkey to their device
 
 The entity will receive an `account_id` and an `entity_id`. Every beneficiary/representative of the entity will have a `user_id`.
 
 <Info>
   When creating an entity, the user creating it **must** add themselves as one of the beneficiaries/representatives.
-  
+
   Please refer to the related endpoint page for more details about the requirements.
+</Info>
+
+### 3. KYB verification
+
+Byzantine and Bridge will verify the entity's existence, ownership structure, and the identities of all UBOs and representatives of the company. Both Bridge and Byzantine may ask for additional details during this process.
+
+Once completed, the root user will receive an email notifying them of their entity's account opening.
+
+<Info>
+  This process usually takes 24-48 hours.
 </Info>
