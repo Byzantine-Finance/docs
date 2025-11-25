@@ -4,6 +4,24 @@ title: "Individuals - KYC"
 
 In order to use the Byzantine Prime application, an individual user needs to go through a KYC process. This is a regulatory obligation for individuals.
 
+### 1. Accept the Bridge Terms of Service
+
+The following endpoint should be used to obtain a Terms of Service acceptance link. Integrators should then display this link to the end user, who must click it to accept the Bridge Terms of Service:
+
+<Card title="Accept the Bridge Terms of Service" icon="plus" horizontal href="/api-reference/terms-of-service/post-v1queryget-tos-acceptance-link">
+  
+</Card>
+
+<Warning>  
+  The user must accept the Bridge Terms of Service before creating the user account. Note that the returned ToS agreement ID will be used in the next step to create the user account.
+</Warning>
+
+<Info>  
+  Please refer to [Account Creation](/documentation/account-management/account-creation) for more details about the Bridge ToS.
+</Info>
+
+### 2. Create the user account
+
 The creation of the user account is done by calling this API endpoint:
 
 <Card title="Create a user account" icon="plus" horizontal href="/api-reference/user-accounts/create-a-byzantine-user">

@@ -4,7 +4,25 @@ title: "Legal entities - KYB"
 
 Creating an account for an entity means submitting company information and company documents for KYB, as well as beneficiaries and details about them for KYC. This is a regulatory obligation.
 
-To facilitate this process for integrators, on the Byzantine API, this happens through a single API call.
+### 1. Accept the Bridge Terms of Service
+
+The following endpoint should be used to obtain a Terms of Service acceptance link. Integrators should then display this link to the end user, who must click it to accept the Bridge Terms of Service:
+
+<Card title="Accept the Bridge Terms of Service" icon="plus" horizontal href="/api-reference/terms-of-service/post-v1queryget-tos-acceptance-link">
+  
+</Card>
+
+<Warning>  
+  The user must accept the Bridge Terms of Service before creating the user account. Note that the returned ToS agreement ID will be used in the next step to create the entity account.
+</Warning>
+
+<Info>  
+  Please refer to [Account Creation](/documentation/account-management/account-creation) for more details about the Bridge ToS.
+</Info>
+
+### 2. Create the entity account
+
+The creation of the entity account is done by calling this API endpoint:
 
 <Card title="Create an entity" icon="plus" horizontal href="/api-reference/user-accounts/create-a-byzantine-entity">
   
