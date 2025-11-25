@@ -1,4 +1,14 @@
 ---
 title: "Verification statuses"
-description: "Description of your new file."
+description: "Verification statuses during the KYC and KYB process."
 ---
+
+From the creation of the user account, the user will go through the following verification statuses:
+
+| **Status**                  | **Byzantine Status**                                                                                                                                    | **Bridge Status**   | **Description**                                                                                                                              |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`waiting_for_information`** | Documents requested: `init`                                                                                                                             | `incomplete`        | Awaiting user - `awaitingUser`: status for company applicants only; requires user action other than document submission                      |
+| **`under_review`**            | Pending: `pending`                                                                                                                                      | `under_review`      | The applicant has provided all required data and is waiting for verification processing.                                                      |
+| **`active`**                  | Approved: `completed` and `GREEN`                                                                                                                       | `approved`          | User has successfully passed all verification checks.                                                                                        |
+| **`rejected`**                | <div>• Rejected: reviewStatus - `completed`, reviewRejectType - `FINAL`, reviewAnswer - `RED`</div><div>• Resubmission requested: reviewStatus - `completed`, reviewResult.reviewRejectType - `RETRY`, reviewAnswer - `RED`</div> | `rejected`          | User failed verification                                                                                                                     |
+| **`inactive`**                | Inactive                                                                                                                                                | x                   | User has been deactivated by the system administrator.                                                                                        |
