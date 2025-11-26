@@ -190,7 +190,8 @@
 								"group": "Deposits & withdrawals",
 								"pages": [
 									"api-reference/deposit",
-									"api-reference/withdrawal"
+									"api-reference/withdrawal",
+									"api-reference/idle-balance"
 								]
 							}
 						]

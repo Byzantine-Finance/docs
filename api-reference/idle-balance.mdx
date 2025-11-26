@@ -1,0 +1,35 @@
+---
+title: "Idle balance"
+description: "Stablecoin balance that is sitting in the user's wallet."
+---
+
+<Info>
+  This section applies only to users with a secure wallet created during onboarding.
+</Info>
+
+Idle balance refers to stablecoins held in a user's embedded wallet that have not been deposited into a Byzantine vault. Idle balance does not generate yield.
+
+## How idle balance occurs
+
+### Stablecoin deposits
+
+When users deposit stablecoins directly, they control how much to deposit into the vault and how much to keep in their embedded wallet. Any stablecoins remaining in the embedded wallet after the deposit are considered idle balance.
+
+### Fiat deposits
+
+For fiat deposits, the process is slightly different:
+
+1. The user specifies the deposit `amount` and pre-signs the on-chain deposit transaction.
+2. The user receives dedicated bank account details and deposits fiat (EUR or USD) into this account.
+3. Once the fiat arrives, it is automatically converted to stablecoins and transferred to the user's embedded wallet.
+4. The exact same `amount` previously specified by the user is automatically deposited into the vault using the pre-signed transaction.
+
+<Note>
+  Due to foreign exchange rate fluctuations between fiat and stablecoins (e.g., EUR to USDC), users are required to deposit slightly more fiat than the target deposit amount to ensure sufficient stablecoins are received.
+</Note>
+
+When the stablecoins arrive in the embedded wallet, the **exact** `amount` specified in the pre-signed transaction is automatically deposited into the vault. **Any remaining stablecoins in the wallet become idle balance.**
+
+## Depositing idle balance
+
+To deposit idle balance into the vault, users must explicitly call the [deposit endpoint](/api-reference/deposit) with the exact idle balance amount. This ensures the wallet maintains zero idle balance if desired.

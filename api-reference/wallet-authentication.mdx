@@ -9,17 +9,12 @@ When a user account is created in Byzantine, either they themselves or their ent
 
 Integrators have two options when creating a user account. This method will be used in the future to authenticate the user when making transactions.
 
-### Method 1: OTP via email
+| Auth Method | Description |
+| --- | --- |
+| OTP via email | This method is easier to implement, but is a little less secure, since it relies on access to the end user's email account. |
+| Passkey | This method is more cryptographically secure, since it directly links the end user's device to authentication, but is a bit more technically challenging to implement. |
 
-This method is easier to implement, but is a little less secure, since it relies on access to the end user's email account.
-
-### Method 2: Passkey authentication
-
-This method is more cryptographically secure, since it directly links the end user's device to authentication, but is a bit more technically challenging to implement.
-
-## Defining the authentication method
-
-### Method 1: OTP via email
+### OTP via email
 
 **Method setup:**
 
@@ -31,7 +26,7 @@ User does not need to do anything to set up this method.
 2. **Authenticate with OTP:** The user will receive an OTP code via email and needs to enter it in the user interface.
 3. **Complete the transaction:** The user calls the `/submit/[action]` endpoint to sign and execute the transaction with the OTP code.
 
-### Method 2: Passkey authentication
+### Passkey authentication
 
 **Method setup:**
 
