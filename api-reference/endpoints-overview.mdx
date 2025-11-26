@@ -1,0 +1,49 @@
+---
+title: "Overview"
+---
+
+Byzantine has built an API to simplify the integration of our platform into your own. 
+<Info>
+  Download the [OpenAPI specification](https://api.byzantine.fi/api-docs/openapi-integrator.json) to view the full API endpoints.
+</Info>
+
+## Query vault data
+
+- Discover active vaults and their performance using `Top vaults`, `Vault APY`, and `History` endpoints.
+
+## Query user data
+
+- Retrieve vault activity for a single user: deposits, withdrawals, and aggregate positions.
+
+## Account data
+
+- Check transaction statuses and historical activity after deposits/withdrawals are initiated.
+- Use these endpoints to confirm when funds finish on-ramping or when a withdrawal settles.
+
+## Account management & user accounts
+
+- Create and manage entities and users, including KYC/KYB payloads and supporting documents.
+- Complete the account creation process to enable on-ramping and off-ramping.
+
+## Transactions with passkey
+
+- `Get approve/deposit/withdraw body` endpoints return unsigned transactions for passkey-based flows.
+- `Send transaction` broadcasts a signed payload after collecting the user’s WebAuthn signature.
+
+## Transactions with OTP
+
+- Use the OTP `init` endpoints to trigger an email OTP for approve/deposit/withdraw flows.
+- `Complete transaction` finalizes the OTP-authenticated transaction after the user enters the code.
+
+## Query API health
+
+- `GET /api/v1/health` returns the service status.
+
+## Terms of Service
+
+- Obtain the Bridge ToS acceptance link before creating user accounts.
+
+---
+
+Select any endpoint category below to view request/response schemas generated from the OpenAPI file.
+

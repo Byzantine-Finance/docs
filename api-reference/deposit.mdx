@@ -3,15 +3,18 @@ title: "Deposit"
 description: "How to make a deposit into a Byzantine vault."
 ---
 
+Byzantine accepts both stablecoins and fiat deposits. Based on the deposit currency, the process differs slightly.
+
 A deposit into a Byzantine vault proceeeds in the following steps:
 
 1. Approve a Byzantine vault as a valid interaction target. This is a **one-time requirement per vault**.
 2. Sign the deposit transaction.
-3. Deposit fiat into a dedicated bank account to convert it to stablecoins, known as _on-ramping_.
+3. [Optional - only for fiat deposits] Deposit fiat into a dedicated bank account to convert it to stablecoins, known as _on-ramping_.
 4. Execute the deposit transaction to transfer the stablecoins into a Byzantine vault.
 
 <Info>
-  The integrator will have to call different API endpoints based on the authentication method used.
+  The integrator will have to call different API endpoints based on the
+  authentication method used.
 </Info>
 
 ## 1. Approving a vault
@@ -28,6 +31,7 @@ This approval is a **one-time requirement per vault**, typically performed when 
     2. [Submit approval transaction](/api-reference/transactions-with-otp/send-a-transaction-otp-auth), which submits the OTP code to complete the approval.
 
     ![Flow to approve a vault with OTP](/images/approve-otp.png)
+
   </Tab>
   <Tab title="Passkey">
     The integrator must call two API endpoints:
@@ -36,6 +40,7 @@ This approval is a **one-time requirement per vault**, typically performed when 
     2. [Submit approval transaction](/api-reference/transactions-with-passkey/submit-a-transaction-passkey-auth), which submits the signed transaction.
 
     ![Flow to approve a vault with Passkey](/images/approve-passkey.png)
+
   </Tab>
 </Tabs>
 
@@ -49,6 +54,7 @@ This approval is a **one-time requirement per vault**, typically performed when 
     2. [Submit deposit transaction](/api-reference/transactions-with-otp/send-a-transaction-otp-auth), which submits the OTP code to sign the deposit transaction.
 
     ![Flow to deposit with OTP](/images/deposit-otp.png)
+
   </Tab>
   <Tab title="Passkey">
     Initiating the deposit is once again a two-step transaction.
@@ -57,10 +63,11 @@ This approval is a **one-time requirement per vault**, typically performed when 
     2. [Submit deposit transaction](/api-reference/transactions-with-passkey/submit-a-transaction-passkey-auth), which submits the signed transaction.
 
     ![Flow to deposit with Passkey](/images/deposit-passkey.png)
+
   </Tab>
 </Tabs>
 
-## 3. Depositing fiat into bank account (on-ramping)
+## 3. [Optional] Depositing fiat into bank account (on-ramping)
 
 On-ramping assets is done via [Bridge](https://www.bridge.xyz/), our on- and off-ramping partner.
 
@@ -72,12 +79,27 @@ The user must deposit fiat into this dedicated bank account to convert it to sta
   This step can be skipped if user is depositing stablecoins directly.
 </Info>
 
-## 4. Executing the deposit transaction
+## 4. [Automatic] Executing the deposit transaction
 
-As soon as the on-ramping is complete, the signed deposit transaction will be executed automatically, which means user's money is transferred into the Byzantine vault.
+<Tabs>
+  <Tab title="Stablecoins deposit">
+    Once the deposit transaction is signed (step 2), the stablecoins will be transferred immediately into the Byzantine vault.
+    <Note>
+      For users depositing stablecoins, the transaction is immediately broadcasted, i.e. the status is set to `completed`.
+    </Note>
+  </Tab>
+  <Tab title="Fiat deposit">
+    As soon as the on-ramping is complete, Byzantine will automatically execute the pre-signed transaction, which means user's money will be transferred into the Byzantine vault.
 
-<Note>
-  Note that signing the deposit transaction or depositing fiat into the bank account does not complete the deposit. Funds are only transferred into the Byzantine vault after on-ramping is complete. Transactions go through the following statuses:
+    <Note>
+      Note that signing the deposit transaction or depositing fiat into the bank account does not complete the deposit. Funds are only transferred into the Byzantine vault after on-ramping is complete.
+    </Note>
+    </Tab>
+
+</Tabs>
+
+<Info>
+  Transactions go through the following statuses:
 
   - `created`: The transaction has been created and is waiting to be signed.
   - `waiting_for_funds`: The transaction has been signed. The system is waiting for the bank transfer to trigger the broadcasting of the transaction.
@@ -85,7 +107,6 @@ As soon as the on-ramping is complete, the signed deposit transaction will be ex
   - `processing`: The funds have arrived with Bridge and are currently being on-ramped.
   - `completed`: The transaction has been broadcasted and executed.
 
-  For users depositing stablecoins, the transaction is immediately broadcasted, i.e. the status is set to `completed`.
-
   The transaction status can be checked by calling the [Get transaction status](/api-reference/account-data/get-a-single-transaction-by-id) endpoint.
-</Note>
+
+</Info>
