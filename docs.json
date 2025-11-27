@@ -170,6 +170,7 @@
 							{
 								"group": "Account creation",
 								"pages": [
+									"api-reference/kyc-kyb-overview",
 									"api-reference/kyc",
 									"api-reference/kyb",
 									"api-reference/documents",
@@ -189,9 +190,26 @@
 							{
 								"group": "Deposits & withdrawals",
 								"pages": [
-									"api-reference/deposit",
-									"api-reference/withdrawal",
-									"api-reference/idle-balance"
+									{
+										"group": "Deposit",
+										"pages": [
+											"api-reference/deposit-overview",
+											"api-reference/deposit-technical"
+										]
+									},
+									{
+										"group": "Withdrawal",
+										"pages": [
+											"api-reference/withdrawal-overview",
+											"api-reference/withdrawal-technical"
+										]
+									},
+									{
+										"group": "Idle balance",
+										"pages": [
+											"api-reference/idle-balance"
+										]
+									}
 								]
 							}
 						]
