@@ -3174,7 +3174,7 @@
     {
       "name": "Vault data",
       "description": "Get data about vaults."
-    },
+    }, 
     {
       "name": "API health",
       "description": "Check API status."
