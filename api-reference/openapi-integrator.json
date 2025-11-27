@@ -9,6 +9,12 @@
     },
     "version": "0.2.0"
   },
+  "servers": [
+    {
+      "url": "https://api.byzantine.fi",
+      "description": "Production"
+    }
+  ],
   "paths": {
     "/v1/query/get-tos-acceptance-link": {
       "post": {
@@ -45,7 +51,18 @@
           "500": {
             "description": "Bridge API error"
           }
-        }
+        },
+        "security": [
+          {
+            "XPubkey": []
+          },
+          {
+            "XTimestamp": []
+          },
+          {
+            "XSignature": []
+          }
+        ]
       }
     },
     "/v1/submit/create-entity": {
@@ -55,35 +72,6 @@
         ],
         "summary": "Create a Byzantine entity",
         "operationId": "create_entity",
-        "parameters": [
-          {
-            "name": "X-Pubkey",
-            "in": "header",
-            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "requestBody": {
           "description": "Byzantine entity creation body",
           "content": {
@@ -115,7 +103,13 @@
         },
         "security": [
           {
-            "integrator_auth": []
+            "XPubkey": []
+          },
+          {
+            "XTimestamp": []
+          },
+          {
+            "XSignature": []
           }
         ]
       }
@@ -127,35 +121,6 @@
         ],
         "summary": "Create a Byzantine user",
         "operationId": "create_user",
-        "parameters": [
-          {
-            "name": "X-Pubkey",
-            "in": "header",
-            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "requestBody": {
           "description": "Byzantine user creation body",
           "content": {
@@ -187,7 +152,13 @@
         },
         "security": [
           {
-            "integrator_auth": []
+            "XPubkey": []
+          },
+          {
+            "XTimestamp": []
+          },
+          {
+            "XSignature": []
           }
         ]
       }
@@ -200,35 +171,6 @@
         "summary": "Add bank account",
         "description": "Add a bank account to withdraw to. At least one bank account must be added before any off-ramp withdrawal can be initated.",
         "operationId": "add_bank_account",
-        "parameters": [
-          {
-            "name": "X-Pubkey",
-            "in": "header",
-            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
         "requestBody": {
           "description": "Bank account details to associate with the Byzantine account",
           "content": {
@@ -263,7 +205,13 @@
         },
         "security": [
           {
-            "integrator_auth": []
+            "XPubkey": []
+          },
+          {
+            "XTimestamp": []
+          },
+          {
+            "XSignature": []
           }
         ]
       }
@@ -316,7 +264,18 @@
           "500": {
             "description": "Internal server error"
           }
-        }
+        },
+        "security": [
+          {
+            "XPubkey": []
+          },
+          {
+            "XTimestamp": []
+          },
+          {
+            "XSignature": []
+          }
+        ]
       }
     },
     "/v1/query/get-transaction": {
@@ -353,7 +312,18 @@
           "500": {
             "description": "Internal server error"
           }
-        }
+        },
+        "security": [
+          {
+            "XPubkey": []
+          },
+          {
+            "XTimestamp": []
+          },
+          {
+            "XSignature": []
+          }
+        ]
       }
     },
     "/v1/query/get-transactions": {
@@ -394,7 +364,18 @@
           "500": {
             "description": "Internal server error"
           }
-        }
+        },
+        "security": [
+          {
+            "XPubkey": []
+          },
+          {
+            "XTimestamp": []
+          },
+          {
+            "XSignature": []
+          }
+        ]
       }
     },
     "/v1/query/get-approve-transaction-passkey": {
@@ -443,7 +424,18 @@
           "400": {
             "description": "Invalid chain ID"
           }
-        }
+        },
+        "security": [
+          {
+            "XPubkey": []
+          },
+          {
+            "XTimestamp": []
+          },
+          {
+            "XSignature": []
+          }
+        ]
       }
     },
     "/v1/query/get-deposit-transaction-passkey": {
@@ -492,7 +484,18 @@
           "400": {
             "description": "Invalid chain ID"
           }
-        }
+        },
+        "security": [
+          {
+            "XPubkey": []
+          },
+          {
+            "XTimestamp": []
+          },
+          {
+            "XSignature": []
+          }
+        ]
       }
     },
     "/v1/query/get-withdraw-transaction-passkey": {
@@ -541,7 +544,18 @@
           "400": {
             "description": "Invalid chain ID"
           }
-        }
+        },
+        "security": [
+          {
+            "XPubkey": []
+          },
+          {
+            "XTimestamp": []
+          },
+          {
+            "XSignature": []
+          }
+        ]
       }
     },
     "/v1/submit/send-transaction-passkey": {
@@ -593,7 +607,7 @@
           }
         ],
         "requestBody": {
-          "description": "The transaction signed by the user - passkey auth",
+          "description": "",
           "content": {
             "application/json": {
               "schema": {
@@ -620,7 +634,13 @@
         },
         "security": [
           {
-            "integrator_auth": []
+            "XPubkey": []
+          },
+          {
+            "XTimestamp": []
+          },
+          {
+            "XSignature": []
           }
         ]
       }
@@ -671,7 +691,18 @@
           "400": {
             "description": "Invalid chain ID"
           }
-        }
+        },
+        "security": [
+          {
+            "XPubkey": []
+          },
+          {
+            "XTimestamp": []
+          },
+          {
+            "XSignature": []
+          }
+        ]
       }
     },
     "/v1/query/init-deposit-otp": {
@@ -720,7 +751,18 @@
           "400": {
             "description": "Invalid chain ID"
           }
-        }
+        },
+        "security": [
+          {
+            "XPubkey": []
+          },
+          {
+            "XTimestamp": []
+          },
+          {
+            "XSignature": []
+          }
+        ]
       }
     },
     "/v1/query/init-withdraw-otp": {
@@ -769,7 +811,18 @@
           "400": {
             "description": "Invalid chain ID"
           }
-        }
+        },
+        "security": [
+          {
+            "XPubkey": []
+          },
+          {
+            "XTimestamp": []
+          },
+          {
+            "XSignature": []
+          }
+        ]
       }
     },
     "/v1/submit/send-transaction-otp": {
@@ -781,33 +834,6 @@
         "description": "Execute a transaction on the blockchain using the OTP flow.",
         "operationId": "send_transaction_otp",
         "parameters": [
-          {
-            "name": "X-Pubkey",
-            "in": "header",
-            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
           {
             "name": "chain_id",
             "in": "query",
@@ -848,7 +874,13 @@
         },
         "security": [
           {
-            "integrator_auth": []
+            "XPubkey": []
+          },
+          {
+            "XTimestamp": []
+          },
+          {
+            "XSignature": []
           }
         ]
       }
@@ -906,7 +938,18 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "XPubkey": []
+          },
+          {
+            "XTimestamp": []
+          },
+          {
+            "XSignature": []
+          }
+        ]
       }
     },
     "/v1/history/{vault_id}": {
@@ -1006,7 +1049,18 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "XPubkey": []
+          },
+          {
+            "XTimestamp": []
+          },
+          {
+            "XSignature": []
+          }
+        ]
       }
     },
     "/v1/top-vaults": {
@@ -1031,7 +1085,18 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "XPubkey": []
+          },
+          {
+            "XTimestamp": []
+          },
+          {
+            "XSignature": []
+          }
+        ]
       }
     },
     "/v1/health": {
@@ -3138,15 +3203,25 @@
       }
     },
     "securitySchemes": {
+      "XPubkey": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Pubkey"
+      },
+      "XSignature": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Signature"
+      },
+      "XTimestamp": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Timestamp"
+      },
       "bearer_auth": {
         "type": "http",
         "scheme": "bearer",
         "bearerFormat": "JWT"
-      },
-      "integrator_auth": {
-        "type": "apiKey",
-        "in": "header",
-        "name": "X-Pubkey, X-Timestamp, X-Signature"
       }
     }
   },
@@ -3174,7 +3249,7 @@
     {
       "name": "Vault data",
       "description": "Get data about vaults."
-    }, 
+    },
     {
       "name": "API health",
       "description": "Check API status."
