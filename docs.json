@@ -10,6 +10,16 @@
 	"background": {
 		"decoration": "gradient"
 	},
+    "api": {
+      "playground": {
+        "display": "simple"
+      },
+      "examples": {
+        "languages": ["curl", "python", "javascript"],
+        "defaults": "all",
+        "prefill": true
+      }
+    },
 	"favicon": "favicon.ico",
 	"navigation": {
 		"tabs": [

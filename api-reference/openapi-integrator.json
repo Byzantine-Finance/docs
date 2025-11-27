@@ -23,6 +23,28 @@
         ],
         "summary": "Get Bridge ToS link",
         "operationId": "request_tos_acceptance_link",
+        "parameters": [
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1760375826"
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x3045022100..."
+          }
+        ],
         "requestBody": {
           "description": "Optional redirect URI to append to the hosted ToS acceptance link",
           "content": {
@@ -55,12 +77,6 @@
         "security": [
           {
             "XPubkey": []
-          },
-          {
-            "XTimestamp": []
-          },
-          {
-            "XSignature": []
           }
         ]
       }
@@ -72,6 +88,28 @@
         ],
         "summary": "Create a Byzantine entity",
         "operationId": "create_entity",
+        "parameters": [
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1760375826"
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x3045022100..."
+          }
+        ],
         "requestBody": {
           "description": "Byzantine entity creation body",
           "content": {
@@ -104,12 +142,6 @@
         "security": [
           {
             "XPubkey": []
-          },
-          {
-            "XTimestamp": []
-          },
-          {
-            "XSignature": []
           }
         ]
       }
@@ -121,6 +153,28 @@
         ],
         "summary": "Create a Byzantine user",
         "operationId": "create_user",
+        "parameters": [
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1760375826"
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x3045022100..."
+          }
+        ],
         "requestBody": {
           "description": "Byzantine user creation body",
           "content": {
@@ -153,12 +207,6 @@
         "security": [
           {
             "XPubkey": []
-          },
-          {
-            "XTimestamp": []
-          },
-          {
-            "XSignature": []
           }
         ]
       }
@@ -171,6 +219,28 @@
         "summary": "Add bank account",
         "description": "Add a bank account to withdraw to. At least one bank account must be added before any off-ramp withdrawal can be initated.",
         "operationId": "add_bank_account",
+        "parameters": [
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1760375826"
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x3045022100..."
+          }
+        ],
         "requestBody": {
           "description": "Bank account details to associate with the Byzantine account",
           "content": {
@@ -206,12 +276,6 @@
         "security": [
           {
             "XPubkey": []
-          },
-          {
-            "XTimestamp": []
-          },
-          {
-            "XSignature": []
           }
         ]
       }
@@ -245,6 +309,26 @@
               ],
               "nullable": true
             }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1760375826"
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x3045022100..."
           }
         ],
         "responses": {
@@ -268,12 +352,6 @@
         "security": [
           {
             "XPubkey": []
-          },
-          {
-            "XTimestamp": []
-          },
-          {
-            "XSignature": []
           }
         ]
       }
@@ -293,6 +371,26 @@
             "schema": {
               "$ref": "#/components/schemas/Uuid"
             }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1760375826"
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x3045022100..."
           }
         ],
         "responses": {
@@ -316,12 +414,6 @@
         "security": [
           {
             "XPubkey": []
-          },
-          {
-            "XTimestamp": []
-          },
-          {
-            "XSignature": []
           }
         ]
       }
@@ -342,6 +434,26 @@
             "schema": {
               "$ref": "#/components/schemas/Uuid"
             }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1760375826"
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x3045022100..."
           }
         ],
         "responses": {
@@ -368,12 +480,6 @@
         "security": [
           {
             "XPubkey": []
-          },
-          {
-            "XTimestamp": []
-          },
-          {
-            "XSignature": []
           }
         ]
       }
@@ -397,6 +503,26 @@
               "format": "int32",
               "minimum": 0
             }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1760375826"
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x3045022100..."
           }
         ],
         "requestBody": {
@@ -428,12 +554,6 @@
         "security": [
           {
             "XPubkey": []
-          },
-          {
-            "XTimestamp": []
-          },
-          {
-            "XSignature": []
           }
         ]
       }
@@ -457,6 +577,26 @@
               "format": "int32",
               "minimum": 0
             }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1760375826"
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x3045022100..."
           }
         ],
         "requestBody": {
@@ -488,12 +628,6 @@
         "security": [
           {
             "XPubkey": []
-          },
-          {
-            "XTimestamp": []
-          },
-          {
-            "XSignature": []
           }
         ]
       }
@@ -517,6 +651,26 @@
               "format": "int32",
               "minimum": 0
             }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1760375826"
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x3045022100..."
           }
         ],
         "requestBody": {
@@ -548,12 +702,6 @@
         "security": [
           {
             "XPubkey": []
-          },
-          {
-            "XTimestamp": []
-          },
-          {
-            "XSignature": []
           }
         ]
       }
@@ -567,15 +715,6 @@
         "description": "Submit a signed transaction to execute it on the blockchain.",
         "operationId": "send_transaction_passkey",
         "parameters": [
-          {
-            "name": "X-Pubkey",
-            "in": "header",
-            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
           {
             "name": "X-Timestamp",
             "in": "header",
@@ -635,12 +774,6 @@
         "security": [
           {
             "XPubkey": []
-          },
-          {
-            "XTimestamp": []
-          },
-          {
-            "XSignature": []
           }
         ]
       }
@@ -664,6 +797,26 @@
               "format": "int32",
               "minimum": 0
             }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1760375826"
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x3045022100..."
           }
         ],
         "requestBody": {
@@ -695,12 +848,6 @@
         "security": [
           {
             "XPubkey": []
-          },
-          {
-            "XTimestamp": []
-          },
-          {
-            "XSignature": []
           }
         ]
       }
@@ -724,6 +871,26 @@
               "format": "int32",
               "minimum": 0
             }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1760375826"
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x3045022100..."
           }
         ],
         "requestBody": {
@@ -755,12 +922,6 @@
         "security": [
           {
             "XPubkey": []
-          },
-          {
-            "XTimestamp": []
-          },
-          {
-            "XSignature": []
           }
         ]
       }
@@ -784,6 +945,26 @@
               "format": "int32",
               "minimum": 0
             }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1760375826"
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x3045022100..."
           }
         ],
         "requestBody": {
@@ -815,12 +996,6 @@
         "security": [
           {
             "XPubkey": []
-          },
-          {
-            "XTimestamp": []
-          },
-          {
-            "XSignature": []
           }
         ]
       }
@@ -844,6 +1019,26 @@
               "format": "int32",
               "minimum": 0
             }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1760375826"
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x3045022100..."
           }
         ],
         "requestBody": {
@@ -875,12 +1070,6 @@
         "security": [
           {
             "XPubkey": []
-          },
-          {
-            "XTimestamp": []
-          },
-          {
-            "XSignature": []
           }
         ]
       }
@@ -912,6 +1101,26 @@
               "type": "string",
               "nullable": true
             }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1760375826"
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x3045022100..."
           }
         ],
         "responses": {
@@ -942,12 +1151,6 @@
         "security": [
           {
             "XPubkey": []
-          },
-          {
-            "XTimestamp": []
-          },
-          {
-            "XSignature": []
           }
         ]
       }
@@ -1023,6 +1226,26 @@
               "type": "string",
               "nullable": true
             }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1760375826"
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x3045022100..."
           }
         ],
         "responses": {
@@ -1053,12 +1276,6 @@
         "security": [
           {
             "XPubkey": []
-          },
-          {
-            "XTimestamp": []
-          },
-          {
-            "XSignature": []
           }
         ]
       }
@@ -1071,6 +1288,28 @@
         "summary": "Get all Byzantine vaults",
         "description": "Returns a list of all Byzantine vaults from configuration. \"Vaults\" are deposit products, the main entities in the Byzantine protocol.",
         "operationId": "get_top_vaults",
+        "parameters": [
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "1760375826"
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "0x3045022100..."
+          }
+        ],
         "responses": {
           "200": {
             "description": "List of top vaults retrieved successfully",
@@ -1089,12 +1328,6 @@
         "security": [
           {
             "XPubkey": []
-          },
-          {
-            "XTimestamp": []
-          },
-          {
-            "XSignature": []
           }
         ]
       }
@@ -3206,17 +3439,8 @@
       "XPubkey": {
         "type": "apiKey",
         "in": "header",
-        "name": "X-Pubkey"
-      },
-      "XSignature": {
-        "type": "apiKey",
-        "in": "header",
-        "name": "X-Signature"
-      },
-      "XTimestamp": {
-        "type": "apiKey",
-        "in": "header",
-        "name": "X-Timestamp"
+        "name": "X-Pubkey",
+        "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). \n                    Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd"
       },
       "bearer_auth": {
         "type": "http",
