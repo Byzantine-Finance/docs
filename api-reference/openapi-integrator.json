@@ -27,26 +27,23 @@
           {
             "name": "X-Timestamp",
             "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "1760375826"
+            }
           },
           {
             "name": "X-Signature",
             "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "0x3045022100..."
+            }
           }
         ],
         "requestBody": {
-          "description": "Optional redirect URI to append to the hosted ToS acceptance link",
           "content": {
             "application/json": {
               "schema": {
@@ -92,26 +89,23 @@
           {
             "name": "X-Timestamp",
             "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "1760375826"
+            }
           },
           {
             "name": "X-Signature",
             "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "0x3045022100..."
+            }
           }
         ],
         "requestBody": {
-          "description": "Byzantine entity creation body",
           "content": {
             "application/json": {
               "schema": {
@@ -157,26 +151,23 @@
           {
             "name": "X-Timestamp",
             "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "1760375826"
+            }
           },
           {
             "name": "X-Signature",
             "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "0x3045022100..."
+            }
           }
         ],
         "requestBody": {
-          "description": "Byzantine user creation body",
           "content": {
             "application/json": {
               "schema": {
@@ -223,26 +214,23 @@
           {
             "name": "X-Timestamp",
             "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "1760375826"
+            }
           },
           {
             "name": "X-Signature",
             "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "0x3045022100..."
+            }
           }
         ],
         "requestBody": {
-          "description": "Bank account details to associate with the Byzantine account",
           "content": {
             "application/json": {
               "schema": {
@@ -313,22 +301,20 @@
           {
             "name": "X-Timestamp",
             "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "1760375826"
+            }
           },
           {
             "name": "X-Signature",
             "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "0x3045022100..."
+            }
           }
         ],
         "responses": {
@@ -375,22 +361,20 @@
           {
             "name": "X-Timestamp",
             "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "1760375826"
+            }
           },
           {
             "name": "X-Signature",
             "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "0x3045022100..."
+            }
           }
         ],
         "responses": {
@@ -438,22 +422,20 @@
           {
             "name": "X-Timestamp",
             "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "1760375826"
+            }
           },
           {
             "name": "X-Signature",
             "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "0x3045022100..."
+            }
           }
         ],
         "responses": {
@@ -507,26 +489,23 @@
           {
             "name": "X-Timestamp",
             "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "1760375826"
+            }
           },
           {
             "name": "X-Signature",
             "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "0x3045022100..."
+            }
           }
         ],
         "requestBody": {
-          "description": "Approve request body",
           "content": {
             "application/json": {
               "schema": {
@@ -581,26 +560,23 @@
           {
             "name": "X-Timestamp",
             "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "1760375826"
+            }
           },
           {
             "name": "X-Signature",
             "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "0x3045022100..."
+            }
           }
         ],
         "requestBody": {
-          "description": "Deposit request body",
           "content": {
             "application/json": {
               "schema": {
@@ -655,26 +631,23 @@
           {
             "name": "X-Timestamp",
             "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "1760375826"
+            }
           },
           {
             "name": "X-Signature",
             "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "0x3045022100..."
+            }
           }
         ],
         "requestBody": {
-          "description": "Withdraw request body",
           "content": {
             "application/json": {
               "schema": {
@@ -801,26 +774,23 @@
           {
             "name": "X-Timestamp",
             "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "1760375826"
+            }
           },
           {
             "name": "X-Signature",
             "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "0x3045022100..."
+            }
           }
         ],
         "requestBody": {
-          "description": "Approve request body",
           "content": {
             "application/json": {
               "schema": {
@@ -875,26 +845,23 @@
           {
             "name": "X-Timestamp",
             "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "1760375826"
+            }
           },
           {
             "name": "X-Signature",
             "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "0x3045022100..."
+            }
           }
         ],
         "requestBody": {
-          "description": "Deposit request body",
           "content": {
             "application/json": {
               "schema": {
@@ -949,26 +916,23 @@
           {
             "name": "X-Timestamp",
             "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "1760375826"
+            }
           },
           {
             "name": "X-Signature",
             "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "0x3045022100..."
+            }
           }
         ],
         "requestBody": {
-          "description": "Withdraw request body",
           "content": {
             "application/json": {
               "schema": {
@@ -1023,26 +987,23 @@
           {
             "name": "X-Timestamp",
             "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "1760375826"
+            }
           },
           {
             "name": "X-Signature",
             "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "0x3045022100..."
+            }
           }
         ],
         "requestBody": {
-          "description": "The request ID and the OTP code",
           "content": {
             "application/json": {
               "schema": {
@@ -1105,22 +1066,20 @@
           {
             "name": "X-Timestamp",
             "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "1760375826"
+            }
           },
           {
             "name": "X-Signature",
             "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "0x3045022100..."
+            }
           }
         ],
         "responses": {
@@ -1230,22 +1189,20 @@
           {
             "name": "X-Timestamp",
             "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "1760375826"
+            }
           },
           {
             "name": "X-Signature",
             "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "0x3045022100..."
+            }
           }
         ],
         "responses": {
@@ -1292,22 +1249,20 @@
           {
             "name": "X-Timestamp",
             "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks.",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "1760375826"
+            }
           },
           {
             "name": "X-Signature",
             "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}.",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
             "required": true,
             "schema": {
               "type": "string"
-            },
-            "example": "0x3045022100..."
+            }
           }
         ],
         "responses": {
