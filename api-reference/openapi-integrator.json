@@ -10,207 +10,262 @@
     "version": "0.2.0"
   },
   "paths": {
-    "/v1/health": {
-      "get": {
+    "/v1/query/get-tos-acceptance-link": {
+      "post": {
         "tags": [
-          "API health"
+          "Account creation"
         ],
-        "summary": "Health check endpoint",
-        "description": "Returns the health status of the API",
-        "operationId": "health_check",
+        "summary": "Get Bridge ToS link",
+        "operationId": "request_tos_acceptance_link",
+        "requestBody": {
+          "description": "Optional redirect URI to append to the hosted ToS acceptance link",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetTosAcceptanceLinkRequest"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
-            "description": "Service is healthy",
+            "description": "Hosted ToS acceptance URL received",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HealthResponse"
+                  "$ref": "#/components/schemas/GetTosAcceptanceLinkResponse"
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid request payload"
+          },
+          "500": {
+            "description": "Bridge API error"
           }
         }
       }
     },
-    "/v1/apy/{vault_id}": {
-      "get": {
+    "/v1/submit/create-entity": {
+      "post": {
         "tags": [
-          "Vault data"
+          "Account creation"
         ],
-        "summary": "Get vault APY",
-        "description": "Calculate APY for daily, weekly, monthly, and yearly periods with fallback to oldest available data.",
-        "operationId": "get_vault_apy",
+        "summary": "Create a Byzantine entity",
+        "operationId": "create_entity",
         "parameters": [
           {
-            "name": "vault_id",
-            "in": "path",
-            "description": "Vault ID",
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
             "required": true,
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "period",
-            "in": "query",
-            "description": "Specific period (daily, weekly, monthly, yearly, all)",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "nullable": true
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "APY data retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApyResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Vault not found or insufficient data"
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/history/{vault_id}": {
-      "get": {
-        "tags": [
-          "Vault data"
-        ],
-        "summary": "Get vault share price history",
-        "description": "Returns hourly aggregated share price data for a vault.",
-        "operationId": "get_vault_history",
-        "parameters": [
-          {
-            "name": "vault_id",
-            "in": "path",
-            "description": "Vault ID",
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
             "required": true,
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "start_date",
-            "in": "query",
-            "description": "Start date for history",
-            "required": false,
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
             "schema": {
-              "type": "string",
-              "format": "date-time",
-              "nullable": true
-            }
-          },
-          {
-            "name": "end_date",
-            "in": "query",
-            "description": "End date for history",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "format": "date-time",
-              "nullable": true
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Limit number of results (default: 1000)",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int64",
-              "nullable": true
-            }
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "description": "Offset for pagination (default: 0)",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int64",
-              "nullable": true
-            }
-          },
-          {
-            "name": "order",
-            "in": "query",
-            "description": "Order by timestamp: asc or desc (default: asc)",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "nullable": true
+              "type": "string"
             }
           }
         ],
+        "requestBody": {
+          "description": "Byzantine entity creation body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEntityRequest"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
-            "description": "Historical data retrieved successfully",
+            "description": "Entity created successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HistoryResponse"
+                  "$ref": "#/components/schemas/CreateEntityResponse"
                 }
               }
             }
           },
-          "404": {
-            "description": "Vault not found"
+          "400": {
+            "description": "Invalid request payload"
           },
           "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
+            "description": "Internal server error"
           }
-        }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
       }
     },
-    "/v1/top-vaults": {
-      "get": {
+    "/v1/submit/create-user": {
+      "post": {
         "tags": [
-          "Vault data"
+          "Account creation"
         ],
-        "summary": "Get all Byzantine vaults",
-        "description": "Returns a list of all Byzantine vaults from configuration. \"Vaults\" are deposit products, the main entities in the Byzantine protocol.",
-        "operationId": "get_top_vaults",
+        "summary": "Create a Byzantine user",
+        "operationId": "create_user",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Byzantine user creation body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserRequest"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
-            "description": "List of top vaults retrieved successfully",
+            "description": "User created successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TopVault"
-                  }
+                  "$ref": "#/components/schemas/CreateUserResponse"
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid request payload"
+          },
+          "500": {
+            "description": "Internal server error"
           }
-        }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/submit/add-bank-account": {
+      "post": {
+        "tags": [
+          "Account management"
+        ],
+        "summary": "Add bank account",
+        "description": "Add a bank account to withdraw to. At least one bank account must be added before any off-ramp withdrawal can be initated.",
+        "operationId": "add_bank_account",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Bank account details to associate with the Byzantine account",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddBankAccountRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Bank account added successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddBankAccountResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request payload"
+          },
+          "401": {
+            "description": "Unauthorized - Account does not belong to integrator"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
       }
     },
     "/v1/query/get-bank-accounts": {
@@ -798,262 +853,207 @@
         ]
       }
     },
-    "/v1/query/get-tos-acceptance-link": {
-      "post": {
+    "/v1/apy/{vault_id}": {
+      "get": {
         "tags": [
-          "Account creation"
+          "Vault data"
         ],
-        "summary": "Get Bridge ToS link",
-        "operationId": "request_tos_acceptance_link",
-        "requestBody": {
-          "description": "Optional redirect URI to append to the hosted ToS acceptance link",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetTosAcceptanceLinkRequest"
-              }
+        "summary": "Get vault APY",
+        "description": "Calculate APY for daily, weekly, monthly, and yearly periods with fallback to oldest available data.",
+        "operationId": "get_vault_apy",
+        "parameters": [
+          {
+            "name": "vault_id",
+            "in": "path",
+            "description": "Vault ID",
+            "required": true,
+            "schema": {
+              "type": "string"
             }
           },
-          "required": true
-        },
+          {
+            "name": "period",
+            "in": "query",
+            "description": "Specific period (daily, weekly, monthly, yearly, all)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Hosted ToS acceptance URL received",
+            "description": "APY data retrieved successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetTosAcceptanceLinkResponse"
+                  "$ref": "#/components/schemas/ApyResponse"
                 }
               }
             }
           },
-          "400": {
-            "description": "Invalid request payload"
+          "404": {
+            "description": "Vault not found or insufficient data"
           },
           "500": {
-            "description": "Bridge API error"
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
           }
         }
       }
     },
-    "/v1/submit/create-entity": {
-      "post": {
+    "/v1/history/{vault_id}": {
+      "get": {
         "tags": [
-          "Account creation"
+          "Vault data"
         ],
-        "summary": "Create a Byzantine entity",
-        "operationId": "create_entity",
+        "summary": "Get vault share price history",
+        "description": "Returns hourly aggregated share price data for a vault.",
+        "operationId": "get_vault_history",
         "parameters": [
           {
-            "name": "X-Pubkey",
-            "in": "header",
-            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "name": "vault_id",
+            "in": "path",
+            "description": "Vault ID",
             "required": true,
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
+            "name": "start_date",
+            "in": "query",
+            "description": "Start date for history",
+            "required": false,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "date-time",
+              "nullable": true
             }
           },
           {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
+            "name": "end_date",
+            "in": "query",
+            "description": "End date for history",
+            "required": false,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "date-time",
+              "nullable": true
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Limit number of results (default: 1000)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Offset for pagination (default: 0)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "nullable": true
+            }
+          },
+          {
+            "name": "order",
+            "in": "query",
+            "description": "Order by timestamp: asc or desc (default: asc)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "nullable": true
             }
           }
         ],
-        "requestBody": {
-          "description": "Byzantine entity creation body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateEntityRequest"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
           "200": {
-            "description": "Entity created successfully",
+            "description": "Historical data retrieved successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreateEntityResponse"
+                  "$ref": "#/components/schemas/HistoryResponse"
                 }
               }
             }
           },
-          "400": {
-            "description": "Invalid request payload"
+          "404": {
+            "description": "Vault not found"
           },
           "500": {
-            "description": "Internal server error"
-          }
-        },
-        "security": [
-          {
-            "integrator_auth": []
-          }
-        ]
-      }
-    },
-    "/v1/submit/create-user": {
-      "post": {
-        "tags": [
-          "Account creation"
-        ],
-        "summary": "Create a Byzantine user",
-        "operationId": "create_user",
-        "parameters": [
-          {
-            "name": "X-Pubkey",
-            "in": "header",
-            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Byzantine user creation body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateUserRequest"
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
               }
             }
-          },
-          "required": true
-        },
+          }
+        }
+      }
+    },
+    "/v1/top-vaults": {
+      "get": {
+        "tags": [
+          "Vault data"
+        ],
+        "summary": "Get all Byzantine vaults",
+        "description": "Returns a list of all Byzantine vaults from configuration. \"Vaults\" are deposit products, the main entities in the Byzantine protocol.",
+        "operationId": "get_top_vaults",
         "responses": {
           "200": {
-            "description": "User created successfully",
+            "description": "List of top vaults retrieved successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/CreateUserResponse"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TopVault"
+                  }
                 }
               }
             }
-          },
-          "400": {
-            "description": "Invalid request payload"
-          },
-          "500": {
-            "description": "Internal server error"
           }
-        },
-        "security": [
-          {
-            "integrator_auth": []
-          }
-        ]
+        }
       }
     },
-    "/v1/submit/add-bank-account": {
-      "post": {
+    "/v1/health": {
+      "get": {
         "tags": [
-          "Account management"
+          "API health"
         ],
-        "summary": "Add bank account",
-        "description": "Add a bank account to withdraw to. At least one bank account must be added before any off-ramp withdrawal can be initated.",
-        "operationId": "add_bank_account",
-        "parameters": [
-          {
-            "name": "X-Pubkey",
-            "in": "header",
-            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Bank account details to associate with the Byzantine account",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddBankAccountRequest"
-              }
-            }
-          },
-          "required": true
-        },
+        "summary": "Health check endpoint",
+        "description": "Returns the health status of the API",
+        "operationId": "health_check",
         "responses": {
-          "201": {
-            "description": "Bank account added successfully",
+          "200": {
+            "description": "Service is healthy",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/AddBankAccountResponse"
+                  "$ref": "#/components/schemas/HealthResponse"
                 }
               }
             }
-          },
-          "400": {
-            "description": "Invalid request payload"
-          },
-          "401": {
-            "description": "Unauthorized - Account does not belong to integrator"
-          },
-          "500": {
-            "description": "Internal server error"
           }
-        },
-        "security": [
-          {
-            "integrator_auth": []
-          }
-        ]
+        }
       }
     }
   },
