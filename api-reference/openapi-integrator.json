@@ -1949,7 +1949,7 @@
       },
       "CreateEntityRequest": {
         "type": "object",
-        "description": "Request body for creating a Byzantine entity",
+        "description": "Entity to be created. The vast majority of fields are required in order to complete the identity verification process.",
         "required": [
           "entityInfo",
           "associatedPersons",
