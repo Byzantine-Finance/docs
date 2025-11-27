@@ -219,7 +219,7 @@
 						"pages": [
 							"api-reference/endpoints-overview"
 						],
-						"openapi": "https://api.byzantine.fi/api-docs/openapi-integrator.json"
+						"openapi": "api-reference/openapi-integrator.json"
 					}
 				]
 			}
