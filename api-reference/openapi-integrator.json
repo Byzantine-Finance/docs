@@ -10,674 +10,21 @@
     "version": "0.2.0"
   },
   "paths": {
-    "/api/v1/submit/create-entity": {
-      "post": {
-        "tags": [
-          "User accounts"
-        ],
-        "summary": "Create a Byzantine entity",
-        "operationId": "create_entity",
-        "parameters": [
-          {
-            "name": "X-Pubkey",
-            "in": "header",
-            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Byzantine entity creation body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateEntityRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Entity created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SumsubApplicantData"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request payload"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        },
-        "security": [
-          {
-            "integrator_auth": []
-          }
-        ]
-      }
-    },
-    "/api/v1/submit/create-user": {
-      "post": {
-        "tags": [
-          "User accounts"
-        ],
-        "summary": "Create a Byzantine user",
-        "operationId": "create_user",
-        "parameters": [
-          {
-            "name": "X-Pubkey",
-            "in": "header",
-            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Byzantine user creation body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateUserRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "User created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SumsubApplicantData"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request payload"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        },
-        "security": [
-          {
-            "integrator_auth": []
-          }
-        ]
-      }
-    },
-    "/api/v1/submit/send-transaction": {
-      "post": {
-        "tags": [
-          "Transactions with passkey"
-        ],
-        "summary": "Submit a transaction (passkey auth)",
-        "description": "Submit a signed transaction to execute it on the blockchain.",
-        "operationId": "send_transaction",
-        "parameters": [
-          {
-            "name": "X-Pubkey",
-            "in": "header",
-            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-User-Stamp",
-            "in": "header",
-            "description": "WebAuthn User Stamp generated by the client. Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "chain_id",
-            "in": "query",
-            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "minimum": 0
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "The transaction signed by the user",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SignTransactionRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Transaction executed successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TransactionReceipt"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid chain ID"
-          }
-        },
-        "security": [
-          {
-            "integrator_and_user_auth": []
-          }
-        ]
-      }
-    },
-    "/api/v1/query/get-approve-body": {
-      "post": {
-        "tags": [
-          "Transactions with passkey"
-        ],
-        "summary": "Get approval transaction (passkey auth)",
-        "description": "Get the transaction body to sign in order to approve a vault. Part of the passkey authentication flow.",
-        "operationId": "get_approve_body",
-        "parameters": [
-          {
-            "name": "chain_id",
-            "in": "query",
-            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "minimum": 0
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Approve request body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ApproveRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Transaction created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SignTransactionRequest"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid chain ID"
-          }
-        }
-      }
-    },
-    "/api/v1/query/get-deposit-body": {
-      "post": {
-        "tags": [
-          "Transactions with passkey"
-        ],
-        "summary": "Get deposit transaction (passkey auth)",
-        "description": "Get the transaction body to sign in order to make a deposit. Part of the passkey authentication flow.",
-        "operationId": "get_deposit_body",
-        "parameters": [
-          {
-            "name": "chain_id",
-            "in": "query",
-            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "minimum": 0
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Deposit request body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DepositRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Transaction created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SignTransactionRequest"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid chain ID"
-          }
-        }
-      }
-    },
-    "/api/v1/query/get-withdraw-body": {
-      "post": {
-        "tags": [
-          "Transactions with passkey"
-        ],
-        "summary": "Get withdraw transaction (passkey auth)",
-        "description": "Get the transaction body to sign in order to make a withdrawal. Part of the passkey authentication flow.",
-        "operationId": "get_withdraw_body",
-        "parameters": [
-          {
-            "name": "chain_id",
-            "in": "query",
-            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "minimum": 0
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Withdraw request body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/WithdrawRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Transaction created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SignTransactionRequest"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid chain ID"
-          }
-        }
-      }
-    },
-    "/api/v1/submit/complete-transaction": {
-      "post": {
-        "tags": [
-          "Transactions with OTP"
-        ],
-        "summary": "Complete a transaction (OTP auth)",
-        "description": "Complete a transaction to execute it on the blockchain.",
-        "operationId": "complete_transaction",
-        "parameters": [
-          {
-            "name": "X-Pubkey",
-            "in": "header",
-            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-User-Stamp",
-            "in": "header",
-            "description": "WebAuthn User Stamp generated by the client. Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "chain_id",
-            "in": "query",
-            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "minimum": 0
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "The request ID and the OTP code",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/OtpCompleteRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Transaction executed successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TransactionReceipt"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid chain ID"
-          }
-        },
-        "security": [
-          {
-            "integrator_and_user_auth": []
-          }
-        ]
-      }
-    },
-    "/api/v1/query/init-approve-otp": {
-      "post": {
-        "tags": [
-          "Transactions with OTP"
-        ],
-        "summary": "Initiate approval (OTP auth)",
-        "description": "Initiate transaction and send out the OTP to the end user in order to approve a vault.",
-        "operationId": "init_approve_otp",
-        "parameters": [
-          {
-            "name": "chain_id",
-            "in": "query",
-            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "minimum": 0
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Approve request body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ApproveRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Transaction created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OtpRequestResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid chain ID"
-          }
-        }
-      }
-    },
-    "/api/v1/query/init-deposit-otp": {
-      "post": {
-        "tags": [
-          "Transactions with OTP"
-        ],
-        "summary": "Initiate a deposit (OTP auth)",
-        "description": "Initiate transaction and send out the OTP to the end user in order to make a deposit.",
-        "operationId": "init_deposit_otp",
-        "parameters": [
-          {
-            "name": "chain_id",
-            "in": "query",
-            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "minimum": 0
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Deposit request body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DepositRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Transaction created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OtpRequestResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid chain ID"
-          }
-        }
-      }
-    },
-    "/api/v1/query/init-withdraw-otp": {
-      "post": {
-        "tags": [
-          "Transactions with OTP"
-        ],
-        "summary": "Initiate a withdrawal (OTP auth)",
-        "description": "Initiate transaction and send out the OTP to the end user in order to make a withdrawal.",
-        "operationId": "init_withdraw_otp",
-        "parameters": [
-          {
-            "name": "chain_id",
-            "in": "query",
-            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "minimum": 0
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Withdraw request body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/WithdrawRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Transaction created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OtpRequestResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid chain ID"
-          }
-        }
-      }
-    },
-    "/api/v1/vault-v2/deposits/user/{user_id}": {
+    "/v1/health": {
       "get": {
         "tags": [
-          "Query user data"
+          "API health"
         ],
-        "summary": "Get all deposits by user ID",
-        "description": "Returns list of deposits for a specific user.",
-        "operationId": "get_deposits_by_user",
-        "parameters": [
-          {
-            "name": "user_id",
-            "in": "path",
-            "description": "User ID",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Limit number of results",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int64",
-              "nullable": true
-            }
-          }
-        ],
+        "summary": "Health check endpoint",
+        "description": "Returns the health status of the API",
+        "operationId": "health_check",
         "responses": {
           "200": {
-            "description": "User VaultV2 deposits retrieved successfully",
+            "description": "Service is healthy",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/VaultV2Deposit"
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
+                  "$ref": "#/components/schemas/HealthResponse"
                 }
               }
             }
@@ -685,156 +32,10 @@
         }
       }
     },
-    "/api/v1/vault-v2/withdrawals/user/{user_id}": {
+    "/v1/apy/{vault_id}": {
       "get": {
         "tags": [
-          "Query user data"
-        ],
-        "summary": "Get all withdrawals by user ID",
-        "description": "Returns list of withdrawals for a specific user.",
-        "operationId": "get_withdrawals_by_user",
-        "parameters": [
-          {
-            "name": "user_id",
-            "in": "path",
-            "description": "User ID",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Limit number of results",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int64",
-              "nullable": true
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "User VaultV2 withdrawals retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/VaultV2Withdraw"
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/vault-v2/getUserPositions/{address}": {
-      "get": {
-        "tags": [
-          "Query user data"
-        ],
-        "summary": "Get user positions",
-        "description": "Returns comprehensive user positions including balances and transactions for each vault.",
-        "operationId": "get_user_positions",
-        "parameters": [
-          {
-            "name": "address",
-            "in": "path",
-            "description": "User address",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Limit number of transactions per vault",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int64",
-              "nullable": true
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "User positions retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/VaultV2UserPositionsResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "User not found or no positions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/vault-v2/top-vaults": {
-      "get": {
-        "tags": [
-          "Query vault data"
-        ],
-        "summary": "Get list of Byzantine vaults",
-        "description": "Returns a list of all Byzantine vaults from configuration. \"Vaults\" are deposit products, the main entities in the Byzantine protocol.",
-        "operationId": "get_top_vaults",
-        "responses": {
-          "200": {
-            "description": "List of top vaults retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TopVault"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/vault-v2/apy/{vault_id}": {
-      "get": {
-        "tags": [
-          "Query vault data"
+          "Vault data"
         ],
         "summary": "Get vault APY",
         "description": "Calculate APY for daily, weekly, monthly, and yearly periods with fallback to oldest available data.",
@@ -887,12 +88,12 @@
         }
       }
     },
-    "/api/v1/vault-v2/history/{vault_id}": {
+    "/v1/history/{vault_id}": {
       "get": {
         "tags": [
-          "Query vault data"
+          "Vault data"
         ],
-        "summary": "Get historical share price data",
+        "summary": "Get vault share price history",
         "description": "Returns hourly aggregated share price data for a vault.",
         "operationId": "get_vault_history",
         "parameters": [
@@ -987,99 +188,1033 @@
         }
       }
     },
-    "/api/v1/health": {
+    "/v1/top-vaults": {
       "get": {
         "tags": [
-          "Query API health"
+          "Vault data"
         ],
-        "summary": "Health check endpoint",
-        "description": "Returns the health status of the API",
-        "operationId": "health_check",
+        "summary": "Get all Byzantine vaults",
+        "description": "Returns a list of all Byzantine vaults from configuration. \"Vaults\" are deposit products, the main entities in the Byzantine protocol.",
+        "operationId": "get_top_vaults",
         "responses": {
           "200": {
-            "description": "Service is healthy",
+            "description": "List of top vaults retrieved successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HealthResponse"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TopVault"
+                  }
                 }
               }
             }
           }
         }
       }
+    },
+    "/v1/query/get-bank-accounts": {
+      "get": {
+        "tags": [
+          "Account data"
+        ],
+        "summary": "Get all bank accounts",
+        "description": "Fetch all associated bank accounts for a specific Byzantine account ID.",
+        "operationId": "get_off_ramp_addresses",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            }
+          },
+          {
+            "name": "currency",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/Currency"
+                }
+              ],
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Off-ramp addresses retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOffRampAddressesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid account_id"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/v1/query/get-transaction": {
+      "get": {
+        "tags": [
+          "Account data"
+        ],
+        "summary": "Get a single transaction",
+        "operationId": "get_transaction",
+        "parameters": [
+          {
+            "name": "transaction_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transaction retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTransactionResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/v1/query/get-transactions": {
+      "get": {
+        "tags": [
+          "Account data"
+        ],
+        "summary": "Get all transactions for an account",
+        "description": "Returns all deposit, withdrawal, and approval transactions with pending or completed status.\nExcludes transactions with \"created\" status.",
+        "operationId": "get_transactions",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transactions retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetTransactionResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid account_id"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/v1/query/get-approve-transaction-passkey": {
+      "post": {
+        "tags": [
+          "Transactions with passkey"
+        ],
+        "summary": "Get approval transaction",
+        "description": "Get the transaction body to sign in order to approve a vault. Part of the passkey authentication flow.",
+        "operationId": "get_approve_transaction_passkey",
+        "parameters": [
+          {
+            "name": "chain_id",
+            "in": "query",
+            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Approve request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApproveRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Transaction created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PasskeyTxRequestResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid chain ID"
+          }
+        }
+      }
+    },
+    "/v1/query/get-deposit-transaction-passkey": {
+      "post": {
+        "tags": [
+          "Transactions with passkey"
+        ],
+        "summary": "Get deposit transaction",
+        "description": "Get the transaction body to sign in order to make a deposit. Part of the passkey authentication flow.",
+        "operationId": "get_deposit_transaction_passkey",
+        "parameters": [
+          {
+            "name": "chain_id",
+            "in": "query",
+            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Deposit request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DepositRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Transaction created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PasskeyTxRequestResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid chain ID"
+          }
+        }
+      }
+    },
+    "/v1/query/get-withdraw-transaction-passkey": {
+      "post": {
+        "tags": [
+          "Transactions with passkey"
+        ],
+        "summary": "Get withdraw transaction",
+        "description": "Get the transaction body to sign in order to make a withdrawal. Part of the passkey authentication flow.",
+        "operationId": "get_withdraw_transaction_passkey",
+        "parameters": [
+          {
+            "name": "chain_id",
+            "in": "query",
+            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Withdraw request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WithdrawRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Transaction created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PasskeyTxRequestResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid chain ID"
+          }
+        }
+      }
+    },
+    "/v1/submit/send-transaction-passkey": {
+      "post": {
+        "tags": [
+          "Transactions with passkey"
+        ],
+        "summary": "Submit a transaction (passkey auth)",
+        "description": "Submit a signed transaction to execute it on the blockchain.",
+        "operationId": "send_transaction_passkey",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "chain_id",
+            "in": "query",
+            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The transaction signed by the user - passkey auth",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendPasskeyTransactionRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Transaction sent successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendTransactionResponseBody"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid chain ID"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/query/init-approve-otp": {
+      "post": {
+        "tags": [
+          "Transactions with OTP"
+        ],
+        "summary": "Initiate approval",
+        "description": "Initiate transaction and send out the OTP to the end user in order to approve a vault.",
+        "operationId": "init_approve_otp",
+        "parameters": [
+          {
+            "name": "chain_id",
+            "in": "query",
+            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Approve request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApproveRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Transaction created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OtpRequestResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid chain ID"
+          }
+        }
+      }
+    },
+    "/v1/query/init-deposit-otp": {
+      "post": {
+        "tags": [
+          "Transactions with OTP"
+        ],
+        "summary": "Initiate a deposit",
+        "description": "Initiate transaction and send out the OTP to the end user in order to make a deposit.",
+        "operationId": "init_deposit_otp",
+        "parameters": [
+          {
+            "name": "chain_id",
+            "in": "query",
+            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Deposit request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DepositRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Transaction created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OtpRequestResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid chain ID"
+          }
+        }
+      }
+    },
+    "/v1/query/init-withdraw-otp": {
+      "post": {
+        "tags": [
+          "Transactions with OTP"
+        ],
+        "summary": "Initiate a withdrawal",
+        "description": "Initiate transaction and send out the OTP to the end user in order to make a withdrawal.",
+        "operationId": "init_withdraw_otp",
+        "parameters": [
+          {
+            "name": "chain_id",
+            "in": "query",
+            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Withdraw request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WithdrawRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Transaction created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OtpRequestResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid chain ID"
+          }
+        }
+      }
+    },
+    "/v1/submit/send-transaction-otp": {
+      "post": {
+        "tags": [
+          "Transactions with OTP"
+        ],
+        "summary": "Send a transaction (OTP auth)",
+        "description": "Execute a transaction on the blockchain using the OTP flow.",
+        "operationId": "send_transaction_otp",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "chain_id",
+            "in": "query",
+            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The request ID and the OTP code",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendOtpTransactionRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Transaction executed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendTransactionResponseBody"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid chain ID"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/query/get-tos-acceptance-link": {
+      "post": {
+        "tags": [
+          "Account creation"
+        ],
+        "summary": "Get Bridge ToS link",
+        "operationId": "request_tos_acceptance_link",
+        "requestBody": {
+          "description": "Optional redirect URI to append to the hosted ToS acceptance link",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetTosAcceptanceLinkRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Hosted ToS acceptance URL received",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTosAcceptanceLinkResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request payload"
+          },
+          "500": {
+            "description": "Bridge API error"
+          }
+        }
+      }
+    },
+    "/v1/submit/create-entity": {
+      "post": {
+        "tags": [
+          "Account creation"
+        ],
+        "summary": "Create a Byzantine entity",
+        "operationId": "create_entity",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Byzantine entity creation body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEntityRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Entity created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateEntityResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request payload"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/submit/create-user": {
+      "post": {
+        "tags": [
+          "Account creation"
+        ],
+        "summary": "Create a Byzantine user",
+        "operationId": "create_user",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Byzantine user creation body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "User created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateUserResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request payload"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/submit/add-bank-account": {
+      "post": {
+        "tags": [
+          "Account management"
+        ],
+        "summary": "Add bank account",
+        "description": "Add a bank account to withdraw to. At least one bank account must be added before any off-ramp withdrawal can be initated.",
+        "operationId": "add_bank_account",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Bank account details to associate with the Byzantine account",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddBankAccountRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Bank account added successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddBankAccountResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request payload"
+          },
+          "401": {
+            "description": "Unauthorized - Account does not belong to integrator"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
     }
   },
   "components": {
     "schemas": {
-      "ApplicantInfo": {
+      "AchAccountPayload": {
         "type": "object",
+        "required": [
+          "accountNumber",
+          "routingNumber",
+          "checkingOrSavings"
+        ],
         "properties": {
-          "addresses": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SumsubAddress"
-            },
-            "nullable": true
+          "accountNumber": {
+            "type": "string"
           },
-          "companyInfo": {
+          "routingNumber": {
+            "type": "string"
+          },
+          "checkingOrSavings": {
+            "$ref": "#/components/schemas/CheckingOrSavings"
+          }
+        }
+      },
+      "AddBankAccountRequest": {
+        "type": "object",
+        "required": [
+          "accountId",
+          "currency",
+          "label"
+        ],
+        "properties": {
+          "accountId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/Currency"
+          },
+          "label": {
+            "type": "string"
+          },
+          "achBankAccountDetails": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/CompanyInfo"
+                "$ref": "#/components/schemas/AchAccountPayload"
               }
             ],
             "nullable": true
           },
-          "country": {
-            "type": "string",
-            "nullable": true
-          },
-          "dob": {
-            "type": "string",
-            "nullable": true
-          },
-          "firstName": {
-            "type": "string",
-            "nullable": true
-          },
-          "lastName": {
-            "type": "string",
-            "nullable": true
-          },
-          "middleName": {
-            "type": "string",
-            "nullable": true
-          },
-          "nationality": {
-            "type": "string",
-            "nullable": true
-          },
-          "phone": {
-            "type": "string",
+          "ibanBankAccountDetails": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/IbanAccountPayload"
+              }
+            ],
             "nullable": true
           }
         }
       },
-      "ApplicantType": {
-        "type": "string",
-        "description": "Type of applicant for Sumsub verification",
-        "enum": [
-          "individual",
-          "company"
+      "AddBankAccountResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/OffRampAddress"
+          },
+          {
+            "type": "object"
+          }
         ]
+      },
+      "AdditionalUserInfo": {
+        "type": "object",
+        "description": "Additional user information for KYC. This information is required for users considered high risk or over 60 years of age.",
+        "properties": {
+          "employmentStatus": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EmploymentStatus"
+              }
+            ],
+            "nullable": true
+          },
+          "expectedMonthlyPaymentsUsd": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExpectedMonthlyPayments"
+              }
+            ],
+            "nullable": true
+          },
+          "sourceOfFunds": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserSourceOfFunds"
+              }
+            ],
+            "nullable": true
+          },
+          "mostRecentOccupation": {
+            "type": "string",
+            "description": "Most recent occupation of the user. Required for high risk users.\nMust be a valid six-digit occupation code. See the full list of [occupation codes](https://docs.byzantine.fi/api-reference/lists/occupation-codes).",
+            "example": "151252",
+            "nullable": true,
+            "maxLength": 6,
+            "minLength": 6
+          }
+        }
+      },
+      "Address": {
+        "type": "object",
+        "description": "Address information. Must be a valid address in the relevant country.",
+        "required": [
+          "streetLine1",
+          "city",
+          "postalCode",
+          "country"
+        ],
+        "properties": {
+          "streetLine1": {
+            "type": "string",
+            "example": "33 Rue La Fayette"
+          },
+          "streetLine2": {
+            "type": "string",
+            "description": "Optional additional details to the street name and number.",
+            "example": "WeWork",
+            "nullable": true
+          },
+          "city": {
+            "type": "string",
+            "example": "Paris"
+          },
+          "state": {
+            "type": "string",
+            "description": "Required for US addresses. Should be a valid ISO 3166-2 subdivision code.",
+            "example": "IDF",
+            "nullable": true
+          },
+          "postalCode": {
+            "type": "string",
+            "description": "Postal code.",
+            "example": "75009"
+          },
+          "country": {
+            "$ref": "#/components/schemas/CountryCode"
+          }
+        }
       },
       "ApproveRequestBody": {
         "type": "object",
         "required": [
-          "vaultAddr",
-          "organizationId"
+          "accountId",
+          "vaultAddr"
         ],
         "properties": {
-          "organizationId": {
-            "type": "string"
+          "accountId": {
+            "$ref": "#/components/schemas/Uuid"
           },
           "vaultAddr": {
-            "type": "string"
+            "type": "string",
+            "description": "The address of the vault to approve.",
+            "example": "0x1234567890abcdef"
           }
         }
       },
@@ -1100,11 +1235,25 @@
           "calculated_at"
         ],
         "properties": {
-          "calculated_at": {
-            "type": "string",
-            "format": "date-time"
+          "vault_id": {
+            "type": "string"
           },
           "daily_apy": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "weekly_apy": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "monthly_apy": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "yearly_apy": {
             "type": "number",
             "format": "double",
             "nullable": true
@@ -1114,12 +1263,9 @@
             "format": "int32",
             "nullable": true
           },
-          "latest_share_price": {
-            "$ref": "#/components/schemas/BigDecimal"
-          },
-          "monthly_apy": {
-            "type": "number",
-            "format": "double",
+          "weekly_period_days": {
+            "type": "integer",
+            "format": "int32",
             "nullable": true
           },
           "monthly_period_days": {
@@ -1127,27 +1273,101 @@
             "format": "int32",
             "nullable": true
           },
-          "vault_id": {
-            "type": "string"
-          },
-          "weekly_apy": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
-          },
-          "weekly_period_days": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "yearly_apy": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
-          },
           "yearly_period_days": {
             "type": "integer",
             "format": "int32",
+            "nullable": true
+          },
+          "latest_share_price": {
+            "$ref": "#/components/schemas/BigDecimal"
+          },
+          "calculated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "AssociatedPerson": {
+        "type": "object",
+        "description": "Associated person (beneficiary or representative). Must be at least one.",
+        "required": [
+          "isOrgAdmin",
+          "userInfo",
+          "beneficiaryDetails"
+        ],
+        "properties": {
+          "isOrgAdmin": {
+            "type": "boolean",
+            "description": "Set to `true` if this person should be an active controller of the account. At least one org_admin is required.",
+            "example": "true"
+          },
+          "userInfo": {
+            "$ref": "#/components/schemas/UserInfo"
+          },
+          "beneficiaryDetails": {
+            "$ref": "#/components/schemas/BeneficiaryDetails"
+          },
+          "verificationDocuments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserVerificationDocument"
+            },
+            "nullable": true
+          },
+          "authenticators": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AuthenticatorParam"
+            },
+            "nullable": true
+          }
+        }
+      },
+      "AssociatedPersonResponse": {
+        "type": "object",
+        "description": "Response body for an associated person",
+        "required": [
+          "userId",
+          "verificationStatus",
+          "isOrgAdmin",
+          "userInfo",
+          "beneficiaryDetails"
+        ],
+        "properties": {
+          "userId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          },
+          "isOrgAdmin": {
+            "type": "boolean",
+            "description": "Set to `true` if this person should be an active controller of the account. At least one org_admin is required.",
+            "example": "true"
+          },
+          "userInfo": {
+            "$ref": "#/components/schemas/UserInfo"
+          },
+          "beneficiaryDetails": {
+            "$ref": "#/components/schemas/BeneficiaryDetails"
+          },
+          "verificationDocuments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VerificationDocumentResponse"
+            },
+            "nullable": true
+          },
+          "isPasskeyActivated": {
+            "type": "boolean",
+            "description": "An indicator showing whether passkey authentication is active for this user. For more information, see [wallet authentication](https://docs.byzantine.fi/api-reference/wallet-authentication).",
+            "example": "false",
+            "nullable": true
+          },
+          "isOtpActivated": {
+            "type": "boolean",
+            "description": "An indicator showing whether OTP authentication is active for this user. For more information, see [wallet authentication](https://docs.byzantine.fi/api-reference/wallet-authentication).",
+            "example": "true",
             "nullable": true
           }
         }
@@ -1161,14 +1381,17 @@
           "transports"
         ],
         "properties": {
-          "attestationObject": {
-            "type": "string"
+          "credentialId": {
+            "type": "string",
+            "description": "The cbor encoded then base64 url encoded id of the credential."
           },
           "clientDataJson": {
-            "type": "string"
+            "type": "string",
+            "description": "A base64 url encoded payload containing metadata about the signing context and the challenge."
           },
-          "credentialId": {
-            "type": "string"
+          "attestationObject": {
+            "type": "string",
+            "description": "A base64 url encoded payload containing authenticator data and any attestation the webauthn provider chooses."
           },
           "transports": {
             "type": "array",
@@ -1180,217 +1403,521 @@
       },
       "AuthenticatorParam": {
         "type": "object",
+        "description": "Passkey authenticator object.",
         "required": [
           "authenticatorName",
           "challenge",
           "attestation"
         ],
         "properties": {
-          "attestation": {
-            "$ref": "#/components/schemas/Attestation"
-          },
           "authenticatorName": {
-            "type": "string"
+            "type": "string",
+            "description": "Human-readable name for an Authenticator."
           },
           "challenge": {
-            "type": "string"
+            "type": "string",
+            "description": "Challenge presented for authentication purposes."
+          },
+          "attestation": {
+            "$ref": "#/components/schemas/Attestation"
           }
         }
       },
-      "Beneficiary": {
+      "BeneficiaryDetails": {
         "type": "object",
+        "description": "Additional details about beneficiaries.",
+        "required": [
+          "beneficiaryType"
+        ],
         "properties": {
-          "applicantId": {
-            "type": "string",
-            "nullable": true
-          },
-          "beneficiaryInfo": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BeneficiaryInfo"
-              }
-            ],
-            "nullable": true
-          },
-          "id": {
-            "type": "string",
-            "nullable": true
-          },
-          "shareSize": {
-            "type": "number",
-            "format": "double",
-            "nullable": true
-          },
-          "types": {
+          "beneficiaryType": {
             "type": "array",
             "items": {
-              "type": "string"
-            },
+              "$ref": "#/components/schemas/BeneficiaryType"
+            }
+          },
+          "title": {
+            "type": "string",
+            "description": "Required for representatives. The title held at the business.",
+            "example": "CEO",
+            "nullable": true
+          },
+          "ownershipPercentage": {
+            "type": "number",
+            "format": "double",
+            "description": "Required for UBOs. The % of direct or indirect business ownership.",
+            "example": "32.5",
             "nullable": true
           }
         }
       },
-      "BeneficiaryInfo": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "nullable": true
-          },
-          "first_name": {
-            "type": "string",
-            "nullable": true
-          },
-          "last_name": {
-            "type": "string",
-            "nullable": true
-          }
-        }
+      "BeneficiaryType": {
+        "type": "string",
+        "description": "Beneficiary type.\n\nUBOs are any individuals who, directly or inderectly, own more than 25% of the business.\n\nRepresentatives are individuals who have direct control over daily operations.",
+        "enum": [
+          "ubo",
+          "representative"
+        ],
+        "example": "UBO"
       },
       "BigDecimal": {
         "type": "string",
         "description": "A decimal number represented as a string",
         "example": "1000.00"
       },
-      "CompanyInfo": {
+      "BusinessActivityInfo": {
         "type": "object",
+        "description": "Information about business activities. This is required for high-risk businesses. Filling it wholly can accelerate the KYB process.",
+        "required": [
+          "preferredPrimaryCurrency",
+          "sourceOfFunds"
+        ],
         "properties": {
-          "beneficiaries": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Beneficiary"
-            },
+          "preferredPrimaryCurrency": {
+            "$ref": "#/components/schemas/Currency"
+          },
+          "sourceOfFunds": {
+            "$ref": "#/components/schemas/EntitySourceOfFunds"
+          },
+          "estimatedAnnualRevenueUsd": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EstimatedAnnualRevenue"
+              }
+            ],
             "nullable": true
           },
-          "companyName": {
+          "expectedMonthlyPaymentsUsd": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Expected monthly inflows in USD.",
+            "example": "5000000",
+            "nullable": true
+          },
+          "operatesInProhibitedCountries": {
+            "type": "boolean",
+            "description": "Must be set to `true` if the business has any activity in or relation to Cuba, Iran, Myanmar, North Korea, or Syria.",
+            "example": "false",
+            "nullable": true
+          },
+          "highRiskActivities": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HighRiskActivity"
+              }
+            ],
+            "nullable": true
+          },
+          "highRiskActivitiesExplanation": {
             "type": "string",
+            "description": "Required if high_risk_activities is anything other than none_of_the_above or empty. A short description to explain the business' involvement with the declared high-risk activities.",
+            "example": "As a jewelry shop, we deal with precious stones.",
+            "nullable": true
+          },
+          "conductsMoneyServices": {
+            "type": "boolean",
+            "description": "Must be set to `true` if the business offers money services, investment products, and/or other financial services.",
+            "example": "false",
+            "nullable": true
+          },
+          "conductsMoneyServicesDescription": {
+            "type": "string",
+            "description": "Required if conducts_money_services is true. A short description to explain the business' money services. Should include a detailed description of the business's compliance and anti-money laundering controls and practices.",
+            "example": "We operate several ATMs.",
             "nullable": true
           }
         }
       },
-      "CreateCompanyInfo": {
-        "type": "object",
-        "description": "Company information for business verification",
-        "required": [
-          "companyName",
-          "registrationNumber",
-          "country",
-          "address",
-          "incorporatedOn",
-          "type",
-          "email"
+      "BusinessType": {
+        "type": "string",
+        "description": "Business legal form. Select that most appropriate one fitting your jurisdiction.",
+        "enum": [
+          "cooperative",
+          "corporation",
+          "llc",
+          "other",
+          "partnership",
+          "sole_prop",
+          "trust"
         ],
-        "properties": {
-          "address": {
-            "$ref": "#/components/schemas/SumsubAddress"
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "country": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "incorporatedOn": {
-            "type": "string"
-          },
-          "registrationNumber": {
-            "type": "string"
-          },
-          "taxId": {
-            "type": "string",
-            "nullable": true
-          },
-          "type": {
-            "type": "string"
-          },
-          "website": {
-            "type": "string",
-            "nullable": true
-          }
-        }
+        "example": "LLC"
+      },
+      "CheckingOrSavings": {
+        "type": "string",
+        "enum": [
+          "checking",
+          "savings"
+        ]
+      },
+      "CountryCode": {
+        "type": "string",
+        "description": "The ISO 3166-1 (three-character) country code of the relevant country. See the full list of [countries](https://docs.byzantine.fi/api-reference/lists/countries).",
+        "enum": [
+          "ABW",
+          "AFG",
+          "AGO",
+          "ALB",
+          "AND",
+          "ARG",
+          "ARM",
+          "AUS",
+          "AUT",
+          "AZE",
+          "BEL",
+          "BGD",
+          "BGR",
+          "BHR",
+          "BHS",
+          "BIH",
+          "BLZ",
+          "BMU",
+          "BOL",
+          "BRA",
+          "BRB",
+          "BWA",
+          "CAN",
+          "CHL",
+          "CHN",
+          "CIV",
+          "CMR",
+          "COL",
+          "COM",
+          "CRI",
+          "CUW",
+          "CXR",
+          "CYM",
+          "CYP",
+          "CZE",
+          "DEU",
+          "DMA",
+          "DNK",
+          "DOM",
+          "DZA",
+          "ECU",
+          "EGY",
+          "ESP",
+          "EST",
+          "ETH",
+          "FIN",
+          "FJI",
+          "FRA",
+          "GBR",
+          "GEO",
+          "GHA",
+          "GIB",
+          "GRC",
+          "GTM",
+          "HKG",
+          "HND",
+          "HRV",
+          "HTI",
+          "HUN",
+          "IDN",
+          "IMN",
+          "IND",
+          "IRL",
+          "IRQ",
+          "ISL",
+          "ISR",
+          "ITA",
+          "JAM",
+          "JOR",
+          "JPN",
+          "KAZ",
+          "KEN",
+          "KGZ",
+          "KHM",
+          "KNA",
+          "KOR",
+          "KWT",
+          "LAO",
+          "LBN",
+          "LBR",
+          "LCA",
+          "LKA",
+          "LTU",
+          "LUX",
+          "LVA",
+          "MAR",
+          "MCO",
+          "MDA",
+          "MDG",
+          "MEX",
+          "MHL",
+          "MKD",
+          "MLT",
+          "MNE",
+          "MOZ",
+          "MRT",
+          "MUS",
+          "MWI",
+          "MYS",
+          "NAM",
+          "NGA",
+          "NIC",
+          "NLD",
+          "NOR",
+          "NPL",
+          "NZL",
+          "OMN",
+          "PAN",
+          "PER",
+          "PHL",
+          "PAK",
+          "POL",
+          "PRT",
+          "QAT",
+          "ROU",
+          "RUS",
+          "SAU",
+          "SEN",
+          "SGP",
+          "SVK",
+          "SVN",
+          "ZAF",
+          "SWE",
+          "CHE",
+          "THA",
+          "TUN",
+          "TUR",
+          "UGA",
+          "UKR",
+          "ARE",
+          "USA",
+          "URY",
+          "UZB",
+          "VEN",
+          "VNM",
+          "YEM",
+          "ZMB",
+          "ZWE"
+        ],
+        "example": "FRA"
       },
       "CreateEntityRequest": {
         "type": "object",
         "description": "Request body for creating a Byzantine entity",
         "required": [
           "entityInfo",
-          "entityDocuments",
-          "beneficiaries"
+          "associatedPersons",
+          "requiredApprovals",
+          "bridgeSignedAgreementId",
+          "byzantineTermsSignedAt"
         ],
         "properties": {
-          "beneficiaries": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CreateUserRequest"
-            }
+          "entityInfo": {
+            "$ref": "#/components/schemas/EntityInfo"
           },
           "entityDocuments": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/EntityDocument"
+              "$ref": "#/components/schemas/EntityVerificationDocument"
+            },
+            "nullable": true
+          },
+          "associatedPersons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssociatedPerson"
             }
           },
-          "entityInfo": {
-            "$ref": "#/components/schemas/CreateCompanyInfo"
+          "requiredApprovals": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Deprecated",
+            "deprecated": true,
+            "minimum": 0
+          },
+          "bridgeSignedAgreementId": {
+            "type": "string",
+            "description": "The ID of the signed Bridge ToS agreement. For more information, see [individual account creation - KYC](https://docs.byzantine.fi/api-reference/kyc).",
+            "example": "d107c1e1-766a-4091-802c-de61a3973e91"
+          },
+          "byzantineTermsSignedAt": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The timestamp when the Byzantine Finance Terms & Conditions were signed. For more information, see [individual account creation - KYC](https://docs.byzantine.fi/api-reference/kyc).",
+            "example": "2025-11-19T21:14:58.328Z"
           }
         }
       },
-      "CreateUserInfo": {
+      "CreateEntityResponse": {
         "type": "object",
-        "description": "Info to send for a KYC",
+        "description": "Response body for creating a Byzantine entity",
         "required": [
-          "firstName",
-          "lastName",
-          "country",
-          "addresses",
-          "taxResidenceCountry"
+          "entityId",
+          "accountId",
+          "verificationStatus",
+          "entityInfo",
+          "associatedPersons",
+          "requiredApprovals",
+          "bridgeSignedAgreementId",
+          "byzantineTermsSignedAt"
         ],
         "properties": {
-          "addresses": {
+          "entityId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "accountId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          },
+          "entityInfo": {
+            "$ref": "#/components/schemas/EntityInfo"
+          },
+          "entityDocuments": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/SumsubAddress"
+              "$ref": "#/components/schemas/VerificationDocumentResponse"
+            },
+            "nullable": true
+          },
+          "associatedPersons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssociatedPersonResponse"
             }
           },
-          "country": {
-            "type": "string"
+          "requiredApprovals": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0
           },
-          "firstName": {
-            "type": "string"
+          "bridgeSignedAgreementId": {
+            "type": "string",
+            "description": "The ID of the signed Bridge ToS agreement. For more information, see [individual account creation - KYC](https://docs.byzantine.fi/api-reference/kyc).",
+            "example": "d107c1e1-766a-4091-802c-de61a3973e91"
           },
-          "lastName": {
-            "type": "string"
-          },
-          "taxResidenceCountry": {
-            "type": "string"
+          "byzantineTermsSignedAt": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The timestamp when the Byzantine Finance Terms & Conditions were signed. For more information, see [individual account creation - KYC](https://docs.byzantine.fi/api-reference/kyc).",
+            "example": "2025-11-19T21:14:58.328Z"
           }
         }
       },
       "CreateUserRequest": {
         "type": "object",
-        "description": "Request body for creating a Byzantine user",
+        "description": "User to be created. The vast majority of fields are required in order to complete the identity verification process.",
         "required": [
-          "email",
           "userInfo",
-          "userDocuments"
+          "bridgeSignedAgreementId",
+          "byzantineTermsSignedAt"
         ],
         "properties": {
-          "email": {
-            "type": "string"
+          "userInfo": {
+            "$ref": "#/components/schemas/UserInfo"
           },
-          "userDocuments": {
+          "additionalUserInfo": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AdditionalUserInfo"
+              }
+            ],
+            "nullable": true
+          },
+          "verificationDocuments": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/UserDocument"
-            }
+              "$ref": "#/components/schemas/UserVerificationDocument"
+            },
+            "nullable": true
           },
-          "userInfo": {
-            "$ref": "#/components/schemas/CreateUserInfo"
+          "bridgeSignedAgreementId": {
+            "type": "string",
+            "description": "The ID of the signed Bridge ToS agreement. For more information, see [individual account creation - KYC](https://docs.byzantine.fi/api-reference/kyc).",
+            "example": "d107c1e1-766a-4091-802c-de61a3973e91"
+          },
+          "byzantineTermsSignedAt": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The timestamp when the Byzantine Finance Terms & Conditions were signed. For more information, see [individual account creation - KYC](https://docs.byzantine.fi/api-reference/kyc).",
+            "example": "2025-11-19T21:14:58.328Z"
+          },
+          "authenticators": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AuthenticatorParam"
+            },
+            "description": "A list of Authenticators.",
+            "nullable": true
           }
         }
+      },
+      "CreateUserResponse": {
+        "type": "object",
+        "description": "Response body for creating a Byzantine user",
+        "required": [
+          "userId",
+          "accountId",
+          "verificationStatus",
+          "userInfo",
+          "bridgeSignedAgreementId",
+          "byzantineTermsSignedAt",
+          "isPasskeyActivated",
+          "isOtpActivated"
+        ],
+        "properties": {
+          "userId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "accountId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          },
+          "userInfo": {
+            "$ref": "#/components/schemas/UserInfo"
+          },
+          "additionalUserInfo": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AdditionalUserInfo"
+              }
+            ],
+            "nullable": true
+          },
+          "verificationDocuments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VerificationDocumentResponse"
+            },
+            "nullable": true
+          },
+          "bridgeSignedAgreementId": {
+            "type": "string",
+            "description": "The ID of the signed Bridge ToS agreement. For more information, see [individual account creation - KYC](https://docs.byzantine.fi/api-reference/kyc).",
+            "example": "d107c1e1-766a-4091-802c-de61a3973e91"
+          },
+          "byzantineTermsSignedAt": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The timestamp when the Byzantine Finance Terms & Conditions were signed. For more information, see [individual account creation - KYC](https://docs.byzantine.fi/api-reference/kyc).",
+            "example": "2025-11-19T21:14:58.328Z"
+          },
+          "isPasskeyActivated": {
+            "type": "boolean",
+            "description": "An indicator showing whether passkey authentication is active for this user. For more information, see [wallet authentication](https://docs.byzantine.fi/api-reference/wallet-authentication).",
+            "example": "false"
+          },
+          "isOtpActivated": {
+            "type": "boolean",
+            "description": "An indicator showing whether OTP authentication is active for this user. For more information, see [wallet authentication](https://docs.byzantine.fi/api-reference/wallet-authentication).",
+            "example": "true"
+          }
+        }
+      },
+      "Currency": {
+        "type": "string",
+        "enum": [
+          "usd",
+          "eur",
+          "usdc",
+          "eurc"
+        ]
       },
       "Decimal": {
         "type": "string",
@@ -1399,68 +1926,203 @@
       },
       "DepositRequestBody": {
         "type": "object",
+        "description": "The legal name of the business",
         "required": [
+          "accountId",
           "vaultAddr",
           "amount",
-          "organizationId"
+          "sourceCurrency"
         ],
         "properties": {
+          "accountId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "vaultAddr": {
+            "type": "string",
+            "description": "The address of the vault to deposit into.",
+            "example": "0x1234567890abcdef"
+          },
           "amount": {
             "$ref": "#/components/schemas/Decimal"
           },
-          "organizationId": {
-            "type": "string"
-          },
-          "vaultAddr": {
-            "type": "string"
+          "sourceCurrency": {
+            "$ref": "#/components/schemas/Currency"
           }
         }
       },
-      "EntityDocument": {
-        "type": "object",
-        "description": "Document to send for a KYB",
-        "required": [
-          "documentType",
-          "country",
-          "image"
+      "DocumentType": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/UserDocumentType"
+          },
+          {
+            "$ref": "#/components/schemas/EntityDocumentType"
+          }
         ],
-        "properties": {
-          "country": {
-            "type": "string"
-          },
-          "documentType": {
-            "$ref": "#/components/schemas/EntityDocumentSubType"
-          },
-          "image": {
-            "type": "string",
-            "format": "Format: data:image/[type];base64,[base64-encoded-data]. Supported types: png, jpeg, pdf",
-            "example": "data:image/png;base64,iVBORw0lFTkSuQmCC"
-          }
-        }
+        "description": "Type of verification document."
       },
-      "EntityDocumentSubType": {
+      "EmploymentStatus": {
         "type": "string",
-        "description": "Type of company document for Sumsub verification",
+        "description": "Employment status of a user. Required for high risk users.",
         "enum": [
-          "DIRECTORS_REGISTRY",
-          "GOOD_STANDING_CERT",
-          "INCORPORATION_ARTICLES",
-          "INCORPORATION_CERT",
-          "INCUMBENCY_CERT",
-          "INFORMATION_STATEMENT",
-          "POWER_OF_ATTORNEY",
-          "PROOF_OF_ADDRESS",
-          "SHAREHOLDER_REGISTRY",
-          "STATE_REGISTRY",
-          "TRUST_AGREEMENT"
-        ]
+          "employed",
+          "homemaker",
+          "retired",
+          "self_employed",
+          "student",
+          "unemployed"
+        ],
+        "example": "employed"
       },
       "EntityDocumentType": {
         "type": "string",
-        "description": "Type of company document for Sumsub verification",
+        "description": "Entity document type. For a full list of accepted document types, see [accepted documents](https://docs.byzantine.fi/api-reference/documents).",
         "enum": [
-          "COMPANY_DOC"
-        ]
+          "aml_comfort_letter",
+          "business_formation",
+          "directors_registry",
+          "e_signature_certificate",
+          "evidence_of_good_standing",
+          "flow_of_funds",
+          "marketing_materials",
+          "ownership_chart",
+          "ownership_information",
+          "proof_of_account_purpose",
+          "proof_of_address",
+          "proof_of_entity_name_change",
+          "proof_of_nature_of_business",
+          "proof_of_signatory_authority",
+          "proof_of_source_of_funds",
+          "proof_of_source_of_wealth",
+          "proof_of_tax_identification",
+          "shareholder_register",
+          "other"
+        ],
+        "example": "business_formation"
+      },
+      "EntityInfo": {
+        "type": "object",
+        "description": "Entity information for KYB",
+        "required": [
+          "businessLegalName",
+          "businessTradeName",
+          "businessDescription",
+          "businessType",
+          "email",
+          "website",
+          "businessIndustry",
+          "companyNumber",
+          "hasMaterialIntermediaryEntityOwner",
+          "registeredAddress",
+          "physicalAddress",
+          "businessActivityInfo"
+        ],
+        "properties": {
+          "businessLegalName": {
+            "type": "string",
+            "description": "The legal name of the business.",
+            "example": "ByzCorp Incorporated"
+          },
+          "businessTradeName": {
+            "type": "string",
+            "description": "The trade name of the business. Can be the same as the entity name, but must be submitted.",
+            "example": "ByzCorp"
+          },
+          "businessDescription": {
+            "type": "string",
+            "description": "Short description of business activities.",
+            "example": "ByzCorp does business.",
+            "maxLength": 1024,
+            "minLength": 1
+          },
+          "businessType": {
+            "$ref": "#/components/schemas/BusinessType"
+          },
+          "email": {
+            "type": "string",
+            "description": "Business contact email.",
+            "example": "byzcorp@example.com"
+          },
+          "website": {
+            "type": "string",
+            "description": "Business website.",
+            "example": "byzcorp.com"
+          },
+          "businessIndustry": {
+            "type": "integer",
+            "format": "int64",
+            "description": "A valid 6-digit NAICS industry code. See the full list of [industry codes](https://docs.byzantine.fi/api-reference/lists/industry-codes).",
+            "example": "byzcorp.com",
+            "minimum": 0
+          },
+          "companyNumber": {
+            "type": "string",
+            "description": "The registered business number. Depending on the country of registration, we accept these [entity number types](https://docs.byzantine.fi/api-reference/lists/company-number-types).",
+            "example": "byzcorp.com"
+          },
+          "hasMaterialIntermediaryEntityOwner": {
+            "type": "boolean",
+            "description": "true if there is another legal entity that owns 25% or more of the business",
+            "example": "false"
+          },
+          "registeredAddress": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "physicalAddress": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "businessActivityInfo": {
+            "$ref": "#/components/schemas/BusinessActivityInfo"
+          }
+        }
+      },
+      "EntitySourceOfFunds": {
+        "type": "string",
+        "description": "Source of funds for entities.",
+        "enum": [
+          "business_loans",
+          "grants",
+          "inter_company_funds",
+          "investment_proceeds",
+          "legal_settlement",
+          "owners_capital",
+          "pension_retirement",
+          "sale_of_assets",
+          "sales_of_goods_and_services",
+          "tax_refund",
+          "third_party_funds",
+          "treasury_reserves"
+        ],
+        "example": "treasury_reserves"
+      },
+      "EntityVerificationDocument": {
+        "type": "object",
+        "description": "Entity verification document object. For a full list of required documents, see [accepted documents](https://docs.byzantine.fi/api-reference/documents).",
+        "required": [
+          "documentType",
+          "issuingCountry",
+          "document"
+        ],
+        "properties": {
+          "documentType": {
+            "$ref": "#/components/schemas/EntityDocumentType"
+          },
+          "description": {
+            "type": "string",
+            "description": "A description of the document. Must be submitted if document if os type `other`.",
+            "example": "An overview of our business activities.",
+            "nullable": true
+          },
+          "issuingCountry": {
+            "$ref": "#/components/schemas/CountryCode"
+          },
+          "document": {
+            "type": "string",
+            "format": "data:[MIME];base64,[base64-encoded-data]",
+            "description": "The document to be uploaded.\n\nSupported MIME types: image/jpeg, image/png, image/heic, image/tiff, application/pdf",
+            "example": "data:image/png;base64,iVBORw0lFTkSuQmCC..."
+          }
+        }
       },
       "ErrorResponse": {
         "type": "object",
@@ -1483,6 +2145,86 @@
           }
         }
       },
+      "EstimatedAnnualRevenue": {
+        "type": "string",
+        "description": "Estimated annual business revenue in USD, defined as a range.",
+        "enum": [
+          "0_99999",
+          "100000_999999",
+          "1000000_9999999",
+          "10000000_49999999",
+          "50000000_249999999",
+          "250000000_plus"
+        ],
+        "example": "1000000_9999999"
+      },
+      "ExpectedMonthlyPayments": {
+        "type": "string",
+        "description": "Expected monthly payments in USD. Required for high risk users.",
+        "enum": [
+          "0_4999",
+          "5000_9999",
+          "10000_49999",
+          "50000_plus"
+        ],
+        "example": "5000_9999"
+      },
+      "GetTosAcceptanceLinkRequest": {
+        "type": "object",
+        "properties": {
+          "redirectUri": {
+            "type": "string",
+            "description": "Optional redirect URI to append to the hosted URL returned by Bridge",
+            "example": "https://app.example.com/tos/callback",
+            "nullable": true
+          }
+        }
+      },
+      "GetTosAcceptanceLinkResponse": {
+        "type": "object",
+        "required": [
+          "hostedUrl"
+        ],
+        "properties": {
+          "hostedUrl": {
+            "type": "string",
+            "example": "https://bridge.xyz/tos/accept?token=..."
+          }
+        }
+      },
+      "GetTransactionQuery": {
+        "type": "object",
+        "required": [
+          "transaction_id"
+        ],
+        "properties": {
+          "transaction_id": {
+            "$ref": "#/components/schemas/Uuid"
+          }
+        }
+      },
+      "GetTransactionResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TurnkeyTransaction"
+          },
+          {
+            "type": "object"
+          }
+        ],
+        "description": "Response for getting a single transaction by ID"
+      },
+      "GetTransactionsQuery": {
+        "type": "object",
+        "required": [
+          "account_id"
+        ],
+        "properties": {
+          "account_id": {
+            "$ref": "#/components/schemas/Uuid"
+          }
+        }
+      },
       "HealthResponse": {
         "type": "object",
         "required": [
@@ -1496,6 +2238,28 @@
           }
         }
       },
+      "HighRiskActivity": {
+        "type": "string",
+        "description": "High risk business activities. Must be declared if the business is engaged in any.",
+        "enum": [
+          "adult_entertainment",
+          "gambling",
+          "hold_client_funds",
+          "investment_services",
+          "lending_banking",
+          "marijuana_or_related_services",
+          "money_services",
+          "nicotine_tobacco_or_related_services",
+          "operate_foreign_exchange_virtual_currencies_brokerage_otc",
+          "pharmaceuticals",
+          "precious_metals_precious_stones_jewelry",
+          "safe_deposit_box_rentals",
+          "third_party_payment_processing",
+          "weapons_firearms_and_explosives",
+          "none_of_the_above"
+        ],
+        "example": "none_of_the_above"
+      },
       "HistoryDataPoint": {
         "type": "object",
         "required": [
@@ -1505,19 +2269,19 @@
           "hourly_apy"
         ],
         "properties": {
-          "hourly_apy": {
-            "type": "number",
-            "format": "double"
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
           },
           "share_price": {
             "type": "number",
             "format": "double"
           },
-          "timestamp": {
-            "type": "string",
-            "format": "date-time"
-          },
           "total_assets": {
+            "type": "number",
+            "format": "double"
+          },
+          "hourly_apy": {
             "type": "number",
             "format": "double"
           }
@@ -1526,6 +2290,11 @@
       "HistoryQueryParams": {
         "type": "object",
         "properties": {
+          "start_date": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
           "end_date": {
             "type": "string",
             "format": "date-time",
@@ -1544,11 +2313,6 @@
           "order": {
             "type": "string",
             "nullable": true
-          },
-          "start_date": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
           }
         }
       },
@@ -1560,6 +2324,9 @@
           "total_count"
         ],
         "properties": {
+          "vault_id": {
+            "type": "string"
+          },
           "data": {
             "type": "array",
             "items": {
@@ -1569,8 +2336,24 @@
           "total_count": {
             "type": "integer",
             "format": "int64"
+          }
+        }
+      },
+      "IbanAccountPayload": {
+        "type": "object",
+        "required": [
+          "accountNumber",
+          "bic",
+          "country"
+        ],
+        "properties": {
+          "accountNumber": {
+            "type": "string"
           },
-          "vault_id": {
+          "bic": {
+            "type": "string"
+          },
+          "country": {
             "type": "string"
           }
         }
@@ -1581,64 +2364,140 @@
         "description": "A naive datetime string without timezone",
         "example": "2023-01-01T12:00:00"
       },
-      "OtpCompleteRequest": {
-        "type": "object",
-        "required": [
-          "TransactionRequestId",
-          "OtpCode"
-        ],
-        "properties": {
-          "OtpCode": {
-            "type": "string"
-          },
-          "TransactionRequestId": {
-            "type": "string"
-          }
-        }
-      },
       "OtpRequestResponse": {
         "type": "object",
         "required": [
+          "accountId",
+          "transactionType",
           "vaultAddr",
-          "organizationId",
-          "transactionRequestId"
+          "transaction_id"
         ],
         "properties": {
-          "organizationId": {
-            "type": "string"
+          "accountId": {
+            "$ref": "#/components/schemas/Uuid"
           },
-          "transactionRequestId": {
-            "type": "string"
+          "transactionType": {
+            "$ref": "#/components/schemas/TransactionType"
           },
           "vaultAddr": {
-            "type": "string"
+            "type": "string",
+            "description": "The address of the vault.",
+            "example": "0x1234567890abcdef"
+          },
+          "amount": {
+            "type": "string",
+            "description": "Amount to deposit.",
+            "example": "750.25",
+            "nullable": true
+          },
+          "transaction_id": {
+            "$ref": "#/components/schemas/Uuid"
           }
         }
       },
-      "RootUser": {
+      "PasskeyTxRequestResponse": {
         "type": "object",
         "required": [
-          "userName"
+          "bodyToSign",
+          "transactionId"
         ],
         "properties": {
-          "authenticators": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AuthenticatorParam"
-            },
-            "nullable": true
+          "bodyToSign": {
+            "$ref": "#/components/schemas/SignTransactionRequest"
           },
-          "externalUserId": {
+          "transactionId": {
+            "$ref": "#/components/schemas/Uuid"
+          }
+        }
+      },
+      "PaymentRailVirtualAccount": {
+        "type": "string",
+        "enum": [
+          "AchPush",
+          "Pix",
+          "Sepa",
+          "Spei",
+          "Wire"
+        ]
+      },
+      "SendOtpTransactionRequestBody": {
+        "type": "object",
+        "required": [
+          "transactionId",
+          "otpCode"
+        ],
+        "properties": {
+          "transactionId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "otpCode": {
             "type": "string",
+            "description": "The OTp code that the user received via email.",
+            "example": "123456"
+          }
+        }
+      },
+      "SendPasskeyTransactionRequestBody": {
+        "type": "object",
+        "required": [
+          "signedBody",
+          "transactionId",
+          "webAuthnStamp"
+        ],
+        "properties": {
+          "signedBody": {
+            "$ref": "#/components/schemas/SignTransactionRequest"
+          },
+          "transactionId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "webAuthnStamp": {
+            "type": "string",
+            "description": "Cryptographically signed (stamped) request to be passed in as a header. For more info, see [wallet authentication](https://docs.byzantine.fi/api-reference/wallet-authentication)."
+          }
+        }
+      },
+      "SendTransactionResponseBody": {
+        "type": "object",
+        "required": [
+          "transactionId",
+          "status"
+        ],
+        "properties": {
+          "transactionId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "status": {
+            "$ref": "#/components/schemas/TransactionStatus"
+          },
+          "broadcastedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Exact timestamp when the transaction was broadcasted on-chain. Only available for `completed` transactions.",
+            "example": "2025-11-19T21:16:02.894Z",
             "nullable": true
           },
-          "userName": {
-            "type": "string"
+          "transactionReceipt": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TransactionReceipt"
+              }
+            ],
+            "nullable": true
+          },
+          "fiatDepositInstructions": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SourceDepositInstructions"
+              }
+            ],
+            "nullable": true
           }
         }
       },
       "SignTransactionParams": {
         "type": "object",
+        "description": "The parameters object containing the specific intent data for this transaction.",
         "required": [
           "signWith",
           "unsignedTransaction",
@@ -1646,18 +2505,23 @@
         ],
         "properties": {
           "signWith": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string"
+            "type": "string",
+            "description": "A Wallet account address, Private Key address, or Private Key identifier."
           },
           "unsignedTransaction": {
-            "type": "string"
+            "type": "string",
+            "description": "Raw unsigned transaction to be signed."
+          },
+          "type": {
+            "type": "string",
+            "description": "Defaults to `TRANSACTION_TYPE_ETHEREUM`",
+            "example": "TRANSACTION_TYPE_ETHEREUM"
           }
         }
       },
       "SignTransactionRequest": {
         "type": "object",
+        "description": "The object that needs to be signed by the end user to make a transaction.",
         "required": [
           "type",
           "timestampMs",
@@ -1665,223 +2529,86 @@
           "parameters"
         ],
         "properties": {
+          "type": {
+            "type": "string",
+            "description": "Defaults to `ACTIVITY_TYPE_SIGN_TRANSACTION_V2`",
+            "example": "ACTIVITY_TYPE_SIGN_TRANSACTION_V2"
+          },
+          "timestampMs": {
+            "type": "string",
+            "description": "UNIX timestamp of the creation of the transaction."
+          },
           "organizationId": {
-            "type": "string"
+            "type": "string",
+            "description": "The account ID making the transaction."
           },
           "parameters": {
             "$ref": "#/components/schemas/SignTransactionParams"
-          },
-          "timestampMs": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string"
           }
         }
       },
-      "SubOrg": {
+      "SourceDepositInstructions": {
         "type": "object",
         "required": [
-          "byz_sub_org_id",
-          "individual",
-          "integrator_id",
-          "sub_organization_name",
-          "created_at",
-          "updated_at",
-          "root_quorum_threshold"
+          "currency",
+          "bank_name",
+          "bank_address",
+          "payment_rails",
+          "bank_beneficiary_name",
+          "bank_beneficiary_address"
         ],
         "properties": {
-          "byz_sub_org_id": {
-            "$ref": "#/components/schemas/Uuid"
+          "currency": {
+            "$ref": "#/components/schemas/Currency"
           },
-          "created_at": {
+          "bank_name": {
             "type": "string",
-            "format": "date-time"
+            "description": "The name of the beneficiary bank.",
+            "example": "Lead Bank"
           },
-          "individual": {
-            "type": "boolean"
-          },
-          "integrator_id": {
-            "$ref": "#/components/schemas/Uuid"
-          },
-          "root_quorum_threshold": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "sub_organization_name": {
-            "type": "string"
-          },
-          "trnk_sub_organization_id": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Uuid"
-              }
-            ],
-            "nullable": true
-          },
-          "updated_at": {
+          "bank_address": {
             "type": "string",
-            "format": "date-time"
+            "description": "The address of the beneficiary bank.",
+            "example": "1801 Main St., Kansas City, MO 64108"
           },
-          "wallet_addresses": {
+          "payment_rails": {
             "type": "array",
             "items": {
-              "type": "string",
-              "nullable": true
-            },
-            "nullable": true
-          }
-        }
-      },
-      "SumsubAddress": {
-        "type": "object",
-        "properties": {
-          "country": {
+              "$ref": "#/components/schemas/PaymentRailVirtualAccount"
+            }
+          },
+          "bank_beneficiary_name": {
             "type": "string",
-            "nullable": true
+            "description": "The name of the beneficiary. Either first and last name, or a business name.",
+            "example": "John Smith"
           },
-          "postCode": {
+          "bank_beneficiary_address": {
             "type": "string",
-            "nullable": true
+            "description": "The address of the beneficiary.",
+            "example": "1234 Main St., Kansas City, MO 64108"
           },
-          "state": {
+          "bank_account_number": {
             "type": "string",
+            "description": "In case of a USD deposit, the bank account number to deposit to.",
+            "example": "1234567890",
             "nullable": true
           },
-          "street": {
+          "bank_routing_number": {
             "type": "string",
+            "description": "In case of a USD deposit, the ban routing number to deposit to.",
+            "example": "87654321",
             "nullable": true
           },
-          "town": {
+          "iban_number": {
             "type": "string",
+            "description": "In case of a EUR deposit, the IBAN to deposit to.",
+            "example": "FR12345678901234567890",
             "nullable": true
-          }
-        }
-      },
-      "SumsubApplicantData": {
-        "type": "object",
-        "properties": {
-          "email": {
+          },
+          "iban_bic": {
             "type": "string",
-            "nullable": true
-          },
-          "externalUserId": {
-            "type": "string",
-            "nullable": true
-          },
-          "id": {
-            "type": "string",
-            "nullable": true
-          },
-          "info": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ApplicantInfo"
-              }
-            ],
-            "nullable": true
-          },
-          "requiredIdDocsStatus": {
-            "type": "string",
-            "nullable": true
-          },
-          "review": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SumsubApplicantReview"
-              }
-            ],
-            "nullable": true
-          },
-          "reviewResult": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SumsubReviewResult"
-              }
-            ],
-            "nullable": true
-          },
-          "reviewStatus": {
-            "type": "string",
-            "nullable": true
-          },
-          "type": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ApplicantType"
-              }
-            ],
-            "nullable": true
-          }
-        }
-      },
-      "SumsubApplicantReview": {
-        "type": "object",
-        "properties": {
-          "attemptCnt": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "attemptId": {
-            "type": "string",
-            "nullable": true
-          },
-          "createDate": {
-            "type": "string",
-            "nullable": true
-          },
-          "levelName": {
-            "type": "string",
-            "nullable": true
-          },
-          "reviewDate": {
-            "type": "string",
-            "nullable": true
-          },
-          "reviewId": {
-            "type": "string",
-            "nullable": true
-          },
-          "reviewResult": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SumsubReviewResult"
-              }
-            ],
-            "nullable": true
-          },
-          "reviewStatus": {
-            "type": "string",
-            "nullable": true
-          }
-        }
-      },
-      "SumsubReviewResult": {
-        "type": "object",
-        "required": [
-          "reviewAnswer"
-        ],
-        "properties": {
-          "buttonIds": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "rejectLabels": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "reviewAnswer": {
-            "type": "string"
-          },
-          "reviewRejectType": {
-            "type": "string",
+            "description": "In case of a EUR deposit, the BIC to deposit to.",
+            "example": "BICFR12345",
             "nullable": true
           }
         }
@@ -1894,15 +2621,15 @@
           "is_active"
         ],
         "properties": {
+          "vault_address": {
+            "type": "string"
+          },
           "chain_id": {
             "type": "integer",
             "format": "int32"
           },
           "is_active": {
             "type": "boolean"
-          },
-          "vault_address": {
-            "type": "string"
           }
         }
       },
@@ -1910,12 +2637,12 @@
         "type": "object",
         "description": "Ethereum transaction receipt",
         "properties": {
-          "blobGasPrice": {
+          "transactionHash": {
             "type": "string",
-            "nullable": true
+            "example": "0x123..."
           },
-          "blobGasUsed": {
-            "type": "string",
+          "transactionIndex": {
+            "type": "integer",
             "nullable": true
           },
           "blockHash": {
@@ -1926,273 +2653,274 @@
             "type": "integer",
             "nullable": true
           },
-          "contractAddress": {
-            "type": "string",
-            "nullable": true
+          "gasUsed": {
+            "type": "string"
           },
           "effectiveGasPrice": {
             "type": "string"
           },
-          "from": {
-            "type": "string"
+          "blobGasUsed": {
+            "type": "string",
+            "nullable": true
           },
-          "gasUsed": {
+          "blobGasPrice": {
+            "type": "string",
+            "nullable": true
+          },
+          "from": {
             "type": "string"
           },
           "to": {
             "type": "string",
             "nullable": true
           },
-          "transactionHash": {
+          "contractAddress": {
             "type": "string",
-            "example": "0x123..."
-          },
-          "transactionIndex": {
-            "type": "integer",
             "nullable": true
           }
         }
       },
-      "UserDocument": {
+      "TransactionStatus": {
+        "type": "string",
+        "description": "The current status of the transaction.",
+        "enum": [
+          "created",
+          "waiting_for_funds",
+          "funds_in_transfer",
+          "processing",
+          "completed"
+        ],
+        "example": "completed"
+      },
+      "TransactionType": {
+        "type": "string",
+        "description": "Type of transaction that is being submitted.",
+        "enum": [
+          "approve",
+          "deposit",
+          "withdraw"
+        ],
+        "example": "deposit"
+      },
+      "TurnkeyTransaction": {
         "type": "object",
-        "description": "Document to send for a KYC",
         "required": [
-          "documentType",
-          "country",
-          "image"
+          "transactionId",
+          "accountId",
+          "chainId",
+          "vaultAddr",
+          "type",
+          "status",
+          "createdAt",
+          "updatedAt",
+          "sourceCurrency",
+          "destinationCurrency"
         ],
         "properties": {
-          "country": {
+          "transactionId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "accountId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "chainId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "vaultAddr": {
             "type": "string"
           },
-          "documentSubType": {
+          "type": {
+            "$ref": "#/components/schemas/TransactionType"
+          },
+          "status": {
+            "$ref": "#/components/schemas/TransactionStatus"
+          },
+          "fiatAccountId": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/UserDocumentSubType"
+                "$ref": "#/components/schemas/Uuid"
               }
             ],
             "nullable": true
           },
-          "documentType": {
-            "$ref": "#/components/schemas/UserDocumentType"
-          },
-          "image": {
+          "transactionHash": {
             "type": "string",
-            "format": "Format: data:image/[type];base64,[base64-encoded-data]. Supported types: png, jpeg, pdf",
-            "example": "data:image/png;base64,iVBORw0lFTkSuQmCC"
+            "nullable": true
+          },
+          "optId": {
+            "type": "string",
+            "nullable": true
+          },
+          "broadcastedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "sourceCurrency": {
+            "$ref": "#/components/schemas/Currency"
+          },
+          "destinationCurrency": {
+            "$ref": "#/components/schemas/Currency"
+          },
+          "fiatTransactionId": {
+            "type": "string",
+            "nullable": true
+          },
+          "destinationAmount": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Decimal"
+              }
+            ],
+            "nullable": true
+          },
+          "sourceAmount": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Decimal"
+              }
+            ],
+            "nullable": true
           }
         }
       },
-      "UserDocumentSubType": {
-        "type": "string",
-        "description": "Type of user document sub-type for Sumsub verification",
-        "enum": [
-          "FRONT_SIDE",
-          "BACK_SIDE"
-        ]
-      },
       "UserDocumentType": {
         "type": "string",
-        "description": "Type of user document for Sumsub verification",
+        "description": "Type of the document. See the full list of [accepted documents](https://docs.byzantine.fi/api-reference/documents).",
         "enum": [
-          "AGREEMENT",
-          "ARBITRARY_DOC",
-          "BANK_CARD",
-          "CONTRACT",
-          "COVID_VACCINATION_FORM",
-          "DRIVERS",
-          "DRIVERS_TRANSLATION",
-          "FILE_ATTACHMENT",
-          "ID_CARD",
-          "ID_DOC_PHOTO",
-          "INCOME_SOURCE",
-          "INVESTOR_DOC",
-          "PASSPORT",
-          "PAYMENT_SOURCE",
-          "PROFILE_IMAGE",
-          "RESIDENCE_PERMIT",
-          "SELFIE",
-          "UTILITY_BILL",
-          "UTILITY_BILL2",
-          "VEHICLE_REGISTRATION_CERTIFICATE",
-          "VIDEO_SELFIE"
+          "passport",
+          "national_id_front",
+          "national_id_back",
+          "proof_of_address",
+          "other"
         ]
+      },
+      "UserInfo": {
+        "type": "object",
+        "description": "Personal information about the user required for identity verification.",
+        "required": [
+          "firstName",
+          "lastName",
+          "email",
+          "birthDate",
+          "nationality",
+          "residentialAddress"
+        ],
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "description": "First name of the user.",
+            "example": "John"
+          },
+          "middleName": {
+            "type": "string",
+            "description": "Middle name of the user.",
+            "example": "William",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Last name of the user.",
+            "example": "Smith"
+          },
+          "email": {
+            "type": "string",
+            "description": "Contact email of the user.",
+            "example": "john.smith@example.com"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Phone number of the user.",
+            "example": "+33 123 456 789",
+            "nullable": true
+          },
+          "birthDate": {
+            "type": "string",
+            "description": "User's date of birth.",
+            "example": "1990-01-01"
+          },
+          "nationality": {
+            "$ref": "#/components/schemas/CountryCode"
+          },
+          "residentialAddress": {
+            "$ref": "#/components/schemas/Address"
+          },
+          "socialSecurityNumber": {
+            "type": "string",
+            "description": "Required exclusively for USA-based users. Must be the full social security number.",
+            "example": "123-45-6789",
+            "nullable": true
+          }
+        }
+      },
+      "UserSourceOfFunds": {
+        "type": "string",
+        "description": "Source of funds for users. Required for high risk users.",
+        "enum": [
+          "company_funds",
+          "ecommerce_reseller",
+          "gambling_proceeds",
+          "gifts",
+          "government_benefits",
+          "inheritance",
+          "investments_loans",
+          "pension_retirement",
+          "salary",
+          "sale_of_assets_real_estate",
+          "savings",
+          "someone_elses_funds"
+        ],
+        "example": "salary"
+      },
+      "UserVerificationDocument": {
+        "type": "object",
+        "description": "Document(s) to verify the identity of the user.",
+        "required": [
+          "documentType",
+          "issuingCountry",
+          "document"
+        ],
+        "properties": {
+          "documentType": {
+            "$ref": "#/components/schemas/UserDocumentType"
+          },
+          "documentNumber": {
+            "type": "string",
+            "description": "Required for identity documents (passport, national ID). Must be the full document number.",
+            "example": "FR1234567890",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "Required if document type is 'other'.",
+            "example": "Additional supporting document",
+            "nullable": true
+          },
+          "issuingCountry": {
+            "$ref": "#/components/schemas/CountryCode"
+          },
+          "document": {
+            "type": "string",
+            "format": "data:[MIME];base64,[base64-encoded-data]",
+            "description": "The document to be uploaded.\n\nSupported MIME types: image/jpeg, image/png, image/heic, image/tiff, application/pdf",
+            "example": "data:image/png;base64,iVBORw0lFTkSuQmCC..."
+          }
+        }
       },
       "Uuid": {
         "type": "string",
         "format": "uuid",
         "description": "A UUID string",
         "example": "550e8400-e29b-41d4-a716-446655440000"
-      },
-      "VaultV2Deposit": {
-        "type": "object",
-        "required": [
-          "assets",
-          "block_number",
-          "block_timestamp",
-          "chain_id",
-          "id",
-          "log_index",
-          "on_behalf",
-          "sender",
-          "shares",
-          "transaction_hash",
-          "user_id",
-          "vault_id"
-        ],
-        "properties": {
-          "assets": {
-            "type": "string",
-            "description": "Amount of assets deposited",
-            "example": "500.25"
-          },
-          "block_number": {
-            "type": "string",
-            "description": "Block number when deposit occurred",
-            "example": "18500000"
-          },
-          "block_timestamp": {
-            "type": "string",
-            "description": "Block timestamp when deposit occurred",
-            "example": "1672531200"
-          },
-          "chain_id": {
-            "type": "integer",
-            "format": "int32",
-            "description": "Chain ID",
-            "example": 1
-          },
-          "id": {
-            "type": "string",
-            "description": "Unique identifier for the deposit",
-            "example": "deposit_123"
-          },
-          "log_index": {
-            "type": "integer",
-            "format": "int32",
-            "description": "Log index of the deposit event",
-            "example": 42
-          },
-          "on_behalf": {
-            "type": "string",
-            "description": "Address on behalf of whom the deposit was made",
-            "example": "0x1234567890abcdef"
-          },
-          "sender": {
-            "type": "string",
-            "description": "Address of the deposit sender",
-            "example": "0xabcdef1234567890"
-          },
-          "shares": {
-            "type": "string",
-            "description": "Amount of shares received for the deposit",
-            "example": "498.75"
-          },
-          "transaction_hash": {
-            "type": "string",
-            "description": "Transaction hash of the deposit",
-            "example": "0x9876543210fedcba"
-          },
-          "user_id": {
-            "type": "string",
-            "description": "User ID associated with this deposit",
-            "example": "user_456"
-          },
-          "vault_id": {
-            "type": "string",
-            "description": "Vault ID associated with this deposit",
-            "example": "vault_789"
-          }
-        },
-        "example": {
-          "assets": "500.25",
-          "block_number": "18500000",
-          "block_timestamp": "1672531200",
-          "chain_id": 1,
-          "id": "deposit_123",
-          "log_index": 42,
-          "on_behalf": "0x1234567890abcdef",
-          "sender": "0xabcdef1234567890",
-          "shares": "498.75",
-          "transaction_hash": "0x9876543210fedcba",
-          "user_id": "user_456",
-          "vault_id": "vault_789"
-        }
-      },
-      "VaultV2DepositQueryParams": {
-        "type": "object",
-        "properties": {
-          "chain_id": {
-            "type": "integer",
-            "format": "int32",
-            "description": "Filter by chain ID",
-            "example": 1,
-            "nullable": true
-          },
-          "from_block": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BigDecimal"
-              }
-            ],
-            "nullable": true
-          },
-          "limit": {
-            "type": "integer",
-            "format": "int64",
-            "description": "Limit number of results",
-            "example": 100,
-            "nullable": true
-          },
-          "max_assets": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BigDecimal"
-              }
-            ],
-            "nullable": true
-          },
-          "min_assets": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BigDecimal"
-              }
-            ],
-            "nullable": true
-          },
-          "on_behalf": {
-            "type": "string",
-            "description": "Filter by on_behalf address",
-            "example": "0x1234567890abcdef",
-            "nullable": true
-          },
-          "sender": {
-            "type": "string",
-            "description": "Filter by sender address",
-            "example": "0xabcdef1234567890",
-            "nullable": true
-          },
-          "to_block": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BigDecimal"
-              }
-            ],
-            "nullable": true
-          },
-          "user_id": {
-            "type": "string",
-            "description": "Filter by user ID",
-            "example": "user_456",
-            "nullable": true
-          },
-          "vault_id": {
-            "type": "string",
-            "description": "Filter by vault ID",
-            "example": "vault_789",
-            "nullable": true
-          }
-        }
       },
       "VaultV2Transaction": {
         "type": "object",
@@ -2205,6 +2933,13 @@
           "type"
         ],
         "properties": {
+          "timestamp": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Transaction timestamp in milliseconds",
+            "example": 1754129249000,
+            "minimum": 0
+          },
           "amountAssetsTransferred": {
             "type": "number",
             "format": "double",
@@ -2228,13 +2963,6 @@
             "description": "Transaction hash",
             "example": "0x3b398e37cbf1b805c6bbd9d88b2337284dd72c2f29a899454974cbd5b38f13c9"
           },
-          "timestamp": {
-            "type": "integer",
-            "format": "int64",
-            "description": "Transaction timestamp in milliseconds",
-            "example": 1754129249000,
-            "minimum": 0
-          },
           "type": {
             "type": "string",
             "description": "Transaction type",
@@ -2248,50 +2976,6 @@
           "hash": "0x3b398e37cbf1b805c6bbd9d88b2337284dd72c2f29a899454974cbd5b38f13c9",
           "timestamp": 1754129249000,
           "type": "deposit"
-        }
-      },
-      "VaultV2UserPositionsQueryParams": {
-        "type": "object",
-        "properties": {
-          "chain_id": {
-            "type": "integer",
-            "format": "int32",
-            "description": "Filter by chain ID",
-            "example": 1,
-            "nullable": true
-          },
-          "limit": {
-            "type": "integer",
-            "format": "int64",
-            "description": "Limit number of transactions per vault",
-            "example": 100,
-            "nullable": true
-          }
-        }
-      },
-      "VaultV2UserPositionsResponse": {
-        "type": "object",
-        "required": [
-          "address",
-          "vaults"
-        ],
-        "properties": {
-          "address": {
-            "type": "string",
-            "description": "User address",
-            "example": "0xe5b709a14859edf820347d78e587b1634b0ec771"
-          },
-          "vaults": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/VaultV2VaultPosition"
-            },
-            "description": "List of vault positions for this user"
-          }
-        },
-        "example": {
-          "address": "0xe5b709a14859edf820347d78e587b1634b0ec771",
-          "vaults": []
         }
       },
       "VaultV2VaultPosition": {
@@ -2317,17 +3001,11 @@
             "description": "Chain ID",
             "example": 1
           },
-          "lastUpdateTimestamp": {
-            "type": "integer",
-            "format": "int64",
-            "description": "Timestamp of the last update in milliseconds",
-            "example": 1754506387000,
-            "minimum": 0
-          },
-          "lastUpdateTxHash": {
-            "type": "string",
-            "description": "Hash of the last update transaction",
-            "example": "0xa5f7a2992c16ef0dc5fcb5824db2f1a8f18f68ae1fecd7ea07780681812c33e1"
+          "shares": {
+            "type": "number",
+            "format": "double",
+            "description": "User's shares in this vault",
+            "example": 249989
           },
           "ratio": {
             "type": "number",
@@ -2335,11 +3013,17 @@
             "description": "Share to asset ratio (last share price)",
             "example": 1.00054002160086
           },
-          "shares": {
-            "type": "number",
-            "format": "double",
-            "description": "User's shares in this vault",
-            "example": 249989
+          "lastUpdateTxHash": {
+            "type": "string",
+            "description": "Hash of the last update transaction",
+            "example": "0xa5f7a2992c16ef0dc5fcb5824db2f1a8f18f68ae1fecd7ea07780681812c33e1"
+          },
+          "lastUpdateTimestamp": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Timestamp of the last update in milliseconds",
+            "example": 1754506387000,
+            "minimum": 0
           },
           "transactions": {
             "type": "array",
@@ -2358,205 +3042,97 @@
           "transactions": []
         }
       },
-      "VaultV2Withdraw": {
+      "VerificationDocumentResponse": {
         "type": "object",
+        "description": "Response body for verification documents.",
         "required": [
-          "assets",
-          "block_number",
-          "block_timestamp",
-          "chain_id",
-          "id",
-          "log_index",
-          "on_behalf",
-          "receiver",
-          "sender",
-          "shares",
-          "transaction_hash",
-          "user_id",
-          "vault_id"
+          "documentType",
+          "issuingCountry",
+          "documentId"
         ],
         "properties": {
-          "assets": {
+          "documentType": {
+            "$ref": "#/components/schemas/DocumentType"
+          },
+          "documentNumber": {
             "type": "string",
-            "description": "Amount of assets withdrawn",
-            "example": "750.25"
+            "description": "The full document number sent with the document.",
+            "example": "FR1234567890",
+            "nullable": true
           },
-          "block_number": {
+          "description": {
             "type": "string",
-            "description": "Block number when withdrawal occurred",
-            "example": "18500000"
+            "example": "Additional supporting document",
+            "nullable": true
           },
-          "block_timestamp": {
+          "issuingCountry": {
             "type": "string",
-            "description": "Block timestamp when withdrawal occurred",
-            "example": "1672531200"
+            "description": "The ISO 3166-1 (three-character) country code of the relevant country. See the full list of [countries](https://docs.byzantine.fi/api-reference/lists/countries).",
+            "example": "FRA"
           },
-          "chain_id": {
-            "type": "integer",
-            "format": "int32",
-            "description": "Chain ID",
-            "example": 1
-          },
-          "id": {
+          "documentId": {
             "type": "string",
-            "description": "Unique identifier for the withdrawal",
-            "example": "withdraw_123"
+            "description": "Unique identifier assigned to the document.",
+            "example": "830c219c-d197-451d-b879-77936a80c452"
           },
-          "log_index": {
-            "type": "integer",
-            "format": "int32",
-            "description": "Log index of the withdrawal event",
-            "example": 15
+          "warnings": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
           },
-          "on_behalf": {
-            "type": "string",
-            "description": "Address on behalf of whom the withdrawal was made",
-            "example": "0x1234567890abcdef"
-          },
-          "receiver": {
-            "type": "string",
-            "description": "Address that received the withdrawn assets",
-            "example": "0xreceiver1234567890"
-          },
-          "sender": {
-            "type": "string",
-            "description": "Address of the withdrawal sender",
-            "example": "0xabcdef1234567890"
-          },
-          "shares": {
-            "type": "string",
-            "description": "Amount of shares burned for the withdrawal",
-            "example": "748.75"
-          },
-          "transaction_hash": {
-            "type": "string",
-            "description": "Transaction hash of the withdrawal",
-            "example": "0x9876543210fedcba"
-          },
-          "user_id": {
-            "type": "string",
-            "description": "User ID associated with this withdrawal",
-            "example": "user_456"
-          },
-          "vault_id": {
-            "type": "string",
-            "description": "Vault ID associated with this withdrawal",
-            "example": "vault_789"
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
           }
-        },
-        "example": {
-          "assets": "750.25",
-          "block_number": "18500000",
-          "block_timestamp": "1672531200",
-          "chain_id": 1,
-          "id": "withdraw_123",
-          "log_index": 15,
-          "on_behalf": "0x1234567890abcdef",
-          "receiver": "0xreceiver1234567890",
-          "sender": "0xabcdef1234567890",
-          "shares": "748.75",
-          "transaction_hash": "0x9876543210fedcba",
-          "user_id": "user_456",
-          "vault_id": "vault_789"
         }
       },
-      "VaultV2WithdrawQueryParams": {
-        "type": "object",
-        "properties": {
-          "chain_id": {
-            "type": "integer",
-            "format": "int32",
-            "description": "Filter by chain ID",
-            "example": 1,
-            "nullable": true
-          },
-          "from_block": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BigDecimal"
-              }
-            ],
-            "nullable": true
-          },
-          "limit": {
-            "type": "integer",
-            "format": "int64",
-            "description": "Limit number of results",
-            "example": 100,
-            "nullable": true
-          },
-          "max_assets": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BigDecimal"
-              }
-            ],
-            "nullable": true
-          },
-          "min_assets": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BigDecimal"
-              }
-            ],
-            "nullable": true
-          },
-          "on_behalf": {
-            "type": "string",
-            "description": "Filter by on_behalf address",
-            "example": "0x1234567890abcdef",
-            "nullable": true
-          },
-          "receiver": {
-            "type": "string",
-            "description": "Filter by receiver address",
-            "example": "0xreceiver1234567890",
-            "nullable": true
-          },
-          "sender": {
-            "type": "string",
-            "description": "Filter by sender address",
-            "example": "0xabcdef1234567890",
-            "nullable": true
-          },
-          "to_block": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BigDecimal"
-              }
-            ],
-            "nullable": true
-          },
-          "user_id": {
-            "type": "string",
-            "description": "Filter by user ID",
-            "example": "user_456",
-            "nullable": true
-          },
-          "vault_id": {
-            "type": "string",
-            "description": "Filter by vault ID",
-            "example": "vault_789",
-            "nullable": true
-          }
-        }
+      "VerificationStatus": {
+        "type": "string",
+        "description": "The identity verification status of the user.",
+        "enum": [
+          "under_review",
+          "waiting_for_information",
+          "active",
+          "rejected",
+          "inactive"
+        ],
+        "example": "active"
       },
       "WithdrawRequestBody": {
         "type": "object",
         "required": [
+          "accountId",
           "vaultAddr",
           "amount",
-          "organizationId"
+          "destinationCurrency"
         ],
         "properties": {
+          "accountId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "vaultAddr": {
+            "type": "string",
+            "description": "The address of the vault to withdraw from.",
+            "example": "0x1234567890abcdef"
+          },
           "amount": {
             "$ref": "#/components/schemas/Decimal"
           },
-          "organizationId": {
-            "type": "string"
+          "destinationCurrency": {
+            "$ref": "#/components/schemas/Currency"
           },
-          "vaultAddr": {
-            "type": "string"
+          "bank_account_id": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ],
+            "nullable": true
           }
         }
       }
@@ -2567,11 +3143,6 @@
         "scheme": "bearer",
         "bearerFormat": "JWT"
       },
-      "integrator_and_user_auth": {
-        "type": "apiKey",
-        "in": "header",
-        "name": "X-Pubkey, X-Timestamp, X-Signature, X-User-Stamp"
-      },
       "integrator_auth": {
         "type": "apiKey",
         "in": "header",
@@ -2581,8 +3152,16 @@
   },
   "tags": [
     {
-      "name": "User accounts",
+      "name": "Account creation",
       "description": "Endpoints to create or edit user accounts."
+    },
+    {
+      "name": "Account management",
+      "description": "Endpoints to manage user accounts."
+    },
+    {
+      "name": "Account data",
+      "description": "Endpoints to get data about a user account."
     },
     {
       "name": "Transactions with passkey",
@@ -2593,15 +3172,11 @@
       "description": "Endpoints to make transactions with OTP user authentication."
     },
     {
-      "name": "Query user data",
-      "description": "Get data about a user."
-    },
-    {
-      "name": "Query vault data",
+      "name": "Vault data",
       "description": "Get data about vaults."
     },
     {
-      "name": "Query API health",
+      "name": "API health",
       "description": "Check API status."
     }
   ]
