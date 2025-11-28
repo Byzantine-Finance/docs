@@ -12,7 +12,7 @@ Integrators have two options when creating a user account. This method will be u
 | Auth Method | Description |
 | --- | --- |
 | OTP via email | This method is easier to implement, but is a little less secure, since it relies on access to the end user's email account. |
-| Passkey | This method is more cryptographically secure, since it directly links the end user's device to authentication, but is a bit more technically challenging to implement. |
+| Passkey | This method is more cryptographically secure, since it directly links the end user's device to authentication. Integrators must implement both the passkey creation process and the authentication flow, making it more technically challenging to implement. |
 
 ## Technical implementation
 
@@ -29,12 +29,98 @@ Integrators have two options when creating a user account. This method will be u
     3. **Complete the transaction:** The user calls the `/submit/send-transaction-otp` endpoint to sign and execute the transaction with the OTP code.
 
   </Tab>
-  <Tab title="Passkey Auth">
+  
+  <Tab title="Passkey Creation">
     **Setup:**
 
     By choosing this method, the user will be prompted to add their passkey to their device, either through the browser's built-in passkey management, through a third-party passkey manager, or through their mobile device's passkey management.
 
-    This passkey will be used to authenticate the user when making transactions. A same user can have multiple passkeys, and can use different passkeys for different purposes.
+    Once the passkey is created by the user, it will be used to authenticate the user when making transactions. A same user can have multiple passkeys, and can use different passkeys for different purposes.
+
+    Rather than implementing the passkey creation process yourself, you can use our Integrator SDK to easily create the passkey for your users.
+
+    #### Installation
+
+    ```bash
+    npm install @byzantine/integrator-sdk
+    ```
+
+    #### Initialize the Byzantine Client
+
+    ```typescript
+    import { ByzantineClient } from '@byzantine/integrator-sdk';
+
+    // Prepare the webauthn stamper configuration
+    const webauthnStamperConfig: TWebauthnStamperConfig = {
+        // The RPID ("Relying Party ID") for your origin.
+        // For an origin named "https://www.example.com", the RPID is typically "example.com".
+        // If you're testing on localhost, the RPID should be "localhost".
+        rpId: string;
+        // The Relying Party name (e.g., "Example Corp")
+        rpName: string;
+        // Optional timeout value. Defaults to 10 minutes.
+        timeout?: number;
+        // Optional override for UV flag. Defaults to "preferred".
+        userVerification?: UserVerificationRequirement;
+        /**
+        * If you want to create discoverable credentials whenever possible both on Android and iOS,
+        * set `requireResidentKey` to `false` and `residentKey` to `preferred`.
+        * By doing so, it enables discoverable credential which is a self-contained key pair, stored on the end-user's device.
+        */
+        // Resident key requirement (default: "preferred")
+        residentKey?: ResidentKeyRequirement;
+        // Whether to require resident key (default: false)
+        requireResidentKey?: boolean;
+    };
+
+    const client = new ByzantineClient({
+      webauthn: webauthnStamperConfig,
+    });
+    ```
+
+    #### Usage example
+
+    ```typescript
+    import { PasskeyCreationConfig } from '@byzantine/integrator-sdk';
+
+    // Generate a random challenge for registration
+    const challenge = "your-challenge-generation-logic";
+
+    // Create the passkey configuration
+    const passkeyConfig: PasskeyCreationConfig = {
+      userId: "user-123",
+      userEmail: "user@example.com",
+      userName: "John Doe",
+      challenge: challenge,
+    };
+
+    // Create the passkey for the user
+    const credential = await client.webauthn.createPasskey(passkeyConfig);
+    ```
+
+    #### Discoverable and non-discoverable credentials
+
+    A **discoverable credential** is a self-contained credential that is stored on the end-user's device. For UX, the end-user is prompted to select their passkey from a list of their passkeys and choose which device/passkey they'd like to use.
+
+    <Note>
+      If you choose to create discoverable credentials for your users, it is not necessary to store their credential ID.
+    </Note>
+
+    A **non-discoverable credential** is a credential that isn't fully stored on the end-user's device. The integrator must store the credential ID. For UX, the user is prompted to authenticate with their passkey directly without having to select it from a list.
+
+    <Note>
+      For non-discoverable credentials, you must store the credential ID returned from `createPasskey`. When authenticating transactions, pass this credential ID as the second parameter to `client.webauthn.getStamp(payload, credentialId)` (cf. **Passkey Authentication** tab).
+    </Note>
+
+    By default, the Byzantine SDK will create discoverable credentials when the device supports it. To create non-discoverable credentials, you can set the `residentKey` option to `"discouraged"`:
+
+
+  </Tab>
+
+  <Tab title="Passkey Authentication">
+    **Setup:**
+
+    Once the passkey is set up, the user can use it to authenticate with the wallet to sign transactions.
 
     **Authentication flow:**
 
@@ -61,12 +147,21 @@ Integrators have two options when creating a user account. This method will be u
         // For an origin named "https://www.example.com", the RPID is typically "example.com".
         // If you're testing on localhost, the RPID should be "localhost".
         rpId: string;
-        // Optional timeout value. Defaults to 5 minutes.
+        // The Relying Party name (e.g., "Example Corp")
+        rpName: string;
+        // Optional timeout value. Defaults to 10 minutes.
         timeout?: number;
         // Optional override for UV flag. Defaults to "preferred".
         userVerification?: UserVerificationRequirement;
-        // The credential ID generated by user at the creation of the passkey
-        credentialIds?: string[];
+        /**
+        * If you want to create discoverable credentials whenever possible both on Android and iOS,
+        * set `requireResidentKey` to `false` and `residentKey` to `preferred`.
+        * By doing so, it enables discoverable credential which is a self-contained key pair, stored on the end-user's device.
+        */
+        // Resident key requirement (default: "preferred")
+        residentKey?: ResidentKeyRequirement;
+        // Whether to require resident key (default: false)
+        requireResidentKey?: boolean;
     };
 
     const client = new ByzantineClient({
@@ -81,19 +176,23 @@ Integrators have two options when creating a user account. This method will be u
       // Your request payload
     };
 
+    // [Optional] The stored credential ID returned from `createPasskey`
+    const credentialId = "credential-id-of-your-user's-passkey";
+
     // Generate the webauthn stamp 
-    const stapm = await client.webauthn.getStamp(payload);
+    const webAuthnStamp = await client.webauthn.getStamp(payload, credentialId);
 
     // Use the webAuthnStamp headers in your API call
     const response = await fetch(
       "https://api.byzantine.fi/v1/submit/send-transaction-passkey?chain_id=1",
       {
-        signedBody: payload,
-        transactionId: "transaction-id",
-        webAuthnStamp: stamp,
+        method: "POST",
+        headers: webAuthnStamp,
+        body: JSON.stringify(payload),
       }
     );
     ```
+
 
   </Tab>
 </Tabs>
