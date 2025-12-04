@@ -172,7 +172,8 @@
 								"group": "Getting started",
 								"pages": [
 									"api-reference/getting-started",
-									"api-reference/api-authentication"
+									"api-reference/api-authentication",
+									"api-reference/postman-collection"
 								]
 							},
 							"api-reference/concepts",
