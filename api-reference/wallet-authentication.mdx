@@ -9,10 +9,10 @@ When a user account is created in Byzantine, either they themselves or their ent
 
 Integrators have two options when creating a user account. This method will be used in the future to authenticate the user when making transactions.
 
-| Auth Method | Description |
-| --- | --- |
-| OTP via email | This method is easier to implement, but is a little less secure, since it relies on access to the end user's email account. |
-| Passkey | This method is more cryptographically secure, since it directly links the end user's device to authentication. Integrators must implement both the passkey creation process and the authentication flow, making it more technically challenging to implement. |
+| Auth Method   | Description                                                                                                                                                                                                                                                   |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| OTP via email | This method is easier to implement, but is a little less secure, since it relies on access to the end user's email account.                                                                                                                                   |
+| Passkey       | This method is more cryptographically secure, since it directly links the end user's device to authentication. Integrators must implement both the passkey creation process and the authentication flow, making it more technically challenging to implement. |
 
 ## Technical implementation
 
@@ -95,7 +95,25 @@ Integrators have two options when creating a user account. This method will be u
     };
 
     // Create the passkey for the user
-    const credential = await client.webauthn.createPasskey(passkeyConfig);
+    const { credentialIdBase64, attestationData, challengeFromClientData } =
+      await client.webauthn.createPasskey(passkeyConfig);
+
+    // Now that the user's passkey is created, you have to register it within the user/entity account creation:
+    const response = await fetch(
+      "https://api.byzantine.fi/v1/submit/create-user",
+      {
+        method: "POST",
+        headers: { /* ... */ },
+        body: {
+          // ... other required fields
+          authenticators: [{
+            authenticatorName: "passkey",
+            challenge: challengeFromClientData,
+            attestation: attestationData
+          }]
+        },
+      }
+    );
     ```
 
     #### Discoverable and non-discoverable credentials
@@ -109,11 +127,10 @@ Integrators have two options when creating a user account. This method will be u
     A **non-discoverable credential** is a credential that isn't fully stored on the end-user's device. The integrator must store the credential ID. For UX, the user is prompted to authenticate with their passkey directly without having to select it from a list.
 
     <Note>
-      For non-discoverable credentials, you must store the credential ID returned from `createPasskey`. When authenticating transactions, pass this credential ID as the second parameter to `client.webauthn.getStamp(payload, credentialId)` (cf. **Passkey Authentication** tab).
+      For non-discoverable credentials, you must store the credential ID returned from `createPasskey`, namely, `credentialIdBase64`. When authenticating transactions, pass this credential ID as the second parameter to `client.webauthn.getStamp(payload, credentialId)` (cf. **Passkey Authentication** tab).
     </Note>
 
     By default, the Byzantine SDK will create discoverable credentials when the device supports it. To create non-discoverable credentials, you can set the `residentKey` option to `"discouraged"`:
-
 
   </Tab>
 
@@ -179,7 +196,7 @@ Integrators have two options when creating a user account. This method will be u
     // [Optional] The stored credential ID returned from `createPasskey`
     const credentialId = "credential-id-of-your-user's-passkey";
 
-    // Generate the webauthn stamp 
+    // Generate the webauthn stamp
     const webAuthnStamp = await client.webauthn.getStamp(payload, credentialId);
 
     // Use the webAuthnStamp headers in your API call
@@ -193,7 +210,5 @@ Integrators have two options when creating a user account. This method will be u
     );
     ```
 
-
   </Tab>
 </Tabs>
-
