@@ -95,7 +95,7 @@ Integrators have two options when creating a user account. This method will be u
     };
 
     // Create the passkey for the user
-    const { credentialIdBase64, attestationData, challengeFromClientData } =
+    const { attestationData, challengeFromClientData } =
       await client.webauthn.createPasskey(passkeyConfig);
 
     // Now that the user's passkey is created, you have to register it within the user/entity account creation:
@@ -127,7 +127,7 @@ Integrators have two options when creating a user account. This method will be u
     A **non-discoverable credential** is a credential that isn't fully stored on the end-user's device. The integrator must store the credential ID. For UX, the user is prompted to authenticate with their passkey directly without having to select it from a list.
 
     <Note>
-      For non-discoverable credentials, you must store the credential ID returned from `createPasskey`, namely, `credentialIdBase64`. When authenticating transactions, pass this credential ID as the second parameter to `client.webauthn.getStamp(payload, credentialId)` (cf. **Passkey Authentication** tab).
+      For non-discoverable credentials, you must store the credential ID returned from `createPasskey`, namely, `attestationData.credentialId`. When authenticating transactions, pass this credential ID as the second parameter to `client.webauthn.getStamp(payload, credentialId)` (cf. **Passkey Authentication** tab).
     </Note>
 
     By default, the Byzantine SDK will create discoverable credentials when the device supports it. To create non-discoverable credentials, you can set the `residentKey` option to `"discouraged"`:
