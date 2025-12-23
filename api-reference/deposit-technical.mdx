@@ -13,8 +13,7 @@ A deposit into a Byzantine vault proceeeds in the following steps:
 4. Execute the deposit transaction to transfer the stablecoins into a Byzantine vault.
 
 <Info>
-  The integrator will have to call different API endpoints based on the
-  authentication method used.
+  The integrator will have to call different API endpoints based on the authentication method used.
 </Info>
 
 ## 1. Approving a vault
@@ -27,11 +26,10 @@ This approval is a **one-time requirement per vault**, typically performed when 
   <Tab title="OTP">
     The integrator must call two API endpoints:
 
-    1. [Get approval transaction](/api-reference/transactions-with-otp/initiate-approval-otp-auth), which sends an OTP code to user's email address.
+    1. [Get approval transaction](https://docs.byzantine.fi/api-reference/transactions-with-otp/initiate-approval), which sends an OTP code to user's email address.
     2. [Submit approval transaction](/api-reference/transactions-with-otp/send-a-transaction-otp-auth), which submits the OTP code to complete the approval.
 
     ![Flow to approve a vault with OTP](/images/approve-otp.png)
-
   </Tab>
   <Tab title="Passkey">
     The integrator must call two API endpoints:
@@ -40,7 +38,6 @@ This approval is a **one-time requirement per vault**, typically performed when 
     2. [Submit approval transaction](/api-reference/transactions-with-passkey/submit-a-transaction-passkey-auth), which submits the signed transaction.
 
     ![Flow to approve a vault with Passkey](/images/approve-passkey.png)
-
   </Tab>
 </Tabs>
 
@@ -54,7 +51,6 @@ This approval is a **one-time requirement per vault**, typically performed when 
     2. [Submit deposit transaction](/api-reference/transactions-with-otp/send-a-transaction-otp-auth), which submits the OTP code to sign the deposit transaction.
 
     ![Flow to deposit with OTP](/images/deposit-otp.png)
-
   </Tab>
   <Tab title="Passkey">
     Initiating the deposit is once again a two-step transaction.
@@ -63,7 +59,6 @@ This approval is a **one-time requirement per vault**, typically performed when 
     2. [Submit deposit transaction](/api-reference/transactions-with-passkey/submit-a-transaction-passkey-auth), which submits the signed transaction.
 
     ![Flow to deposit with Passkey](/images/deposit-passkey.png)
-
   </Tab>
 </Tabs>
 
@@ -84,6 +79,7 @@ The user must deposit fiat into this dedicated bank account to convert it to sta
 <Tabs>
   <Tab title="Stablecoins deposit">
     Once the deposit transaction is signed (step 2), the stablecoins will be transferred immediately into the Byzantine vault.
+
     <Note>
       For users depositing stablecoins, the transaction is immediately broadcasted, i.e. the status is set to `completed`.
     </Note>
@@ -94,8 +90,7 @@ The user must deposit fiat into this dedicated bank account to convert it to sta
     <Note>
       Note that signing the deposit transaction or depositing fiat into the bank account does not complete the deposit. Funds are only transferred into the Byzantine vault after on-ramping is complete.
     </Note>
-    </Tab>
-
+  </Tab>
 </Tabs>
 
 <Info>
@@ -108,5 +103,4 @@ The user must deposit fiat into this dedicated bank account to convert it to sta
   - `completed`: The transaction has been broadcasted and executed.
 
   The transaction status can be checked by calling the [Get transaction status](/api-reference/account-data/get-a-single-transaction-by-id) endpoint.
-
 </Info>
