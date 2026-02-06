@@ -1,5 +1,5 @@
 {
-	"theme": "mint",
+  "theme": "mint",
 	"name": "Byzantine Finance",
 	"colors": {
 		"primary": "#702963",
@@ -35,12 +35,28 @@
                 "icon": "play",
                 "pages": [
                   "create-your-account",
+                  "for-individual-accounts",
+                  "for-organisation-accounts"
+                ]
+              },
+              {
+                "group": "How to use Byzantine",
+                "icon": "hand-back-point-up",
+                "pages": [
                   "get-to-know-your-dashboard",
+                  "making-your-first-deposit",
+                  "users-and-roles",
+                  "withdrawals",
                   {
-                    "group": "Identity verification",
+                    "group": "FAQ",
+                    "icon": "question",
                     "pages": [
-                      "for-individual-accounts",
-                      "for-organisation-accounts"
+                      "account-setup",
+                      "kyb-process",
+                      "deposits-and-withdrawals",
+                      "currency-and-yield",
+                      "security-and-compliance",
+                      "technical-questions"
                     ]
                   }
                 ]
