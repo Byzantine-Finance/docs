@@ -1,5 +1,15 @@
 ---
-title: "Version française — à traduire"
+title: "Transaction timelines"
+description: "Transaction timelines for different operations."
 ---
 
-Contenu à venir. Voir la version anglaise pour référence.
+Not all operations are instant or have the same timeline. The following table shows the timeline for different operations.
+
+| **Operation**                                                         | **Payment rail** | **Currency** | **Timeline**                                                                                                                         |
+| --------------------------------------------------------------------- | ---------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
+| <div>**On-ramp**</div> <div>Sending fiat to bank account and converting to USDC/EURC</div> | SEPA             | EUR          | <div>Instant: &lt;30 seconds (24/7).</div> <div>Credit: 1-3 business days.</div>                                                                              |
+|                                                                       | ACH              | USD          | <div>Next-day ACH: Funds typically arrive in 1-3 business days.</div><div>Same-day ACH: Lands same day if sent before the 9:30 AM, 1:45 PM, or 3:45 PM ET cutoffs.</div> |
+|                                                                       | Wire             | USD          | ~2 hours after being sent. Receive before 5 PM ET for same-day processing; otherwise next business day.                              |
+| <div>**Off-ramp**</div> <div>Sending USDC/EURC to bank account and converting to fiat</div> | SEPA             | EUR          | <div>Instant: &lt;30 seconds.</div> <div>Credit: 1-3 business days.</div>                                                                                     |
+|                                                                       | ACH              | USD          | <div>Same-day ACH: Same day if before 9:30 AM, 1:45 PM, or 3:45 PM ET.</div> <div>Next-day ACH: Typically 1-2 banking days.</div>                              |
+| **Direct stablecoin deposit**                                             | ---             | USDC          | Less than 30 seconds                                                                                       |

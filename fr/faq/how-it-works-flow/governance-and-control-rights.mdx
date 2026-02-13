@@ -1,5 +1,34 @@
 ---
-title: "Version française — à traduire"
+title: "Governance and control rights"
 ---
 
-Contenu à venir. Voir la version anglaise pour référence.
+<Columns cols={2}>
+  <Card title="Depositor" icon="user-tie" iconType="solid" color="#cd55b7">
+    **Role:** Provides capital and can redeem on demand
+    
+    **Control rights:** Can deposit and withdraw their own funds
+    
+    **Safeguards:** No access to other depositors’ positions
+  </Card>
+  <Card title="Byzantine Prime protocol" icon="database" iconType="solid" color="#cd55b7">
+    **Role:** Executes pre-defined operations automatically
+    
+    **Control rights:** Cannot move funds outside authorised lending venues
+    
+    **Safeguards:** Rules are immutable once deployed
+  </Card>
+  <Card title="Underlying credit markets" icon="store" iconType="solid" color="#cd55b7">
+    **Role:** Manage collateral, loans, and liquidations
+    
+    **Control rights:** No direct access to deposited funds
+    
+    **Safeguards:** Collateralisation enforced by protocol logic
+  </Card>
+  <Card title="Keyrock (strategy manager)" icon="globe" iconType="solid" color="#cd55b7">
+    **Role:** Sets deployment strategy within its mandate
+    
+    **Control rights:** No direct access to deposited funds
+    
+    **Safeguards:** Can only access a few specific actions; access to user funds blocked by protocol logic
+  </Card>
+</Columns>
