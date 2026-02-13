@@ -276,7 +276,7 @@
             "pages": [
               "fr/index",
               {
-                "group": "Getting started",
+                "group": "Commencer",
                 "icon": "play",
                 "pages": [
                   "fr/create-your-account",
@@ -285,7 +285,7 @@
                 ]
               },
               {
-                "group": "How to use Byzantine",
+                "group": "Comment utiliser Byzantine",
                 "icon": "hand-back-point-up",
                 "pages": [
                   "fr/get-to-know-your-dashboard",
