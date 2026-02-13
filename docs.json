@@ -309,6 +309,7 @@
               {
                 "group": "Academy",
                 "icon": "graduation-cap",
+                "hidden": true,
                 "pages": [
                   {
                     "group": "About Byzantine",
