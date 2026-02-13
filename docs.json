@@ -1,26 +1,30 @@
 {
   "theme": "mint",
-	"name": "Byzantine Finance",
-	"colors": {
-		"primary": "#702963",
-		"light": "#E199D3",
-		"dark": "#cd55b7"
-	},
-	"background": {
-		"decoration": "gradient"
-	},
-    "api": {
-      "playground": {
-        "display": "simple"
-      },
-      "examples": {
-        "languages": ["curl", "python", "javascript"],
-        "defaults": "all",
-        "prefill": true
-      }
+  "name": "Byzantine Finance",
+  "colors": {
+    "primary": "#702963",
+    "light": "#E199D3",
+    "dark": "#cd55b7"
+  },
+  "background": {
+    "decoration": "gradient"
+  },
+  "api": {
+    "playground": {
+      "display": "simple"
     },
-	"favicon": "favicon.ico",
-	"navigation": {
+    "examples": {
+      "languages": [
+        "curl",
+        "python",
+        "javascript"
+      ],
+      "defaults": "all",
+      "prefill": true
+    }
+  },
+  "favicon": "favicon.ico",
+  "navigation": {
     "languages": [
       {
         "language": "en",
@@ -262,24 +266,265 @@
             ]
           }
         ]
+      },
+      {
+        "language": "fr",
+        "tabs": [
+          {
+            "tab": "Documentation",
+            "icon": "book",
+            "pages": [
+              "fr/index",
+              {
+                "group": "Getting started",
+                "icon": "play",
+                "pages": [
+                  "fr/create-your-account",
+                  "fr/for-individual-accounts",
+                  "fr/for-organisation-accounts"
+                ]
+              },
+              {
+                "group": "How to use Byzantine",
+                "icon": "hand-back-point-up",
+                "pages": [
+                  "fr/get-to-know-your-dashboard",
+                  "fr/making-your-first-deposit",
+                  "fr/users-and-roles",
+                  "fr/withdrawals",
+                  {
+                    "group": "FAQ",
+                    "icon": "question",
+                    "pages": [
+                      "fr/account-setup",
+                      "fr/kyb-process",
+                      "fr/deposits-and-withdrawals",
+                      "fr/currency-and-yield",
+                      "fr/security-and-compliance",
+                      "fr/technical-questions"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Academy",
+                "icon": "graduation-cap",
+                "pages": [
+                  {
+                    "group": "About Byzantine",
+                    "pages": [
+                      "fr/documentation/about-byzantine/what-is-byzantine",
+                      "fr/documentation/about-byzantine/the-digital-asset-opportunity",
+                      "fr/documentation/about-byzantine/product-details",
+                      "fr/documentation/about-byzantine/deposits-and-withdrawals",
+                      "fr/documentation/about-byzantine/fees",
+                      "fr/documentation/about-byzantine/transaction-timelines"
+                    ]
+                  },
+                  {
+                    "group": "Asset protection",
+                    "pages": [
+                      "fr/documentation/asset-protection/security-mechanisms",
+                      "fr/documentation/asset-protection/regulatory-framework",
+                      "fr/documentation/asset-protection/security-audits"
+                    ]
+                  },
+                  {
+                    "group": "Account management",
+                    "pages": [
+                      "fr/documentation/account-management/account-creation",
+                      "fr/documentation/account-management/kyc-and-kyb"
+                    ]
+                  },
+                  {
+                    "group": "Digital assets 101",
+                    "pages": [
+                      "fr/documentation/digital-assets-101/whats-a-stablecoin",
+                      "fr/documentation/digital-assets-101/how-are-stablecoins-kept-at-usd1-eur1",
+                      "fr/documentation/digital-assets-101/what-is-mica",
+                      "fr/documentation/digital-assets-101/what-is-digital-credit",
+                      "fr/documentation/digital-assets-101/what-is-a-smart-contract-vault"
+                    ]
+                  },
+                  {
+                    "group": "FAQ",
+                    "icon": "question",
+                    "pages": [
+                      "fr/faq/what-is-byzantine-prime-at-a-glance",
+                      {
+                        "group": "Digital asset primer",
+                        "icon": "coins",
+                        "pages": [
+                          "fr/faq/digital-asset-primer/what-are-decentralised-protocols",
+                          "fr/faq/digital-asset-primer/what-are-lending-markets",
+                          "fr/faq/digital-asset-primer/what-are-smart-contracts",
+                          "fr/faq/digital-asset-primer/what-are-stablecoins",
+                          "fr/faq/digital-asset-primer/what-is-digital-credit",
+                          "fr/faq/digital-asset-primer/what-is-over-collateralisation"
+                        ]
+                      },
+                      {
+                        "group": "Yield & revenues",
+                        "icon": "chart-line",
+                        "pages": [
+                          "fr/faq/yield-and-revenues/how-are-returns-generated",
+                          "fr/faq/yield-and-revenues/how-are-returns-split",
+                          "fr/faq/yield-and-revenues/how-can-byzantine-prime-consistently-offer-base-+-400-bps",
+                          "fr/faq/yield-and-revenues/what-exactly-is-the-base-rate",
+                          "fr/faq/yield-and-revenues/what-is-the-currency-of-returns",
+                          "fr/faq/yield-and-revenues/what-is-the-point-of-overcollateralised-lending",
+                          "fr/faq/yield-and-revenues/what-kind-of-loans-are-these",
+                          "fr/faq/yield-and-revenues/who-are-the-borrowers",
+                          "fr/faq/yield-and-revenues/why-would-borrowers-pay-8-10"
+                        ]
+                      },
+                      {
+                        "group": "How it works (flow)",
+                        "icon": "gears",
+                        "pages": [
+                          "fr/faq/how-it-works-flow/governance-and-control-rights",
+                          "fr/faq/how-it-works-flow/how-are-assets-segregated-by-user",
+                          "fr/faq/how-it-works-flow/how-do-funds-flow-in-byzantine-prime",
+                          "fr/faq/how-it-works-flow/step-by-step-flow-of-funds",
+                          "fr/faq/how-it-works-flow/what-visibility-over-fund-flows-is-there",
+                          "fr/faq/how-it-works-flow/who-can-move-assets"
+                        ]
+                      },
+                      {
+                        "group": "Risk framework",
+                        "icon": "helmet-safety",
+                        "pages": [
+                          "fr/faq/risk-framework/what-exactly-is-keyrocks-mandate",
+                          "fr/faq/risk-framework/what-is-my-counterparty-risk-towards-the-borrower",
+                          "fr/faq/risk-framework/what-risks-are-relevant-for-depositors-into-byzantine-prime",
+                          "fr/faq/risk-framework/whats-my-counterparty-risk-towards-the-strategy-curator"
+                        ]
+                      },
+                      {
+                        "group": "Collateral & liquidation mechanism",
+                        "icon": "shield-halved",
+                        "pages": [
+                          "fr/faq/collateral-and-liquidation-mechanism/how-does-the-liquidation-mechanism-function-exactly",
+                          "fr/faq/collateral-and-liquidation-mechanism/is-there-the-potential-for-bad-debt-or-loss-of-funds-how-is-it-mitigated",
+                          "fr/faq/collateral-and-liquidation-mechanism/what-collateral-risk-am-i-exposed-to"
+                        ]
+                      },
+                      {
+                        "group": "Liquidity and redemption",
+                        "icon": "water",
+                        "pages": [
+                          "fr/faq/liquidity-and-redemption/are-there-delays-to-convert-stablecoins-to-fiat-currency",
+                          "fr/faq/liquidity-and-redemption/how-fast-can-i-withdraw-in-case-of-emergency",
+                          "fr/faq/liquidity-and-redemption/where-are-my-stablecoins-held"
+                        ]
+                      },
+                      {
+                        "group": "Governance & audit",
+                        "icon": "magnifying-glass",
+                        "pages": [
+                          "fr/faq/governance-and-audit/what-is-a-smart-contract-audit-and-what-does-it-check-for",
+                          "fr/faq/governance-and-audit/what-smart-contract-audits-have-been-completed-what-were-their-findings",
+                          "fr/faq/governance-and-audit/what-other-audits-are-of-relevance",
+                          "fr/faq/governance-and-audit/is-there-continuous-monitoring-of-active-systems"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "API reference",
+            "icon": "code",
+            "groups": [
+              {
+                "group": "Integrator API",
+                "pages": [
+                  {
+                    "group": "Getting started",
+                    "pages": [
+                      "fr/api-reference/getting-started",
+                      "fr/api-reference/api-authentication",
+                      "fr/api-reference/postman-collection"
+                    ]
+                  },
+                  "fr/api-reference/concepts",
+                  {
+                    "group": "Account creation",
+                    "pages": [
+                      "fr/api-reference/kyc-kyb-overview",
+                      "fr/api-reference/kyc",
+                      "fr/api-reference/kyb",
+                      "fr/api-reference/documents",
+                      "fr/api-reference/verification-statuses",
+                      {
+                        "group": "Lists",
+                        "pages": [
+                          "fr/api-reference/lists/countries",
+                          "fr/api-reference/lists/occupation-codes",
+                          "fr/api-reference/lists/industry-codes",
+                          "fr/api-reference/lists/company-number-types"
+                        ]
+                      }
+                    ]
+                  },
+                  "fr/api-reference/wallet-authentication",
+                  {
+                    "group": "Deposits & withdrawals",
+                    "pages": [
+                      {
+                        "group": "Deposit",
+                        "pages": [
+                          "fr/api-reference/deposit-overview",
+                          "fr/api-reference/deposit-technical"
+                        ]
+                      },
+                      {
+                        "group": "Withdrawal",
+                        "pages": [
+                          "fr/api-reference/withdrawal-overview",
+                          "fr/api-reference/withdrawal-technical"
+                        ]
+                      },
+                      {
+                        "group": "Idle balance",
+                        "pages": [
+                          "fr/api-reference/idle-balance"
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "API endpoints",
+                "openapi": "api-reference/openapi-integrator.json",
+                "pages": [
+                  "fr/api-reference/endpoints-overview"
+                ]
+              }
+            ]
+          }
+        ]
       }
     ]
   },
-	"logo": {
-		"light": "/logo/dark_logo.png",
-		"dark": "/logo/light_logo.png"
-	},
-	"navbar": {
-		"links": [
-			{
-				"label": "Support",
-				"href": "mailto:info@byzantine.fi"
-			}
-		],
-		"primary": {
-			"type": "button",
-			"label": "Dashboard",
-			"href": "https://byzantine.fi"
-		}
-	}
+  "logo": {
+    "light": "/logo/dark_logo.png",
+    "dark": "/logo/light_logo.png"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Support",
+        "href": "mailto:info@byzantine.fi"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Dashboard",
+      "href": "https://byzantine.fi"
+    }
+  }
 }
