@@ -434,6 +434,11 @@
                 ]
               }
             ]
+          },
+          {
+            "tab": "API reference",
+            "icon": "code",
+            "href": "https://docs.byzantine.fi/api-reference/getting-started"
           }
         ]
       }
