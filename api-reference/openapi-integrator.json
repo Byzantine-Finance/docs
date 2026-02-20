@@ -1,4 +1,3 @@
-
 {
   "openapi": "3.0.3",
   "info": {
@@ -9,1030 +8,27 @@
     },
     "version": "0.2.0"
   },
-  "servers": [
-    {
-      "url": "https://api.byzantine.fi",
-      "description": "Production"
-    }
-  ],
   "paths": {
-    "/v1/query/get-tos-acceptance-link": {
-      "post": {
-        "tags": [
-          "Account creation"
-        ],
-        "summary": "Get Bridge ToS link",
-        "operationId": "request_tos_acceptance_link",
-        "parameters": [
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetTosAcceptanceLinkRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Hosted ToS acceptance URL received",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetTosAcceptanceLinkResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request payload"
-          },
-          "500": {
-            "description": "Bridge API error"
-          }
-        },
-        "security": [
-          {
-            "XPubkey": []
-          }
-        ]
-      }
-    },
-    "/v1/submit/create-entity": {
-      "post": {
-        "tags": [
-          "Account creation"
-        ],
-        "summary": "Create a Byzantine entity",
-        "operationId": "create_entity",
-        "parameters": [
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateEntityRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Entity created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreateEntityResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request payload"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        },
-        "security": [
-          {
-            "XPubkey": []
-          }
-        ]
-      }
-    },
-    "/v1/submit/create-user": {
-      "post": {
-        "tags": [
-          "Account creation"
-        ],
-        "summary": "Create a Byzantine user",
-        "operationId": "create_user",
-        "parameters": [
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateUserRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "User created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreateUserResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request payload"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        },
-        "security": [
-          {
-            "XPubkey": []
-          }
-        ]
-      }
-    },
-    "/v1/submit/add-bank-account": {
-      "post": {
-        "tags": [
-          "Account management"
-        ],
-        "summary": "Add bank account",
-        "description": "Add a bank account to withdraw to. At least one bank account must be added before any off-ramp withdrawal can be initated.",
-        "operationId": "add_bank_account",
-        "parameters": [
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddBankAccountRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Bank account added successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AddBankAccountResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request payload"
-          },
-          "401": {
-            "description": "Unauthorized - Account does not belong to integrator"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        },
-        "security": [
-          {
-            "XPubkey": []
-          }
-        ]
-      }
-    },
-    "/v1/query/get-bank-accounts": {
+    "/v1/health": {
       "get": {
         "tags": [
-          "Account data"
+          "API health"
         ],
-        "summary": "Get all bank accounts",
-        "description": "Fetch all associated bank accounts for a specific Byzantine account ID.",
-        "operationId": "get_off_ramp_addresses",
-        "parameters": [
-          {
-            "name": "account_id",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/Uuid"
-            }
-          },
-          {
-            "name": "currency",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/Currency"
-                }
-              ],
-              "nullable": true
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "summary": "Health check endpoint",
+        "description": "Returns the health status of the API",
+        "operationId": "health_check",
         "responses": {
           "200": {
-            "description": "Off-ramp addresses retrieved successfully",
+            "description": "Service is healthy",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetOffRampAddressesResponse"
+                  "$ref": "#/components/schemas/HealthResponse"
                 }
               }
             }
-          },
-          "400": {
-            "description": "Bad request - Invalid account_id"
-          },
-          "500": {
-            "description": "Internal server error"
           }
-        },
-        "security": [
-          {
-            "XPubkey": []
-          }
-        ]
-      }
-    },
-    "/v1/query/get-transaction": {
-      "get": {
-        "tags": [
-          "Account data"
-        ],
-        "summary": "Get a single transaction",
-        "operationId": "get_transaction",
-        "parameters": [
-          {
-            "name": "transaction_id",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/Uuid"
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Transaction retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetTransactionResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Transaction not found"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        },
-        "security": [
-          {
-            "XPubkey": []
-          }
-        ]
-      }
-    },
-    "/v1/query/get-transactions": {
-      "get": {
-        "tags": [
-          "Account data"
-        ],
-        "summary": "Get all transactions for an account",
-        "description": "Returns all deposit, withdrawal, and approval transactions with pending or completed status.\nExcludes transactions with \"created\" status.",
-        "operationId": "get_transactions",
-        "parameters": [
-          {
-            "name": "account_id",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/Uuid"
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Transactions retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/GetTransactionResponse"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request - Invalid account_id"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        },
-        "security": [
-          {
-            "XPubkey": []
-          }
-        ]
-      }
-    },
-    "/v1/query/get-approve-transaction-passkey": {
-      "post": {
-        "tags": [
-          "Transactions with passkey"
-        ],
-        "summary": "Get approval transaction",
-        "description": "Get the transaction body to sign in order to approve a vault. Part of the passkey authentication flow.",
-        "operationId": "get_approve_transaction_passkey",
-        "parameters": [
-          {
-            "name": "chain_id",
-            "in": "query",
-            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "minimum": 0
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ApproveRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Transaction created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PasskeyTxRequestResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid chain ID"
-          }
-        },
-        "security": [
-          {
-            "XPubkey": []
-          }
-        ]
-      }
-    },
-    "/v1/query/get-deposit-transaction-passkey": {
-      "post": {
-        "tags": [
-          "Transactions with passkey"
-        ],
-        "summary": "Get deposit transaction",
-        "description": "Get the transaction body to sign in order to make a deposit. Part of the passkey authentication flow.",
-        "operationId": "get_deposit_transaction_passkey",
-        "parameters": [
-          {
-            "name": "chain_id",
-            "in": "query",
-            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "minimum": 0
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DepositRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Transaction created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PasskeyTxRequestResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid chain ID"
-          }
-        },
-        "security": [
-          {
-            "XPubkey": []
-          }
-        ]
-      }
-    },
-    "/v1/query/get-withdraw-transaction-passkey": {
-      "post": {
-        "tags": [
-          "Transactions with passkey"
-        ],
-        "summary": "Get withdraw transaction",
-        "description": "Get the transaction body to sign in order to make a withdrawal. Part of the passkey authentication flow.",
-        "operationId": "get_withdraw_transaction_passkey",
-        "parameters": [
-          {
-            "name": "chain_id",
-            "in": "query",
-            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "minimum": 0
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/WithdrawRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Transaction created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PasskeyTxRequestResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid chain ID"
-          }
-        },
-        "security": [
-          {
-            "XPubkey": []
-          }
-        ]
-      }
-    },
-    "/v1/submit/send-transaction-passkey": {
-      "post": {
-        "tags": [
-          "Transactions with passkey"
-        ],
-        "summary": "Submit a transaction (passkey auth)",
-        "description": "Submit a signed transaction to execute it on the blockchain.",
-        "operationId": "send_transaction_passkey",
-        "parameters": [
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "chain_id",
-            "in": "query",
-            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "minimum": 0
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SendPasskeyTransactionRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Transaction sent successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SendTransactionResponseBody"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid chain ID"
-          }
-        },
-        "security": [
-          {
-            "XPubkey": []
-          }
-        ]
-      }
-    },
-    "/v1/query/init-approve-otp": {
-      "post": {
-        "tags": [
-          "Transactions with OTP"
-        ],
-        "summary": "Initiate approval",
-        "description": "Initiate transaction and send out the OTP to the end user in order to approve a vault.",
-        "operationId": "init_approve_otp",
-        "parameters": [
-          {
-            "name": "chain_id",
-            "in": "query",
-            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "minimum": 0
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ApproveRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Transaction created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OtpRequestResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid chain ID"
-          }
-        },
-        "security": [
-          {
-            "XPubkey": []
-          }
-        ]
-      }
-    },
-    "/v1/query/init-deposit-otp": {
-      "post": {
-        "tags": [
-          "Transactions with OTP"
-        ],
-        "summary": "Initiate a deposit",
-        "description": "Initiate transaction and send out the OTP to the end user in order to make a deposit.",
-        "operationId": "init_deposit_otp",
-        "parameters": [
-          {
-            "name": "chain_id",
-            "in": "query",
-            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "minimum": 0
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DepositRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Transaction created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OtpRequestResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid chain ID"
-          }
-        },
-        "security": [
-          {
-            "XPubkey": []
-          }
-        ]
-      }
-    },
-    "/v1/query/init-withdraw-otp": {
-      "post": {
-        "tags": [
-          "Transactions with OTP"
-        ],
-        "summary": "Initiate a withdrawal",
-        "description": "Initiate transaction and send out the OTP to the end user in order to make a withdrawal.",
-        "operationId": "init_withdraw_otp",
-        "parameters": [
-          {
-            "name": "chain_id",
-            "in": "query",
-            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "minimum": 0
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/WithdrawRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Transaction created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OtpRequestResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid chain ID"
-          }
-        },
-        "security": [
-          {
-            "XPubkey": []
-          }
-        ]
-      }
-    },
-    "/v1/submit/send-transaction-otp": {
-      "post": {
-        "tags": [
-          "Transactions with OTP"
-        ],
-        "summary": "Send a transaction (OTP auth)",
-        "description": "Execute a transaction on the blockchain using the OTP flow.",
-        "operationId": "send_transaction_otp",
-        "parameters": [
-          {
-            "name": "chain_id",
-            "in": "query",
-            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "minimum": 0
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SendOtpTransactionRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Transaction executed successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SendTransactionResponseBody"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid chain ID"
-          }
-        },
-        "security": [
-          {
-            "XPubkey": []
-          }
-        ]
+        }
       }
     },
     "/v1/apy/{vault_id}": {
@@ -1062,24 +58,6 @@
               "type": "string",
               "nullable": true
             }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
@@ -1106,12 +84,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "XPubkey": []
-          }
-        ]
+        }
       }
     },
     "/v1/history/{vault_id}": {
@@ -1185,24 +158,6 @@
               "type": "string",
               "nullable": true
             }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
@@ -1229,12 +184,7 @@
               }
             }
           }
-        },
-        "security": [
-          {
-            "XPubkey": []
-          }
-        ]
+        }
       }
     },
     "/v1/top-vaults": {
@@ -1245,7 +195,1122 @@
         "summary": "Get all Byzantine vaults",
         "description": "Returns a list of all Byzantine vaults from configuration. \"Vaults\" are deposit products, the main entities in the Byzantine protocol.",
         "operationId": "get_top_vaults",
+        "responses": {
+          "200": {
+            "description": "List of top vaults retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TopVault"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/query/get-user-details": {
+      "get": {
+        "tags": [
+          "Account data"
+        ],
+        "summary": "Get user details by user id",
+        "description": "This endpoint returns comprehensive information about a user including:\n- Basic user information (name, email, address)\n- Verification status\n- Account id(s)",
+        "operationId": "get_user_details",
         "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User details retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid user_id"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/v1/query/get-entity-details": {
+      "get": {
+        "tags": [
+          "Account data"
+        ],
+        "summary": "Get entity details by entity ID",
+        "description": "This endpoint returns comprehensive information about a business entity including:\n- Basic business information (name, email, addresses)\n- Team members (users who are part of the team)\n- Associated persons (beneficiaries and representatives) with root user status\n- Pending invitations (invitations that are pending acceptance)\n- Account id",
+        "operationId": "get_entity_details",
+        "parameters": [
+          {
+            "name": "entityId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Entity details retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetEntityResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid entity_id"
+          },
+          "404": {
+            "description": "Entity not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/v1/query/get-bank-accounts": {
+      "get": {
+        "tags": [
+          "Account data"
+        ],
+        "summary": "Get all bank accounts",
+        "description": "Fetch all associated bank accounts for a specific Byzantine account ID.",
+        "operationId": "get_bank_accounts",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            }
+          },
+          {
+            "name": "currency",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/Currency"
+                }
+              ],
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Off-ramp addresses retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBankAccountsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid account_id"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/v1/query/get-transaction": {
+      "get": {
+        "tags": [
+          "Account data"
+        ],
+        "summary": "Get a single transaction",
+        "operationId": "get_transaction",
+        "parameters": [
+          {
+            "name": "transaction_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transaction retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTransactionResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Transaction not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/v1/query/get-transactions": {
+      "get": {
+        "tags": [
+          "Account data"
+        ],
+        "summary": "Get all transactions for an account",
+        "description": "Returns all deposit, withdrawal, and approval transactions with pending or completed status.\nExcludes transactions with \"created\" status.",
+        "operationId": "get_transactions",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transactions retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GetTransactionResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid account_id"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/v1/query/get-invitations-by-account-id": {
+      "get": {
+        "tags": [
+          "Account data"
+        ],
+        "summary": "Get all invitations for an account",
+        "description": "Fetch all invitations associated with a specific Byzantine account ID.\nReturns invitation details including the invited user's name and email, account name, and inviter name.",
+        "operationId": "get_invitations_by_account_id",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "account_id",
+            "in": "query",
+            "description": "The account ID to get invitations for",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Invitations retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetInvitationsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid account_id"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/query/get-invitations-by-email": {
+      "get": {
+        "tags": [
+          "Account data"
+        ],
+        "summary": "Get all invitations for an email",
+        "description": "Fetch all invitations for a specific email address.",
+        "operationId": "get_invitations_by_email",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "description": "The email to get invitations for",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Invitations retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetInvitationsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid email"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/query/get-activate-account-payload-passkey": {
+      "post": {
+        "tags": [
+          "Transactions with passkey"
+        ],
+        "summary": "Get payload to sign to activate an account",
+        "description": "Get the authorization to sign to activate the account with EIP 7702 allowing gas sponsorship.",
+        "operationId": "get_authorization_payload_passkey",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "chain_id",
+            "in": "query",
+            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Account activation request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ActivateAccountRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Transaction created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PasskeyPayloadRequestResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid chain ID"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/query/get-approve-payload-passkey": {
+      "post": {
+        "tags": [
+          "Transactions with passkey"
+        ],
+        "summary": "Get approve payload",
+        "description": "Get the payload to sign in order to approve a vault. Part of the passkey authentication flow.",
+        "operationId": "get_approve_payload_passkey",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "chain_id",
+            "in": "query",
+            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Approve request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApproveRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Transaction created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PasskeyPayloadRequestResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid chain ID"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/query/get-deposit-payload-passkey": {
+      "post": {
+        "tags": [
+          "Transactions with passkey"
+        ],
+        "summary": "Get deposit payload",
+        "description": "Get the payload to sign in order to make a deposit. Part of the passkey authentication flow.",
+        "operationId": "get_deposit_payload_passkey",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "chain_id",
+            "in": "query",
+            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Deposit request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DepositRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Transaction created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PasskeyPayloadRequestResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid chain ID"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/query/get-withdraw-payload-passkey": {
+      "post": {
+        "tags": [
+          "Transactions with passkey"
+        ],
+        "summary": "Get withdraw payload",
+        "description": "Get the payload to sign in order to make a withdrawal. Part of the passkey authentication flow.",
+        "operationId": "get_withdraw_payload_passkey",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "chain_id",
+            "in": "query",
+            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Withdraw request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WithdrawRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Transaction created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PasskeyPayloadRequestResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid chain ID"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/submit/sign-payload-passkey": {
+      "post": {
+        "tags": [
+          "Transactions with passkey"
+        ],
+        "summary": "Sign a payload (passkey auth)",
+        "description": "Sign a payload allowing Byzantine to make, execute and sponsor the transaction.",
+        "operationId": "sign_payload_passkey",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "chain_id",
+            "in": "query",
+            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The payload body details signed by the user - passkey auth",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignPayloadRequestBodyPasskey"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Transaction sent successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendTransactionResponseBody"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid chain ID"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/query/init-approve-otp": {
+      "post": {
+        "tags": [
+          "Transactions with OTP"
+        ],
+        "summary": "Initiate approval",
+        "description": "Initiate transaction and send out the OTP to the end user in order to approve a vault.",
+        "operationId": "init_approve_otp",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "chain_id",
+            "in": "query",
+            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Approve request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApproveRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Transaction created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OtpRequestResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid chain ID"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/query/init-deposit-otp": {
+      "post": {
+        "tags": [
+          "Transactions with OTP"
+        ],
+        "summary": "Initiate a deposit",
+        "description": "Initiate transaction and send out the OTP to the end user in order to make a deposit.",
+        "operationId": "init_deposit_otp",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "chain_id",
+            "in": "query",
+            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Deposit request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DepositRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Transaction created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OtpRequestResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid chain ID"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/query/init-withdraw-otp": {
+      "post": {
+        "tags": [
+          "Transactions with OTP"
+        ],
+        "summary": "Initiate a withdrawal",
+        "description": "Initiate transaction and send out the OTP to the end user in order to make a withdrawal.",
+        "operationId": "init_withdraw_otp",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "chain_id",
+            "in": "query",
+            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Withdraw request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WithdrawRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Transaction created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OtpRequestResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid chain ID"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/submit/send-transaction-otp": {
+      "post": {
+        "tags": [
+          "Transactions with OTP"
+        ],
+        "summary": "Send a transaction (OTP auth)",
+        "description": "Execute a transaction on the blockchain using the OTP flow.",
+        "operationId": "send_transaction_otp",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "chain_id",
+            "in": "query",
+            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 0
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "The request ID and the OTP code",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendOtpTransactionRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Transaction executed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SendTransactionResponseBody"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid chain ID"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/submit/init-otp": {
+      "post": {
+        "tags": [
+          "OTP authentication"
+        ],
+        "summary": "Initialize OTP for a user (email)",
+        "operationId": "init_otp",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "X-Timestamp",
             "in": "header",
@@ -1265,61 +1330,786 @@
             }
           }
         ],
+        "requestBody": {
+          "description": "Initialize OTP authentication by email",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InitOtpRequest"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
-            "description": "List of top vaults retrieved successfully",
+            "description": "OTP initialized successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TopVault"
-                  }
+                  "$ref": "#/components/schemas/InitOtpResponse"
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid request payload"
+          },
+          "404": {
+            "description": "Account or user not found"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         },
         "security": [
           {
-            "XPubkey": []
+            "integrator_auth": []
           }
         ]
       }
     },
-    "/v1/health": {
-      "get": {
+    "/v1/submit/otp-auth": {
+      "post": {
         "tags": [
-          "API health"
+          "OTP authentication"
         ],
-        "summary": "Health check endpoint",
-        "description": "Returns the health status of the API",
-        "operationId": "health_check",
+        "summary": "Authenticate with OTP code and create a session.",
+        "description": "Returns a session ID that can be used to submit an authenticated action.",
+        "operationId": "otp_auth",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Authenticate with OTP code",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OtpAuthRequestBody"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
           "200": {
-            "description": "Service is healthy",
+            "description": "OTP authentication successful",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HealthResponse"
+                  "$ref": "#/components/schemas/OtpAuthResponse"
                 }
               }
             }
+          },
+          "400": {
+            "description": "Invalid OTP code or request payload"
+          },
+          "404": {
+            "description": "Account or user not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/submit/create-authenticators-otp": {
+      "post": {
+        "tags": [
+          "User management"
+        ],
+        "summary": "Create authenticators (passkeys) for a user (OTP auth).",
+        "description": "Adds passkeys to a user's account by authenticating with a previously established OTP session.",
+        "operationId": "create_authenticators_otp",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Create authenticators using OTP session",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAuthenticatorsOtpRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Authenticators created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateAuthenticatorsOtpResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request payload or session expired"
+          },
+          "404": {
+            "description": "Account, user, or session not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/query/get-tos-acceptance-link": {
+      "post": {
+        "tags": [
+          "Account creation"
+        ],
+        "summary": "Get Bridge ToS link",
+        "operationId": "request_tos_acceptance_link",
+        "requestBody": {
+          "description": "Optional redirect URI to append to the hosted ToS acceptance link",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetTosAcceptanceLinkRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Hosted ToS acceptance URL received",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTosAcceptanceLinkResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request payload"
+          },
+          "500": {
+            "description": "Bridge API error"
           }
         }
+      }
+    },
+    "/v1/submit/create-entity": {
+      "post": {
+        "tags": [
+          "Account creation"
+        ],
+        "summary": "Create a Byzantine entity",
+        "operationId": "create_entity",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Byzantine entity creation body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEntityRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Entity created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateEntityResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request payload"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/submit/create-user": {
+      "post": {
+        "tags": [
+          "Account creation"
+        ],
+        "summary": "Create a Byzantine user",
+        "operationId": "create_user",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Byzantine user creation body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "User created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateUserResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request payload"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/submit/add-bank-account": {
+      "post": {
+        "tags": [
+          "Account management"
+        ],
+        "summary": "Add bank account",
+        "description": "Add a bank account to withdraw to. At least one bank account must be added before any off-ramp withdrawal can be initated.",
+        "operationId": "add_bank_account",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Bank account details to associate with the Byzantine account",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddBankAccountRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Bank account added successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddBankAccountResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request payload"
+          },
+          "401": {
+            "description": "Unauthorized - Account does not belong to integrator"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/query/get-invite-users-payload-passkey": {
+      "post": {
+        "tags": [
+          "Account management"
+        ],
+        "summary": "Get invite users payload",
+        "description": "Get the payload to sign in order to invite users to an existing account. Part of the passkey authentication flow.",
+        "operationId": "get_invite_users_payload_passkey",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Body to invite new users to an existing account",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InviteUsersRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Payload to sign created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InviteUsersRequestResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request payload"
+          },
+          "401": {
+            "description": "Unauthorized - Account does not belong to integrator"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/submit/invite-users": {
+      "post": {
+        "tags": [
+          "Account management"
+        ],
+        "summary": "Invite users to a Byzantine account (passkey auth)",
+        "description": "Send an invitation to users to join a Byzantine account. If the users did not yet do a KYC on Byzantine, an email will ask them to do so.",
+        "operationId": "invite_users",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Body to invite new users to an existing account",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InviteUsersRequestBodyPasskey"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Users invited successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InviteUsersResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request payload"
+          },
+          "401": {
+            "description": "Unauthorized - Account does not belong to integrator"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/query/get-update-users-role-payload-passkey": {
+      "post": {
+        "tags": [
+          "Account management"
+        ],
+        "summary": "Get update users role payload",
+        "description": "Get the payload to sign in order to update users' roles within a Byzantine account. Part of the passkey authentication flow.",
+        "operationId": "get_update_users_role_payload_passkey",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Body to update users' roles within a Byzantine account",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUsersRoleRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Payload to sign created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateUsersRoleRequestResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request payload"
+          },
+          "401": {
+            "description": "Unauthorized - Account does not belong to integrator"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/submit/update-users-role": {
+      "post": {
+        "tags": [
+          "Account management"
+        ],
+        "summary": "Update users' role within a Byzantine account (passkey auth)",
+        "description": "Update the roles of users of a Byzantine account. This action must be approved by the current root quorum.",
+        "operationId": "update_users_role",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Body to update the root quorum of a Byzantine account",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUsersRoleRequestBodyPasskey"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Users' roles updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateUsersRoleResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request payload"
+          },
+          "401": {
+            "description": "Unauthorized - Account does not belong to integrator or user is not a root user"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
       }
     }
   },
   "components": {
     "schemas": {
+      "AccountUserRole": {
+        "type": "string",
+        "description": "Role of a user in an account.",
+        "enum": [
+          "root",
+          "admin",
+          "view",
+          "self_custodial",
+          "beneficiary"
+        ],
+        "example": "root"
+      },
       "AchAccountPayload": {
         "type": "object",
         "required": [
+          "bankName",
           "accountNumber",
           "routingNumber",
           "checkingOrSavings"
         ],
         "properties": {
+          "bankName": {
+            "type": "string"
+          },
           "accountNumber": {
             "type": "string"
           },
@@ -1328,6 +2118,17 @@
           },
           "checkingOrSavings": {
             "$ref": "#/components/schemas/CheckingOrSavings"
+          }
+        }
+      },
+      "ActivateAccountRequestBody": {
+        "type": "object",
+        "required": [
+          "accountId"
+        ],
+        "properties": {
+          "accountId": {
+            "$ref": "#/components/schemas/Uuid"
           }
         }
       },
@@ -1454,6 +2255,38 @@
           }
         }
       },
+      "ApiKeyParam": {
+        "type": "object",
+        "description": "API key object. If set, temporary authentication method until the user adds a passkey.",
+        "required": [
+          "apiKeyName",
+          "publicKey",
+          "curveType"
+        ],
+        "properties": {
+          "apiKeyName": {
+            "type": "string",
+            "description": "Human-readable name for the API key.",
+            "example": "Byzantine API Key"
+          },
+          "publicKey": {
+            "type": "string",
+            "description": "The public key of the API key.",
+            "example": "c51b102585622c59715784828c579278d5360159cd214fc976f5ce537c41872231"
+          },
+          "curveType": {
+            "type": "string",
+            "description": "The curve type of encryption algorithm.",
+            "example": "API_KEY_CURVE_P256"
+          },
+          "expirationSeconds": {
+            "type": "string",
+            "description": "Optional window (in seconds) indicating how long the API Key should last.",
+            "example": "3600",
+            "nullable": true
+          }
+        }
+      },
       "ApproveRequestBody": {
         "type": "object",
         "required": [
@@ -1544,12 +2377,12 @@
         "type": "object",
         "description": "Associated person (beneficiary or representative). Must be at least one.",
         "required": [
-          "isOrgAdmin",
+          "isRootUser",
           "userInfo",
           "beneficiaryDetails"
         ],
         "properties": {
-          "isOrgAdmin": {
+          "isRootUser": {
             "type": "boolean",
             "description": "Set to `true` if this person should be an active controller of the account. At least one org_admin is required.",
             "example": "true"
@@ -1582,7 +2415,7 @@
         "required": [
           "userId",
           "verificationStatus",
-          "isOrgAdmin",
+          "isRootUser",
           "userInfo",
           "beneficiaryDetails"
         ],
@@ -1593,7 +2426,7 @@
           "verificationStatus": {
             "$ref": "#/components/schemas/VerificationStatus"
           },
-          "isOrgAdmin": {
+          "isRootUser": {
             "type": "boolean",
             "description": "Set to `true` if this person should be an active controller of the account. At least one org_admin is required.",
             "example": "true"
@@ -1649,7 +2482,7 @@
           "transports": {
             "type": "array",
             "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/Transports"
             }
           }
         }
@@ -1675,6 +2508,17 @@
             "$ref": "#/components/schemas/Attestation"
           }
         }
+      },
+      "BankAccount": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/BridgeGetIbanAccountDetails"
+          },
+          {
+            "$ref": "#/components/schemas/BridgeGetAchAccountDetails"
+          }
+        ],
+        "description": "Bank account details where the funds will be transferred to (withdrawals only)."
       },
       "BeneficiaryDetails": {
         "type": "object",
@@ -1717,6 +2561,60 @@
         "type": "string",
         "description": "A decimal number represented as a string",
         "example": "1000.00"
+      },
+      "BridgeGetAchAccountDetails": {
+        "type": "object",
+        "description": "ACH bank account informations",
+        "required": [
+          "routingNumber",
+          "last4"
+        ],
+        "properties": {
+          "routingNumber": {
+            "type": "string",
+            "description": "The bank routing number.",
+            "example": "121000248"
+          },
+          "last4": {
+            "type": "string",
+            "description": "Last 4 digits of the bank account number.",
+            "example": "1111"
+          },
+          "checkingOrSavings": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CheckingOrSavings"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "BridgeGetIbanAccountDetails": {
+        "type": "object",
+        "description": "IBAN bank account informations",
+        "required": [
+          "country",
+          "last4"
+        ],
+        "properties": {
+          "country": {
+            "type": "string",
+            "description": "The ISO 3166-1 (three-character) country code of the relevant country. See the full list of [countries](https://docs.byzantine.fi/api-reference/lists/countries).",
+            "example": "FRA"
+          },
+          "last4": {
+            "type": "string",
+            "description": "Last 4 digits of the bank account number",
+            "example": "0804"
+          },
+          "bic": {
+            "type": "string",
+            "description": "The Bank Identifier Code (BIC) that will be used to send the funds",
+            "example": "BICFR12345",
+            "nullable": true
+          }
+        }
       },
       "BusinessActivityInfo": {
         "type": "object",
@@ -1947,13 +2845,56 @@
         ],
         "example": "FRA"
       },
+      "CreateAuthenticatorsOtpRequest": {
+        "type": "object",
+        "description": "Request to create authenticators (passkeys) using an OTP session",
+        "required": [
+          "sessionId",
+          "accountId",
+          "userId",
+          "authenticators"
+        ],
+        "properties": {
+          "sessionId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "accountId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "userId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "authenticators": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AuthenticatorParam"
+            },
+            "description": "List of authenticators (passkeys) to create"
+          }
+        }
+      },
+      "CreateAuthenticatorsOtpResponse": {
+        "type": "object",
+        "description": "Response from creating authenticators (passkeys)",
+        "required": [
+          "authenticatorIds"
+        ],
+        "properties": {
+          "authenticatorIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of created authenticator IDs"
+          }
+        }
+      },
       "CreateEntityRequest": {
         "type": "object",
-        "description": "Entity to be created. The vast majority of fields are required in order to complete the identity verification process.",
+        "description": "Request body for creating a Byzantine entity",
         "required": [
           "entityInfo",
           "associatedPersons",
-          "requiredApprovals",
           "bridgeSignedAgreementId",
           "byzantineTermsSignedAt"
         ],
@@ -1973,13 +2914,6 @@
             "items": {
               "$ref": "#/components/schemas/AssociatedPerson"
             }
-          },
-          "requiredApprovals": {
-            "type": "integer",
-            "format": "int32",
-            "description": "Deprecated",
-            "deprecated": true,
-            "minimum": 0
           },
           "bridgeSignedAgreementId": {
             "type": "string",
@@ -2003,7 +2937,6 @@
           "verificationStatus",
           "entityInfo",
           "associatedPersons",
-          "requiredApprovals",
           "bridgeSignedAgreementId",
           "byzantineTermsSignedAt"
         ],
@@ -2033,11 +2966,6 @@
               "$ref": "#/components/schemas/AssociatedPersonResponse"
             }
           },
-          "requiredApprovals": {
-            "type": "integer",
-            "format": "int32",
-            "minimum": 0
-          },
           "bridgeSignedAgreementId": {
             "type": "string",
             "description": "The ID of the signed Bridge ToS agreement. For more information, see [individual account creation - KYC](https://docs.byzantine.fi/api-reference/kyc).",
@@ -2048,6 +2976,55 @@
             "format": "int64",
             "description": "The timestamp when the Byzantine Finance Terms & Conditions were signed. For more information, see [individual account creation - KYC](https://docs.byzantine.fi/api-reference/kyc).",
             "example": "2025-11-19T21:14:58.328Z"
+          }
+        }
+      },
+      "CreateUserParam": {
+        "type": "object",
+        "description": "The parameters object containing the specific informations about the new user to be added.",
+        "required": [
+          "userName",
+          "userEmail",
+          "apiKeys",
+          "authenticators",
+          "oauthProviders",
+          "userTags"
+        ],
+        "properties": {
+          "userName": {
+            "type": "string",
+            "description": "The name of the new user.",
+            "example": "John Doe"
+          },
+          "userEmail": {
+            "type": "string",
+            "description": "The email of the new user.",
+            "example": "john.doe@example.com"
+          },
+          "apiKeys": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ApiKeyParam"
+            }
+          },
+          "authenticators": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AuthenticatorParam"
+            }
+          },
+          "oauthProviders": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OAuthProviderParam"
+            }
+          },
+          "userTags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "A list of tag IDs to add to the user."
           }
         }
       },
@@ -2163,6 +3140,50 @@
           }
         }
       },
+      "CreateUsersParams": {
+        "type": "object",
+        "description": "The list of new users to be added.",
+        "required": [
+          "users"
+        ],
+        "properties": {
+          "users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreateUserParam"
+            }
+          }
+        }
+      },
+      "CreateUsersRequest": {
+        "type": "object",
+        "description": "The object that needs to be signed by the end user to invite a new user to a Byzantine account.",
+        "required": [
+          "type",
+          "timestampMs",
+          "organizationId",
+          "parameters"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Defaults to `ACTIVITY_TYPE_CREATE_USERS_V3`",
+            "example": "ACTIVITY_TYPE_CREATE_USERS_V3"
+          },
+          "timestampMs": {
+            "type": "string",
+            "description": "UNIX timestamp of the creation of the request."
+          },
+          "organizationId": {
+            "type": "string",
+            "description": "The account ID adding the new user.",
+            "example": "d107c1e1-766a-4091-802c-de61a3973e91"
+          },
+          "parameters": {
+            "$ref": "#/components/schemas/CreateUsersParams"
+          }
+        }
+      },
       "Currency": {
         "type": "string",
         "enum": [
@@ -2226,6 +3247,18 @@
           "unemployed"
         ],
         "example": "employed"
+      },
+      "EntityDetailsQuery": {
+        "type": "object",
+        "description": "Query parameters for getting entity details",
+        "required": [
+          "entityId"
+        ],
+        "properties": {
+          "entityId": {
+            "$ref": "#/components/schemas/Uuid"
+          }
+        }
       },
       "EntityDocumentType": {
         "type": "string",
@@ -2422,6 +3455,290 @@
         ],
         "example": "5000_9999"
       },
+      "GetAssociatedPersonResponse": {
+        "type": "object",
+        "description": "Response body for an associated person",
+        "required": [
+          "beneficiaryType",
+          "firstName",
+          "lastName",
+          "email",
+          "isRootUser"
+        ],
+        "properties": {
+          "userId": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ],
+            "nullable": true
+          },
+          "beneficiaryType": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BeneficiaryType"
+            }
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "isRootUser": {
+            "type": "boolean"
+          },
+          "isPasskeyActivated": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isOtpActivated": {
+            "type": "boolean",
+            "nullable": true
+          }
+        }
+      },
+      "GetBankAccountItemResponse": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/OffRampAddress"
+          },
+          {
+            "type": "object",
+            "required": [
+              "bankAccountDetails"
+            ],
+            "properties": {
+              "bankAccountDetails": {
+                "$ref": "#/components/schemas/BankAccount"
+              }
+            }
+          }
+        ]
+      },
+      "GetBankAccountsQuery": {
+        "type": "object",
+        "required": [
+          "account_id"
+        ],
+        "properties": {
+          "account_id": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "currency": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Currency"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "GetBankAccountsResponse": {
+        "type": "object",
+        "required": [
+          "bankAccounts"
+        ],
+        "properties": {
+          "bankAccounts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetBankAccountItemResponse"
+            }
+          }
+        }
+      },
+      "GetEntityInfo": {
+        "type": "object",
+        "description": "Response body for entity information",
+        "required": [
+          "companyName"
+        ],
+        "properties": {
+          "companyName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "website": {
+            "type": "string",
+            "nullable": true
+          },
+          "companyNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "registeredAddress": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Address"
+              }
+            ],
+            "nullable": true
+          },
+          "physicalAddress": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Address"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "GetEntityResponse": {
+        "type": "object",
+        "description": "Response body for entity details",
+        "required": [
+          "entityId",
+          "verificationStatus",
+          "accountId",
+          "entityInfo",
+          "teamMembers",
+          "associatedPersons",
+          "createdAt"
+        ],
+        "properties": {
+          "entityId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          },
+          "accountId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "entityInfo": {
+            "$ref": "#/components/schemas/GetEntityInfo"
+          },
+          "teamMembers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TeamMember"
+            }
+          },
+          "associatedPersons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetAssociatedPersonResponse"
+            }
+          },
+          "pendingInvitations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PendingInvitation"
+            },
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "GetInvitationResponse": {
+        "type": "object",
+        "required": [
+          "invitation_id",
+          "account_id",
+          "account_name",
+          "user_id",
+          "role",
+          "user_name",
+          "user_email",
+          "inviter_id",
+          "inviter_name",
+          "status",
+          "created_at",
+          "updated_at"
+        ],
+        "properties": {
+          "invitation_id": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "account_id": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "account_name": {
+            "type": "string"
+          },
+          "user_id": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "role": {
+            "$ref": "#/components/schemas/AccountUserRole"
+          },
+          "user_name": {
+            "type": "string"
+          },
+          "user_email": {
+            "type": "string"
+          },
+          "inviter_id": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "inviter_name": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/InvitationStatus"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "GetInvitationsByAccountIdQuery": {
+        "type": "object",
+        "required": [
+          "account_id"
+        ],
+        "properties": {
+          "account_id": {
+            "$ref": "#/components/schemas/Uuid"
+          }
+        }
+      },
+      "GetInvitationsByEmailQuery": {
+        "type": "object",
+        "required": [
+          "email"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "The email to get invitations for",
+            "example": "john.doe@example.com"
+          }
+        }
+      },
+      "GetInvitationsResponse": {
+        "type": "object",
+        "required": [
+          "invitations"
+        ],
+        "properties": {
+          "invitations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetInvitationResponse"
+            },
+            "description": "List of invitations with user details"
+          }
+        }
+      },
       "GetTosAcceptanceLinkRequest": {
         "type": "object",
         "properties": {
@@ -2462,7 +3779,25 @@
             "$ref": "#/components/schemas/TurnkeyTransaction"
           },
           {
-            "type": "object"
+            "type": "object",
+            "properties": {
+              "fiat_deposit_instructions": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/SourceDepositInstructions"
+                  }
+                ],
+                "nullable": true
+              },
+              "destination_bank_account": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/BankAccount"
+                  }
+                ],
+                "nullable": true
+              }
+            }
           }
         ],
         "description": "Response for getting a single transaction by ID"
@@ -2475,6 +3810,74 @@
         "properties": {
           "account_id": {
             "$ref": "#/components/schemas/Uuid"
+          }
+        }
+      },
+      "GetUserInfo": {
+        "type": "object",
+        "description": "Response body for user information",
+        "required": [
+          "firstName",
+          "lastName",
+          "email"
+        ],
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "nationality": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CountryCode"
+              }
+            ],
+            "nullable": true
+          },
+          "residentialAddress": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Address"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "GetUserResponse": {
+        "type": "object",
+        "description": "Response body for user details",
+        "required": [
+          "userId",
+          "verificationStatus",
+          "userInfo",
+          "createdAt"
+        ],
+        "properties": {
+          "userId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          },
+          "accountIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Uuid"
+            },
+            "nullable": true
+          },
+          "userInfo": {
+            "$ref": "#/components/schemas/GetUserInfo"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       },
@@ -2600,6 +4003,10 @@
           "country"
         ],
         "properties": {
+          "bankName": {
+            "type": "string",
+            "nullable": true
+          },
           "accountNumber": {
             "type": "string"
           },
@@ -2611,11 +4018,319 @@
           }
         }
       },
+      "InitOtpRequest": {
+        "type": "object",
+        "description": "Request to initialize OTP (email) for a user",
+        "required": [
+          "accountId",
+          "userId"
+        ],
+        "properties": {
+          "accountId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "userId": {
+            "$ref": "#/components/schemas/Uuid"
+          }
+        }
+      },
+      "InitOtpResponse": {
+        "type": "object",
+        "description": "Response from initializing OTP",
+        "required": [
+          "otpId"
+        ],
+        "properties": {
+          "otpId": {
+            "type": "string",
+            "description": "Unique identifier for the OTP request",
+            "example": "otp_a1b2c3d4567890abcdef"
+          }
+        }
+      },
+      "InvitationStatus": {
+        "type": "string",
+        "description": "Status of an invitation.",
+        "enum": [
+          "pending",
+          "accepted",
+          "rejected",
+          "cancelled"
+        ],
+        "example": "pending"
+      },
+      "InvitationWithUserDetails": {
+        "type": "object",
+        "description": "Invitation with user details (email and name)",
+        "required": [
+          "invitation_id",
+          "account_id",
+          "user_id",
+          "user_name",
+          "user_email",
+          "invited_by",
+          "status",
+          "created_at",
+          "updated_at"
+        ],
+        "properties": {
+          "invitation_id": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "account_id": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "user_id": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "user_name": {
+            "type": "string"
+          },
+          "user_email": {
+            "type": "string"
+          },
+          "invited_by": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "status": {
+            "$ref": "#/components/schemas/InvitationStatus"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "InviteUsersRequest": {
+        "type": "object",
+        "description": "Request body for inviting a user to a Byzantine account",
+        "required": [
+          "accountId",
+          "newUsers"
+        ],
+        "properties": {
+          "accountId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "newUsers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NewUser"
+            }
+          }
+        }
+      },
+      "InviteUsersRequestBodyPasskey": {
+        "type": "object",
+        "required": [
+          "signedBody",
+          "invitedBy",
+          "webAuthnStamp"
+        ],
+        "properties": {
+          "signedBody": {
+            "$ref": "#/components/schemas/CreateUsersRequest"
+          },
+          "invitedBy": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "webAuthnStamp": {
+            "type": "string",
+            "description": "Cryptographically passkey signed (stamped). For more info, see [wallet authentication](https://docs.byzantine.fi/api-reference/wallet-authentication)."
+          }
+        }
+      },
+      "InviteUsersRequestResponse": {
+        "type": "object",
+        "required": [
+          "bodyToSign"
+        ],
+        "properties": {
+          "bodyToSign": {
+            "$ref": "#/components/schemas/CreateUsersRequest"
+          }
+        }
+      },
+      "InviteUsersResponse": {
+        "type": "object",
+        "description": "Response body when new users are successfully invited to a Byzantine account",
+        "required": [
+          "accountId",
+          "newUsers",
+          "invitedBy",
+          "invitedAt"
+        ],
+        "properties": {
+          "accountId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "newUsers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InvitedUser"
+            }
+          },
+          "invitedBy": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "invitedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The timestamp when the users were invited."
+          }
+        }
+      },
+      "InvitedUser": {
+        "type": "object",
+        "description": "The details of the new users invited.",
+        "required": [
+          "userId",
+          "userName",
+          "userEmail"
+        ],
+        "properties": {
+          "userId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "userName": {
+            "type": "string",
+            "description": "The name of the new user.",
+            "example": "John Doe"
+          },
+          "userEmail": {
+            "type": "string",
+            "description": "The email of the new user.",
+            "example": "john.doe@example.com"
+          }
+        }
+      },
       "NaiveDateTime": {
         "type": "string",
         "format": "date-time",
         "description": "A naive datetime string without timezone",
         "example": "2023-01-01T12:00:00"
+      },
+      "NewUser": {
+        "type": "object",
+        "description": "The details of the new user to invite.",
+        "required": [
+          "userName",
+          "userEmail"
+        ],
+        "properties": {
+          "userName": {
+            "type": "string",
+            "description": "The name of the user to invite.",
+            "example": "John Doe"
+          },
+          "userEmail": {
+            "type": "string",
+            "description": "The email of the user to invite.",
+            "example": "john.doe@example.com"
+          }
+        }
+      },
+      "OAuthProviderParam": {
+        "type": "object",
+        "required": [
+          "providerName",
+          "oidcToken"
+        ],
+        "properties": {
+          "providerName": {
+            "type": "string"
+          },
+          "oidcToken": {
+            "type": "string"
+          }
+        }
+      },
+      "OffRampAddress": {
+        "type": "object",
+        "required": [
+          "bankAccountId",
+          "accountId",
+          "name",
+          "liquidationAddress",
+          "createdAt",
+          "currency"
+        ],
+        "properties": {
+          "bankAccountId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "accountId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "liquidationAddress": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/Currency"
+          }
+        }
+      },
+      "OtpAuthRequestBody": {
+        "type": "object",
+        "description": "Request to authenticate with OTP code",
+        "required": [
+          "accountId",
+          "userId",
+          "otpId",
+          "otpCode"
+        ],
+        "properties": {
+          "accountId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "userId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "otpId": {
+            "type": "string",
+            "description": "The OTP ID returned by init-otp",
+            "example": "otp_a1b2c3d4567890abcdef"
+          },
+          "otpCode": {
+            "type": "string",
+            "description": "The OTP code received by email",
+            "example": "123456789"
+          }
+        }
+      },
+      "OtpAuthResponse": {
+        "type": "object",
+        "description": "Response from OTP authentication",
+        "required": [
+          "session",
+          "sessionId",
+          "expiresAt"
+        ],
+        "properties": {
+          "session": {
+            "type": "string",
+            "description": "Session metadata"
+          },
+          "sessionId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "expiresAt": {
+            "type": "string",
+            "description": "Session expiration timestamp (ISO 8601)",
+            "example": "2026-02-05T12:00:00Z"
+          }
+        }
       },
       "OtpRequestResponse": {
         "type": "object",
@@ -2645,10 +4360,18 @@
           },
           "transaction_id": {
             "$ref": "#/components/schemas/Uuid"
+          },
+          "destinationBankAccount": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BankAccount"
+              }
+            ],
+            "nullable": true
           }
         }
       },
-      "PasskeyTxRequestResponse": {
+      "PasskeyPayloadRequestResponse": {
         "type": "object",
         "required": [
           "bodyToSign",
@@ -2656,22 +4379,62 @@
         ],
         "properties": {
           "bodyToSign": {
-            "$ref": "#/components/schemas/SignTransactionRequest"
+            "$ref": "#/components/schemas/SignRawPayloadRequest"
           },
           "transactionId": {
             "$ref": "#/components/schemas/Uuid"
+          },
+          "destinationBankAccount": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BankAccount"
+              }
+            ],
+            "nullable": true
           }
         }
       },
       "PaymentRailVirtualAccount": {
         "type": "string",
         "enum": [
-          "AchPush",
-          "Pix",
-          "Sepa",
-          "Spei",
-          "Wire"
+          "achPush",
+          "pix",
+          "sepa",
+          "spei",
+          "wire"
         ]
+      },
+      "PendingInvitation": {
+        "type": "object",
+        "description": "Response body for a pending invitation",
+        "required": [
+          "invitationId",
+          "userId",
+          "role",
+          "userName",
+          "userEmail",
+          "invitedBy"
+        ],
+        "properties": {
+          "invitationId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "userId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "role": {
+            "$ref": "#/components/schemas/AccountUserRole"
+          },
+          "userName": {
+            "type": "string"
+          },
+          "userEmail": {
+            "type": "string"
+          },
+          "invitedBy": {
+            "$ref": "#/components/schemas/Uuid"
+          }
+        }
       },
       "SendOtpTransactionRequestBody": {
         "type": "object",
@@ -2687,26 +4450,6 @@
             "type": "string",
             "description": "The OTp code that the user received via email.",
             "example": "123456"
-          }
-        }
-      },
-      "SendPasskeyTransactionRequestBody": {
-        "type": "object",
-        "required": [
-          "signedBody",
-          "transactionId",
-          "webAuthnStamp"
-        ],
-        "properties": {
-          "signedBody": {
-            "$ref": "#/components/schemas/SignTransactionRequest"
-          },
-          "transactionId": {
-            "$ref": "#/components/schemas/Uuid"
-          },
-          "webAuthnStamp": {
-            "type": "string",
-            "description": "Cryptographically signed (stamped) request to be passed in as a header. For more info, see [wallet authentication](https://docs.byzantine.fi/api-reference/wallet-authentication)."
           }
         }
       },
@@ -2745,6 +4488,92 @@
               }
             ],
             "nullable": true
+          },
+          "destinationBankAccount": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BankAccount"
+              }
+            ],
+            "nullable": true
+          }
+        }
+      },
+      "SignPayloadRequestBodyPasskey": {
+        "type": "object",
+        "required": [
+          "signedBody",
+          "transactionId",
+          "webAuthnStamp"
+        ],
+        "properties": {
+          "signedBody": {
+            "$ref": "#/components/schemas/SignRawPayloadRequest"
+          },
+          "transactionId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "webAuthnStamp": {
+            "type": "string",
+            "description": "Cryptographically passkey signed (stamped). For more info, see [wallet authentication](https://docs.byzantine.fi/api-reference/wallet-authentication)."
+          }
+        }
+      },
+      "SignRawPayloadParams": {
+        "type": "object",
+        "description": "The parameters object containing the specific intent data for this transaction.",
+        "required": [
+          "signWith",
+          "payload",
+          "encoding",
+          "hashFunction"
+        ],
+        "properties": {
+          "signWith": {
+            "type": "string",
+            "description": "A Wallet account address, Private Key address, or Private Key identifier."
+          },
+          "payload": {
+            "type": "string",
+            "description": "Raw unsigned payload to be signed."
+          },
+          "encoding": {
+            "type": "string",
+            "description": "How the payload is encoded: `PAYLOAD_ENCODING_HEXADECIMAL` or `PAYLOAD_ENCODING_EIP7702_AUTHORIZATION`",
+            "example": "PAYLOAD_ENCODING_HEXADECIMAL"
+          },
+          "hashFunction": {
+            "type": "string",
+            "description": "Rather Turnkey should hash the message or not: `HASH_FUNCTION_NO_OP` or `HASH_FUNCTION_KECCAK256`",
+            "example": "HASH_FUNCTION_NO_OP"
+          }
+        }
+      },
+      "SignRawPayloadRequest": {
+        "type": "object",
+        "description": "The object that needs to be signed by the end user to make a transaction.",
+        "required": [
+          "type",
+          "timestampMs",
+          "organizationId",
+          "parameters"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Defaults to `ACTIVITY_TYPE_SIGN_RAW_PAYLOAD_V2`",
+            "example": "ACTIVITY_TYPE_SIGN_RAW_PAYLOAD_V2"
+          },
+          "timestampMs": {
+            "type": "string",
+            "description": "UNIX timestamp of the creation of the transaction."
+          },
+          "organizationId": {
+            "type": "string",
+            "description": "The account ID making the transaction."
+          },
+          "parameters": {
+            "$ref": "#/components/schemas/SignRawPayloadParams"
           }
         }
       },
@@ -2804,65 +4633,102 @@
         "type": "object",
         "required": [
           "currency",
-          "bank_name",
-          "bank_address",
-          "payment_rails",
-          "bank_beneficiary_name",
-          "bank_beneficiary_address"
+          "bankName",
+          "bankAddress",
+          "paymentRails",
+          "bankBeneficiaryName",
+          "bankBeneficiaryAddress"
         ],
         "properties": {
           "currency": {
             "$ref": "#/components/schemas/Currency"
           },
-          "bank_name": {
+          "expectedDepositAmount": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Decimal"
+              }
+            ],
+            "nullable": true
+          },
+          "bankName": {
             "type": "string",
             "description": "The name of the beneficiary bank.",
             "example": "Lead Bank"
           },
-          "bank_address": {
+          "bankAddress": {
             "type": "string",
             "description": "The address of the beneficiary bank.",
             "example": "1801 Main St., Kansas City, MO 64108"
           },
-          "payment_rails": {
+          "paymentRails": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/PaymentRailVirtualAccount"
             }
           },
-          "bank_beneficiary_name": {
+          "bankBeneficiaryName": {
             "type": "string",
             "description": "The name of the beneficiary. Either first and last name, or a business name.",
             "example": "John Smith"
           },
-          "bank_beneficiary_address": {
+          "bankBeneficiaryAddress": {
             "type": "string",
             "description": "The address of the beneficiary.",
             "example": "1234 Main St., Kansas City, MO 64108"
           },
-          "bank_account_number": {
+          "bankAccountNumber": {
             "type": "string",
             "description": "In case of a USD deposit, the bank account number to deposit to.",
             "example": "1234567890",
             "nullable": true
           },
-          "bank_routing_number": {
+          "bankRoutingNumber": {
             "type": "string",
             "description": "In case of a USD deposit, the ban routing number to deposit to.",
             "example": "87654321",
             "nullable": true
           },
-          "iban_number": {
+          "iban": {
             "type": "string",
             "description": "In case of a EUR deposit, the IBAN to deposit to.",
             "example": "FR12345678901234567890",
             "nullable": true
           },
-          "iban_bic": {
+          "bic": {
             "type": "string",
             "description": "In case of a EUR deposit, the BIC to deposit to.",
             "example": "BICFR12345",
             "nullable": true
+          }
+        }
+      },
+      "TeamMember": {
+        "type": "object",
+        "description": "Response body for a team member",
+        "required": [
+          "userId",
+          "userName",
+          "userEmail",
+          "role",
+          "joinedAt"
+        ],
+        "properties": {
+          "userId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "userName": {
+            "type": "string"
+          },
+          "userEmail": {
+            "type": "string"
+          },
+          "role": {
+            "$ref": "#/components/schemas/AccountUserRole"
+          },
+          "joinedAt": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       },
@@ -2871,7 +4737,8 @@
         "required": [
           "vault_address",
           "chain_id",
-          "is_active"
+          "is_active",
+          "is_asynchronous"
         ],
         "properties": {
           "vault_address": {
@@ -2882,6 +4749,9 @@
             "format": "int32"
           },
           "is_active": {
+            "type": "boolean"
+          },
+          "is_asynchronous": {
             "type": "boolean"
           }
         }
@@ -2895,7 +4765,7 @@
             "example": "0x123..."
           },
           "transactionIndex": {
-            "type": "integer",
+            "type": "string",
             "nullable": true
           },
           "blockHash": {
@@ -2903,7 +4773,7 @@
             "nullable": true
           },
           "blockNumber": {
-            "type": "integer",
+            "type": "string",
             "nullable": true
           },
           "gasUsed": {
@@ -2949,11 +4819,22 @@
         "type": "string",
         "description": "Type of transaction that is being submitted.",
         "enum": [
+          "authorization",
           "approve",
           "deposit",
           "withdraw"
         ],
         "example": "deposit"
+      },
+      "Transports": {
+        "type": "string",
+        "enum": [
+          "AUTHENTICATOR_TRANSPORT_BLE",
+          "AUTHENTICATOR_TRANSPORT_INTERNAL",
+          "AUTHENTICATOR_TRANSPORT_NFC",
+          "AUTHENTICATOR_TRANSPORT_USB",
+          "AUTHENTICATOR_TRANSPORT_HYBRID"
+        ]
       },
       "TurnkeyTransaction": {
         "type": "object",
@@ -2962,12 +4843,11 @@
           "accountId",
           "chainId",
           "vaultAddr",
+          "onchainTxAmount",
           "type",
           "status",
           "createdAt",
-          "updatedAt",
-          "sourceCurrency",
-          "destinationCurrency"
+          "updatedAt"
         ],
         "properties": {
           "transactionId": {
@@ -2982,6 +4862,9 @@
           },
           "vaultAddr": {
             "type": "string"
+          },
+          "onchainTxAmount": {
+            "$ref": "#/components/schemas/Decimal"
           },
           "type": {
             "$ref": "#/components/schemas/TransactionType"
@@ -3019,10 +4902,20 @@
             "format": "date-time"
           },
           "sourceCurrency": {
-            "$ref": "#/components/schemas/Currency"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Currency"
+              }
+            ],
+            "nullable": true
           },
           "destinationCurrency": {
-            "$ref": "#/components/schemas/Currency"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Currency"
+              }
+            ],
+            "nullable": true
           },
           "fiatTransactionId": {
             "type": "string",
@@ -3043,6 +4936,150 @@
               }
             ],
             "nullable": true
+          }
+        }
+      },
+      "UpdateRootQuorumParams": {
+        "type": "object",
+        "description": "The parameters object containing the specific intent data for updating the root quorum.",
+        "required": [
+          "threshold",
+          "userIds"
+        ],
+        "properties": {
+          "threshold": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The threshold of unique approvals to reach quorum.",
+            "example": 1,
+            "minimum": 0
+          },
+          "userIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The unique identifiers of users who comprise the quorum set."
+          }
+        }
+      },
+      "UpdateRootQuorumRequest": {
+        "type": "object",
+        "description": "The object that needs to be signed by the end user to update the root quorum of a Byzantine account.",
+        "required": [
+          "type",
+          "timestampMs",
+          "organizationId",
+          "parameters"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "Defaults to `ACTIVITY_TYPE_UPDATE_ROOT_QUORUM`",
+            "example": "ACTIVITY_TYPE_UPDATE_ROOT_QUORUM"
+          },
+          "timestampMs": {
+            "type": "string",
+            "description": "UNIX timestamp of the creation of the request."
+          },
+          "organizationId": {
+            "type": "string",
+            "description": "The account ID (sub-organization ID) updating the root quorum.",
+            "example": "d107c1e1-766a-4091-802c-de61a3973e91"
+          },
+          "parameters": {
+            "$ref": "#/components/schemas/UpdateRootQuorumParams"
+          }
+        }
+      },
+      "UpdateUsersRoleRequest": {
+        "type": "object",
+        "description": "Request body for updating users' roles within a Byzantine account",
+        "required": [
+          "accountId",
+          "role",
+          "userIds"
+        ],
+        "properties": {
+          "accountId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "role": {
+            "$ref": "#/components/schemas/AccountUserRole"
+          },
+          "userIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Uuid"
+            },
+            "description": "The unique identifiers of users beeing promoted / demoted."
+          }
+        }
+      },
+      "UpdateUsersRoleRequestBodyPasskey": {
+        "type": "object",
+        "required": [
+          "signedBody",
+          "webAuthnStamp"
+        ],
+        "properties": {
+          "signedBody": {
+            "$ref": "#/components/schemas/UpdateRootQuorumRequest"
+          },
+          "webAuthnStamp": {
+            "type": "string",
+            "description": "Cryptographically passkey signed (stamped). For more info, see [wallet authentication](https://docs.byzantine.fi/api-reference/wallet-authentication)."
+          }
+        }
+      },
+      "UpdateUsersRoleRequestResponse": {
+        "type": "object",
+        "required": [
+          "bodyToSign"
+        ],
+        "properties": {
+          "bodyToSign": {
+            "$ref": "#/components/schemas/UpdateRootQuorumRequest"
+          }
+        }
+      },
+      "UpdateUsersRoleResponse": {
+        "type": "object",
+        "description": "Response body when users' roles are successfully updated",
+        "required": [
+          "accountId",
+          "threshold",
+          "rootUserIds"
+        ],
+        "properties": {
+          "accountId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "threshold": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The new threshold of unique approvals to reach quorum.",
+            "example": 1,
+            "minimum": 0
+          },
+          "rootUserIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The unique identifiers of users who now comprise the quorum set."
+          }
+        }
+      },
+      "UserDetailsQuery": {
+        "type": "object",
+        "description": "Query parameters for getting user details",
+        "required": [
+          "userId"
+        ],
+        "properties": {
+          "userId": {
+            "$ref": "#/components/schemas/Uuid"
           }
         }
       },
@@ -3258,7 +5295,7 @@
             "type": "number",
             "format": "double",
             "description": "User's shares in this vault",
-            "example": 249989
+            "example": 249989.0
           },
           "ratio": {
             "type": "number",
@@ -3291,7 +5328,7 @@
           "lastUpdateTimestamp": 1754506387000,
           "lastUpdateTxHash": "0xa5f7a2992c16ef0dc5fcb5824db2f1a8f18f68ae1fecd7ea07780681812c33e1",
           "ratio": 1.00054002160086,
-          "shares": 249989,
+          "shares": 249989.0,
           "transactions": []
         }
       },
@@ -3348,6 +5385,8 @@
         "type": "string",
         "description": "The identity verification status of the user.",
         "enum": [
+          "not_started",
+          "init",
           "under_review",
           "waiting_for_information",
           "active",
@@ -3379,7 +5418,7 @@
           "destinationCurrency": {
             "$ref": "#/components/schemas/Currency"
           },
-          "bank_account_id": {
+          "bankAccountId": {
             "allOf": [
               {
                 "$ref": "#/components/schemas/Uuid"
@@ -3391,16 +5430,15 @@
       }
     },
     "securitySchemes": {
-      "XPubkey": {
-        "type": "apiKey",
-        "in": "header",
-        "name": "X-Pubkey",
-        "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). \n                    Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd"
-      },
       "bearer_auth": {
         "type": "http",
         "scheme": "bearer",
         "bearerFormat": "JWT"
+      },
+      "integrator_auth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Pubkey, X-Timestamp, X-Signature"
       }
     }
   },
@@ -3411,11 +5449,15 @@
     },
     {
       "name": "Account management",
-      "description": "Endpoints to manage user accounts."
+      "description": "Endpoints to manage accounts."
+    },
+    {
+      "name": "User management",
+      "description": "Endpoints to manage user and authenticators."
     },
     {
       "name": "Account data",
-      "description": "Endpoints to get data about a user account."
+      "description": "Endpoints to get data about a user, entity, or account."
     },
     {
       "name": "Transactions with passkey",
@@ -3424,6 +5466,10 @@
     {
       "name": "Transactions with OTP",
       "description": "Endpoints to make transactions with OTP user authentication."
+    },
+    {
+      "name": "OTP authentication",
+      "description": "Endpoints to initialize and manage user authentication with OTP."
     },
     {
       "name": "Vault data",
