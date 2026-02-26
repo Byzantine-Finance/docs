@@ -229,18 +229,6 @@
                       }
                     ]
                   },
-                  {
-                    "group": "Account management",
-                    "pages": [
-                      "api-reference/account-management-overview"
-                    ]
-                  },
-                  {
-                    "group": "User management",
-                    "pages": [
-                      "api-reference/user-management-overview"
-                    ]
-                  },
                   "api-reference/account-activation",
                   {
                     "group": "Transactions",
@@ -261,6 +249,23 @@
                         ]
                       },
                       "api-reference/account-balances-idle"
+                    ]
+                  },
+                  {
+                    "group": "Management",
+                    "pages": [
+                      {
+                        "group": "Account management",
+                        "pages": [
+                          "api-reference/account-management-overview"
+                        ]
+                      },
+                      {
+                        "group": "User management",
+                        "pages": [
+                          "api-reference/user-management-overview"
+                        ]
+                      }
                     ]
                   }
                 ]
