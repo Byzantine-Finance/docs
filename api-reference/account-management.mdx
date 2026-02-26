@@ -1,0 +1,21 @@
+---
+title: "Account management"
+description: "Managing and configuring Byzantine accounts via the Integrator API."
+---
+
+This section explains how to manage existing Byzantine accounts once KYC/KYB is complete. Account management covers configuration of an existing Byzantine account for day-to-day use.
+
+| Capability           | Description                                                                                                                                                                                                                      |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Add bank account** | Associate a bank account with an account so that withdrawals can be sent to it (off-ramp). At least one bank account must be added before any off-ramp withdrawal can be initiated. Can have multiple bank accounts per account. |
+
+To list or inspect existing bank accounts for an account, use this endpoint: 
+
+<Card
+  title="Get all bank accounts"
+  icon="plus"
+  horizontal
+  href="/api-reference/account-data/get-all-bank-accounts"
+></Card>
+
+<Info>The multi-account feature is coming soon.</Info>

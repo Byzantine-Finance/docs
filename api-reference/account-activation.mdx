@@ -1,16 +1,36 @@
 ---
 title: "Account activation"
-description: "Overview of activating an account for passkey-based transactions."
+description: "Activating an account for enabling transactions."
 ---
 
-(TODO: Add content)
+Before an end user can make deposit/withdrawal transactions, their account must be activated. The activation allows the account to benefit from the following features:
 
-Before an end user can submit passkey-based on-chain transactions with gas sponsorship, their account must be activated.
+- Gas sponsorship for transactions: no need to pay for gas fees
+- Be whitelisted to deposit into all Byzantine Prime vaults
 
-At a high level:
+<Info>
+  At the moment, there are two authentications to complete so the account can
+  deposit into both Byzantine Prime USDC and Byzantine Prime EUR vaults. This
+  step will be automated in the future.
+</Info>
+
+## Steps to proceed
 
 1. You call the passkey activation payload endpoint to retrieve an authorization body to sign.
+
+<Card
+  title="Get the activate account payload"
+  icon="arrow-right"
+  horizontal
+  href="/api-reference/transactions-with-passkey/get-payload-to-sign-to-activate-an-account"
+></Card>
+
 2. The end user signs this payload with their passkey.
 3. You submit the signed payload so Byzantine can sponsor and broadcast the activation transaction.
 
-For the exact parameters and response format, see the **Transactions with passkey** tag in the OpenAPI-driven **API endpoints** section.
+<Card
+  title="Submit the signed activate account payload"
+  icon="arrow-right"
+  horizontal
+  href="/api-reference/transactions-with-passkey/sign-a-payload-passkey-auth"
+></Card>

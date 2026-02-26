@@ -3,17 +3,29 @@ title: "Overview"
 description: "How deposits, withdrawals, and related flows work across OTP and passkey auth."
 ---
 
-(TODO: Add content)
+Transactions in Byzantine are always **two-step**: you request a payload (or OTP) for an action, then submit the signed payload or OTP to execute it on-chain. The exact endpoints depend on whether the user authenticates with **OTP** (email) or **Passkey** (WebAuthn).
 
-Transactions in Byzantine are always **two-step**:
+## What you can do
 
-1. **Prepare** a transaction by requesting a payload (or OTP) for a specific action.
-2. **Submit** the signed payload or OTP to execute the transaction on-chain.
+- **Deposit** — Deposit can be made in stablecoins or fiat. Fiat deposits also involve on-ramping via a dedicated bank account. See [Deposit](/api-reference/deposit-overview) and [Deposit (technical)](/api-reference/deposit-technical).
+- **Withdraw** — Move funds out of a vault to stablecoins or to a bank account (off-ramp). No vault approval is needed; withdrawals use the same two-step pattern and are available at any time. See [Withdrawal](/api-reference/withdrawal-overview) and [Withdrawal (technical)](/api-reference/withdrawal-technical).
+- **Account balances and idle** — Balances in the vault earn yield; stablecoins left in the user’s secure wallet are **idle balance** and do not. Idle balance can be deposited manually into the vault later. See [Account balances & idle](/api-reference/account-balances-idle).
 
-You will typically:
+## Two-step pattern
 
-- Activate an account for passkey-based, gas-sponsored transactions.
-- Approve and deposit into a vault.
-- Withdraw from a vault back to stablecoins and/or off-ramp to a bank account.
+1. **Prepare** — Call the appropriate “get payload” or “init” endpoint (e.g. get deposit payload, initiate withdrawal OTP). For OTP, the user receives a code by email; for passkey, they sign the payload in your app.
+2. **Submit** — Call the submit endpoint with the signed payload or OTP code. Byzantine then broadcasts and executes the transaction (or, for fiat deposits, waits for funds and then executes).
 
-Use this overview together with the dedicated **Deposit**, **Withdrawal**, **Account balances & idle**, and **Authentication methods** pages, plus the **Transactions with passkey** and **Transactions with OTP** endpoint groups.
+<Info>
+  Transactions go through the following statuses:
+
+- `created`: The transaction has been created and is waiting to be signed.
+- `waiting_for_funds`: The transaction has been signed. The system is waiting for the bank transfer to trigger the broadcasting of the transaction.
+- `funds_in_transfer`: The funds have been scheduled to arrive with Bridge soon.
+- `processing`: The funds have arrived with Bridge and are currently being on-ramped.
+- `completed`: The transaction has been broadcasted and executed.
+
+The transaction status can be checked by calling the [Get transaction status](/api-reference/account-data/get-a-single-transaction-by-id) endpoint.
+</Info>
+
+For full request/response details, use the **Transactions with passkey** and **Transactions with OTP** sections in the API endpoints, together with [Authentication methods](/api-reference/authentication-methods).
