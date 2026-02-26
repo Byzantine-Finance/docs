@@ -7,41 +7,16 @@ Byzantine accepts both stablecoins and fiat deposits. Based on the deposit curre
 
 A deposit into a Byzantine vault proceeeds in the following steps:
 
-1. Approve a Byzantine vault as a valid interaction target. This is a **one-time requirement per vault**.
-2. Sign the deposit transaction.
-3. [Optional - only for fiat deposits] Deposit fiat into a dedicated bank account to convert it to stablecoins, known as _on-ramping_.
+1. Get the deposit payload for the user to sign with the authentication method used.
+2. Submit the signed payload to execute the deposit transaction.
+3. [Optional - only for fiat deposits] User deposits fiat into a dedicated bank account to convert it to stablecoins, known as _on-ramping_.
 4. Execute the deposit transaction to transfer the stablecoins into a Byzantine vault.
 
 <Info>
   The integrator will have to call different API endpoints based on the authentication method used.
 </Info>
 
-## 1. Approving a vault
-
-Approving a vault is an additional security measure to ensure that user's wallet cannot interact with fraudulent smart contracts.
-
-This approval is a **one-time requirement per vault**, typically performed when a user interacts with a specific vault for the first time. Once approved, user does not need to repeat this step for subsequent deposits into the same vault.
-
-<Tabs>
-  <Tab title="OTP">
-    The integrator must call two API endpoints:
-
-    1. [Get approval transaction](https://docs.byzantine.fi/api-reference/transactions-with-otp/initiate-approval), which sends an OTP code to user's email address.
-    2. [Submit approval transaction](/api-reference/transactions-with-otp/send-a-transaction-otp-auth), which submits the OTP code to complete the approval.
-
-    ![Flow to approve a vault with OTP](/images/approve-otp.png)
-  </Tab>
-  <Tab title="Passkey">
-    The integrator must call two API endpoints:
-
-    1. [Get approval transaction](/api-reference/transactions-with-passkey/get-approval-transaction-passkey-auth), which requests the transaction body to sign.
-    2. [Submit approval transaction](/api-reference/transactions-with-passkey/submit-a-transaction-passkey-auth), which submits the signed transaction.
-
-    ![Flow to approve a vault with Passkey](/images/approve-passkey.png)
-  </Tab>
-</Tabs>
-
-## 2. Signing the deposit transaction
+## 1. Signing the deposit transaction
 
 <Tabs>
   <Tab title="OTP">
@@ -62,7 +37,7 @@ This approval is a **one-time requirement per vault**, typically performed when 
   </Tab>
 </Tabs>
 
-## 3. [Optional] Depositing fiat into bank account (on-ramping)
+## 2. [Optional] Depositing fiat into bank account (on-ramping)
 
 On-ramping assets is done via [Bridge](https://www.bridge.xyz/), our on- and off-ramping partner.
 
@@ -74,7 +49,7 @@ The user must deposit fiat into this dedicated bank account to convert it to sta
   This step can be skipped if user is depositing stablecoins directly.
 </Info>
 
-## 4. [Automatic] Executing the deposit transaction
+## 3. [Automatic] Executing the deposit transaction
 
 <Tabs>
   <Tab title="Stablecoins deposit">
@@ -92,15 +67,3 @@ The user must deposit fiat into this dedicated bank account to convert it to sta
     </Note>
   </Tab>
 </Tabs>
-
-<Info>
-  Transactions go through the following statuses:
-
-  - `created`: The transaction has been created and is waiting to be signed.
-  - `waiting_for_funds`: The transaction has been signed. The system is waiting for the bank transfer to trigger the broadcasting of the transaction.
-  - `funds_in_transfer`: The funds have been scheduled to arrive with Bridge soon.
-  - `processing`: The funds have arrived with Bridge and are currently being on-ramped.
-  - `completed`: The transaction has been broadcasted and executed.
-
-  The transaction status can be checked by calling the [Get transaction status](/api-reference/account-data/get-a-single-transaction-by-id) endpoint.
-</Info>

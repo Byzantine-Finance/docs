@@ -209,11 +209,12 @@
                       "api-reference/concepts"
                     ]
                   },
-                  "api-reference/wallet-authentication",
+                  "api-reference/authentication-methods",
                   {
                     "group": "Account creation",
                     "pages": [
                       "api-reference/kyc-kyb-overview",
+                      "api-reference/terms-and-conditions",
                       "api-reference/kyc",
                       "api-reference/kyb",
                       "api-reference/documents",
@@ -254,18 +255,9 @@
                   {
                     "group": "Management",
                     "pages": [
-                      {
-                        "group": "Account management",
-                        "pages": [
-                          "api-reference/account-management-overview"
-                        ]
-                      },
-                      {
-                        "group": "User management",
-                        "pages": [
-                          "api-reference/user-management-overview"
-                        ]
-                      }
+                      "api-reference/management-overview",
+                      "api-reference/account-management",
+                      "api-reference/user-management"
                     ]
                   }
                 ]
