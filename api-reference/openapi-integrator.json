@@ -1229,7 +1229,7 @@
     "/v1/submit/init-otp": {
       "post": {
         "tags": [
-          "OTP authentication"
+          "User management"
         ],
         "summary": "Initialize OTP for a user (email)",
         "operationId": "init_otp",
@@ -1304,7 +1304,7 @@
     "/v1/submit/otp-auth": {
       "post": {
         "tags": [
-          "OTP authentication"
+          "User management"
         ],
         "summary": "Authenticate with OTP code and create a session.",
         "description": "Returns a session ID that can be used to submit an authenticated action.",
@@ -1714,7 +1714,7 @@
     "/v1/query/get-invite-users-payload-passkey": {
       "post": {
         "tags": [
-          "Account management"
+          "User management"
         ],
         "summary": "Get invite users payload",
         "description": "Get the payload to sign in order to invite users to an existing account. Part of the passkey authentication flow.",
@@ -1790,7 +1790,7 @@
     "/v1/submit/invite-users": {
       "post": {
         "tags": [
-          "Account management"
+          "User management"
         ],
         "summary": "Invite users to a Byzantine account (passkey auth)",
         "description": "Send an invitation to users to join a Byzantine account. If the users did not yet do a KYC on Byzantine, an email will ask them to do so.",
@@ -1866,7 +1866,7 @@
     "/v1/query/get-update-users-role-payload-passkey": {
       "post": {
         "tags": [
-          "Account management"
+          "User management"
         ],
         "summary": "Get update users role payload",
         "description": "Get the payload to sign in order to update users' roles within a Byzantine account. Part of the passkey authentication flow.",
@@ -1942,7 +1942,7 @@
     "/v1/submit/update-users-role": {
       "post": {
         "tags": [
-          "Account management"
+          "User management"
         ],
         "summary": "Update users' role within a Byzantine account (passkey auth)",
         "description": "Update the roles of users of a Byzantine account. This action must be approved by the current root quorum.",
@@ -5525,10 +5525,6 @@
     {
       "name": "Transactions with OTP",
       "description": "Endpoints to make transactions with OTP user authentication."
-    },
-    {
-      "name": "OTP authentication",
-      "description": "Endpoints to initialize and manage user authentication with OTP."
     },
     {
       "name": "Vault data",
