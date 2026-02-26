@@ -294,6 +294,100 @@
         }
       }
     },
+    "/v1/query/get-account-balances": {
+      "get": {
+        "tags": [
+          "Account data"
+        ],
+        "summary": "Get account balances",
+        "description": "Fetch all vault positions for a specific account from the indexer.\nReturns balance information including vault details and current price per share.\nIf chain_id is not specified, returns balances for all chains.\nIf include_test_vaults is not specified, defaults to false (excludes test vaults).",
+        "operationId": "get_account_balances",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "account_id",
+            "in": "query",
+            "description": "The account ID",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            }
+          },
+          {
+            "name": "chain_id",
+            "in": "query",
+            "description": "The chain ID to get balances for (optional, default = all chains)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "include_test_vaults",
+            "in": "query",
+            "description": "Whether to include test vaults (optional, default = false)",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Account balances retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAccountBalancesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid account ID"
+          },
+          "404": {
+            "description": "Account not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
     "/v1/query/get-bank-accounts": {
       "get": {
         "tags": [
@@ -646,87 +740,6 @@
         ]
       }
     },
-    "/v1/query/get-approve-payload-passkey": {
-      "post": {
-        "tags": [
-          "Transactions with passkey"
-        ],
-        "summary": "Get approve payload",
-        "description": "Get the payload to sign in order to approve a vault. Part of the passkey authentication flow.",
-        "operationId": "get_approve_payload_passkey",
-        "parameters": [
-          {
-            "name": "X-Pubkey",
-            "in": "header",
-            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "chain_id",
-            "in": "query",
-            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "minimum": 0
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Approve request body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ApproveRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Transaction created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PasskeyPayloadRequestResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid chain ID"
-          }
-        },
-        "security": [
-          {
-            "integrator_auth": []
-          }
-        ]
-      }
-    },
     "/v1/query/get-deposit-payload-passkey": {
       "post": {
         "tags": [
@@ -955,87 +968,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/SendTransactionResponseBody"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid chain ID"
-          }
-        },
-        "security": [
-          {
-            "integrator_auth": []
-          }
-        ]
-      }
-    },
-    "/v1/query/init-approve-otp": {
-      "post": {
-        "tags": [
-          "Transactions with OTP"
-        ],
-        "summary": "Initiate approval",
-        "description": "Initiate transaction and send out the OTP to the end user in order to approve a vault.",
-        "operationId": "init_approve_otp",
-        "parameters": [
-          {
-            "name": "X-Pubkey",
-            "in": "header",
-            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "chain_id",
-            "in": "query",
-            "description": "Chain ID (1 for Ethereum, 8453 for Base)",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "minimum": 0
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Approve request body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ApproveRequestBody"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Transaction created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/OtpRequestResponse"
                 }
               }
             }
@@ -2287,23 +2219,6 @@
           }
         }
       },
-      "ApproveRequestBody": {
-        "type": "object",
-        "required": [
-          "accountId",
-          "vaultAddr"
-        ],
-        "properties": {
-          "accountId": {
-            "$ref": "#/components/schemas/Uuid"
-          },
-          "vaultAddr": {
-            "type": "string",
-            "description": "The address of the vault to approve.",
-            "example": "0x1234567890abcdef"
-          }
-        }
-      },
       "ApyQueryParams": {
         "type": "object",
         "properties": {
@@ -3455,6 +3370,55 @@
         ],
         "example": "5000_9999"
       },
+      "FiatCurrency": {
+        "type": "string",
+        "enum": [
+          "usd",
+          "eur"
+        ]
+      },
+      "GetAccountBalanceQuery": {
+        "type": "object",
+        "required": [
+          "account_id"
+        ],
+        "properties": {
+          "account_id": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "chain_id": {
+            "type": "integer",
+            "format": "int32",
+            "description": "The chain ID to get balances for (optional, default = all chains)",
+            "example": 1,
+            "nullable": true
+          },
+          "include_test_vaults": {
+            "type": "boolean",
+            "description": "Whether to include test vaults (optional, default = false)",
+            "example": true
+          }
+        }
+      },
+      "GetAccountBalancesResponse": {
+        "type": "object",
+        "required": [
+          "account_id",
+          "sub_accounts"
+        ],
+        "properties": {
+          "account_id": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "sub_accounts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SubAccountBalances"
+            },
+            "description": "Array of account's sub-accounts and their balances"
+          }
+        }
+      },
       "GetAssociatedPersonResponse": {
         "type": "object",
         "description": "Response body for an associated person",
@@ -4015,6 +3979,27 @@
           },
           "country": {
             "type": "string"
+          }
+        }
+      },
+      "IdleBalance": {
+        "type": "object",
+        "required": [
+          "chain_id",
+          "balance",
+          "currency"
+        ],
+        "properties": {
+          "chain_id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Chain ID where the idle balance is held"
+          },
+          "balance": {
+            "$ref": "#/components/schemas/Decimal"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/FiatCurrency"
           }
         }
       },
@@ -4703,6 +4688,35 @@
           }
         }
       },
+      "SubAccountBalances": {
+        "type": "object",
+        "required": [
+          "wallet_address",
+          "positions",
+          "idle"
+        ],
+        "properties": {
+          "wallet_address": {
+            "type": "string",
+            "description": "The sub-account's wallet address",
+            "example": "0xa5b709B14859EdF820347D78E587b1634B0ec791"
+          },
+          "positions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VaultBalance"
+            },
+            "description": "List of sub-account's active positions (balances across vaults)"
+          },
+          "idle": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IdleBalance"
+            },
+            "description": "List of sub-account's idle balances"
+          }
+        }
+      },
       "TeamMember": {
         "type": "object",
         "description": "Response body for a team member",
@@ -4821,6 +4835,7 @@
         "enum": [
           "authorization",
           "approve",
+          "approve_deposit",
           "deposit",
           "withdraw"
         ],
@@ -5211,6 +5226,50 @@
         "format": "uuid",
         "description": "A UUID string",
         "example": "550e8400-e29b-41d4-a716-446655440000"
+      },
+      "VaultBalance": {
+        "type": "object",
+        "required": [
+          "chain_id",
+          "vault_address",
+          "is_async_vault",
+          "asset_address",
+          "currency",
+          "balance",
+          "shares",
+          "price_per_share"
+        ],
+        "properties": {
+          "chain_id": {
+            "type": "integer",
+            "format": "int64",
+            "description": "The vault's chain ID"
+          },
+          "vault_address": {
+            "type": "string",
+            "description": "The vault's address"
+          },
+          "is_async_vault": {
+            "type": "boolean",
+            "description": "Whether the vault is an asynchronous vault"
+          },
+          "asset_address": {
+            "type": "string",
+            "description": "The asset's contract address"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/FiatCurrency"
+          },
+          "balance": {
+            "$ref": "#/components/schemas/Decimal"
+          },
+          "shares": {
+            "$ref": "#/components/schemas/Decimal"
+          },
+          "price_per_share": {
+            "$ref": "#/components/schemas/Decimal"
+          }
+        }
       },
       "VaultV2Transaction": {
         "type": "object",
