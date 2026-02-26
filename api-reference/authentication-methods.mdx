@@ -5,31 +5,17 @@ description: "Methods to ensure user ownership over their wallet."
 
 When a user account is created in Byzantine, either they themselves or their entity are set up with a digital wallet. This wallet is linked to either the end user's device or email address, meaning no intermediaries (Byzantine or the integrator) could ever make transactions on their behalf.
 
-## Passkey or OTP
+## Passkey
 
 Integrators have two options when creating a user account. This method will be used in the future to authenticate the user when making transactions.
 
 | Auth Method   | Description                                                                                                                                                                                                                                                   |
 | ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| OTP via email | This method is easier to implement, but is a little less secure, since it relies on access to the end user's email account.                                                                                                                                   |
 | Passkey       | This method is more cryptographically secure, since it directly links the end user's device to authentication. Integrators must implement both the passkey creation process and the authentication flow, making it more technically challenging to implement. |
 
 ## Technical implementation
 
 <Tabs>
-  <Tab title="OTP Auth">
-    **Setup:**
-
-    User does not need to do anything to set up this method.
-
-    **Authentication flow:**
-
-    1. **Prepare the transaction:** The user calls the `/query/init-[action]` endpoint to receive an OTP via email.
-    2. **Authenticate with OTP:** The user will receive an OTP code via email and needs to enter it in the user interface.
-    3. **Complete the transaction:** The user calls the `/submit/send-transaction-otp` endpoint to sign and execute the transaction with the OTP code.
-
-  </Tab>
-  
   <Tab title="Passkey Creation">
     **Setup:**
 

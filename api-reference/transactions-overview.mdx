@@ -1,9 +1,9 @@
 ---
 title: "Overview"
-description: "How deposits, withdrawals, and related flows work across OTP and passkey auth."
+description: "How deposits, withdrawals, and related flows work across passkey auth."
 ---
 
-Transactions in Byzantine are always **two-step**: you request a payload (or OTP) for an action, then submit the signed payload or OTP to execute it on-chain. The exact endpoints depend on whether the user authenticates with **OTP** (email) or **Passkey** (WebAuthn).
+Transactions in Byzantine are always **two-step**: you request a payload or an action, then submit the signed payload to execute it on-chain. The exact endpoints depend on whether the user authenticates with **Passkey** (WebAuthn).
 
 ## What you can do
 
@@ -13,8 +13,8 @@ Transactions in Byzantine are always **two-step**: you request a payload (or OTP
 
 ## Two-step pattern
 
-1. **Prepare** — Call the appropriate “get payload” or “init” endpoint (e.g. get deposit payload, initiate withdrawal OTP). For OTP, the user receives a code by email; for passkey, they sign the payload in your app.
-2. **Submit** — Call the submit endpoint with the signed payload or OTP code. Byzantine then broadcasts and executes the transaction (or, for fiat deposits, waits for funds and then executes).
+1. **Prepare** — Call the appropriate “get payload” or “init” endpoint (e.g. get deposit payload, initiate withdrawal). For passkey, they sign the payload in your app.
+2. **Submit** — Call the submit endpoint with the signed payload. Byzantine then broadcasts and executes the transaction (or, for fiat deposits, waits for funds and then executes).
 
 <Info>
   Transactions go through the following statuses:
@@ -28,4 +28,4 @@ Transactions in Byzantine are always **two-step**: you request a payload (or OTP
 The transaction status can be checked by calling the [Get transaction status](/api-reference/account-data/get-a-single-transaction-by-id) endpoint.
 </Info>
 
-For full request/response details, use the **Transactions with passkey** and **Transactions with OTP** sections in the API endpoints, together with [Authentication methods](/api-reference/authentication-methods).
+For full request/response details, use the **Transactions with passkey** section in the API endpoints, together with [Authentication methods](/api-reference/authentication-methods).
