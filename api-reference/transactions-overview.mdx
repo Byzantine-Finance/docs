@@ -1,0 +1,19 @@
+---
+title: "Overview"
+description: "How deposits, withdrawals, and related flows work across OTP and passkey auth."
+---
+
+(TODO: Add content)
+
+Transactions in Byzantine are always **two-step**:
+
+1. **Prepare** a transaction by requesting a payload (or OTP) for a specific action.
+2. **Submit** the signed payload or OTP to execute the transaction on-chain.
+
+You will typically:
+
+- Activate an account for passkey-based, gas-sponsored transactions.
+- Approve and deposit into a vault.
+- Withdraw from a vault back to stablecoins and/or off-ramp to a bank account.
+
+Use this overview together with the dedicated **Deposit**, **Withdrawal**, **Account balances & idle**, and **Authentication methods** pages, plus the **Transactions with passkey** and **Transactions with OTP** endpoint groups.

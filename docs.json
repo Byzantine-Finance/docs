@@ -205,10 +205,11 @@
                     "pages": [
                       "api-reference/getting-started",
                       "api-reference/api-authentication",
-                      "api-reference/postman-collection"
+                      "api-reference/postman-collection",
+                      "api-reference/concepts"
                     ]
                   },
-                  "api-reference/concepts",
+                  "api-reference/wallet-authentication",
                   {
                     "group": "Account creation",
                     "pages": [
@@ -228,10 +229,23 @@
                       }
                     ]
                   },
-                  "api-reference/wallet-authentication",
                   {
-                    "group": "Deposits & withdrawals",
+                    "group": "Account management",
                     "pages": [
+                      "api-reference/account-management-overview"
+                    ]
+                  },
+                  {
+                    "group": "User management",
+                    "pages": [
+                      "api-reference/user-management-overview"
+                    ]
+                  },
+                  "api-reference/account-activation",
+                  {
+                    "group": "Transactions",
+                    "pages": [
+                      "api-reference/transactions-overview",
                       {
                         "group": "Deposit",
                         "pages": [
@@ -246,12 +260,7 @@
                           "api-reference/withdrawal-technical"
                         ]
                       },
-                      {
-                        "group": "Idle balance",
-                        "pages": [
-                          "api-reference/idle-balance"
-                        ]
-                      }
+                      "api-reference/account-balances-idle"
                     ]
                   }
                 ]
