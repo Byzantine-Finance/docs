@@ -205,7 +205,7 @@
                     "pages": [
                       "api-reference/getting-started",
                       "api-reference/api-authentication",
-                      "api-reference/postman-collection",
+                      "api-reference/sandbox",
                       "api-reference/concepts"
                     ]
                   },
