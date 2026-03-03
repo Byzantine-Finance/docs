@@ -12,7 +12,7 @@
     "/v1/health": {
       "get": {
         "tags": [
-          "API health"
+          "API Health"
         ],
         "summary": "Health check endpoint",
         "description": "Returns the health status of the API",
@@ -34,7 +34,7 @@
     "/v1/apy/{vault_id}": {
       "get": {
         "tags": [
-          "Vault data"
+          "Products"
         ],
         "summary": "Get vault APY",
         "description": "Calculate APY for daily, weekly, monthly, and yearly periods with fallback to oldest available data.",
@@ -90,7 +90,7 @@
     "/v1/history/{vault_id}": {
       "get": {
         "tags": [
-          "Vault data"
+          "Products"
         ],
         "summary": "Get vault share price history",
         "description": "Returns hourly aggregated share price data for a vault.",
@@ -190,7 +190,7 @@
     "/v1/top-vaults": {
       "get": {
         "tags": [
-          "Vault data"
+          "Products"
         ],
         "summary": "Get all Byzantine vaults",
         "description": "Returns a list of all Byzantine vaults from configuration. \"Vaults\" are deposit products, the main entities in the Byzantine protocol.",
@@ -215,7 +215,7 @@
     "/v1/query/get-user-details": {
       "get": {
         "tags": [
-          "Account data"
+          "Customer Management"
         ],
         "summary": "Get user details by user id",
         "description": "This endpoint returns comprehensive information about a user including:\n- Basic user information (name, email, address)\n- Verification status\n- Account id(s)",
@@ -256,7 +256,7 @@
     "/v1/query/get-entity-details": {
       "get": {
         "tags": [
-          "Account data"
+          "Customer Management"
         ],
         "summary": "Get entity details by entity ID",
         "description": "This endpoint returns comprehensive information about a business entity including:\n- Basic business information (name, email, addresses)\n- Team members (users who are part of the team)\n- Associated persons (beneficiaries and representatives) with root user status\n- Pending invitations (invitations that are pending acceptance)\n- Account id",
@@ -297,7 +297,7 @@
     "/v1/query/get-account-balances": {
       "get": {
         "tags": [
-          "Account data"
+          "Account Management"
         ],
         "summary": "Get account balances",
         "description": "Fetch all vault positions for a specific account from the indexer.\nReturns balance information including vault details and current price per share.\nIf chain_id is not specified, returns balances for all chains.\nIf include_test_vaults is not specified, defaults to false (excludes test vaults).",
@@ -391,7 +391,7 @@
     "/v1/query/get-bank-accounts": {
       "get": {
         "tags": [
-          "Account data"
+          "Account Management"
         ],
         "summary": "Get all bank accounts",
         "description": "Fetch all associated bank accounts for a specific Byzantine account ID.",
@@ -442,7 +442,7 @@
     "/v1/query/get-transaction": {
       "get": {
         "tags": [
-          "Account data"
+          "Transactions"
         ],
         "summary": "Get a single transaction",
         "operationId": "get_transaction",
@@ -479,7 +479,7 @@
     "/v1/query/get-transactions": {
       "get": {
         "tags": [
-          "Account data"
+          "Transactions"
         ],
         "summary": "Get all transactions for an account",
         "description": "Returns all deposit, withdrawal, and approval transactions with pending or completed status.\nExcludes transactions with \"created\" status.",
@@ -520,7 +520,7 @@
     "/v1/query/get-invitations-by-account-id": {
       "get": {
         "tags": [
-          "Account data"
+          "Account Management"
         ],
         "summary": "Get all invitations for an account",
         "description": "Fetch all invitations associated with a specific Byzantine account ID.\nReturns invitation details including the invited user's name and email, account name, and inviter name.",
@@ -591,7 +591,7 @@
     "/v1/query/get-invitations-by-email": {
       "get": {
         "tags": [
-          "Account data"
+          "Account Management"
         ],
         "summary": "Get all invitations for an email",
         "description": "Fetch all invitations for a specific email address.",
@@ -662,7 +662,7 @@
     "/v1/query/get-activate-account-payload-passkey": {
       "post": {
         "tags": [
-          "Transactions with passkey"
+          "Transactions"
         ],
         "summary": "Get payload to sign to activate an account",
         "description": "Get the authorization to sign to activate the account with EIP 7702 allowing gas sponsorship.",
@@ -743,7 +743,7 @@
     "/v1/query/get-deposit-payload-passkey": {
       "post": {
         "tags": [
-          "Transactions with passkey"
+          "Transactions"
         ],
         "summary": "Get deposit payload",
         "description": "Get the payload to sign in order to make a deposit. Part of the passkey authentication flow.",
@@ -824,7 +824,7 @@
     "/v1/query/get-withdraw-payload-passkey": {
       "post": {
         "tags": [
-          "Transactions with passkey"
+          "Transactions"
         ],
         "summary": "Get withdraw payload",
         "description": "Get the payload to sign in order to make a withdrawal. Part of the passkey authentication flow.",
@@ -905,7 +905,7 @@
     "/v1/submit/sign-payload-passkey": {
       "post": {
         "tags": [
-          "Transactions with passkey"
+          "Transactions"
         ],
         "summary": "Sign a payload (passkey auth)",
         "description": "Sign a payload allowing Byzantine to make, execute and sponsor the transaction.",
@@ -986,7 +986,7 @@
     "/v1/submit/init-otp": {
       "post": {
         "tags": [
-          "User management"
+          "OTP Authentication"
         ],
         "summary": "Initialize OTP for a user (email)",
         "operationId": "init_otp",
@@ -1061,7 +1061,7 @@
     "/v1/submit/otp-auth": {
       "post": {
         "tags": [
-          "User management"
+          "OTP Authentication"
         ],
         "summary": "Authenticate with OTP code and create a session.",
         "description": "Returns a session ID that can be used to submit an authenticated action.",
@@ -1137,7 +1137,7 @@
     "/v1/submit/create-authenticators-otp": {
       "post": {
         "tags": [
-          "User management"
+          "OTP Authentication"
         ],
         "summary": "Create authenticators (passkeys) for a user (OTP auth).",
         "description": "Adds passkeys to a user's account by authenticating with a previously established OTP session.",
@@ -1213,7 +1213,7 @@
     "/v1/query/get-tos-acceptance-link": {
       "post": {
         "tags": [
-          "Account creation"
+          "Customer Management"
         ],
         "summary": "Get Bridge ToS link",
         "operationId": "request_tos_acceptance_link",
@@ -1251,7 +1251,7 @@
     "/v1/submit/create-entity": {
       "post": {
         "tags": [
-          "Account creation"
+          "Customer Management"
         ],
         "summary": "Create a Byzantine entity",
         "operationId": "create_entity",
@@ -1323,7 +1323,7 @@
     "/v1/submit/create-user": {
       "post": {
         "tags": [
-          "Account creation"
+          "Customer Management"
         ],
         "summary": "Create a Byzantine user",
         "operationId": "create_user",
@@ -1395,7 +1395,7 @@
     "/v1/submit/add-bank-account": {
       "post": {
         "tags": [
-          "Account management"
+          "Account Management"
         ],
         "summary": "Add bank account",
         "description": "Add a bank account to withdraw to. At least one bank account must be added before any off-ramp withdrawal can be initated.",
@@ -1471,7 +1471,7 @@
     "/v1/query/get-invite-users-payload-passkey": {
       "post": {
         "tags": [
-          "User management"
+          "Account Management"
         ],
         "summary": "Get invite users payload",
         "description": "Get the payload to sign in order to invite users to an existing account. Part of the passkey authentication flow.",
@@ -1547,7 +1547,7 @@
     "/v1/submit/invite-users": {
       "post": {
         "tags": [
-          "User management"
+          "Account Management"
         ],
         "summary": "Invite users to a Byzantine account (passkey auth)",
         "description": "Send an invitation to users to join a Byzantine account. If the users did not yet do a KYC on Byzantine, an email will ask them to do so.",
@@ -1623,7 +1623,7 @@
     "/v1/query/get-update-users-role-payload-passkey": {
       "post": {
         "tags": [
-          "User management"
+          "Account Management"
         ],
         "summary": "Get update users role payload",
         "description": "Get the payload to sign in order to update users' roles within a Byzantine account. Part of the passkey authentication flow.",
@@ -1699,7 +1699,7 @@
     "/v1/submit/update-users-role": {
       "post": {
         "tags": [
-          "User management"
+          "Account Management"
         ],
         "summary": "Update users' role within a Byzantine account (passkey auth)",
         "description": "Update the roles of users of a Byzantine account. This action must be approved by the current root quorum.",
@@ -5260,32 +5260,28 @@
   },
   "tags": [
     {
-      "name": "Account creation",
-      "description": "Endpoints to create or edit user accounts."
+      "name": "Customer Management",
+      "description": "Endpoints to manage customers and their accounts."
     },
     {
-      "name": "Account management",
+      "name": "Account Management",
       "description": "Endpoints to manage accounts."
     },
     {
-      "name": "User management",
-      "description": "Endpoints to manage user and authenticators."
+      "name": "Transactions",
+      "description": "Endpoints related to transactions."
     },
     {
-      "name": "Account data",
-      "description": "Endpoints to get data about a user, entity, or account."
-    },
-    {
-      "name": "Transactions with passkey",
-      "description": "Endpoints to make transactions with passkey user authentication."
-    },
-    {
-      "name": "Vault data",
+      "name": "Products",
       "description": "Get data about vaults."
     },
     {
-      "name": "API health",
+      "name": "API Health",
       "description": "Check API status."
+    },
+    {
+      "name": "OTP Authentication",
+      "description": "Endpoints to authenticate users with OTP."
     }
   ]
 }
