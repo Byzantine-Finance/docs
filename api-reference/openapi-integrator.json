@@ -14,7 +14,7 @@
         "tags": [
           "API Health"
         ],
-        "summary": "Health check endpoint",
+        "summary": "Health check",
         "description": "Returns the health status of the API",
         "operationId": "health_check",
         "responses": {
@@ -31,12 +31,968 @@
         }
       }
     },
+    "/v1/query/get-user-details": {
+      "get": {
+        "tags": [
+          "Customer Management"
+        ],
+        "summary": "Get details of a single user",
+        "description": "This endpoint returns comprehensive information about a user including:\n- Basic user information (name, email, address)\n- Verification status\n- Account id(s)",
+        "operationId": "get_user_details",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User details retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid user_id"
+          },
+          "404": {
+            "description": "User not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/v1/query/get-entity-details": {
+      "get": {
+        "tags": [
+          "Customer Management"
+        ],
+        "summary": "Get details of a single entity",
+        "description": "This endpoint returns comprehensive information about a business entity including:\n- Basic business information (name, email, addresses)\n- Team members (users who are part of the team)\n- Associated persons (beneficiaries and representatives) with root user status\n- Pending invitations (invitations that are pending acceptance)\n- Account id",
+        "operationId": "get_entity_details",
+        "parameters": [
+          {
+            "name": "entityId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Entity details retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetEntityResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid entity_id"
+          },
+          "404": {
+            "description": "Entity not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/v1/query/get-tos-acceptance-link": {
+      "post": {
+        "tags": [
+          "Customer Management"
+        ],
+        "summary": "⚠️ Pre-step: Get Bridge ToS link",
+        "operationId": "request_tos_acceptance_link",
+        "requestBody": {
+          "description": "Optional redirect URI to append to the hosted ToS acceptance link",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetTosAcceptanceLinkRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Hosted ToS acceptance URL received",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTosAcceptanceLinkResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request payload"
+          },
+          "500": {
+            "description": "Bridge API error"
+          }
+        }
+      }
+    },
+    "/v1/submit/create-user": {
+      "post": {
+        "tags": [
+          "Customer Management"
+        ],
+        "summary": "Create user",
+        "operationId": "create_user",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Byzantine user creation body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "User created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateUserResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request payload"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/submit/create-entity": {
+      "post": {
+        "tags": [
+          "Customer Management"
+        ],
+        "summary": "Create entity",
+        "operationId": "create_entity",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Byzantine entity creation body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateEntityRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Entity created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateEntityResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request payload"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/query/get-account-balances": {
+      "get": {
+        "tags": [
+          "Account Management"
+        ],
+        "summary": "Get single account balances",
+        "description": "Fetch all vault positions for a specific account from the indexer.\nReturns balance information including vault details and current price per share.\nIf chain_id is not specified, returns balances for all chains.\nIf include_test_vaults is not specified, defaults to false (excludes test vaults).",
+        "operationId": "get_account_balances",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "account_id",
+            "in": "query",
+            "description": "The account ID",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            }
+          },
+          {
+            "name": "chain_id",
+            "in": "query",
+            "description": "The chain ID to get balances for (optional, default = all chains)",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "nullable": true
+            }
+          },
+          {
+            "name": "include_test_vaults",
+            "in": "query",
+            "description": "Whether to include test vaults (optional, default = false)",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Account balances retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAccountBalancesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid account ID"
+          },
+          "404": {
+            "description": "Account not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/query/get-bank-accounts": {
+      "get": {
+        "tags": [
+          "Account Management"
+        ],
+        "summary": "List bank accounts",
+        "description": "Fetch all associated bank accounts for a specific Byzantine account ID.",
+        "operationId": "get_bank_accounts",
+        "parameters": [
+          {
+            "name": "account_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            }
+          },
+          {
+            "name": "currency",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/Currency"
+                }
+              ],
+              "nullable": true
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Off-ramp addresses retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetBankAccountsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid account_id"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    },
+    "/v1/submit/add-bank-account": {
+      "post": {
+        "tags": [
+          "Account Management"
+        ],
+        "summary": "Add bank account",
+        "description": "Add a bank account to withdraw to. At least one bank account must be added before any off-ramp withdrawal can be initated.",
+        "operationId": "add_bank_account",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Bank account details to associate with the Byzantine account",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddBankAccountRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Bank account added successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddBankAccountResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request payload"
+          },
+          "401": {
+            "description": "Unauthorized - Account does not belong to integrator"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/query/get-invitations-by-account-id": {
+      "get": {
+        "tags": [
+          "Account Management"
+        ],
+        "summary": "List invitations by account",
+        "description": "Fetch all invitations associated with a specific Byzantine account ID.\nReturns invitation details including the invited user's name and email, account name, and inviter name.",
+        "operationId": "get_invitations_by_account_id",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "account_id",
+            "in": "query",
+            "description": "The account ID to get invitations for",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Invitations retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetInvitationsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid account_id"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/query/get-invitations-by-email": {
+      "get": {
+        "tags": [
+          "Account Management"
+        ],
+        "summary": "List invitations by email",
+        "description": "Fetch all invitations for a specific email address.",
+        "operationId": "get_invitations_by_email",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "description": "The email to get invitations for",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Invitations retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetInvitationsResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - Invalid email"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/query/get-invite-users-payload-passkey": {
+      "post": {
+        "tags": [
+          "Account Management"
+        ],
+        "summary": "Step 1 – Get invite users payload (passkey)",
+        "description": "Get the payload to sign in order to invite users to an existing account. Part of the passkey authentication flow.",
+        "operationId": "get_invite_users_payload_passkey",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Body to invite new users to an existing account",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InviteUsersRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Payload to sign created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InviteUsersRequestResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request payload"
+          },
+          "401": {
+            "description": "Unauthorized - Account does not belong to integrator"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/submit/invite-users": {
+      "post": {
+        "tags": [
+          "Account Management"
+        ],
+        "summary": "Step 2 – Send invitations (passkey)",
+        "description": "Send an invitation to users to join a Byzantine account. If the users did not yet do a KYC on Byzantine, an email will ask them to do so.",
+        "operationId": "invite_users",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Body to invite new users to an existing account",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InviteUsersRequestBodyPasskey"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Users invited successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InviteUsersResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request payload"
+          },
+          "401": {
+            "description": "Unauthorized - Account does not belong to integrator"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/query/get-update-users-role-payload-passkey": {
+      "post": {
+        "tags": [
+          "Account Management"
+        ],
+        "summary": "Step 1 – Get update role payload (passkey)",
+        "description": "Get the payload to sign in order to update users' roles within a Byzantine account. Part of the passkey authentication flow.",
+        "operationId": "get_update_users_role_payload_passkey",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Body to update users' roles within a Byzantine account",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUsersRoleRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Payload to sign created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateUsersRoleRequestResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request payload"
+          },
+          "401": {
+            "description": "Unauthorized - Account does not belong to integrator"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/submit/update-users-role": {
+      "post": {
+        "tags": [
+          "Account Management"
+        ],
+        "summary": "Step 2 – Update users role (passkey)",
+        "description": "Update the roles of users of a Byzantine account. This action must be approved by the current root quorum.",
+        "operationId": "update_users_role",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Body to update the root quorum of a Byzantine account",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUsersRoleRequestBodyPasskey"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Users' roles updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateUsersRoleResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request payload"
+          },
+          "401": {
+            "description": "Unauthorized - Account does not belong to integrator or user is not a root user"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/top-vaults": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "summary": "List all products",
+        "description": "Returns a list of all Byzantine vaults from configuration. \"Vaults\" are deposit products, the main entities in the Byzantine protocol.",
+        "operationId": "get_top_vaults",
+        "responses": {
+          "200": {
+            "description": "List of top vaults retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TopVault"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/apy/{vault_id}": {
       "get": {
         "tags": [
           "Products"
         ],
-        "summary": "Get vault APY",
+        "summary": "Get single product APY",
         "description": "Calculate APY for daily, weekly, monthly, and yearly periods with fallback to oldest available data.",
         "operationId": "get_vault_apy",
         "parameters": [
@@ -92,7 +1048,7 @@
         "tags": [
           "Products"
         ],
-        "summary": "Get vault share price history",
+        "summary": "Get single vault history",
         "description": "Returns hourly aggregated share price data for a vault.",
         "operationId": "get_vault_history",
         "parameters": [
@@ -187,301 +1143,12 @@
         }
       }
     },
-    "/v1/top-vaults": {
-      "get": {
-        "tags": [
-          "Products"
-        ],
-        "summary": "Get all Byzantine vaults",
-        "description": "Returns a list of all Byzantine vaults from configuration. \"Vaults\" are deposit products, the main entities in the Byzantine protocol.",
-        "operationId": "get_top_vaults",
-        "responses": {
-          "200": {
-            "description": "List of top vaults retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TopVault"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/query/get-user-details": {
-      "get": {
-        "tags": [
-          "Customer Management"
-        ],
-        "summary": "Get user details by user id",
-        "description": "This endpoint returns comprehensive information about a user including:\n- Basic user information (name, email, address)\n- Verification status\n- Account id(s)",
-        "operationId": "get_user_details",
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/Uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "User details retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetUserResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request - Invalid user_id"
-          },
-          "404": {
-            "description": "User not found"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      }
-    },
-    "/v1/query/get-entity-details": {
-      "get": {
-        "tags": [
-          "Customer Management"
-        ],
-        "summary": "Get entity details by entity ID",
-        "description": "This endpoint returns comprehensive information about a business entity including:\n- Basic business information (name, email, addresses)\n- Team members (users who are part of the team)\n- Associated persons (beneficiaries and representatives) with root user status\n- Pending invitations (invitations that are pending acceptance)\n- Account id",
-        "operationId": "get_entity_details",
-        "parameters": [
-          {
-            "name": "entityId",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/Uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Entity details retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetEntityResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request - Invalid entity_id"
-          },
-          "404": {
-            "description": "Entity not found"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      }
-    },
-    "/v1/query/get-account-balances": {
-      "get": {
-        "tags": [
-          "Account Management"
-        ],
-        "summary": "Get account balances",
-        "description": "Fetch all vault positions for a specific account from the indexer.\nReturns balance information including vault details and current price per share.\nIf chain_id is not specified, returns balances for all chains.\nIf include_test_vaults is not specified, defaults to false (excludes test vaults).",
-        "operationId": "get_account_balances",
-        "parameters": [
-          {
-            "name": "X-Pubkey",
-            "in": "header",
-            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "account_id",
-            "in": "query",
-            "description": "The account ID",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/Uuid"
-            }
-          },
-          {
-            "name": "chain_id",
-            "in": "query",
-            "description": "The chain ID to get balances for (optional, default = all chains)",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "nullable": true
-            }
-          },
-          {
-            "name": "include_test_vaults",
-            "in": "query",
-            "description": "Whether to include test vaults (optional, default = false)",
-            "required": false,
-            "schema": {
-              "type": "boolean"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Account balances retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetAccountBalancesResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request - Invalid account ID"
-          },
-          "404": {
-            "description": "Account not found"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        },
-        "security": [
-          {
-            "integrator_auth": []
-          }
-        ]
-      }
-    },
-    "/v1/query/get-bank-accounts": {
-      "get": {
-        "tags": [
-          "Account Management"
-        ],
-        "summary": "Get all bank accounts",
-        "description": "Fetch all associated bank accounts for a specific Byzantine account ID.",
-        "operationId": "get_bank_accounts",
-        "parameters": [
-          {
-            "name": "account_id",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/Uuid"
-            }
-          },
-          {
-            "name": "currency",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "allOf": [
-                {
-                  "$ref": "#/components/schemas/Currency"
-                }
-              ],
-              "nullable": true
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Off-ramp addresses retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetBankAccountsResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request - Invalid account_id"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      }
-    },
-    "/v1/query/get-transaction": {
-      "get": {
-        "tags": [
-          "Transactions"
-        ],
-        "summary": "Get a single transaction",
-        "operationId": "get_transaction",
-        "parameters": [
-          {
-            "name": "transaction_id",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "$ref": "#/components/schemas/Uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Transaction retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetTransactionResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Transaction not found"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      }
-    },
     "/v1/query/get-transactions": {
       "get": {
         "tags": [
           "Transactions"
         ],
-        "summary": "Get all transactions for an account",
+        "summary": "List all transactions",
         "description": "Returns all deposit, withdrawal, and approval transactions with pending or completed status.\nExcludes transactions with \"created\" status.",
         "operationId": "get_transactions",
         "parameters": [
@@ -517,46 +1184,17 @@
         }
       }
     },
-    "/v1/query/get-invitations-by-account-id": {
+    "/v1/query/get-transaction": {
       "get": {
         "tags": [
-          "Account Management"
+          "Transactions"
         ],
-        "summary": "Get all invitations for an account",
-        "description": "Fetch all invitations associated with a specific Byzantine account ID.\nReturns invitation details including the invited user's name and email, account name, and inviter name.",
-        "operationId": "get_invitations_by_account_id",
+        "summary": "Get single transaction",
+        "operationId": "get_transaction",
         "parameters": [
           {
-            "name": "X-Pubkey",
-            "in": "header",
-            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "account_id",
+            "name": "transaction_id",
             "in": "query",
-            "description": "The account ID to get invitations for",
             "required": true,
             "schema": {
               "$ref": "#/components/schemas/Uuid"
@@ -565,98 +1203,22 @@
         ],
         "responses": {
           "200": {
-            "description": "Invitations retrieved successfully",
+            "description": "Transaction retrieved successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/GetInvitationsResponse"
+                  "$ref": "#/components/schemas/GetTransactionResponse"
                 }
               }
             }
           },
-          "400": {
-            "description": "Bad request - Invalid account_id"
+          "404": {
+            "description": "Transaction not found"
           },
           "500": {
             "description": "Internal server error"
           }
-        },
-        "security": [
-          {
-            "integrator_auth": []
-          }
-        ]
-      }
-    },
-    "/v1/query/get-invitations-by-email": {
-      "get": {
-        "tags": [
-          "Account Management"
-        ],
-        "summary": "Get all invitations for an email",
-        "description": "Fetch all invitations for a specific email address.",
-        "operationId": "get_invitations_by_email",
-        "parameters": [
-          {
-            "name": "X-Pubkey",
-            "in": "header",
-            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "email",
-            "in": "query",
-            "description": "The email to get invitations for",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Invitations retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetInvitationsResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request - Invalid email"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        },
-        "security": [
-          {
-            "integrator_auth": []
-          }
-        ]
+        }
       }
     },
     "/v1/query/get-activate-account-payload-passkey": {
@@ -664,7 +1226,7 @@
         "tags": [
           "Transactions"
         ],
-        "summary": "Get payload to sign to activate an account",
+        "summary": "Get activate account payload",
         "description": "Get the authorization to sign to activate the account with EIP 7702 allowing gas sponsorship.",
         "operationId": "get_authorization_payload_passkey",
         "parameters": [
@@ -907,7 +1469,7 @@
         "tags": [
           "Transactions"
         ],
-        "summary": "Sign a payload (passkey auth)",
+        "summary": "Sign payload",
         "description": "Sign a payload allowing Byzantine to make, execute and sponsor the transaction.",
         "operationId": "sign_payload_passkey",
         "parameters": [
@@ -988,7 +1550,7 @@
         "tags": [
           "OTP Authentication"
         ],
-        "summary": "Initialize OTP for a user (email)",
+        "summary": "Step 1 – Initialize OTP (send email)",
         "operationId": "init_otp",
         "parameters": [
           {
@@ -1063,7 +1625,7 @@
         "tags": [
           "OTP Authentication"
         ],
-        "summary": "Authenticate with OTP code and create a session.",
+        "summary": "Step 2 – Authenticate with OTP code",
         "description": "Returns a session ID that can be used to submit an authenticated action.",
         "operationId": "otp_auth",
         "parameters": [
@@ -1139,7 +1701,7 @@
         "tags": [
           "OTP Authentication"
         ],
-        "summary": "Create authenticators (passkeys) for a user (OTP auth).",
+        "summary": "Step 3 – Create passkeys (OTP auth)",
         "description": "Adds passkeys to a user's account by authenticating with a previously established OTP session.",
         "operationId": "create_authenticators_otp",
         "parameters": [
@@ -1198,568 +1760,6 @@
           },
           "404": {
             "description": "Account, user, or session not found"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        },
-        "security": [
-          {
-            "integrator_auth": []
-          }
-        ]
-      }
-    },
-    "/v1/query/get-tos-acceptance-link": {
-      "post": {
-        "tags": [
-          "Customer Management"
-        ],
-        "summary": "Get Bridge ToS link",
-        "operationId": "request_tos_acceptance_link",
-        "requestBody": {
-          "description": "Optional redirect URI to append to the hosted ToS acceptance link",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetTosAcceptanceLinkRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Hosted ToS acceptance URL received",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetTosAcceptanceLinkResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request payload"
-          },
-          "500": {
-            "description": "Bridge API error"
-          }
-        }
-      }
-    },
-    "/v1/submit/create-entity": {
-      "post": {
-        "tags": [
-          "Customer Management"
-        ],
-        "summary": "Create a Byzantine entity",
-        "operationId": "create_entity",
-        "parameters": [
-          {
-            "name": "X-Pubkey",
-            "in": "header",
-            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Byzantine entity creation body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateEntityRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Entity created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreateEntityResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request payload"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        },
-        "security": [
-          {
-            "integrator_auth": []
-          }
-        ]
-      }
-    },
-    "/v1/submit/create-user": {
-      "post": {
-        "tags": [
-          "Customer Management"
-        ],
-        "summary": "Create a Byzantine user",
-        "operationId": "create_user",
-        "parameters": [
-          {
-            "name": "X-Pubkey",
-            "in": "header",
-            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Byzantine user creation body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateUserRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "User created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreateUserResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request payload"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        },
-        "security": [
-          {
-            "integrator_auth": []
-          }
-        ]
-      }
-    },
-    "/v1/submit/add-bank-account": {
-      "post": {
-        "tags": [
-          "Account Management"
-        ],
-        "summary": "Add bank account",
-        "description": "Add a bank account to withdraw to. At least one bank account must be added before any off-ramp withdrawal can be initated.",
-        "operationId": "add_bank_account",
-        "parameters": [
-          {
-            "name": "X-Pubkey",
-            "in": "header",
-            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Bank account details to associate with the Byzantine account",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddBankAccountRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Bank account added successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AddBankAccountResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request payload"
-          },
-          "401": {
-            "description": "Unauthorized - Account does not belong to integrator"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        },
-        "security": [
-          {
-            "integrator_auth": []
-          }
-        ]
-      }
-    },
-    "/v1/query/get-invite-users-payload-passkey": {
-      "post": {
-        "tags": [
-          "Account Management"
-        ],
-        "summary": "Get invite users payload",
-        "description": "Get the payload to sign in order to invite users to an existing account. Part of the passkey authentication flow.",
-        "operationId": "get_invite_users_payload_passkey",
-        "parameters": [
-          {
-            "name": "X-Pubkey",
-            "in": "header",
-            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Body to invite new users to an existing account",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/InviteUsersRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Payload to sign created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InviteUsersRequestResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request payload"
-          },
-          "401": {
-            "description": "Unauthorized - Account does not belong to integrator"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        },
-        "security": [
-          {
-            "integrator_auth": []
-          }
-        ]
-      }
-    },
-    "/v1/submit/invite-users": {
-      "post": {
-        "tags": [
-          "Account Management"
-        ],
-        "summary": "Invite users to a Byzantine account (passkey auth)",
-        "description": "Send an invitation to users to join a Byzantine account. If the users did not yet do a KYC on Byzantine, an email will ask them to do so.",
-        "operationId": "invite_users",
-        "parameters": [
-          {
-            "name": "X-Pubkey",
-            "in": "header",
-            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Body to invite new users to an existing account",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/InviteUsersRequestBodyPasskey"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Users invited successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InviteUsersResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request payload"
-          },
-          "401": {
-            "description": "Unauthorized - Account does not belong to integrator"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        },
-        "security": [
-          {
-            "integrator_auth": []
-          }
-        ]
-      }
-    },
-    "/v1/query/get-update-users-role-payload-passkey": {
-      "post": {
-        "tags": [
-          "Account Management"
-        ],
-        "summary": "Get update users role payload",
-        "description": "Get the payload to sign in order to update users' roles within a Byzantine account. Part of the passkey authentication flow.",
-        "operationId": "get_update_users_role_payload_passkey",
-        "parameters": [
-          {
-            "name": "X-Pubkey",
-            "in": "header",
-            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Body to update users' roles within a Byzantine account",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateUsersRoleRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Payload to sign created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UpdateUsersRoleRequestResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request payload"
-          },
-          "401": {
-            "description": "Unauthorized - Account does not belong to integrator"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        },
-        "security": [
-          {
-            "integrator_auth": []
-          }
-        ]
-      }
-    },
-    "/v1/submit/update-users-role": {
-      "post": {
-        "tags": [
-          "Account Management"
-        ],
-        "summary": "Update users' role within a Byzantine account (passkey auth)",
-        "description": "Update the roles of users of a Byzantine account. This action must be approved by the current root quorum.",
-        "operationId": "update_users_role",
-        "parameters": [
-          {
-            "name": "X-Pubkey",
-            "in": "header",
-            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Body to update the root quorum of a Byzantine account",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateUsersRoleRequestBodyPasskey"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Users' roles updated successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UpdateUsersRoleResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request payload"
-          },
-          "401": {
-            "description": "Unauthorized - Account does not belong to integrator or user is not a root user"
           },
           "500": {
             "description": "Internal server error"
@@ -5260,6 +5260,10 @@
   },
   "tags": [
     {
+      "name": "API Health",
+      "description": "Check API status."
+    },
+    {
       "name": "Customer Management",
       "description": "Endpoints to manage customers and their accounts."
     },
@@ -5268,16 +5272,12 @@
       "description": "Endpoints to manage accounts."
     },
     {
-      "name": "Transactions",
-      "description": "Endpoints related to transactions."
-    },
-    {
       "name": "Products",
       "description": "Get data about vaults."
     },
     {
-      "name": "API Health",
-      "description": "Check API status."
+      "name": "Transactions",
+      "description": "Endpoints related to transactions."
     },
     {
       "name": "OTP Authentication",

@@ -267,7 +267,94 @@
                 "group": "API endpoints",
                 "openapi": "api-reference/openapi-integrator.json",
                 "pages": [
-                  "api-reference/endpoints-overview"
+                  "api-reference/endpoints-overview",
+                  {
+                    "group": "API Health",
+                    "pages": [
+                      "GET /v1/health"
+                    ]
+                  },
+                  {
+                    "group": "Customer Management",
+                    "pages": [
+                      "GET /v1/query/get-user-details",
+                      "GET /v1/query/get-entity-details",
+                      {
+                        "group": "Customer Creation",
+                        "pages": [
+                          "POST /v1/query/get-tos-acceptance-link",
+                          "POST /v1/submit/create-user",
+                          "POST /v1/submit/create-entity"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "group": "Account Management",
+                    "pages": [
+                      "GET /v1/query/get-account-balances",
+                      {
+                        "group": "Bank Accounts",
+                        "pages": [
+                          "GET /v1/query/get-bank-accounts",
+                          "POST /v1/submit/add-bank-account"
+                        ]
+                      },
+                      {
+                        "group": "Multi-users account",
+                        "pages": [
+                          "GET /v1/query/get-invitations-by-account-id",
+                          "GET /v1/query/get-invitations-by-email",
+                          {
+                            "group": "Add team member",
+                            "pages": [
+                              "POST /v1/query/get-invite-users-payload-passkey",
+                              "POST /v1/submit/invite-users"
+                            ]
+                          },
+                          {
+                            "group": "User Roles",
+                            "pages": [
+                              "POST /v1/query/get-update-users-role-payload-passkey",
+                              "POST /v1/submit/update-users-role"
+                            ]
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "group": "Products",
+                    "pages": [
+                      "GET /v1/top-vaults",
+                      "GET /v1/apy/{vault_id}",
+                      "GET /v1/history/{vault_id}"
+                    ]
+                  },
+                  {
+                    "group": "Transactions",
+                    "pages": [
+                      "GET /v1/query/get-transactions",
+                      "GET /v1/query/get-transaction",
+                      {
+                        "group": "Passkey flow",
+                        "pages": [
+                          "POST /v1/query/get-activate-account-payload-passkey",
+                          "POST /v1/query/get-deposit-payload-passkey",
+                          "POST /v1/query/get-withdraw-payload-passkey",
+                          "POST /v1/submit/sign-payload-passkey"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "group": "OTP Authentication",
+                    "pages": [
+                      "POST /v1/submit/init-otp",
+                      "POST /v1/submit/otp-auth",
+                      "POST /v1/submit/create-authenticators-otp"
+                    ]
+                  }
                 ]
               }
             ]
