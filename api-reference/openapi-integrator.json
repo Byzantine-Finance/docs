@@ -12,7 +12,7 @@
     "/v1/health": {
       "get": {
         "tags": [
-          "API Health"
+          "API health"
         ],
         "summary": "Health check",
         "description": "Returns the health status of the API",
@@ -34,7 +34,7 @@
     "/v1/query/get-user-details": {
       "get": {
         "tags": [
-          "Customer Management"
+          "Customer management"
         ],
         "summary": "Get details of a single user",
         "description": "This endpoint returns comprehensive information about a user including:\n- Basic user information (name, email, address)\n- Verification status\n- Account id(s)",
@@ -75,7 +75,7 @@
     "/v1/query/get-entity-details": {
       "get": {
         "tags": [
-          "Customer Management"
+          "Customer management"
         ],
         "summary": "Get details of a single entity",
         "description": "This endpoint returns comprehensive information about a business entity including:\n- Basic business information (name, email, addresses)\n- Team members (users who are part of the team)\n- Associated persons (beneficiaries and representatives) with root user status\n- Pending invitations (invitations that are pending acceptance)\n- Account id",
@@ -116,7 +116,7 @@
     "/v1/query/get-tos-acceptance-link": {
       "post": {
         "tags": [
-          "Customer Management"
+          "Customer management"
         ],
         "summary": "⚠️ Pre-step: Get Bridge ToS link",
         "operationId": "request_tos_acceptance_link",
@@ -154,7 +154,7 @@
     "/v1/submit/create-user": {
       "post": {
         "tags": [
-          "Customer Management"
+          "Customer management"
         ],
         "summary": "Create user",
         "operationId": "create_user",
@@ -226,7 +226,7 @@
     "/v1/submit/create-entity": {
       "post": {
         "tags": [
-          "Customer Management"
+          "Customer management"
         ],
         "summary": "Create entity",
         "operationId": "create_entity",
@@ -298,7 +298,7 @@
     "/v1/query/get-account-balances": {
       "get": {
         "tags": [
-          "Account Management"
+          "Account management"
         ],
         "summary": "Get single account balances",
         "description": "Fetch all vault positions for a specific account from the indexer.\nReturns balance information including vault details and current price per share.\nIf chain_id is not specified, returns balances for all chains.\nIf include_test_vaults is not specified, defaults to false (excludes test vaults).",
@@ -392,7 +392,7 @@
     "/v1/query/get-bank-accounts": {
       "get": {
         "tags": [
-          "Account Management"
+          "Account management"
         ],
         "summary": "List bank accounts",
         "description": "Fetch all associated bank accounts for a specific Byzantine account ID.",
@@ -443,7 +443,7 @@
     "/v1/submit/add-bank-account": {
       "post": {
         "tags": [
-          "Account Management"
+          "Account management"
         ],
         "summary": "Add bank account",
         "description": "Add a bank account to withdraw to. At least one bank account must be added before any off-ramp withdrawal can be initated.",
@@ -519,7 +519,7 @@
     "/v1/query/get-invitations-by-account-id": {
       "get": {
         "tags": [
-          "Account Management"
+          "Account management"
         ],
         "summary": "List invitations by account",
         "description": "Fetch all invitations associated with a specific Byzantine account ID.\nReturns invitation details including the invited user's name and email, account name, and inviter name.",
@@ -590,7 +590,7 @@
     "/v1/query/get-invitations-by-email": {
       "get": {
         "tags": [
-          "Account Management"
+          "Account management"
         ],
         "summary": "List invitations by email",
         "description": "Fetch all invitations for a specific email address.",
@@ -661,7 +661,7 @@
     "/v1/query/get-invite-users-payload-passkey": {
       "post": {
         "tags": [
-          "Account Management"
+          "Account management"
         ],
         "summary": "Step 1 – Get invite users payload (passkey)",
         "description": "Get the payload to sign in order to invite users to an existing account. Part of the passkey authentication flow.",
@@ -737,7 +737,7 @@
     "/v1/submit/invite-users": {
       "post": {
         "tags": [
-          "Account Management"
+          "Account management"
         ],
         "summary": "Step 2 – Send invitations (passkey)",
         "description": "Send an invitation to users to join a Byzantine account. If the users did not yet do a KYC on Byzantine, an email will ask them to do so.",
@@ -813,7 +813,7 @@
     "/v1/query/get-update-users-role-payload-passkey": {
       "post": {
         "tags": [
-          "Account Management"
+          "Account management"
         ],
         "summary": "Step 1 – Get update role payload (passkey)",
         "description": "Get the payload to sign in order to update users' roles within a Byzantine account. Part of the passkey authentication flow.",
@@ -889,7 +889,7 @@
     "/v1/submit/update-users-role": {
       "post": {
         "tags": [
-          "Account Management"
+          "Account management"
         ],
         "summary": "Step 2 – Update users role (passkey)",
         "description": "Update the roles of users of a Byzantine account. This action must be approved by the current root quorum.",
@@ -1548,7 +1548,7 @@
     "/v1/submit/init-otp": {
       "post": {
         "tags": [
-          "OTP Authentication"
+          "OTP authentication"
         ],
         "summary": "Step 1 – Initialize OTP (send email)",
         "operationId": "init_otp",
@@ -1623,7 +1623,7 @@
     "/v1/submit/otp-auth": {
       "post": {
         "tags": [
-          "OTP Authentication"
+          "OTP authentication"
         ],
         "summary": "Step 2 – Authenticate with OTP code",
         "description": "Returns a session ID that can be used to submit an authenticated action.",
@@ -1699,7 +1699,7 @@
     "/v1/submit/create-authenticators-otp": {
       "post": {
         "tags": [
-          "OTP Authentication"
+          "OTP authentication"
         ],
         "summary": "Step 3 – Create passkeys (OTP auth)",
         "description": "Adds passkeys to a user's account by authenticating with a previously established OTP session.",
@@ -5260,15 +5260,15 @@
   },
   "tags": [
     {
-      "name": "API Health",
+      "name": "API health",
       "description": "Check API status."
     },
     {
-      "name": "Customer Management",
+      "name": "Customer management",
       "description": "Endpoints to manage customers and their accounts."
     },
     {
-      "name": "Account Management",
+      "name": "Account management",
       "description": "Endpoints to manage accounts."
     },
     {
@@ -5280,7 +5280,7 @@
       "description": "Endpoints related to transactions."
     },
     {
-      "name": "OTP Authentication",
+      "name": "OTP authentication",
       "description": "Endpoints to authenticate users with OTP."
     }
   ]

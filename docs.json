@@ -269,18 +269,18 @@
                 "pages": [
                   "api-reference/endpoints-overview",
                   {
-                    "group": "API Health",
+                    "group": "API health",
                     "pages": [
                       "GET /v1/health"
                     ]
                   },
                   {
-                    "group": "Customer Management",
+                    "group": "Customer management",
                     "pages": [
                       "GET /v1/query/get-user-details",
                       "GET /v1/query/get-entity-details",
                       {
-                        "group": "Customer Creation",
+                        "group": "Customer creation",
                         "pages": [
                           "POST /v1/query/get-tos-acceptance-link",
                           "POST /v1/submit/create-user",
@@ -290,11 +290,11 @@
                     ]
                   },
                   {
-                    "group": "Account Management",
+                    "group": "Account management",
                     "pages": [
                       "GET /v1/query/get-account-balances",
                       {
-                        "group": "Bank Accounts",
+                        "group": "Bank accounts",
                         "pages": [
                           "GET /v1/query/get-bank-accounts",
                           "POST /v1/submit/add-bank-account"
@@ -313,7 +313,7 @@
                             ]
                           },
                           {
-                            "group": "User Roles",
+                            "group": "User roles",
                             "pages": [
                               "POST /v1/query/get-update-users-role-payload-passkey",
                               "POST /v1/submit/update-users-role"
@@ -348,7 +348,7 @@
                     ]
                   },
                   {
-                    "group": "OTP Authentication",
+                    "group": "OTP authentication",
                     "pages": [
                       "POST /v1/submit/init-otp",
                       "POST /v1/submit/otp-auth",
