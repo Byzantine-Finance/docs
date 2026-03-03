@@ -1,0 +1,72 @@
+---
+title: "Byzantine SDK"
+description: "Official TypeScript SDK for integrator API authentication, WebAuthn, and API method wrappers."
+icon: "code"
+---
+
+The **Byzantine Integrator SDK** (`@byzantine/integrator-sdk`) is the official client library for integrating with the Byzantine API. It handles authentication, WebAuthn (passkeys), and provides typed wrappers for API operations so you can focus on your product logic instead of low-level HTTP and crypto.
+
+## What the SDK provides
+
+| Capability | Description |
+| ---------- | ----------- |
+| **Integrator API authentication** | ECDSA request signing and header generation (`X-Pubkey`, `X-Timestamp`, `X-Signature`) so you can call the API without implementing the signature scheme yourself. |
+| **WebAuthn (passkey) support** | Create and use passkeys for end-user authentication: passkey creation, credential storage, and transaction signing flows. |
+| **API method wrappers** | Typed methods that map to Byzantine API endpoints, keeping request/response shapes consistent. |
+
+## Installation
+
+```bash
+npm install @byzantine/integrator-sdk
+```
+
+<Card
+  title="Package on npm"
+  icon="box"
+  horizontal
+  href="https://www.npmjs.com/package/@byzantine/integrator-sdk"
+></Card>
+
+## Quick start
+
+Initialize the client with your **Integrator Private Key** (from the Byzantine team). The same client can be used for both API-key–signed requests and, when configured, WebAuthn flows.
+
+```typescript
+import { ByzantineClient } from '@byzantine/integrator-sdk';
+
+const client = new ByzantineClient({
+  integratorPrivateKey: process.env.INTEGRATOR_PRIVATE_KEY!,
+});
+```
+
+See [API authentication](/api-reference/api-authentication) for full details and examples.
+
+## Integrator API authentication
+
+The SDK generates the authentication headers required for every API request:
+
+- **`getStamp(method, pathAndQuery, body)`** — Returns an object with `X-Pubkey`, `X-Timestamp`, `X-Signature`, and `Content-Type` that you pass as request headers.
+
+Use this for all calls to the Byzantine API (sandbox or production). Full specification and manual implementation details are in [API authentication](/api-reference/api-authentication).
+
+## WebAuthn (passkey) authentication
+
+For end-user–owned wallets and transaction approval, the SDK supports WebAuthn:
+
+- **Passkey creation** — Register passkeys for users and attach them to Byzantine accounts during [account creation](/api-reference/authentication-methods).
+- **Transaction signing** — Get WebAuthn signatures for transaction payloads via the SDK so users approve with their passkey instead of a shared secret.
+
+Configuration (e.g. `rpId`, `rpName`, timeouts) and flows for discoverable vs non-discoverable credentials are documented in [Authentication methods](/api-reference/authentication-methods).
+
+## API method wrappers
+
+Beyond raw request signing, the SDK exposes methods that wrap Byzantine API endpoints. Use these for a consistent, typed interface to vault data, accounts, deposits, withdrawals, and user management without building request URLs and bodies by hand. Refer to the [OpenAPI specification](/api-reference/openapi-integrator) and the SDK’s exported types for the full list of supported operations.
+
+## Next steps
+
+- [API authentication](/api-reference/api-authentication) — Header format, signature scheme, and manual implementation.
+- [Authentication methods](/api-reference/authentication-methods) — Passkey creation and WebAuthn transaction flows.
+- [Sandbox](/api-reference/sandbox) — Test your integration against the sandbox environment.
+- [OpenAPI specification](openapi-integrator.json) — Full API surface for code generation and reference.
+
+<Warning>**Keep your Integrator Private Key secure.** </Warning>
