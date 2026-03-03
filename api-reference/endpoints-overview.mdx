@@ -8,40 +8,35 @@ Byzantine has built an API to simplify the integration of our platform into your
   Download the [OpenAPI specification](openapi-integrator.json) to view the full API endpoints.
 </Info>
 
-## Account creation
-
-- Create and manage entities and users, including KYC/KYB payloads and supporting documents.
-- Complete the account creation process to enable on-ramping and off-ramping.
-- Obtain the Bridge ToS acceptance link before creating accounts.
-
-## Transactions with passkey
-
-- `Get activate/deposit/withdraw body` endpoints return unsigned transactions for passkey-based flows.
-- `Send transaction` broadcasts a signed payload after collecting the user's WebAuthn signature.
-
-## Account management
-
-- Manage existing accounts: add bank accounts and other features are coming soon.
-
-## User management
-
-- Manage users by inviting them, updating their roles, and managing their authenticators (passkeys).
-- Initialize OTP for a user and authenticate with OTP to create a session for authenticated actions.
-
-## Vault data
-
-- Discover active vaults and their performance using `Top vaults`, `Vault APY`, and `History` endpoints.
-
-## Account data
-
-- Retrieve vault activity for a single user: deposits, withdrawals, and aggregate positions.
-- Check transaction statuses and historical activity after deposits/withdrawals are initiated.
-- Use these endpoints to confirm when funds finish on-ramping or when a withdrawal settles.
-
-## API health
+## API Health
 
 - `GET /v1/health` returns the service status.
 
+## Customer Management
+
+- Retrieve details of a single user or entity.
+- Create customers (user or entity) after obtaining the Bridge ToS acceptance link.
+
+## Account Management
+
+- List bank accounts and account balances.
+- Add bank accounts.
+- Manage invitations: list, create, and send invitations to users.
+- Manage user roles within accounts.
+
+## Products
+
+- Discover active products and their performance using the list, APY, and history endpoints.
+
+## Transactions
+
+- List and retrieve transaction details.
+- **Passkey flow**: get unsigned payloads for account activation, deposits, and withdrawals, then sign and submit them.
+
+## OTP Authentication
+
+- Initialize OTP for a user, authenticate with OTP code, and create passkeys via OTP session.
+
 ---
 
-Select any endpoint category below to view request/response schemas generated from the OpenAPI file.
+Select any endpoint category in the sidebar to view request/response schemas.
