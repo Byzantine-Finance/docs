@@ -5,26 +5,22 @@ title: "Legal entities - KYB"
 Creating an account for an entity means submitting company information and company documents for KYB, as well as beneficiaries and details about them for KYC. This is a regulatory obligation.
 
 <Info>
-  Before creating the entity account, the user must accept the required terms.
-  See [Terms and Conditions](/api-reference/terms-and-conditions).
+  Before creating the entity account, the user must accept the required terms. See [Terms and Conditions](/api-reference/terms-and-conditions).
 </Info>
 
 ### 1. Create the entity account
 
 The creation of the entity account is done by calling this API endpoint:
 
-<Card
-  title="Create an entity"
-  icon="plus"
-  horizontal
-  href="/api-reference/user-accounts/create-a-byzantine-entity"
-></Card>
+<Card icon="plus" horizontal href="/api-reference/user-accounts/create-a-byzantine-entity" title="Create an entity">
+  
+</Card>
 
 The following information needs to be provided:
 
 - Company details
 - Personal data about every ultimate beneficial owner (UBO)/representative of the company
-- Company documents
+- Company documents. See the list of required documents
 - (Optional) A list of `authenticators` to register a beneficiary's passkey to their device
 
 The entity will receive an `account_id` and an `entity_id`. Every beneficiary/representative of the entity will have a `user_id`.
@@ -32,8 +28,7 @@ The entity will receive an `account_id` and an `entity_id`. Every beneficiary/re
 <Info>
   When creating an entity, the user creating it **must** add themselves as one of the beneficiaries/representatives.
 
-Please refer to the related endpoint page for more details about the requirements.
-
+  Please refer to the related endpoint page for more details about the requirements.
 </Info>
 
 ### 2. KYB verification
@@ -42,4 +37,6 @@ Byzantine and Bridge will verify the entity's existence, ownership structure, an
 
 Throughout the KYB process, the root user receives email notifications at every stage with updates on their status.
 
-<Info>This process usually takes 24-48 hours.</Info>
+<Info>
+  This process usually takes 24-48 hours.
+</Info>
