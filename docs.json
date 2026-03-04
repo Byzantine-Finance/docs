@@ -218,7 +218,7 @@
                       "api-reference/terms-and-conditions",
                       "api-reference/kyc",
                       "api-reference/kyb",
-                      "api-reference/documents",
+                      "api-reference/accepted-documents",
                       "api-reference/verification-statuses",
                       {
                         "group": "Lists",

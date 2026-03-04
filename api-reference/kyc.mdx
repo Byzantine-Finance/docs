@@ -12,16 +12,16 @@ In order to use the Byzantine Prime application, an individual user needs to go 
 
 The creation of the user account is done by calling this API endpoint:
 
-<Card title="Create a user account" icon="arrow-right" horizontal href="/api-reference/account-creation/create-a-byzantine-user">
+<Card icon="arrow-right" horizontal href="/api-reference/account-creation/create-a-byzantine-user" title="Create a user account">
   
 </Card>
 
 The following information needs to be provided:
 
-- personal data about the user
-- ID documents (passport or national ID card)
-- proof of address
-- optional - it is possible to add a list of `authenticators` to register user's passkey to their device
+- Personal data about the user
+- ID documents (passport or national ID card). See the [list of accepted documents](/api-reference/accepted-documents)
+- Proof of address. See the [list of accepted documents](/api-reference/accepted-documents)
+- Optional - it is possible to add a list of `authenticators` to register user's passkey to their device
 
 The individual user will receive an `account_id` and a `user_id`.
 
