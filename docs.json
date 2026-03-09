@@ -277,6 +277,7 @@
                   {
                     "group": "Customer management",
                     "pages": [
+                      "GET /v1/query/get-customers",
                       "GET /v1/query/get-user-details",
                       "GET /v1/query/get-entity-details",
                       {
@@ -293,6 +294,7 @@
                     "group": "Account management",
                     "pages": [
                       "GET /v1/query/get-account-balances",
+                      "GET /v1/query/get-account-details",
                       {
                         "group": "Bank accounts",
                         "pages": [

@@ -37,15 +37,56 @@
           "Customer management"
         ],
         "summary": "Get details of a single user",
-        "description": "This endpoint returns comprehensive information about a user including:\n- Basic user information (name, email, address)\n- Verification status\n- Account id(s)",
+        "description": "This endpoint returns comprehensive information about a user including:\n- Basic user information (name, email, address)\n- Verification status\n- Associated accounts details",
         "operationId": "get_user_details",
         "parameters": [
           {
-            "name": "userId",
-            "in": "query",
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
             "required": true,
             "schema": {
-              "$ref": "#/components/schemas/Uuid"
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/Uuid"
+                }
+              ],
+              "nullable": true
+            }
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "nullable": true
             }
           }
         ],
@@ -61,7 +102,7 @@
             }
           },
           "400": {
-            "description": "Bad request - Invalid user_id"
+            "description": "Bad request - Invalid user_id or email"
           },
           "404": {
             "description": "User not found"
@@ -69,7 +110,12 @@
           "500": {
             "description": "Internal server error"
           }
-        }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
       }
     },
     "/v1/query/get-entity-details": {
@@ -78,9 +124,36 @@
           "Customer management"
         ],
         "summary": "Get details of a single entity",
-        "description": "This endpoint returns comprehensive information about a business entity including:\n- Basic business information (name, email, addresses)\n- Team members (users who are part of the team)\n- Associated persons (beneficiaries and representatives) with root user status\n- Pending invitations (invitations that are pending acceptance)\n- Account id",
+        "description": "This endpoint returns comprehensive information about a business entity including:\n- Basic business information (name, email, addresses)\n- Associated account details\n- Team members (users who are part of the team)\n- Associated persons (beneficiaries and representatives)\n- Pending invitations (invitations that are pending acceptance)",
         "operationId": "get_entity_details",
         "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
           {
             "name": "entityId",
             "in": "query",
@@ -110,7 +183,80 @@
           "500": {
             "description": "Internal server error"
           }
-        }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/query/get-customers": {
+      "get": {
+        "tags": [
+          "Customer management"
+        ],
+        "summary": "List all customers",
+        "description": "Returns business customers (entities with their team members) and/or individual customers (users without an entity).\nUse the `customer_type` query parameter to filter:\n- `business`: only business customers\n- `individual`: only individual customers\n- `all` (default): both business and individual customers",
+        "operationId": "get_customers",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "customerType",
+            "in": "query",
+            "description": "Filter by customer type: \"business\", \"individual\", or \"all\" (default: \"all\")",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/CustomerQueryType"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Customers retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCustomersResponse"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
       }
     },
     "/v1/query/get-tos-acceptance-link": {
@@ -374,6 +520,77 @@
           },
           "400": {
             "description": "Bad request - Invalid account ID"
+          },
+          "404": {
+            "description": "Account not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/query/get-account-details": {
+      "get": {
+        "tags": [
+          "Account management"
+        ],
+        "summary": "Get details of a single account",
+        "description": "Returns details for a specific account including name, type, wallet address,\nand associated entity information if applicable.",
+        "operationId": "get_account_details",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "accountId",
+            "in": "query",
+            "description": "The account ID",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Account details retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAccountDetailsResponse"
+                }
+              }
+            }
           },
           "404": {
             "description": "Account not found"
@@ -1976,6 +2193,14 @@
           }
         }
       },
+      "ApplicantType": {
+        "type": "string",
+        "description": "Type of applicant for Sumsub verification",
+        "enum": [
+          "individual",
+          "company"
+        ]
+      },
       "ApyQueryParams": {
         "type": "object",
         "properties": {
@@ -2348,6 +2573,29 @@
             "description": "Required if conducts_money_services is true. A short description to explain the business' money services. Should include a detailed description of the business's compliance and anti-money laundering controls and practices.",
             "example": "We operate several ATMs.",
             "nullable": true
+          }
+        }
+      },
+      "BusinessCustomer": {
+        "type": "object",
+        "description": "A business customer (entity) with its team members",
+        "required": [
+          "entityId",
+          "entityName",
+          "teamMembers"
+        ],
+        "properties": {
+          "entityId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "entityName": {
+            "type": "string"
+          },
+          "teamMembers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomerMember"
+            }
           }
         }
       },
@@ -2865,6 +3113,31 @@
           "eurc"
         ]
       },
+      "CustomerMember": {
+        "type": "object",
+        "description": "A customer member (user or team member)",
+        "required": [
+          "userId",
+          "userName"
+        ],
+        "properties": {
+          "userId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "userName": {
+            "type": "string"
+          }
+        }
+      },
+      "CustomerQueryType": {
+        "type": "string",
+        "description": "Filter type for the get-customers endpoint",
+        "enum": [
+          "business",
+          "individual",
+          "all"
+        ]
+      },
       "Decimal": {
         "type": "string",
         "description": "A high-precision decimal number represented as a string",
@@ -2919,6 +3192,47 @@
           "unemployed"
         ],
         "example": "employed"
+      },
+      "EntityAccountInfo": {
+        "type": "object",
+        "description": "Response body for entity account information",
+        "required": [
+          "accountId",
+          "accountName",
+          "accountType",
+          "walletAddress",
+          "isSelfCustodial",
+          "bridgeAccountId",
+          "createdAt"
+        ],
+        "properties": {
+          "accountId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "accountName": {
+            "type": "string"
+          },
+          "accountType": {
+            "$ref": "#/components/schemas/ApplicantType"
+          },
+          "walletAddress": {
+            "type": "string"
+          },
+          "isSelfCustodial": {
+            "type": "boolean"
+          },
+          "bridgeAccountId": {
+            "type": "string"
+          },
+          "logoUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
       },
       "EntityDetailsQuery": {
         "type": "object",
@@ -3005,6 +3319,12 @@
             "type": "string",
             "description": "Business website.",
             "example": "byzcorp.com"
+          },
+          "logoUrl": {
+            "type": "string",
+            "description": "URL of the entity's logo.",
+            "example": "https://byzcorp.com/logo.png",
+            "nullable": true
           },
           "businessIndustry": {
             "type": "integer",
@@ -3176,31 +3496,120 @@
           }
         }
       },
-      "GetAssociatedPersonResponse": {
+      "GetAccountDetailsQuery": {
         "type": "object",
-        "description": "Response body for an associated person",
         "required": [
-          "beneficiaryType",
-          "firstName",
-          "lastName",
-          "email",
-          "isRootUser"
+          "accountId"
         ],
         "properties": {
-          "userId": {
+          "accountId": {
+            "$ref": "#/components/schemas/Uuid"
+          }
+        }
+      },
+      "GetAccountDetailsResponse": {
+        "type": "object",
+        "required": [
+          "accountId",
+          "accountName",
+          "accountType",
+          "walletAddress",
+          "isSelfCustodial",
+          "createdAt"
+        ],
+        "properties": {
+          "accountId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "accountName": {
+            "type": "string"
+          },
+          "accountType": {
+            "$ref": "#/components/schemas/ApplicantType"
+          },
+          "entityInfo": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/Uuid"
+                "$ref": "#/components/schemas/GetEntityMinimalInfo"
               }
             ],
             "nullable": true
           },
-          "beneficiaryType": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/BeneficiaryType"
-            }
+          "walletAddress": {
+            "type": "string"
           },
+          "isSelfCustodial": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "GetAccountResponse": {
+        "type": "object",
+        "description": "Response body for account information",
+        "required": [
+          "accountId",
+          "accountName",
+          "accountType",
+          "userRole",
+          "walletAddress",
+          "isSelfCustodial",
+          "bridgeAccountId",
+          "createdAt"
+        ],
+        "properties": {
+          "accountId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "accountName": {
+            "type": "string"
+          },
+          "accountType": {
+            "$ref": "#/components/schemas/ApplicantType"
+          },
+          "entityInfo": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GetEntityMinimalInfo"
+              }
+            ],
+            "nullable": true
+          },
+          "userRole": {
+            "$ref": "#/components/schemas/AccountUserRole"
+          },
+          "walletAddress": {
+            "type": "string"
+          },
+          "isSelfCustodial": {
+            "type": "boolean"
+          },
+          "bridgeAccountId": {
+            "type": "string"
+          },
+          "profilePictureUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "GetAssociatedPersonResponse": {
+        "type": "object",
+        "description": "Response body for an associated person",
+        "required": [
+          "firstName",
+          "lastName",
+          "email",
+          "beneficiaryType"
+        ],
+        "properties": {
           "firstName": {
             "type": "string"
           },
@@ -3210,15 +3619,15 @@
           "email": {
             "type": "string"
           },
-          "isRootUser": {
-            "type": "boolean"
+          "beneficiaryType": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BeneficiaryType"
+            }
           },
-          "isPasskeyActivated": {
-            "type": "boolean",
-            "nullable": true
-          },
-          "isOtpActivated": {
-            "type": "boolean",
+          "shareSize": {
+            "type": "number",
+            "format": "double",
             "nullable": true
           }
         }
@@ -3274,6 +3683,35 @@
           }
         }
       },
+      "GetCustomersQuery": {
+        "type": "object",
+        "description": "Query parameters for getting customers",
+        "properties": {
+          "customerType": {
+            "$ref": "#/components/schemas/CustomerQueryType"
+          }
+        }
+      },
+      "GetCustomersResponse": {
+        "type": "object",
+        "description": "Response body for the get-customers endpoint",
+        "properties": {
+          "businessCustomers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BusinessCustomer"
+            },
+            "nullable": true
+          },
+          "individualCustomers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CustomerMember"
+            },
+            "nullable": true
+          }
+        }
+      },
       "GetEntityInfo": {
         "type": "object",
         "description": "Response body for entity information",
@@ -3314,14 +3752,30 @@
           }
         }
       },
+      "GetEntityMinimalInfo": {
+        "type": "object",
+        "description": "Response body for entity information",
+        "required": [
+          "entityId",
+          "entityName"
+        ],
+        "properties": {
+          "entityId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "entityName": {
+            "type": "string"
+          }
+        }
+      },
       "GetEntityResponse": {
         "type": "object",
         "description": "Response body for entity details",
         "required": [
           "entityId",
           "verificationStatus",
-          "accountId",
           "entityInfo",
+          "account",
           "teamMembers",
           "associatedPersons",
           "createdAt"
@@ -3333,11 +3787,11 @@
           "verificationStatus": {
             "$ref": "#/components/schemas/VerificationStatus"
           },
-          "accountId": {
-            "$ref": "#/components/schemas/Uuid"
-          },
           "entityInfo": {
             "$ref": "#/components/schemas/GetEntityInfo"
+          },
+          "account": {
+            "$ref": "#/components/schemas/EntityAccountInfo"
           },
           "teamMembers": {
             "type": "array",
@@ -3577,6 +4031,7 @@
           "userId",
           "verificationStatus",
           "userInfo",
+          "accounts",
           "createdAt"
         ],
         "properties": {
@@ -3586,15 +4041,14 @@
           "verificationStatus": {
             "$ref": "#/components/schemas/VerificationStatus"
           },
-          "accountIds": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Uuid"
-            },
-            "nullable": true
-          },
           "userInfo": {
             "$ref": "#/components/schemas/GetUserInfo"
+          },
+          "accounts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GetAccountResponse"
+            }
           },
           "createdAt": {
             "type": "string",
@@ -4846,12 +5300,18 @@
       "UserDetailsQuery": {
         "type": "object",
         "description": "Query parameters for getting user details",
-        "required": [
-          "userId"
-        ],
         "properties": {
           "userId": {
-            "$ref": "#/components/schemas/Uuid"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Uuid"
+              }
+            ],
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
           }
         }
       },
@@ -4920,6 +5380,11 @@
             "type": "string",
             "description": "Required exclusively for USA-based users. Must be the full social security number.",
             "example": "123-45-6789",
+            "nullable": true
+          },
+          "profilePictureUrl": {
+            "type": "string",
+            "description": "URL of the user's profile picture (can be an avatar)",
             "nullable": true
           }
         }
@@ -5265,23 +5730,23 @@
     },
     {
       "name": "Customer management",
-      "description": "Endpoints to manage customers and their accounts."
+      "description": "Endpoints to create, view, and manage customers (users and entities)."
     },
     {
       "name": "Account management",
-      "description": "Endpoints to manage accounts."
+      "description": "Endpoints to manage accounts, bank accounts, invitations, and user roles."
     },
     {
       "name": "Products",
-      "description": "Get data about vaults."
+      "description": "Get data about vaults (deposit products)."
     },
     {
       "name": "Transactions",
-      "description": "Endpoints related to transactions."
+      "description": "Endpoints to make transactions (deposits, withdrawals) with passkey or OTP authentication."
     },
     {
       "name": "OTP authentication",
-      "description": "Endpoints to authenticate users with OTP."
+      "description": "Endpoints to initialize and manage user authentication with OTP."
     }
   ]
 }
