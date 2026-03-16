@@ -5,31 +5,47 @@ title: "Individuals - KYC"
 In order to use the Byzantine Prime application, an individual user needs to go through a KYC process. This is a regulatory obligation for individuals.
 
 <Info>
-  Before creating the user account, the user must accept the required terms. See [Terms and Conditions](/api-reference/terms-and-conditions).
+  Before creating the individual account, the user must accept the required terms. See [Terms and Conditions](/api-reference/terms-and-conditions).
 </Info>
 
-### 1. Create the user account
+### 1. Create the individual account
 
-The creation of the user account is done by calling this API endpoint:
+The creation of the individual account is done by calling this API endpoint:
 
-<Card icon="arrow-right" horizontal href="/api-reference/account-creation/create-a-byzantine-user" title="Create a user account">
-  
+<Card icon="arrow-right" horizontal href="/api-reference/customer-management/create-individual-account" title="Create an individual account">
+
 </Card>
 
-The following information needs to be provided:
+Only the following fields are required to create the account:
 
-- Personal data about the user
+- `firstName`, `lastName`, `email` (in `userInfo`)
+- `byzantineTermsSignedAt`
+
+The individual user will receive an `accountId` and a `userId`.
+
+<Warning>
+  Authenticators (passkeys) can only be provided at account creation. They cannot be added later through the update endpoint. If you need to register a user's passkey, include the `authenticators` field in the create call.
+</Warning>
+
+### 2. Complete the application
+
+Once the account is created, use the update endpoint to progressively provide the remaining information needed for KYC verification:
+
+<Card icon="arrow-right" horizontal href="/api-reference/customer-management/update-individual-account" title="Update an individual account">
+
+</Card>
+
+The following information can be submitted via one or multiple update calls:
+
+- Personal data (date of birth, nationality, address, phone number, etc.)
 - ID documents (passport or national ID card). See the [list of accepted documents](/api-reference/accepted-documents)
 - Proof of address. See the [list of accepted documents](/api-reference/accepted-documents)
-- Optional - it is possible to add a list of `authenticators` to register user's passkey to their device
-
-The individual user will receive an `account_id` and a `user_id`.
 
 <Info>
-  Please refer to the related endpoint page for more details about the requirements.
+  The response of both the create and update endpoints will include a `missingDocuments` field listing any remaining required documents that have not yet been submitted.
 </Info>
 
-### 2. KYC verification
+### 3. KYC verification
 
 Byzantine and Bridge will verify the individual's identity and address. Both Bridge and Byzantine may ask for additional details during this process.
 

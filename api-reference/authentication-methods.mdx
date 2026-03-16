@@ -86,7 +86,7 @@ Integrators have two options when creating a user account. This method will be u
 
     // Now that the user's passkey is created, you have to register it within the user/entity account creation:
     const response = await fetch(
-      "https://api.byzantine.fi/v1/submit/create-user",
+      "https://api.byzantine.fi/v1/submit/create-individual-account",
       {
         method: "POST",
         headers: { /* ... */ },

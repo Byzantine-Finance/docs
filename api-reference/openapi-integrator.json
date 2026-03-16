@@ -259,116 +259,6 @@
         ]
       }
     },
-    "/v1/query/get-tos-acceptance-link": {
-      "post": {
-        "tags": [
-          "Customer management"
-        ],
-        "summary": "⚠️ Pre-step: Get Bridge ToS link",
-        "operationId": "request_tos_acceptance_link",
-        "requestBody": {
-          "description": "Optional redirect URI to append to the hosted ToS acceptance link",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetTosAcceptanceLinkRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Hosted ToS acceptance URL received",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetTosAcceptanceLinkResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request payload"
-          },
-          "500": {
-            "description": "Bridge API error"
-          }
-        }
-      }
-    },
-    "/v1/submit/create-user": {
-      "post": {
-        "tags": [
-          "Customer management"
-        ],
-        "summary": "Create user",
-        "operationId": "create_user",
-        "parameters": [
-          {
-            "name": "X-Pubkey",
-            "in": "header",
-            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Timestamp",
-            "in": "header",
-            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Signature",
-            "in": "header",
-            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Byzantine user creation body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateUserRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "User created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CreateUserResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request payload"
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        },
-        "security": [
-          {
-            "integrator_auth": []
-          }
-        ]
-      }
-    },
     "/v1/submit/create-entity": {
       "post": {
         "tags": [
@@ -429,6 +319,153 @@
           },
           "400": {
             "description": "Invalid request payload"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/submit/create-individual-account": {
+      "post": {
+        "tags": [
+          "Customer management"
+        ],
+        "summary": "Create individual account",
+        "operationId": "create_individual_account",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Byzantine individual account creation body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateIndividualAccountRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Individual account created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateIndividualAccountResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request payload"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security": [
+          {
+            "integrator_auth": []
+          }
+        ]
+      }
+    },
+    "/v1/submit/update-individual-account": {
+      "patch": {
+        "tags": [
+          "Customer management"
+        ],
+        "summary": "Update individual account",
+        "operationId": "update_individual_account",
+        "parameters": [
+          {
+            "name": "X-Pubkey",
+            "in": "header",
+            "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Timestamp",
+            "in": "header",
+            "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Signature",
+            "in": "header",
+            "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Update individual account details",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateIndividualAccountRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Individual account updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateIndividualAccountResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request payload"
+          },
+          "404": {
+            "description": "Account not found"
           },
           "500": {
             "description": "Internal server error"
@@ -2815,7 +2852,6 @@
         "required": [
           "entityInfo",
           "associatedPersons",
-          "bridgeSignedAgreementId",
           "byzantineTermsSignedAt"
         ],
         "properties": {
@@ -2835,14 +2871,8 @@
               "$ref": "#/components/schemas/AssociatedPerson"
             }
           },
-          "bridgeSignedAgreementId": {
-            "type": "string",
-            "description": "The ID of the signed Bridge ToS agreement. For more information, see [individual account creation - KYC](https://docs.byzantine.fi/api-reference/kyc).",
-            "example": "d107c1e1-766a-4091-802c-de61a3973e91"
-          },
           "byzantineTermsSignedAt": {
-            "type": "integer",
-            "format": "int64",
+            "type": "string",
             "description": "The timestamp when the Byzantine Finance Terms & Conditions were signed. For more information, see [individual account creation - KYC](https://docs.byzantine.fi/api-reference/kyc).",
             "example": "2025-11-19T21:14:58.328Z"
           }
@@ -2857,7 +2887,6 @@
           "verificationStatus",
           "entityInfo",
           "associatedPersons",
-          "bridgeSignedAgreementId",
           "byzantineTermsSignedAt"
         ],
         "properties": {
@@ -2886,14 +2915,8 @@
               "$ref": "#/components/schemas/AssociatedPersonResponse"
             }
           },
-          "bridgeSignedAgreementId": {
-            "type": "string",
-            "description": "The ID of the signed Bridge ToS agreement. For more information, see [individual account creation - KYC](https://docs.byzantine.fi/api-reference/kyc).",
-            "example": "d107c1e1-766a-4091-802c-de61a3973e91"
-          },
           "byzantineTermsSignedAt": {
-            "type": "integer",
-            "format": "int64",
+            "type": "string",
             "description": "The timestamp when the Byzantine Finance Terms & Conditions were signed. For more information, see [individual account creation - KYC](https://docs.byzantine.fi/api-reference/kyc).",
             "example": "2025-11-19T21:14:58.328Z"
           }
@@ -2945,118 +2968,6 @@
               "type": "string"
             },
             "description": "A list of tag IDs to add to the user."
-          }
-        }
-      },
-      "CreateUserRequest": {
-        "type": "object",
-        "description": "User to be created. The vast majority of fields are required in order to complete the identity verification process.",
-        "required": [
-          "userInfo",
-          "bridgeSignedAgreementId",
-          "byzantineTermsSignedAt"
-        ],
-        "properties": {
-          "userInfo": {
-            "$ref": "#/components/schemas/UserInfo"
-          },
-          "additionalUserInfo": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AdditionalUserInfo"
-              }
-            ],
-            "nullable": true
-          },
-          "verificationDocuments": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserVerificationDocument"
-            },
-            "nullable": true
-          },
-          "bridgeSignedAgreementId": {
-            "type": "string",
-            "description": "The ID of the signed Bridge ToS agreement. For more information, see [individual account creation - KYC](https://docs.byzantine.fi/api-reference/kyc).",
-            "example": "d107c1e1-766a-4091-802c-de61a3973e91"
-          },
-          "byzantineTermsSignedAt": {
-            "type": "integer",
-            "format": "int64",
-            "description": "The timestamp when the Byzantine Finance Terms & Conditions were signed. For more information, see [individual account creation - KYC](https://docs.byzantine.fi/api-reference/kyc).",
-            "example": "2025-11-19T21:14:58.328Z"
-          },
-          "authenticators": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AuthenticatorParam"
-            },
-            "description": "A list of Authenticators.",
-            "nullable": true
-          }
-        }
-      },
-      "CreateUserResponse": {
-        "type": "object",
-        "description": "Response body for creating a Byzantine user",
-        "required": [
-          "userId",
-          "accountId",
-          "verificationStatus",
-          "userInfo",
-          "bridgeSignedAgreementId",
-          "byzantineTermsSignedAt",
-          "isPasskeyActivated",
-          "isOtpActivated"
-        ],
-        "properties": {
-          "userId": {
-            "$ref": "#/components/schemas/Uuid"
-          },
-          "accountId": {
-            "$ref": "#/components/schemas/Uuid"
-          },
-          "verificationStatus": {
-            "$ref": "#/components/schemas/VerificationStatus"
-          },
-          "userInfo": {
-            "$ref": "#/components/schemas/UserInfo"
-          },
-          "additionalUserInfo": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AdditionalUserInfo"
-              }
-            ],
-            "nullable": true
-          },
-          "verificationDocuments": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/VerificationDocumentResponse"
-            },
-            "nullable": true
-          },
-          "bridgeSignedAgreementId": {
-            "type": "string",
-            "description": "The ID of the signed Bridge ToS agreement. For more information, see [individual account creation - KYC](https://docs.byzantine.fi/api-reference/kyc).",
-            "example": "d107c1e1-766a-4091-802c-de61a3973e91"
-          },
-          "byzantineTermsSignedAt": {
-            "type": "integer",
-            "format": "int64",
-            "description": "The timestamp when the Byzantine Finance Terms & Conditions were signed. For more information, see [individual account creation - KYC](https://docs.byzantine.fi/api-reference/kyc).",
-            "example": "2025-11-19T21:14:58.328Z"
-          },
-          "isPasskeyActivated": {
-            "type": "boolean",
-            "description": "An indicator showing whether passkey authentication is active for this user. For more information, see [wallet authentication](https://docs.byzantine.fi/api-reference/wallet-authentication).",
-            "example": "false"
-          },
-          "isOtpActivated": {
-            "type": "boolean",
-            "description": "An indicator showing whether OTP authentication is active for this user. For more information, see [wallet authentication](https://docs.byzantine.fi/api-reference/wallet-authentication).",
-            "example": "true"
           }
         }
       },
@@ -3202,7 +3113,6 @@
           "accountType",
           "walletAddress",
           "isSelfCustodial",
-          "bridgeAccountId",
           "createdAt"
         ],
         "properties": {
@@ -3222,7 +3132,8 @@
             "type": "boolean"
           },
           "bridgeAccountId": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "logoUrl": {
             "type": "string",
@@ -3557,7 +3468,6 @@
           "userRole",
           "walletAddress",
           "isSelfCustodial",
-          "bridgeAccountId",
           "createdAt"
         ],
         "properties": {
@@ -3588,7 +3498,8 @@
             "type": "boolean"
           },
           "bridgeAccountId": {
-            "type": "string"
+            "type": "string",
+            "nullable": true
           },
           "profilePictureUrl": {
             "type": "string",
@@ -3911,29 +3822,6 @@
               "$ref": "#/components/schemas/GetInvitationResponse"
             },
             "description": "List of invitations with user details"
-          }
-        }
-      },
-      "GetTosAcceptanceLinkRequest": {
-        "type": "object",
-        "properties": {
-          "redirectUri": {
-            "type": "string",
-            "description": "Optional redirect URI to append to the hosted URL returned by Bridge",
-            "example": "https://app.example.com/tos/callback",
-            "nullable": true
-          }
-        }
-      },
-      "GetTosAcceptanceLinkResponse": {
-        "type": "object",
-        "required": [
-          "hostedUrl"
-        ],
-        "properties": {
-          "hostedUrl": {
-            "type": "string",
-            "example": "https://bridge.xyz/tos/accept?token=..."
           }
         }
       },
@@ -5332,10 +5220,7 @@
         "required": [
           "firstName",
           "lastName",
-          "email",
-          "birthDate",
-          "nationality",
-          "residentialAddress"
+          "email"
         ],
         "properties": {
           "firstName": {
@@ -5368,13 +5253,24 @@
           "birthDate": {
             "type": "string",
             "description": "User's date of birth.",
-            "example": "1990-01-01"
+            "example": "1990-01-01",
+            "nullable": true
           },
           "nationality": {
-            "$ref": "#/components/schemas/CountryCode"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CountryCode"
+              }
+            ],
+            "nullable": true
           },
           "residentialAddress": {
-            "$ref": "#/components/schemas/Address"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Address"
+              }
+            ],
+            "nullable": true
           },
           "socialSecurityNumber": {
             "type": "string",
@@ -5705,6 +5601,261 @@
                 "$ref": "#/components/schemas/Uuid"
               }
             ],
+            "nullable": true
+          }
+        }
+      },
+      "CreateIndividualAccountRequest": {
+        "type": "object",
+        "description": "User to be created. The vast majority of fields are required in order to complete the identity verification process.",
+        "required": [
+          "userInfo",
+          "byzantineTermsSignedAt"
+        ],
+        "properties": {
+          "userInfo": {
+            "$ref": "#/components/schemas/UserInfo"
+          },
+          "additionalUserInfo": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AdditionalUserInfo"
+              }
+            ],
+            "nullable": true
+          },
+          "verificationDocuments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserVerificationDocument"
+            },
+            "nullable": true
+          },
+          "byzantineTermsSignedAt": {
+            "type": "string",
+            "description": "The timestamp when the Byzantine Finance Terms & Conditions were signed. For more information, see [individual account creation - KYC](https://docs.byzantine.fi/api-reference/kyc).",
+            "example": "2025-11-19T21:14:58.328Z"
+          },
+          "authenticators": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AuthenticatorParam"
+            },
+            "description": "A list of Authenticators.",
+            "nullable": true
+          }
+        }
+      },
+      "CreateIndividualAccountResponse": {
+        "type": "object",
+        "description": "Response body for creating a Byzantine user",
+        "required": [
+          "userId",
+          "accountId",
+          "verificationStatus",
+          "userInfo",
+          "byzantineTermsSignedAt",
+          "isPasskeyActivated",
+          "isOtpActivated"
+        ],
+        "properties": {
+          "userId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "accountId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          },
+          "userInfo": {
+            "$ref": "#/components/schemas/UserInfo"
+          },
+          "additionalUserInfo": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AdditionalUserInfo"
+              }
+            ],
+            "nullable": true
+          },
+          "verificationDocuments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VerificationDocumentResponse"
+            },
+            "nullable": true
+          },
+          "byzantineTermsSignedAt": {
+            "type": "string",
+            "description": "The timestamp when the Byzantine Finance Terms & Conditions were signed. For more information, see [individual account creation - KYC](https://docs.byzantine.fi/api-reference/kyc).",
+            "example": "2025-11-19T21:14:58.328Z"
+          },
+          "isPasskeyActivated": {
+            "type": "boolean",
+            "description": "An indicator showing whether passkey authentication is active for this user. For more information, see [wallet authentication](https://docs.byzantine.fi/api-reference/wallet-authentication).",
+            "example": "false"
+          },
+          "isOtpActivated": {
+            "type": "boolean",
+            "description": "An indicator showing whether OTP authentication is active for this user. For more information, see [wallet authentication](https://docs.byzantine.fi/api-reference/wallet-authentication).",
+            "example": "true"
+          },
+          "missingDocuments": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of missing required verification documents. Present only if not all required documents have been submitted.",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateIndividualAccountRequest": {
+        "type": "object",
+        "description": "Request body for updating an individual account's user details.\nOnly the provided fields will be updated. Mirrors `CreateIndividualAccountRequest` structure.",
+        "required": [
+          "accountId"
+        ],
+        "properties": {
+          "accountId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "userInfo": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UpdateUserInfo"
+              }
+            ],
+            "nullable": true
+          },
+          "additionalUserInfo": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AdditionalUserInfo"
+              }
+            ],
+            "nullable": true
+          },
+          "verificationDocuments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UserVerificationDocument"
+            },
+            "nullable": true
+          }
+        }
+      },
+      "UpdateIndividualAccountResponse": {
+        "type": "object",
+        "description": "Response body for updating an individual account",
+        "required": [
+          "userId",
+          "accountId",
+          "verificationStatus"
+        ],
+        "properties": {
+          "userId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "accountId": {
+            "$ref": "#/components/schemas/Uuid"
+          },
+          "verificationStatus": {
+            "$ref": "#/components/schemas/VerificationStatus"
+          },
+          "userInfo": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UpdateUserInfo"
+              }
+            ],
+            "nullable": true
+          },
+          "additionalUserInfo": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AdditionalUserInfo"
+              }
+            ],
+            "nullable": true
+          },
+          "verificationDocuments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/VerificationDocumentResponse"
+            },
+            "nullable": true
+          },
+          "missingDocuments": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of missing required verification steps. Present only if not all required documents have been submitted.",
+            "nullable": true
+          }
+        }
+      },
+      "UpdateUserInfo": {
+        "type": "object",
+        "description": "Personal information about the user for update. All fields are optional — only provided fields are updated.\nSame as `UserInfo` but without `email` (email cannot be changed).",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "description": "First name of the user.",
+            "example": "John",
+            "nullable": true
+          },
+          "middleName": {
+            "type": "string",
+            "description": "Middle name of the user.",
+            "example": "William",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "description": "Last name of the user.",
+            "example": "Smith",
+            "nullable": true
+          },
+          "phone": {
+            "type": "string",
+            "description": "Phone number of the user.",
+            "example": "+33 123 456 789",
+            "nullable": true
+          },
+          "birthDate": {
+            "type": "string",
+            "description": "User's date of birth.",
+            "example": "1990-01-01",
+            "nullable": true
+          },
+          "nationality": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CountryCode"
+              }
+            ],
+            "nullable": true
+          },
+          "residentialAddress": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Address"
+              }
+            ],
+            "nullable": true
+          },
+          "socialSecurityNumber": {
+            "type": "string",
+            "description": "Required exclusively for USA-based users. Must be the full social security number.",
+            "example": "123-45-6789",
+            "nullable": true
+          },
+          "profilePictureUrl": {
+            "type": "string",
+            "description": "URL of the user's profile picture (can be an avatar)",
             "nullable": true
           }
         }

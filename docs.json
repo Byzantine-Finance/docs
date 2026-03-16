@@ -216,6 +216,7 @@
                     "pages": [
                       "api-reference/kyc-kyb-overview",
                       "api-reference/terms-and-conditions",
+                      "api-reference/multi-accounts",
                       "api-reference/kyc",
                       "api-reference/kyb",
                       "api-reference/accepted-documents",
@@ -254,11 +255,11 @@
                     ]
                   },
                   {
-                    "group": "Management",
+                    "group": "Account management",
                     "pages": [
                       "api-reference/management-overview",
-                      "api-reference/account-management",
-                      "api-reference/user-management"
+                      "api-reference/multi-users-account",
+                      "api-reference/bank-account"
                     ]
                   }
                 ]
@@ -283,9 +284,9 @@
                       {
                         "group": "Customer creation",
                         "pages": [
-                          "POST /v1/query/get-tos-acceptance-link",
-                          "POST /v1/submit/create-user",
-                          "POST /v1/submit/create-entity"
+                          "POST /v1/submit/create-individual-account",
+                          "POST /v1/submit/create-entity",
+                          "PATCH /v1/submit/update-individual-account"
                         ]
                       }
                     ]
