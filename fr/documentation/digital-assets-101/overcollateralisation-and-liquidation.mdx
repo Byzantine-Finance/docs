@@ -9,7 +9,7 @@ La surcollateralisation est le mécanisme central qui fait de Byzantine Prime un
 
 Pour emprunter l'équivalent de \$1 en stablecoins via un marché de prêt, un emprunteur doit d'abord bloquer entre \$1,20 et \$1,50 en actifs numériques comme garantie. Le prêt ne peut être accordé que si ce collatéral excédentaire est en place et vérifiable on-chain.
 
-**Exemple :** Un market maker souhaite emprunter \$100 000 en USDC (un stablecoin libellé en USD). Avant que le prêt soit accordé, il dépose \$150 000 en ETH dans le contrat intelligent. Le contrat intelligent bloque automatiquement ce collatéral - il ne peut pas être déplacé ni retiré tant que le prêt n'est pas remboursé. Si l'emprunteur disparaît ou fait défaut, le collatéral est déjà là pour rembourser les prêteurs.
+**Exemple :** Un market maker souhaite emprunter \$100 000 en USDC (un stablecoin libellé en USD). Avant que le prêt soit accordé, il dépose \$150 000 en collatéral approuvé dans le contrat intelligent. Le contrat intelligent bloque automatiquement ce collatéral - il ne peut pas être déplacé ni retiré tant que le prêt n'est pas remboursé. Si l'emprunteur disparaît ou fait défaut, le collatéral est déjà là pour rembourser les prêteurs.
 
 Cette exigence de collatéral excédentaire est ce qui rend le système solvable par conception, sans reposer sur la confiance, les vérifications de crédit ou les recours juridiques.
 
@@ -17,7 +17,7 @@ Cette exigence de collatéral excédentaire est ce qui rend le système solvable
 
 Les prêts surcollateralisés sont très utiles pour les emprunteurs disposant d'actifs importants qui ont besoin de liquidités sans vendre. Les cas d'usage courants incluent :
 
-- Un market maker détenant une grande position en ETH qui a besoin de liquidités USDC à court terme pour honorer une obligation - il ne veut pas vendre son ETH, il emprunte donc dessus
+- Un market maker détenant une grande position en actifs numériques qui a besoin de liquidités USDC à court terme pour honorer une obligation - il ne veut pas vendre sa position, il emprunte donc dessus
 - Un trader d'arbitrage qui a besoin de capitaux rapidement pour capturer une différence de prix entre des plateformes
 - Un fonds qui souhaite couvrir son exposition aux devises (par exemple, passer de positions libellées en EURC à des positions en USDC) sans liquider son portefeuille
 
@@ -25,12 +25,7 @@ Pour ces participants, l'accès à des liquidités instantanées et collatérali
 
 ## Quels collatéraux sont acceptés ?
 
-Byzantine Prime n'opère que dans des marchés utilisant des collatéraux de haute qualité et très liquides. Actuellement, les types de collatéraux acceptés incluent l'ETH, le stETH (ETH staké) et le WBTC (Bitcoin enveloppé). Ces actifs ont été choisis car :
-
-- Ils font partie des actifs numériques les plus liquides qui existent, avec une profondeur de marché suffisante pour absorber de grandes ventes même en période de stress
-- Leur volatilité, bien que supérieure à celle des monnaies fiduciaires, est bien comprise et gérable dans le cadre de ratios de collatéral conservateurs
-
-Le choix de la qualité du collatéral fait partie du mandat d'investissement de Keyrock. Les marchés utilisant des collatéraux de faible qualité ou peu liquides ne sont jamais sélectionnés, quel que soit le rendement qu'ils proposent.
+Byzantine Prime n'opère que dans des marchés utilisant des collatéraux de haute qualité et très liquides. La sélection des collatéraux fait partie du mandat d'investissement de Keyrock - les marchés utilisant des collatéraux de faible qualité ou peu liquides ne sont jamais sélectionnés, quel que soit le rendement qu'ils proposent. Les types de collatéraux acceptés dans chaque marché sont choisis pour garantir une profondeur de marché suffisante pour absorber de grandes ventes même en période de stress, et pour rester gérables dans le cadre de ratios de collatéral conservateurs.
 
 ## Quel est le ratio de collatéral et quand est-il déclenché ?
 
@@ -55,6 +50,6 @@ Ce mécanisme est ouvert, transparent et sans autorisation - n'importe qui peut 
 
 Les protocoles qu'utilise Byzantine - Morpho, Aave et Maker/Sky - ont collectivement traité des milliards de dollars de liquidations sur plusieurs années sans jamais accumuler de mauvaises créances. Un test de stress notable a eu lieu le 10 octobre 2025, lorsque ces trois protocoles ont traité plus de \$400 millions de liquidations en quelques heures lors d'un mouvement de marché brusque. Aucune mauvaise créance n'a eu lieu. Aucune interruption de service. Les retraits ont continué normalement tout au long.
 
-En théorie, des mauvaises créances pourraient survenir si les prix des collatéraux s'effondraient plus vite que le mécanisme de liquidation ne pouvait réagir - par exemple, lors d'un flash crash extrême sans liquidité de marché pour absorber les ventes. En pratique, la combinaison de ratios de collatéral conservateurs, d'actifs collatéraux de premier ordre, de vastes réseaux de liquidateurs et de flux de prix en temps réel (fournis par des oracles décentralisés comme Chainlink, mis à jour toutes les quelques secondes) rend ce scénario extrêmement improbable. Même dans les pires scénarios historiques, les pertes pour les prêteurs ont été mesurées en fractions de pourcent.
+En théorie, des mauvaises créances pourraient survenir si les prix des collatéraux s'effondraient plus vite que le mécanisme de liquidation ne pouvait réagir - par exemple, lors d'un flash crash extrême sans liquidité de marché pour absorber les ventes. En pratique, la combinaison de ratios de collatéral conservateurs, de normes strictes de qualité des collatéraux, de vastes réseaux de liquidateurs et de flux de prix en temps réel (fournis par des oracles décentralisés comme Chainlink, mis à jour toutes les quelques secondes) rend ce scénario extrêmement improbable. Même dans les pires scénarios historiques, les pertes pour les prêteurs ont été mesurées en fractions de pourcent.
 
 Pour les clients qui souhaitent une couche de protection supplémentaire au-delà de ces garanties structurelles, Byzantine propose une [police d'assurance](/fr/documentation/asset-protection/insurance) optionnelle couvrant les défaillances de contrats intelligents.
