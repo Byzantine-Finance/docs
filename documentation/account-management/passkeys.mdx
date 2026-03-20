@@ -1,0 +1,58 @@
+---
+title: "Understanding passkeys"
+description: "What passkeys are, why Byzantine uses them, and how they keep your account secure."
+---
+
+Every action that moves money on Byzantine - deposits, withdrawals, inviting team members - requires a passkey to authorise it. This page explains what passkeys are and how they compare to traditional passwords.
+
+## What is a passkey?
+
+A passkey is a modern way to prove your identity without a password. Instead of typing something you remember, you verify using something you already have: your device.
+
+When you create a passkey, your device (phone, laptop, tablet) generates a unique cryptographic key pair - a private key stored securely on your device, and a public key registered with Byzantine. When you need to authorise an action, your device asks you to confirm with your fingerprint, face scan, or screen PIN. If confirmed, the device uses the private key to produce a cryptographic signature that proves the action is genuinely authorised by you.
+
+The private key never leaves your device. Byzantine never sees it.
+
+## Why does Byzantine use passkeys for transactions?
+
+Every deposit and withdrawal on Byzantine Prime is a blockchain transaction that must be cryptographically signed. This is how the blockchain knows the instruction came from you - not from Byzantine, not from a third party, not from anyone who might have access to your account.
+
+Passkeys handle this signing automatically and invisibly. When you click "Withdraw" and confirm with your fingerprint, your device is producing a cryptographic signature that authorises that specific transaction. This is what it means for Byzantine to be non-custodial: your funds can only move when you sign.
+
+## How do I use them day to day?
+
+In practice, passkeys feel almost invisible. When you need to authorise an action:
+
+1. Click the button (e.g. "Deposit" or "Withdraw")
+2. Your browser or device shows a prompt asking you to confirm with Face ID, Touch ID, or your device PIN
+3. Confirm - the action is authorised and proceeds immediately
+
+There is nothing to type, no code to copy from an app, and no second device required for most actions.
+
+## Passkeys vs passwords
+
+| | **Passkeys** | **Passwords** |
+|---|---|---|
+| Can be phished | ❌ No - bound to the specific website | ✅ Yes - can be tricked onto fake sites |
+| Can be stolen in a data breach | ❌ No - never stored on a server | ✅ Yes - if the site stores them insecurely |
+| Can be guessed or brute-forced | ❌ No - cryptographically random | ✅ Yes - especially weak passwords |
+| Requires remembering anything | ❌ No | ✅ Yes |
+| Works with biometrics | ✅ Yes | ❌ No |
+
+The core advantage is that a passkey is bound to both your device and the specific website. Even if an attacker creates a convincing fake version of Byzantine's login page, your passkey will not work there - it is cryptographically tied to the real domain. This makes phishing attacks impossible for passkey-protected actions.
+
+## What if I lose access to my device?
+
+If you use a passkey manager that syncs across devices - such as Apple's iCloud Keychain or Google Password Manager - your passkeys are available on all your signed-in devices automatically. Losing one device does not lock you out.
+
+If your passkeys are not synced, you can recover access via email. Byzantine supports an email-based One-Time Password (OTP) authentication flow that lets you verify your identity and register new passkeys on a new device. Contact [info@byzantine.fi](mailto:info@byzantine.fi) if you need assistance with account recovery.
+
+<Tip>
+  We recommend setting up your passkey on at least two devices - for example, your laptop and your phone - so that losing one device never interrupts your access.
+</Tip>
+
+## Passkeys and team accounts
+
+When you invite a team member to your account, they go through their own passkey setup on their device. This means each user's authorisation is independent: an admin cannot approve transactions on behalf of another admin. Every action is tied to the specific person performing it.
+
+For more on managing team members and roles, see [Users & roles](/users-and-roles).

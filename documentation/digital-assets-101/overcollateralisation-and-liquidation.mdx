@@ -1,0 +1,60 @@
+---
+title: "Overcollateralisation & liquidation"
+description: "How the collateral system protects depositors and what happens when it is tested."
+---
+
+Overcollateralisation is the core mechanism that makes Byzantine Prime a low-risk credit product. It is what separates digital credit from unsecured lending - and why depositors have no direct credit exposure to individual borrowers.
+
+## What is overcollateralisation?
+
+To borrow \$1 worth of stablecoins through a lending market, a borrower must first lock up \$1.20–\$1.50 in digital assets as collateral. The loan cannot be issued unless this excess collateral is in place and verifiable on-chain.
+
+**Example:** A market maker wants to borrow \$100,000 in USDC (a USD-denominated stablecoin). Before the loan is issued, they deposit \$150,000 worth of ETH into the smart contract. The smart contract locks this collateral automatically - it cannot be moved or withdrawn until the loan is repaid. If the borrower vanishes or defaults, the collateral is already there to make lenders whole.
+
+This excess-collateral requirement is what makes the system solvent by design, without relying on trust, credit checks, or legal recourse.
+
+## Why would borrowers accept these terms?
+
+Overcollateralised loans are extremely useful for asset-rich borrowers who need liquidity without selling. Common use cases include:
+
+- A market maker holding a large ETH position who needs short-term USDC liquidity to fulfil an obligation - they do not want to sell their ETH, so they borrow against it instead
+- An arbitrage trader who needs capital quickly to capture a price difference across exchanges
+- A fund that wants to hedge currency exposure (for example, moving between EURC and USDC-denominated positions) without liquidating their portfolio
+
+For these participants, access to instant, collateralised liquidity is valuable enough to pay 8–10% annually. The process takes seconds, involves no paperwork, and can be unwound at any time. For more context, see [Digital credit](/documentation/digital-assets-101/what-is-digital-credit).
+
+## What collateral is accepted?
+
+Byzantine Prime only operates in markets that use high-quality, highly liquid collateral. Currently, accepted collateral types include ETH, stETH (staked ETH), and WBTC (wrapped Bitcoin). These assets were chosen because:
+
+- They are among the most liquid digital assets in existence, with market depth sufficient to absorb large sell orders even during stress
+- Their volatility, while higher than fiat, is well-understood and manageable within conservative collateral ratios
+
+Choosing collateral quality is baked into Keyrock's investment mandate. Markets using low-quality or illiquid collateral are never selected, regardless of the yield they offer.
+
+## What is the collateral ratio and when does it get triggered?
+
+Each lending market has a defined loan-to-value threshold - the maximum ratio of loan value to collateral value. For the markets Byzantine uses, this is typically around 83% (meaning collateral must remain worth at least 1.20× the loan). If the collateral value drops and the ratio approaches this threshold, the smart contract triggers liquidation automatically.
+
+<Info>
+  The collateral ratio is monitored continuously - at every blockchain block, which is issued approximately every 12 seconds on Ethereum. There is no delay, no human decision, and no notification period. If the threshold is crossed, liquidation begins immediately.
+</Info>
+
+## How does liquidation work?
+
+When a borrower's collateral value falls too close to the loan amount, the smart contract triggers an open public auction:
+
+1. The contract identifies the undercollateralised position and marks it for liquidation
+2. Liquidators - independent participants, typically professional market makers and arbitrage bots - compete to repay part or all of the borrower's debt
+3. In exchange, they receive the borrower's collateral at a slight discount of 1–5%, which is their incentive for acting quickly
+4. The auction resolves within seconds, the debt is cleared, and lenders are made whole
+
+This mechanism is open, transparent, and permissionless - anyone can act as a liquidator, which means competition is fierce and liquidations happen as fast as the market allows.
+
+## Has this ever failed?
+
+The protocols Byzantine uses - Morpho, Aave, and Maker/Sky - have collectively processed billions of dollars in liquidations over several years without incurring bad debt. A notable stress test came on 10 October 2025, when these three protocols processed over \$400 million in liquidations within a few hours during a sharp market move. No bad debt occurred. No outages. Withdrawals continued normally throughout.
+
+Theoretically, bad debt could occur if collateral prices collapsed faster than the liquidation mechanism could respond - for example, in an extreme flash crash with no market liquidity to absorb the sell. In practice, the combination of conservative collateral ratios, blue-chip collateral assets, deep liquidator networks, and real-time price feeds (sourced from decentralised oracles like Chainlink, updated every few seconds) makes this scenario extremely unlikely. Even in historical worst-case scenarios, losses to lenders have been measured in fractions of a percent.
+
+For clients who want an additional layer of protection beyond these structural safeguards, Byzantine offers an optional [insurance policy](/documentation/asset-protection/insurance) covering smart contract failure.

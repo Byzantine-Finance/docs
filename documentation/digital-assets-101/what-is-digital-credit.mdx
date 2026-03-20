@@ -1,43 +1,66 @@
 ---
-title: "What exactly is digital credit?"
+title: "What is digital credit?"
 ---
 
-Byzantine Prime is built on digital credit: Lending digital euros or dollars (stablecoins) to institutional borrowers through secure, regulated markets.
+Digital credit is simply lending stablecoins against collateral on the blockchain. It works like a secured money-market loan - but instead of banks or custodians acting as intermediaries, everything happens through transparent, automated code called smart contracts. This eliminates the counterparty risk of working with traditional institutions. Smart contracts continue operating even if their parent organisation goes bankrupt.
 
-These markets are over-collateralised: borrowers must deposit more collateral than they borrow, dramatically reducing counterparty risk.
+Byzantine Prime is built on digital credit: depositors lend USDC or EURC into overcollateralised lending markets, and earn the interest that borrowers pay. Capital safety comes first - every loan is backed by more collateral than the loan itself.
 
 ## How it works
 
-Borrowers must deposit more collateral (capital) than they borrow, keeping the loan over-collateralised and the lender protected. This dramatically reducing counterparty risk. Positions are monitored in real time, and liquidation happens automatically if needed.
+<Steps>
+  <Step title="Deposit">
+    Depositors place stablecoins into a lending platform (such as Morpho or Aave). The funds become available for borrowing.
+  </Step>
+  <Step title="Borrowers take loans">
+    Borrowers post collateral worth more than the amount they wish to borrow - typically 120–150% of the loan value. Only then can they draw on the available liquidity. The collateral is locked in the smart contract for the duration of the loan.
+  </Step>
+  <Step title="Interest accrues">
+    Borrowers pay interest continuously. The interest rate is set algorithmically by the market's Interest Rate Model (IRM) based on real-time supply and demand - when more of the pool is borrowed, rates rise; when less is borrowed, rates fall.
+  </Step>
+  <Step title="Lenders earn yield">
+    The interest paid by borrowers flows directly to depositors - in Byzantine Prime's case, that's you. No intermediary takes a cut; the smart contract distributes returns automatically, in real time.
+  </Step>
+</Steps>
 
-**Example:** If a borrower wants to borrow 100EUR, they need to deposit 150USD. This way, the lender is protected - the collateral capital is already there.
+## Who are the borrowers?
 
-Such transactions happen on large, audited lending platforms like Morpho and Aave - with billions in liquidity and years of reliable performance. The borrowers are mainly institutional traders and market makers who use these funds for short-term liquidity needs.
+Borrowers are primarily large, well-capitalised institutional participants:
 
-## Byzantine’s approach
+- **Market makers** and **liquidity providers**, borrowing stablecoins to provide liquidity across trading venues
+- **Arbitrage traders**, using capital to exploit short-term price differences between assets
+- **Decentralised finance (DeFi) funds** and **staking operators**, using stablecoin credit to optimise positions across protocols
 
-Funds are deployed only across blue-chip, diversified lending markets, with one rule:
+These entities are asset-rich but liquidity-constrained. A market maker might hold a large ETH position and need short-term USDC liquidity to fulfil an obligation, without wanting to sell their ETH. By depositing ETH as collateral and borrowing USDC, they get the liquidity they need - instantly, without paperwork - and pay interest for that convenience.
 
-**Capital safety first, yield second.**
+## Why do borrowers pay 8–10%?
 
-Digital asset lending allows depositors to earn returns on their digital assets by lending them out, similar to how banks pay depositors for holding cash. Instead of leaving assets idle, they are provided to borrowers, and the lender receives compensation in return.
+The premium exists because this type of credit is genuinely valuable to borrowers. Unlike traditional credit facilities that require paperwork, credit checks, and days to arrange, digital credit positions can be opened instantly, around the clock, from anywhere. The process is permissionless - anyone who can post the required collateral can borrow, immediately.
 
-#### How it Works
+This is comparable to inter-bank lending in traditional finance, but faster and more efficient. The current 8–10% yield represents a stable, sustainable equilibrium for low-risk digital credit - high enough to compensate for the borrowing cost, low enough to be economically attractive for borrowers with good collateral.
 
-1. **Deposit assets:** Depositors place their digital assets into a lending platform.
-2. **Borrowers access liquidity:** Borrowers use these assets, typically by providing collateral worth more than the loan.
-3. **Earn returns:** In exchange for providing liquidity, lenders receive target daily compensation.
+## The lending markets Byzantine uses
 
-#### Benefits of Digital Credit
+Byzantine Prime allocates capital across Morpho, Aave, and Maker/Sky - three of the largest, most established lending protocols in decentralised finance.
 
-- No idle capital: Assets generate income instead of sitting unused.
-- Overcollateralization: Borrowers post collateral greater than the loan size, reducing default risk.
-- Stable, predictable yield: Returns come from lending activity, not speculation or incentives.
+**Morpho** is a collection of isolated lending markets, each pairing one collateral asset with one loan asset. Markets are immutable (rules cannot change after deployment), isolated (risk is contained within each market), and permissionless (anyone can participate). This predictability and isolation is what makes Morpho particularly attractive for institutional use.
 
-#### Byzantine Prime’s Approach
+**Aave** and **Maker/Sky** operate similarly, with years of track record and billions of dollars in cumulative lending volume. All three have successfully processed hundreds of millions of dollars in liquidations without incurring bad debt.
 
-Byzantine Prime builds on this model by offering:
+Byzantine's strategy manager Keyrock selects only markets within these protocols that meet strict safety, liquidity, and audit criteria. The mandate requires that client funds can always be fully withdrawn immediately - Keyrock must exit any market where high utilisation would threaten instant redemptions.
 
-- Exposure only to blue-chip institutional lending protocols selected for security and reliability.
-- Compliance and custody with AMF/MiCA alignment and optional insurance.
-- Operational fit with instant withdrawals, no lockups, and tax reporting reporting via our API.
+## Overcollateralisation in depth
+
+The overcollateralisation mechanism is what makes Byzantine Prime's credit yield low-risk. For a full explanation of how the collateral system works, the liquidation mechanism, and the historical track record, see [Overcollateralisation & liquidation](/documentation/digital-assets-101/overcollateralisation-and-liquidation).
+
+## Smart contracts and vaults
+
+A smart contract is a program stored on a blockchain that runs automatically when certain conditions are met. Once deployed, no one can alter its rules - not even the organisation that wrote it. Every interaction is publicly visible on the blockchain.
+
+Unlike a traditional asset manager who holds your funds and executes instructions on your behalf, a smart contract never takes custody of anything. It only executes the logic it was programmed with - exactly as written, every time, with no human discretion involved.
+
+In Byzantine Prime, Keyrock writes a specific investment strategy into the smart contract based on a strict mandate. Every time a client makes a deposit, this strategy executes automatically: routing funds to the correct lending markets, tracking positions, and crediting returns - all without anyone needing to press a button or make a decision. **If Keyrock or Byzantine went bankrupt tomorrow, the smart contract would continue operating exactly as programmed.**
+
+Byzantine's vault is a specific type of smart contract designed to hold, allocate, and account for deposited assets. It functions like an automated fund: accepting deposits, routing capital according to the programmed strategy, tracking each depositor's share, and handling redemptions. It is built on Morpho V2's architecture - an established, battle-tested foundation - extended with Byzantine's custom risk tooling to implement Keyrock's strategy.
+
+Because smart contracts are immutable once deployed, a bug cannot be patched silently after the fact. Pre-deployment audits by independent security firms are the primary defence. Byzantine's vault has been reviewed by eight independent firms before deployment. For the complete list, see [Security audits](/documentation/asset-protection/security-audits).

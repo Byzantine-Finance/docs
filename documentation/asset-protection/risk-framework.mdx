@@ -1,0 +1,80 @@
+---
+title: "Risk framework"
+description: "Every material risk in Byzantine Prime is mapped to a measurable control."
+---
+
+Risk in Byzantine Prime is not abstract. Every material risk is mapped to a measurable control. Smart-contract and market risk cannot be eliminated entirely, but they can be quantified, insured, and continuously monitored.
+
+<AccordionGroup>
+  <Accordion title="Smart contract risk">
+    **Definition:** A technical vulnerability in the smart contract code that could be exploited.
+
+    **Mitigation:** The vault has undergone seven independent audits by industry-leading security firms:
+
+    - [Zellic](https://github.com/Byzantine-Finance/debt-fund-vault-v2/blob/main/audits/2025-07-15-zellic.pdf)
+    - Spearbit × 2 ([report 1](https://github.com/Byzantine-Finance/credit-vault-v2/blob/main/audits/2025-05-19-spearbit.pdf), [report 2](https://github.com/Byzantine-Finance/credit-vault-v2/blob/main/audits/2025-08-11-spearbit.pdf))
+    - [Blackthorn](https://github.com/Byzantine-Finance/debt-fund-vault-v2/blob/main/audits/2025-09-06-blackthorn.pdf)
+    - [ChainSecurity](https://github.com/Byzantine-Finance/debt-fund-vault-v2/blob/main/audits/2025-09-06-chainsecurity.pdf)
+    - Cantina competition (report to be released)
+
+    All custom adapters have been audited separately by Spearbit. Byzantine also integrates with [Hypernative](https://www.hypernative.io/), a real-time monitoring platform that detects threats and anomalies before they can impact client funds.
+
+    Two live bug bounty programs - each offering up to \$2,500,000 - further incentivise independent security researchers to find and report any remaining vulnerabilities: [Immunefi](https://immunefi.com/bounty/morpho/) and [Cantina](https://cantina.xyz/bounties/35a5f0a1-2ffd-432c-8f3b-77d169add8c3).
+
+    Finally, clients can take out optional [insurance](/documentation/asset-protection/insurance) covering smart contract failure - the ultimate recourse against any code-related loss.
+  </Accordion>
+
+  <Accordion title="Borrower counterparty risk">
+    **Definition:** A borrower fails to repay their loan.
+
+    **Mitigation:** All loans are overcollateralised - borrowers must deposit 120–150% of the loan value in digital assets before they can borrow. If that collateral ratio is breached, the smart contract automatically liquidates the collateral to repay lenders before any loss can occur. There is no reliance on trust, legal recourse, or human intervention.
+
+    Byzantine only uses lending markets with an excellent operating history. On 10 October 2025, Morpho, Aave, and Maker processed over \$400 million in liquidations within a few hours - with no bad debt and no outages.
+
+    The liquidation mechanism is explained in full detail in [Overcollateralisation & liquidation](/documentation/digital-assets-101/overcollateralisation-and-liquidation).
+  </Accordion>
+
+  <Accordion title="Byzantine counterparty risk">
+    **Definition:** An insider at Byzantine corrupts the smart contract or misappropriates funds.
+
+    **Mitigation:** Byzantine has no ability to upgrade the smart contract that administers user funds. Byzantine never touches or routes user funds - client assets go directly from the client's wallet into the lending markets. There is no Byzantine insider risk at the protocol level.
+
+    Byzantine does have the ability to change the asset manager (currently Keyrock), but this is subject to a lengthy timelock - a period during which Byzantine, third-party monitors, and clients can all take action or withdraw before any change takes effect.
+  </Accordion>
+
+  <Accordion title="Keyrock counterparty risk">
+    **Definition:** Keyrock (the strategy manager) becomes insolvent or acts against client interests.
+
+    **Mitigation:** Keyrock has mandated control parameters but no custody of client assets. It cannot unilaterally move funds. All operations - deposits, lending, redemptions, and interest distribution - are executed programmatically by the smart contracts. Even in the case of a Keyrock bankruptcy, the strategy they have programmed continues operating without interruption. The protocol enforces total bankruptcy-remoteness.
+
+    Keyrock's mandate is also strictly defined: assets can only be deployed into Morpho, Aave, and Maker/Sky; only low-risk, highly liquid markets are selected; and complete liquidity must be maintained at all times so clients can always withdraw in full.
+  </Accordion>
+
+  <Accordion title="Lending market counterparty risk (insolvency)">
+    **Definition:** One of the credit marketplaces (Morpho, Aave, Maker) goes bankrupt.
+
+    **Mitigation:** This risk is not operationally relevant. Smart contracts by design fulfil their programmed function indefinitely. If the organisation behind Morpho, Aave, or Maker were to go bankrupt, their deployed smart contracts would continue operating exactly as written. Once deployed, even the organisations that created them cannot alter or shut them down.
+  </Accordion>
+
+  <Accordion title="Lending market counterparty risk (criminal)">
+    **Definition:** An insider at a lending marketplace corrupts their smart contracts to steal funds.
+
+    **Mitigation:** None of the credit marketplaces Byzantine uses have the unilateral right to alter any deployed smart contract code. The contracts are immutable once deployed - this is enforced by the blockchain itself, not by policy.
+  </Accordion>
+
+  <Accordion title="Liquidity risk">
+    **Definition:** A sudden mass-withdrawal event or market stress scenario delays redemptions.
+
+    **Mitigation:** The credit marketplaces Byzantine uses have extensive operating histories and have handled extreme market events without outages. Loans are short-term and callable at any time. Even in the rare case that an underlying market runs into temporary liquidity constraints, its automatic withdrawal queue executes redemptions the moment liquidity becomes available again.
+
+    Keyrock's mandate requires continuous monitoring of portfolio liquidity, with an obligation to exit markets if utilisation becomes high enough to threaten instant full redemptions.
+  </Accordion>
+
+  <Accordion title="Custody risk">
+    **Definition:** Compromise of keys or unauthorised access to client wallets.
+
+    **Mitigation:** This risk exists entirely outside Byzantine's purview. Byzantine Prime allows clients to freely choose how they hold their receipt tokens - the cryptographic keys to their deposited assets. Clients who prefer institutional-grade protection can work with a qualified custodian; such organisations are insured against security breaches.
+
+    For clients using Byzantine's built-in wallet, access is secured by passkeys - device-bound cryptographic credentials that cannot be phished or stolen remotely. See [Understanding passkeys](/documentation/account-management/passkeys) for a full explanation.
+  </Accordion>
+</AccordionGroup>

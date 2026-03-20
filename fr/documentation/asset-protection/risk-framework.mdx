@@ -1,0 +1,80 @@
+---
+title: "Cadre de gestion des risques"
+description: "Chaque risque matériel dans Byzantine Prime est associé à un contrôle mesurable."
+---
+
+Le risque dans Byzantine Prime n'est pas abstrait. Chaque risque matériel est associé à un contrôle mesurable. Le risque lié aux contrats intelligents et le risque de marché ne peuvent pas être entièrement éliminés, mais ils peuvent être quantifiés, assurés et surveillés en continu.
+
+<AccordionGroup>
+  <Accordion title="Risque lié aux contrats intelligents">
+    **Définition :** Une vulnérabilité technique dans le code du contrat intelligent qui pourrait être exploitée.
+
+    **Atténuation :** Le coffre-fort a fait l'objet de sept audits indépendants par des cabinets de sécurité spécialisés :
+
+    - [Zellic](https://github.com/Byzantine-Finance/debt-fund-vault-v2/blob/main/audits/2025-07-15-zellic.pdf)
+    - Spearbit × 2 ([rapport 1](https://github.com/Byzantine-Finance/credit-vault-v2/blob/main/audits/2025-05-19-spearbit.pdf), [rapport 2](https://github.com/Byzantine-Finance/credit-vault-v2/blob/main/audits/2025-08-11-spearbit.pdf))
+    - [Blackthorn](https://github.com/Byzantine-Finance/debt-fund-vault-v2/blob/main/audits/2025-09-06-blackthorn.pdf)
+    - [ChainSecurity](https://github.com/Byzantine-Finance/debt-fund-vault-v2/blob/main/audits/2025-09-06-chainsecurity.pdf)
+    - Compétition Cantina (rapport à paraître)
+
+    Tous les adaptateurs personnalisés ont été audités séparément par Spearbit. Byzantine s'intègre également à [Hypernative](https://www.hypernative.io/), une plateforme de surveillance en temps réel qui détecte les menaces et anomalies avant qu'elles ne puissent affecter les fonds des clients.
+
+    Deux programmes de bug bounty actifs - offrant chacun jusqu'à \$2 500 000 - incitent en outre des chercheurs en sécurité indépendants à trouver et signaler les vulnérabilités restantes : [Immunefi](https://immunefi.com/bounty/morpho/) et [Cantina](https://cantina.xyz/bounties/35a5f0a1-2ffd-432c-8f3b-77d169add8c3).
+
+    Enfin, les clients peuvent souscrire une [assurance](/fr/documentation/asset-protection/insurance) optionnelle couvrant la défaillance des contrats intelligents - le recours ultime contre toute perte liée au code.
+  </Accordion>
+
+  <Accordion title="Risque de contrepartie emprunteur">
+    **Définition :** Un emprunteur ne rembourse pas son prêt.
+
+    **Atténuation :** Tous les prêts sont surcollatéralisés - les emprunteurs doivent déposer 120 à 150 % de la valeur du prêt en actifs numériques avant de pouvoir emprunter. Si ce ratio de collatéral est franchi, le contrat intelligent liquide automatiquement le collatéral pour rembourser les prêteurs avant toute perte. Il n'y a pas de dépendance à la confiance, aux recours juridiques ou à l'intervention humaine.
+
+    Byzantine n'utilise que des marchés de prêt avec un excellent historique opérationnel. Le 10 octobre 2025, Morpho, Aave et Maker ont traité plus de \$400 millions de liquidations en quelques heures - sans mauvaises dettes et sans pannes.
+
+    Le mécanisme de liquidation est expliqué en détail dans [Surcollatéralisation et liquidation](/fr/documentation/digital-assets-101/overcollateralisation-and-liquidation).
+  </Accordion>
+
+  <Accordion title="Risque de contrepartie Byzantine">
+    **Définition :** Un initié de Byzantine corrompt le contrat intelligent ou détourne des fonds.
+
+    **Atténuation :** Byzantine n'a pas la capacité de mettre à jour le contrat intelligent qui administre les fonds des utilisateurs. Byzantine ne touche jamais ni n'achemine les fonds des utilisateurs - les actifs des clients vont directement du portefeuille du client vers les marchés de prêt. Il n'y a pas de risque initié Byzantine au niveau du protocole.
+
+    Byzantine a bien la capacité de changer le gestionnaire d'actifs (actuellement Keyrock), mais cela est soumis à un long délai de blocage (timelock) - une période pendant laquelle Byzantine, des moniteurs tiers et les clients peuvent tous prendre des mesures ou se retirer avant que tout changement ne prenne effet.
+  </Accordion>
+
+  <Accordion title="Risque de contrepartie Keyrock">
+    **Définition :** Keyrock (le gestionnaire de stratégie) devient insolvable ou agit contre les intérêts des clients.
+
+    **Atténuation :** Keyrock dispose de paramètres de contrôle mandatés mais n'a pas la garde des actifs des clients. Il ne peut pas déplacer des fonds unilatéralement. Toutes les opérations - dépôts, prêts, remboursements et distribution des intérêts - sont exécutées de manière programmatique par les contrats intelligents. Même en cas de faillite de Keyrock, la stratégie qu'ils ont programmée continue de fonctionner sans interruption. Le protocole assure une totale étanchéité en cas de faillite.
+
+    Le mandat de Keyrock est également strictement défini : les actifs ne peuvent être déployés que dans Morpho, Aave et Maker/Sky ; seuls les marchés à faible risque et très liquides sont sélectionnés ; et une liquidité complète doit être maintenue à tout moment afin que les clients puissent toujours retirer en totalité.
+  </Accordion>
+
+  <Accordion title="Risque de contrepartie du marché de prêt (insolvabilité)">
+    **Définition :** L'une des places de marché de crédit (Morpho, Aave, Maker) fait faillite.
+
+    **Atténuation :** Ce risque n'est pas opérationnellement pertinent. Les contrats intelligents sont conçus pour remplir leur fonction programmée indéfiniment. Si l'organisation derrière Morpho, Aave ou Maker venait à faire faillite, leurs contrats intelligents déployés continueraient de fonctionner exactement comme prévu. Une fois déployés, même les organisations qui les ont créés ne peuvent pas les modifier ou les fermer.
+  </Accordion>
+
+  <Accordion title="Risque de contrepartie du marché de prêt (criminel)">
+    **Définition :** Un initié d'une place de marché de prêt corrompt leurs contrats intelligents pour voler des fonds.
+
+    **Atténuation :** Aucune des places de marché de crédit utilisées par Byzantine n'a le droit unilatéral de modifier le code d'un contrat intelligent déployé. Les contrats sont immuables une fois déployés - cela est appliqué par la blockchain elle-même, et non par une politique.
+  </Accordion>
+
+  <Accordion title="Risque de liquidité">
+    **Définition :** Un événement de retrait massif soudain ou un scénario de stress de marché retarde les remboursements.
+
+    **Atténuation :** Les places de marché de crédit utilisées par Byzantine ont de longs historiques opérationnels et ont géré des événements de marché extrêmes sans pannes. Les prêts sont à court terme et peuvent être rappelés à tout moment. Même dans le rare cas où un marché sous-jacent rencontre des contraintes de liquidité temporaires, sa file d'attente de retrait automatique exécute les remboursements dès que les liquidités redeviennent disponibles.
+
+    Le mandat de Keyrock exige une surveillance continue de la liquidité du portefeuille, avec l'obligation de sortir des marchés si l'utilisation devient suffisamment élevée pour menacer les remboursements instantanés complets.
+  </Accordion>
+
+  <Accordion title="Risque de garde">
+    **Définition :** Compromission des clés ou accès non autorisé aux portefeuilles des clients.
+
+    **Atténuation :** Ce risque existe entièrement en dehors du domaine de Byzantine. Byzantine Prime permet aux clients de choisir librement comment ils détiennent leurs tokens de reçu - les clés cryptographiques de leurs actifs déposés. Les clients qui préfèrent une protection de niveau institutionnel peuvent travailler avec un dépositaire qualifié ; ces organisations sont assurées contre les violations de sécurité.
+
+    Pour les clients utilisant le portefeuille intégré de Byzantine, l'accès est sécurisé par des passkeys - des identifiants cryptographiques liés à l'appareil qui ne peuvent pas être hameçonnés ni volés à distance. Voir [Comprendre les passkeys](/fr/documentation/account-management/passkeys) pour une explication complète.
+  </Accordion>
+</AccordionGroup>

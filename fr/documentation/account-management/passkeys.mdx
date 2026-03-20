@@ -1,0 +1,58 @@
+---
+title: "Comprendre les passkeys"
+description: "Ce que sont les passkeys, pourquoi Byzantine les utilise et comment ils sécurisent votre compte."
+---
+
+Chaque action qui déplace de l'argent sur Byzantine - dépôts, retraits, invitation de membres d'équipe - nécessite un passkey pour l'autoriser. Cette page explique ce que sont les passkeys et comment ils se comparent aux mots de passe traditionnels.
+
+## Qu'est-ce qu'un passkey ?
+
+Un passkey est une méthode moderne pour prouver votre identité sans mot de passe. Au lieu de taper quelque chose dont vous vous souvenez, vous vous authentifiez en utilisant quelque chose que vous avez déjà : votre appareil.
+
+Lorsque vous créez un passkey, votre appareil (téléphone, ordinateur portable, tablette) génère une paire de clés cryptographiques unique - une clé privée stockée de manière sécurisée sur votre appareil, et une clé publique enregistrée auprès de Byzantine. Lorsque vous avez besoin d'autoriser une action, votre appareil vous demande de confirmer avec votre empreinte digitale, votre reconnaissance faciale ou le code PIN de votre écran. Si confirmé, l'appareil utilise la clé privée pour produire une signature cryptographique qui prouve que l'action est véritablement autorisée par vous.
+
+La clé privée ne quitte jamais votre appareil. Byzantine ne la voit jamais.
+
+## Pourquoi Byzantine utilise-t-il les passkeys pour les transactions ?
+
+Chaque dépôt et retrait sur Byzantine Prime est une transaction blockchain qui doit être signée cryptographiquement. C'est ainsi que la blockchain sait que l'instruction vient de vous - pas de Byzantine, pas d'un tiers, pas de quiconque pourrait avoir accès à votre compte.
+
+Les passkeys gèrent cette signature automatiquement et de manière invisible. Lorsque vous cliquez sur "Retirer" et confirmez avec votre empreinte digitale, votre appareil produit une signature cryptographique qui autorise cette transaction spécifique. C'est ce que signifie pour Byzantine d'être non-custodial : vos fonds ne peuvent se déplacer que lorsque vous signez.
+
+## Comment les utiliser au quotidien ?
+
+En pratique, les passkeys semblent presque invisibles. Lorsque vous avez besoin d'autoriser une action :
+
+1. Cliquez sur le bouton (par exemple "Déposer" ou "Retirer")
+2. Votre navigateur ou appareil affiche une invite vous demandant de confirmer avec Face ID, Touch ID ou le code PIN de votre appareil
+3. Confirmez - l'action est autorisée et se poursuit immédiatement
+
+Il n'y a rien à saisir, aucun code à copier depuis une application, et aucun second appareil requis pour la plupart des actions.
+
+## Passkeys vs mots de passe
+
+| | **Passkeys** | **Mots de passe** |
+|---|---|---|
+| Peut être hameçonné (phishing) | ❌ Non - lié au site spécifique | ✅ Oui - peut être piégé sur de faux sites |
+| Peut être volé lors d'une violation de données | ❌ Non - jamais stocké sur un serveur | ✅ Oui - si le site les stocke de manière non sécurisée |
+| Peut être deviné ou forcé | ❌ Non - aléatoire cryptographiquement | ✅ Oui - surtout les mots de passe faibles |
+| Nécessite de mémoriser quelque chose | ❌ Non | ✅ Oui |
+| Fonctionne avec la biométrie | ✅ Oui | ❌ Non |
+
+L'avantage principal est qu'un passkey est lié à la fois à votre appareil et au site web spécifique. Même si un attaquant crée une fausse version convaincante de la page de connexion de Byzantine, votre passkey ne fonctionnera pas là - il est cryptographiquement lié au vrai domaine. Cela rend les attaques de phishing impossibles pour les actions protégées par passkey.
+
+## Que faire si je perds accès à mon appareil ?
+
+Si vous utilisez un gestionnaire de passkeys qui se synchronise entre les appareils - comme le Trousseau iCloud d'Apple ou le Gestionnaire de mots de passe Google - vos passkeys sont automatiquement disponibles sur tous vos appareils connectés. Perdre un appareil ne vous bloque pas.
+
+Si vos passkeys ne sont pas synchronisés, vous pouvez récupérer l'accès via e-mail. Byzantine prend en charge un flux d'authentification par mot de passe à usage unique (OTP) basé sur l'e-mail qui vous permet de vérifier votre identité et d'enregistrer de nouveaux passkeys sur un nouvel appareil. Contactez [info@byzantine.fi](mailto:info@byzantine.fi) si vous avez besoin d'aide pour la récupération de compte.
+
+<Tip>
+  Nous recommandons de configurer votre passkey sur au moins deux appareils - par exemple, votre ordinateur portable et votre téléphone - afin que la perte d'un appareil n'interrompe jamais votre accès.
+</Tip>
+
+## Passkeys et comptes d'équipe
+
+Lorsque vous invitez un membre de l'équipe sur votre compte, il configure son propre passkey sur son appareil. Cela signifie que l'autorisation de chaque utilisateur est indépendante : un administrateur ne peut pas approuver des transactions au nom d'un autre administrateur. Chaque action est liée à la personne spécifique qui l'effectue.
+
+Pour plus d'informations sur la gestion des membres de l'équipe et des rôles, voir [Utilisateurs et rôles](/fr/users-and-roles).

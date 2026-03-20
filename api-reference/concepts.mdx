@@ -18,14 +18,14 @@ Some of these relate to blockchain technology. Basic knowledge of blockchain wil
 | **Vault**        | Byzantine products, like Byzantine Prime USDC, are smart contracts known as _vaults_. These smart contracts are blockchain-based code that automatically handles all administration work surrounding a user's deposit. These vaults are what make Byzantine's high security and non-custodial nature possible. |
 
 <Info>
-  A `user_id` is tied to a specific email and a specific `integrator_id`. Each email address can only be used once per integrator — attempting to create a second user with the same email will return an error. Refert to [Multi-accounts](/api-reference/multi-accounts) for more details.
+  A `user_id` is tied to a specific email and a specific `integrator_id`. Each email address can only be used once per integrator — attempting to create a second user with the same email will return an error. Refer to [Multi-accounts](/api-reference/multi-accounts) for more details.
 </Info>
 
 ## Wallet authentication
 
 Even if the user accesses the blockchain through an integrator's interface and Byzantine's API, the user is **sole owner and controller** of their assets. Each time a transaction is to be made, the user must themselves approve it with one of the available signature methods.
 
-Without this signature tied to the user's device or the user's identity, nobody could physically make transactions. In this way, user ownership and control are programatically guaranteed.
+Without this signature tied to the user's device or the user's identity, nobody could physically make transactions. In this way, user ownership and control are programmatically guaranteed.
 
 The are two methods of authentication to use the wallet. For more details, see [Authentication methods](/api-reference/authentication-methods).
 

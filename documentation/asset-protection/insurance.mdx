@@ -1,0 +1,48 @@
+---
+title: "Insurance"
+description: "How Byzantine Prime's optional insurance coverage works and what it protects against."
+---
+
+Byzantine Prime offers optional insurance coverage on deposited capital. This is an additional layer of protection on top of the structural safeguards already built into the protocol - overcollateralisation, smart contract audits, and real-time monitoring.
+
+<Info>
+  Insurance is available on the **insured product variants** (marked with ⚡ on the dashboard). These products carry a slightly lower Annual Percentage Yield (APY) than their uninsured equivalents, reflecting the cost of the insurance premium.
+</Info>
+
+## What does the insurance cover?
+
+The insurance policy covers losses arising from **smart contract failure** - specifically, situations where a bug or exploit in the protocol's code causes a loss of funds that could not be prevented by the existing technical safeguards.
+
+This is the primary residual risk in an overcollateralised lending product: not that borrowers default (that is handled by the collateral and liquidation mechanism), but that the code governing the protocol itself contains an unforeseen vulnerability.
+
+## Who provides the insurance?
+
+Byzantine Prime's insurance is provided by **AON**, one of the world's largest insurance and risk management companies. Traditional insurers apply rigorous underwriting before extending coverage to digital asset protocols - verifying audit depth, operating history, and risk controls before agreeing to terms.
+
+## What is not covered?
+
+The insurance policy covers code-level failures. It does not cover:
+
+- Losses arising from collateral value collapse (these are addressed by the overcollateralisation and liquidation mechanism - see [Overcollateralisation & liquidation](/documentation/digital-assets-101/overcollateralisation-and-liquidation))
+- Custody risk from your own wallet being compromised
+- Market risk or general price movements of any asset
+
+## How do I access insured products?
+
+Insured products are available directly from your dashboard. When selecting a product to deposit into, look for the ⚡ symbol next to the product name. Deposits into these products are automatically covered by the insurance policy - there is no separate sign-up or claims registration required on your part.
+
+The premium is deducted as part of the product's fee structure and is already reflected in the displayed APY.
+
+## Insured vs uninsured products
+
+Both product types use identical underlying lending strategies and are secured by the same overcollateralisation mechanism. The only difference is the insurance layer.
+
+| | **Insured ⚡** | **Uninsured** |
+|---|---|---|
+| APY | Slightly lower | Slightly higher |
+| Overcollateralisation | ✅ | ✅ |
+| Smart contract audits | ✅ | ✅ |
+| Real-time monitoring | ✅ | ✅ |
+| AON insurance policy | ✅ | ❌ |
+
+The yield difference between insured and uninsured variants reflects the cost of the premium. Which to choose depends on whether your compliance or risk-management framework requires a formal insurance policy - the underlying lending strategy is identical in both cases.

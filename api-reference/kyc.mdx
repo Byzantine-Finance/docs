@@ -24,7 +24,7 @@ Only the following fields are required to create the account:
 The individual user will receive an `accountId` and a `userId`.
 
 <Warning>
-  Authenticators (passkeys) can only be provided at account creation. They cannot be added later through the update endpoint. If you need to register a user's passkey, include the `authenticators` field in the create call.
+  If you want to register a user's passkey at account creation, include the `authenticators` field in the create call. If no passkey is added at creation, OTP authentication is automatically set up for the user — and OTP will then be required to add a passkey later through a dedicated endpoint.
 </Warning>
 
 ### 2. Complete the application

@@ -2,10 +2,24 @@
 title: "What is a smart contract vault?"
 ---
 
-A smart contract is self-executing code on the blockchain that automates financial transactions.
+## Smart contracts
 
-It removes the need for intermediaries: Once programmed, it runs exactly as written.
+A smart contract is a program stored on a blockchain that runs automatically when certain conditions are met. Once deployed, no one can alter its rules - not even the organisation that wrote it. Every interaction with it is publicly visible on the blockchain.
 
-Smart contract *vaults* are special smart contracts designed for the handling and distribution of assets.
+Unlike a traditional asset manager who holds your funds and executes instructions on your behalf, a smart contract never takes custody of anything. It only executes the logic it was programmed with - exactly as written, every time, with no human discretion involved.
 
-The smart contract vaults used by Byzantine have been [extensively audited by third-party security firms](/documentation/asset-protection/security-audits) to ensure they’re safe before being used in production.
+In Byzantine Prime, Keyrock writes a specific investment strategy into the smart contract based on a strict mandate. Every time a client makes a deposit, this strategy executes automatically: routing funds to the correct lending markets, tracking positions, and crediting returns - all without anyone needing to press a button or make a decision.
+
+This is how Byzantine Prime enforces how deposits, lending, and withdrawals work without relying on intermediaries. **If Keyrock or Byzantine went bankrupt tomorrow, the smart contract would continue operating exactly as programmed.**
+
+## Smart contract vaults
+
+A smart contract vault is a specific type of smart contract designed to hold, allocate, and account for deposited assets. It functions like an automated fund: accepting deposits, routing capital according to the programmed strategy, tracking each depositor's share, and handling redemptions.
+
+Byzantine's vault is built on Morpho V2's architecture - an established, battle-tested foundation - and extended with Byzantine's custom risk tooling to implement Keyrock's strategy.
+
+## Why audits matter
+
+Because smart contracts are immutable once deployed, a bug cannot be patched silently after the fact. Pre-deployment audits by independent security firms are the primary defence. Byzantine's vault has been reviewed by eight independent firms before deployment.
+
+For the complete list of audits and reports, see [Security audits](/documentation/asset-protection/security-audits).

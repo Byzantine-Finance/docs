@@ -1,27 +1,55 @@
 ---
-title: "Deposits and Withdrawals"
+title: "Dépôts et retraits"
 ---
 
-## Deposits in USD
+Byzantine Prime accepte les dépôts en monnaie fiduciaire (EUR et USD) et en stablecoins, et permet des retraits instantanés à tout moment.
 
-Every user is able to deposit fiat USD directly thanks to a digital asset _on-ramping partner._ Reconciliation is handled automatically. 
-After the deposit is initiated, the user is invited to deposit fiat to a dedicated bank account (SEPA or SWIFT based on the currency). The user will be notified when the transfer is completed.
+## Dépôts en monnaie fiduciaire (EUR ou USD)
 
-## Deposits in USDC
+Chaque utilisateur peut déposer directement en EUR ou USD fiduciaires. Un partenaire d'entrée réglementé (Bridge, une société Stripe) crée un compte bancaire unique (IBAN pour EUR via SEPA, numéro de routage pour USD via ACH ou virement) exclusivement pour votre compte. Vous transférez des fonds depuis votre banque comme un virement bancaire standard. Bridge convertit la monnaie fiduciaire en stablecoins (EURC pour les dépôts en EUR, USDC pour les dépôts en USD) et les fonds se déploient automatiquement dans le produit sélectionné.
 
-Advanced users are able to deposit in [stablecoins](/documentation/digital-assets-101/whats-a-stablecoin) directly - digital assets backed 1:1 by real assets (cash or short-term government bonds).
+Vous serez notifié lorsque votre virement arrivera et que le déploiement sera terminé. Pour les délais détaillés par rail de paiement, voir [Délais de transaction](#délais-de-transaction) ci-dessous.
 
-To make such a deposit, users need to have chosen the "Self-managed account" during the onboarding process. For users looking to switch to this account type after onboarding, please get in touch with us: [info@byzantine.fi](mailto:info@byzantine.fi).
+## Dépôts en stablecoins (USDC ou EURC)
 
-## Deposit and withdrawal process
+Les utilisateurs avancés disposant d'un compte auto-géré peuvent déposer des stablecoins directement - en contournant entièrement le service d'entrée fiduciaire. Cela permet un déploiement quasi instantané (en moins de 30 secondes) sans frais de conversion.
 
-We accept both stablecoins and fiat deposits and withdrawals.
+Pour déposer en stablecoins, vous devez avoir sélectionné l'option "Compte auto-géré" lors de l'onboarding. Si vous souhaitez passer à ce type de compte après l'onboarding, contactez [info@byzantine.fi](mailto:info@byzantine.fi).
 
-| Currency | Deposit | Withdrawal |
+## Vue d'ensemble des dépôts et retraits
+
+| Devise | Processus de dépôt | Processus de retrait |
 | --- | --- | --- |
-| Stablecoins | Direct deposit | Direct withdrawal |
-| Fiat | Send fiat to bank account, on-ramp (fiat to stablecoins) then deposit | Withdrawal in stablecoins then off-ramp (stablecoins to fiat)  |
+| Fiduciaire (EUR/USD) | Virement bancaire → conversion d'entrée en stablecoin → déploiement | Retrait du protocole → conversion de sortie en fiduciaire → virement bancaire |
+| Stablecoins (USDC/EURC) | Dépôt direct → déploiement | Retrait direct vers le portefeuille |
 
 <Info>
-  For more technical details, please refer to the [Deposit](/api-reference/deposit-overview) and [Withdrawal](/api-reference/withdrawal-overview) sections in the API documentation.
+  Pour les détails d'intégration technique, consultez les sections [Dépôt](/api-reference/deposit-overview) et [Retrait](/api-reference/withdrawal-overview) dans la documentation API.
 </Info>
+
+## Retraits
+
+Les retraits peuvent être initiés à tout moment - il n'y a pas de périodes de blocage, de fenêtres de remboursement ni de préavis requis. Dans des conditions de marché normales, les retraits en stablecoins se règlent en moins d'une minute. Les retraits en monnaie fiduciaire (conversion des stablecoins en EUR ou USD et envoi sur votre compte bancaire) ajoutent le délai de traitement du service de sortie.
+
+Seuls les utilisateurs Admin peuvent effectuer des retraits. Les utilisateurs en lecture seule peuvent consulter les soldes du compte mais ne peuvent pas déplacer des fonds.
+
+## Liquidité dans les scénarios de stress
+
+Byzantine Prime est conçu pour une liquidité quotidienne avec un règlement on-chain quasi instantané. Même en cas d'urgence, il n'y a aucun obstacle au retrait - les contrats intelligents permettent un remboursement total à tout moment.
+
+Dans le rare scénario où un marché de prêt sous-jacent connaît une utilisation temporairement élevée (ce qui signifie qu'une grande fraction du capital déposé est actuellement empruntée), la file d'attente de retrait automatique du marché traite les remboursements aussi vite que les liquidités deviennent disponibles. Le mandat d'investissement de Keyrock exige une surveillance continue pour éviter les marchés où cela pourrait devenir une contrainte - ils sont tenus de sortir des marchés avant que l'utilisation n'atteigne des niveaux qui retarderaient les remboursements.
+
+## Délais de transaction
+
+Le règlement on-chain de Byzantine Prime est instantané. La conversion des stablecoins en dépôt bancaire ajoute une étape de traitement déterminée par le rail de paiement, et non par Byzantine - le partenaire de sortie intégré (Bridge) gère toute la conversion fiduciaire.
+
+| **Opération** | **Rail de paiement** | **Devise** | **Délai** |
+| --- | --- | --- | --- |
+| <div>**Entrée (on-ramp)**</div> <div>Envoi de monnaie fiduciaire vers un compte bancaire et conversion en USDC/EURC</div> | SEPA | EUR | <div>Instantané : &lt;30 secondes (24h/24 7j/7).</div> <div>Crédit : 1 à 3 jours ouvrés.</div> |
+| | ACH | USD | <div>ACH J+1 : Les fonds arrivent généralement en 1 à 3 jours ouvrés.</div><div>ACH jour même : Arrive le jour même si envoyé avant 9h30, 13h45 ou 15h45 ET.</div> |
+| | Virement | USD | Environ 2 heures après l'envoi. Réception avant 17h00 ET pour un traitement le jour même ; sinon le prochain jour ouvré. |
+| <div>**Sortie (off-ramp)**</div> <div>Envoi de USDC/EURC vers un compte bancaire et conversion en fiduciaire</div> | SEPA | EUR | <div>Instantané : &lt;30 secondes.</div> <div>Crédit : 1 à 3 jours ouvrés.</div> |
+| | ACH | USD | <div>ACH jour même : Jour même si avant 9h30, 13h45 ou 15h45 ET.</div> <div>ACH J+1 : Généralement 1 à 2 jours bancaires.</div> |
+| **Dépôt direct en stablecoins** | - | USDC/EURC | Moins de 30 secondes |
+
+Les liquidités en stablecoins sont toujours disponibles immédiatement - le délai de règlement bancaire est déterminé par le rail de paiement.
