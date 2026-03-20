@@ -1,22 +1,41 @@
 ---
-title: "Security audits"
+title: "Audits de sécurité"
 ---
 
-## Blockchain audits
+Les audits de sécurité indépendants constituent la principale défense contre les risques liés au code dans la finance décentralisée. Contrairement aux logiciels traditionnels, les contrats intelligents sont immuables une fois déployés - les bugs ne peuvent pas être corrigés discrètement après coup.
 
-| **Auditor (with link to report)**                                                                                                                                        | **Completion date** | **Open findings**                                                |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------- | ---------------------------------------------------------------- |
-| [Cantina competition](https://github.com/Byzantine-Finance/credit-vault-v2/blob/main/audits/2025-07-15-competition.pdf)                                                  | Nov 5, 2025         | No critical and high severity findings                           |
-| [**Sherlock**](https://github.com/Byzantine-Finance/credit-vault-v2/blob/main/audits/gates/Vault%20v2%20Gate%20contracts%20-%20Sherlock%20-%20Oct%202025.pdf)            | Oct 17, 2025        | No critical and high severity findings                           |
-| [Spearbit](https://github.com/Byzantine-Finance/credit-vault-v2/blob/main/audits/2025-08-11-spearbit.pdf)                                                                | Oct 13, 2025        | All critical and high severity findings corrected and re-audited |
-| [Spearbit](https://github.com/Byzantine-Finance/credit-vault-v2/blob/main/audits/2025-05-19-spearbit.pdf)                                                                | Oct 13, 2025        | All critical and high severity findings corrected and re-audited |
-| [ChainSecurity](https://github.com/Byzantine-Finance/credit-vault-v2/blob/main/audits/2025-09-15-chainsecurity.pdf)                                                      | Sep 16, 2025        | All critical and high severity findings corrected and re-audited |
-| [Cantina](https://github.com/Byzantine-Finance/credit-vault-v2/blob/main/audits/adapters/CompoundV3%20and%20ERC4626Merkl%20Adapters%20-%20Cantina%20-%20Sept%202025.pdf) | Sep 10, 2025        | All findings corrected and re-audited                            |
-| [Blackthorn](https://github.com/Byzantine-Finance/credit-vault-v2/blob/main/audits/2025-09-15-blackthorn.pdf)                                                            | Aug 20, 2025        | All findings corrected and re-audited                            |
-| [Zellic](https://github.com/Byzantine-Finance/credit-vault-v2/blob/main/audits/2025-07-15-zellic.pdf)                                                                    | May 29, 2025        | All findings corrected and re-audited                            |
+## Ce que vérifie un audit de contrat intelligent
 
-## SOC 2 Type II reports
+Un audit de contrat intelligent est l'équivalent numérique d'une revue de code réalisée par un cabinet de sécurité indépendant. L'auditeur analyse le code du contrat ligne par ligne pour s'assurer qu'il se comporte exactement comme prévu et ne peut pas être exploité. Les vérifications typiques incluent :
 
-Byzantine’s products are operated under the regulatory and operational framework of our strategy manager Keyrock, who is SOC 2 Type II certified by Deloitte. This certification, issued by an independent auditor, verifies that Keyrock maintains the highest standards of security, availability, and confidentiality in managing sensitive financial operations.
+- **Contrôle d'accès :** Vérifier que seules les actions autorisées (dépôts, retraits, mises à jour des paramètres) peuvent être déclenchées, et uniquement par les parties concernées
+- **Exactitude de la logique et des calculs :** S'assurer que les calculs des intérêts, des ratios de collatéral et des liquidations ne peuvent pas provoquer de débordements, sous-dépassements ou résultats non intentionnels
+- **Protection contre la ré-entrance et les exploits :** Confirmer que le code ne peut pas être manipulé via des transactions répétées ou imbriquées - un vecteur d'attaque courant dans les contrats intelligents
+- **Sécurité des mises à jour et des dépendances :** Examiner les appels externes, les intégrations d'oracles et les dépendances de protocole pour détecter les vulnérabilités cachées
 
-In practice, this means that operational processes, internal controls, and data handling are covered by a SOC 2 Type II framework.
+Une fois terminé, l'auditeur publie un rapport résumant toutes les conclusions, les mesures correctives prises et une évaluation finale. Tous les rapports d'audit de Byzantine sont publiquement disponibles.
+
+## Audits blockchain
+
+Le coffre-fort de Byzantine et tous les adaptateurs personnalisés ont été examinés par huit cabinets de sécurité indépendants. Toutes les failles critiques et de haute sévérité ont été corrigées avant le déploiement et confirmées par un re-audit.
+
+| **Auditeur (avec lien vers le rapport)**                                                                                                                                 | **Date**        | **Conclusions ouvertes**                                                 |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------- | ------------------------------------------------------------------------ |
+| [Compétition Cantina](https://github.com/Byzantine-Finance/credit-vault-v2/blob/main/audits/2025-07-15-competition.pdf)                                                  | 5 nov. 2025     | Aucune faille critique ni de haute sévérité                              |
+| [Sherlock](https://github.com/Byzantine-Finance/credit-vault-v2/blob/main/audits/gates/Vault%20v2%20Gate%20contracts%20-%20Sherlock%20-%20Oct%202025.pdf)               | 17 oct. 2025    | Aucune faille critique ni de haute sévérité                              |
+| [Spearbit](https://github.com/Byzantine-Finance/credit-vault-v2/blob/main/audits/2025-08-11-spearbit.pdf)                                                                | 13 oct. 2025    | Toutes les failles critiques et de haute sévérité corrigées et re-auditées |
+| [Spearbit](https://github.com/Byzantine-Finance/credit-vault-v2/blob/main/audits/2025-05-19-spearbit.pdf)                                                                | 13 oct. 2025    | Toutes les failles critiques et de haute sévérité corrigées et re-auditées |
+| [ChainSecurity](https://github.com/Byzantine-Finance/credit-vault-v2/blob/main/audits/2025-09-15-chainsecurity.pdf)                                                      | 16 sept. 2025   | Toutes les failles critiques et de haute sévérité corrigées et re-auditées |
+| [Cantina](https://github.com/Byzantine-Finance/credit-vault-v2/blob/main/audits/adapters/CompoundV3%20and%20ERC4626Merkl%20Adapters%20-%20Cantina%20-%20Sept%202025.pdf) | 10 sept. 2025   | Toutes les conclusions corrigées et re-auditées                          |
+| [Blackthorn](https://github.com/Byzantine-Finance/credit-vault-v2/blob/main/audits/2025-09-15-blackthorn.pdf)                                                            | 20 août 2025    | Toutes les conclusions corrigées et re-auditées                          |
+| [Zellic](https://github.com/Byzantine-Finance/credit-vault-v2/blob/main/audits/2025-07-15-zellic.pdf)                                                                    | 29 mai 2025     | Toutes les conclusions corrigées et re-auditées                          |
+
+## SOC 2 Type II
+
+Les produits de Byzantine opèrent dans le cadre réglementaire et opérationnel de Keyrock, le gestionnaire de stratégie. Keyrock détient la certification SOC 2 Type II délivrée par Deloitte. SOC 2 Type II (Service Organisation Control 2, Type II) est une norme d'audit indépendante qui vérifie qu'une organisation maintient des standards élevés de sécurité, disponibilité et confidentialité dans ses opérations financières sur une période prolongée - et pas seulement à un instant donné.
+
+En pratique, cela signifie que les processus opérationnels, les contrôles internes et les pratiques de traitement des données de Keyrock sont vérifiés par l'un des plus grands auditeurs indépendants au monde.
+
+## Audits des émetteurs de stablecoins
+
+Les stablecoins utilisés par Byzantine Prime (USDC et EURC, tous deux émis par Circle) font l'objet d'audits réguliers des réserves attestés par des cabinets comptables de premier rang. Ces rapports confirment que chaque euro ou dollar numérique en circulation est adossé au moins à 1:1 par des liquidités et des obligations d'État à court terme. Circle publie ces attestations régulièrement sur [circle.com/transparency](https://www.circle.com/transparency).

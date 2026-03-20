@@ -13,8 +13,8 @@ Transactions in Byzantine are always **two-step**: you request a payload or an a
 
 ## Two-step pattern
 
-1. **Prepare** — Call the appropriate “get payload” or “init” endpoint (e.g. get deposit payload, initiate withdrawal). For passkey, they sign the payload in your app.
-2. **Submit** — Call the submit endpoint with the signed payload. Byzantine then broadcasts and executes the transaction (or, for fiat deposits, waits for funds and then executes).
+1. **Request body** — Call the appropriate “get payload” or “init” endpoint (e.g. get deposit payload, initiate withdrawal). For passkey, the user signs the returned payload in your app.
+2. **Submit signed transaction** — Call the submit endpoint with the signed payload. Byzantine then broadcasts and executes the transaction (or, for fiat deposits, waits for funds and then executes).
 
 <Info>
   Transactions go through the following statuses:

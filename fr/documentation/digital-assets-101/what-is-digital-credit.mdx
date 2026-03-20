@@ -1,43 +1,66 @@
 ---
-title: "What exactly is digital credit?"
+title: "Qu'est-ce que le crédit numérique ?"
 ---
 
-Byzantine Prime is built on digital credit: Lending digital euros or dollars (stablecoins) to institutional borrowers through secure, regulated markets.
+Le crédit numérique consiste simplement à prêter des stablecoins contre du collatéral sur la blockchain. Cela fonctionne comme un prêt garanti sur le marché monétaire - mais au lieu de banques ou de dépositaires agissant comme intermédiaires, tout se passe via un code transparent et automatisé appelé contrats intelligents. Cela élimine le risque de contrepartie lié aux institutions traditionnelles. Les contrats intelligents continuent de fonctionner même si l'organisation qui les a créés fait faillite.
 
-These markets are over-collateralised: borrowers must deposit more collateral than they borrow, dramatically reducing counterparty risk.
+Byzantine Prime est construit sur le crédit numérique : les déposants prêtent de l'USDC ou de l'EURC dans des marchés de prêt surcollatéralisé, et perçoivent les intérêts payés par les emprunteurs. La sécurité du capital passe en premier - chaque prêt est garanti par plus de collatéral que le prêt lui-même.
 
-## How it works
+## Comment ça fonctionne
 
-Borrowers must deposit more collateral (capital) than they borrow, keeping the loan over-collateralised and the lender protected. This dramatically reducing counterparty risk. Positions are monitored in real time, and liquidation happens automatically if needed.
+<Steps>
+  <Step title="Dépôt">
+    Les déposants placent des stablecoins dans une plateforme de prêt (comme Morpho ou Aave). Les fonds deviennent disponibles pour l'emprunt.
+  </Step>
+  <Step title="Les emprunteurs contractent des prêts">
+    Les emprunteurs déposent un collatéral valant plus que le montant qu'ils souhaitent emprunter - généralement 120 à 150 % de la valeur du prêt. Seulement alors peuvent-ils puiser dans les liquidités disponibles. Le collatéral est bloqué dans le contrat intelligent pendant la durée du prêt.
+  </Step>
+  <Step title="Les intérêts s'accumulent">
+    Les emprunteurs paient des intérêts en continu. Le taux d'intérêt est fixé algorithmiquement par le Modèle de Taux d'Intérêt (IRM) du marché en fonction de l'offre et de la demande en temps réel - quand une plus grande fraction du pool est empruntée, les taux augmentent ; quand les emprunts sont moins importants, ils diminuent.
+  </Step>
+  <Step title="Les prêteurs perçoivent un rendement">
+    Les intérêts payés par les emprunteurs sont reversés directement aux déposants - dans le cas de Byzantine Prime, c'est vous. Aucun intermédiaire ne prélève de commission ; le contrat intelligent distribue les rendements automatiquement, en temps réel.
+  </Step>
+</Steps>
 
-**Example:** If a borrower wants to borrow 100EUR, they need to deposit 150USD. This way, the lender is protected - the collateral capital is already there.
+## Qui sont les emprunteurs ?
 
-Such transactions happen on large, audited lending platforms like Morpho and Aave - with billions in liquidity and years of reliable performance. The borrowers are mainly institutional traders and market makers who use these funds for short-term liquidity needs.
+Les emprunteurs sont principalement de grands participants institutionnels bien capitalisés :
 
-## Byzantine’s approach
+- **Teneurs de marché** et **fournisseurs de liquidités**, empruntant des stablecoins pour fournir de la liquidité sur les plateformes de trading
+- **Arbitragistes**, utilisant du capital pour exploiter les différences de prix à court terme entre les actifs
+- **Fonds de finance décentralisée (DeFi)** et **opérateurs de staking**, utilisant le crédit en stablecoins pour optimiser leurs positions sur les protocoles
 
-Funds are deployed only across blue-chip, diversified lending markets, with one rule:
+Ces entités sont riches en actifs mais contraintes en liquidités. Un teneur de marché peut détenir une grande position en ETH et avoir besoin de liquidités à court terme en USDC pour remplir une obligation, sans vouloir vendre son ETH. En déposant de l'ETH comme collatéral et en empruntant de l'USDC, il obtient les liquidités dont il a besoin - instantanément, sans paperasse - et paie des intérêts pour cette commodité.
 
-**Capital safety first, yield second.**
+## Pourquoi les emprunteurs paient-ils 8 à 10 % ?
 
-Digital asset lending allows depositors to earn returns on their digital assets by lending them out, similar to how banks pay depositors for holding cash. Instead of leaving assets idle, they are provided to borrowers, and the lender receives compensation in return.
+La prime existe parce que ce type de crédit est réellement précieux pour les emprunteurs. Contrairement aux facilités de crédit traditionnelles qui nécessitent des documents, des vérifications de crédit et des jours pour être arrangées, les positions de crédit numérique peuvent être ouvertes instantanément, à toute heure, depuis n'importe où. Le processus est sans permission - quiconque peut poster le collatéral requis peut emprunter, immédiatement.
 
-#### How it Works
+Cela est comparable au prêt interbancaire en finance traditionnelle, mais plus rapide et plus efficace. Le rendement actuel de 8 à 10 % représente un équilibre stable et durable pour le crédit numérique à faible risque - assez élevé pour compenser le coût d'emprunt, assez bas pour être économiquement attractif pour les emprunteurs disposant de bons collatéraux.
 
-1. **Deposit assets:** Depositors place their digital assets into a lending platform.
-2. **Borrowers access liquidity:** Borrowers use these assets, typically by providing collateral worth more than the loan.
-3. **Earn returns:** In exchange for providing liquidity, lenders receive target daily compensation.
+## Les marchés de prêt utilisés par Byzantine
 
-#### Benefits of Digital Credit
+Byzantine Prime alloue du capital entre Morpho, Aave et Maker/Sky - trois des protocoles de prêt les plus grands et les mieux établis en finance décentralisée.
 
-- No idle capital: Assets generate income instead of sitting unused.
-- Overcollateralization: Borrowers post collateral greater than the loan size, reducing default risk.
-- Stable, predictable yield: Returns come from lending activity, not speculation or incentives.
+**Morpho** est un ensemble de marchés de prêt isolés, chacun associant un actif collatéral à un actif de prêt. Les marchés sont immuables (les règles ne peuvent pas changer après le déploiement), isolés (le risque est contenu dans chaque marché) et sans permission (tout le monde peut participer). Cette prévisibilité et cet isolement font de Morpho un choix particulièrement attractif pour un usage institutionnel.
 
-#### Byzantine Prime’s Approach
+**Aave** et **Maker/Sky** fonctionnent de manière similaire, avec des années d'historique et des milliards de dollars de volume de prêt cumulé. Les trois ont traité avec succès des centaines de millions de dollars de liquidations sans accumuler de mauvaises dettes.
 
-Byzantine Prime builds on this model by offering:
+Le gestionnaire de stratégie de Byzantine, Keyrock, sélectionne uniquement les marchés au sein de ces protocoles qui répondent à des critères stricts de sécurité, de liquidité et d'audit. Le mandat exige que les fonds des clients puissent toujours être entièrement retirés immédiatement - Keyrock doit sortir de tout marché où une utilisation élevée menacerait les remboursements instantanés.
 
-- Exposure only to blue-chip institutional lending protocols selected for security and reliability.
-- Compliance and custody with AMF/MiCA alignment and optional insurance.
-- Operational fit with instant withdrawals, no lockups, and tax reporting reporting via our API.
+## La surcollatéralisation en détail
+
+Le mécanisme de surcollatéralisation est ce qui rend le rendement de crédit de Byzantine Prime à faible risque. Pour une explication complète du fonctionnement du système de collatéral, du mécanisme de liquidation et de l'historique, voir [Surcollatéralisation et liquidation](/fr/documentation/digital-assets-101/overcollateralisation-and-liquidation).
+
+## Contrats intelligents et coffres-forts
+
+Un contrat intelligent est un programme stocké sur une blockchain qui s'exécute automatiquement lorsque certaines conditions sont remplies. Une fois déployé, personne ne peut modifier ses règles - pas même l'organisation qui l'a écrit. Chaque interaction est publiquement visible sur la blockchain.
+
+Contrairement à un gestionnaire d'actifs traditionnel qui détient vos fonds et exécute des instructions pour votre compte, un contrat intelligent ne prend jamais la garde de quoi que ce soit. Il n'exécute que la logique pour laquelle il a été programmé - exactement comme écrit, à chaque fois, sans aucun pouvoir discrétionnaire humain.
+
+Dans Byzantine Prime, Keyrock inscrit une stratégie d'investissement spécifique dans le contrat intelligent sur la base d'un mandat strict. Chaque fois qu'un client effectue un dépôt, cette stratégie s'exécute automatiquement : acheminement des fonds vers les marchés de prêt corrects, suivi des positions et crédit des rendements - sans que personne n'ait besoin d'appuyer sur un bouton ou de prendre une décision. **Si Keyrock ou Byzantine faisait faillite demain, le contrat intelligent continuerait de fonctionner exactement comme programmé.**
+
+Le coffre-fort de Byzantine est un type spécifique de contrat intelligent conçu pour détenir, allouer et comptabiliser les actifs déposés. Il fonctionne comme un fonds automatisé : acceptant les dépôts, acheminant le capital selon la stratégie programmée, suivant la part de chaque déposant et gérant les remboursements. Il est construit sur l'architecture de Morpho V2 - une fondation établie et éprouvée - étendue par les outils de gestion des risques personnalisés de Byzantine pour mettre en oeuvre la stratégie de Keyrock.
+
+Parce que les contrats intelligents sont immuables une fois déployés, un bug ne peut pas être corrigé discrètement après coup. Les audits pré-déploiement par des cabinets de sécurité indépendants sont la principale défense. Le coffre-fort de Byzantine a été examiné par huit cabinets indépendants avant le déploiement. Pour la liste complète, voir [Audits de sécurité](/fr/documentation/asset-protection/security-audits).

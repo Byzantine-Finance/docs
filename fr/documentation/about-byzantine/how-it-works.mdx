@@ -1,0 +1,83 @@
+---
+title: "Comment ça fonctionne"
+description: "Un aperçu étape par étape du flux de vos fonds dans Byzantine Prime."
+---
+
+Byzantine Prime fonctionne comme un instrument de marché monétaire numérique : le capital est prêté contre du collatéral, les intérêts s'accumulent quotidiennement et les actifs sont toujours disponibles pour le retrait. Contrairement aux fonds traditionnels, tout cela se passe automatiquement via un code transparent sur la blockchain - sans intermédiaire détenant votre argent et sans horaires d'ouverture.
+
+## Le flux des fonds
+
+<Steps>
+  <Step title="Création de la stratégie">
+    Avant que des dépôts soient acceptés, Keyrock - le gestionnaire de stratégie réglementé de Byzantine - programme la stratégie d'investissement directement dans le contrat intelligent Byzantine Prime. Cette stratégie définit exactement quels marchés de prêt peuvent recevoir le capital, les ratios prêt-valeur maximaux autorisés, les types de collatéral acceptés et la manière de rééquilibrer. Une fois inscrites, ces règles ne peuvent être modifiées unilatéralement par personne.
+  </Step>
+  <Step title="Dépôt">
+    Vous transférez des fonds sur votre compte unique. Si vous déposez en monnaie fiduciaire (EUR ou USD), un partenaire d'entrée réglementé les convertit en stablecoins (EURC ou USDC - des euros et dollars numériques adossés 1:1 à des réserves réelles). Si vous déposez directement en stablecoins, ils entrent immédiatement.
+  </Step>
+  <Step title="Déploiement automatique">
+    Dans le cadre de la même transaction de dépôt, vos actifs sont acheminés directement vers les marchés de prêt sous-jacents (Morpho, Aave, Maker/Sky) conformément à la stratégie de Keyrock. Le contrat intelligent Byzantine Prime ne détient pas vos actifs - il les achemine automatiquement, agissant comme un registre de fonds automatisé plutôt que comme un dépositaire.
+  </Step>
+  <Step title="Émission de tokens de reçu">
+    Le contrat intelligent vous émet des tokens de reçu représentant votre part du pool - similaires à des parts de fonds. Ces tokens sont détenus dans votre propre portefeuille et constituent la preuve cryptographique de votre propriété. Les audits de sécurité du contrat visent principalement à garantir l'exactitude de cette comptabilité.
+  </Step>
+  <Step title="Les emprunteurs contractent des prêts">
+    Immédiatement après le déploiement, vos actifs deviennent disponibles à l'emprunt sur les marchés de prêt. Les emprunteurs - généralement des teneurs de marché, arbitragistes et fonds institutionnels - déposent un collatéral en actifs numériques valant 120 à 150 % du montant qu'ils souhaitent emprunter, puis puisent dans les liquidités disponibles. Pour en savoir plus sur qui emprunte et pourquoi, voir [Crédit numérique et surcollatéralisation](/fr/documentation/digital-assets-101/what-is-digital-credit).
+  </Step>
+  <Step title="Les intérêts s'accumulent en temps réel">
+    À mesure que les emprunteurs contractent des prêts, ils paient des intérêts en continu. Les taux d'intérêt sont fixés algorithmiquement par chaque marché en fonction de l'offre et de la demande - quand une plus grande fraction du pool est empruntée, les taux augmentent ; quand les emprunts sont moins importants, ils diminuent. Ces intérêts sont reversés directement aux déposants et crédités sur votre compte en temps réel, toutes les quelques secondes.
+  </Step>
+  <Step title="Retrait">
+    Vous pouvez retirer à tout moment. Le contrat intelligent dénoue votre part des positions de prêt et retourne les stablecoins dans votre portefeuille, le tout en moins d'une minute dans des conditions normales. Votre dépôt initial augmenté de tous les intérêts cumulés est disponible immédiatement, sans blocage ni fenêtre de remboursement.
+  </Step>
+</Steps>
+
+## Qui contrôle quoi
+
+Byzantine Prime est structuré de sorte qu'aucune partie - ni Byzantine, ni Keyrock, ni aucun emprunteur - n'a accès unilatéral à vos fonds.
+
+<Columns cols={2}>
+  <Card title="Vous (l'investisseur)" icon="user-tie" iconType="solid" color="#cd55b7">
+    **Rôle :** Apporter du capital et retirer à la demande
+
+    **Contrôle :** Peut déposer et retirer vos propres fonds à tout moment
+
+    **Protection :** Aucun accès aux positions des autres investisseurs ; fonds détenus dans votre propre portefeuille
+  </Card>
+  <Card title="Le protocole Byzantine Prime" icon="database" iconType="solid" color="#cd55b7">
+    **Rôle :** Exécute la stratégie automatiquement
+
+    **Contrôle :** Ne peut pas déplacer des fonds en dehors des marchés de prêt pré-approuvés
+
+    **Protection :** Les règles sont immuables une fois déployées - même Byzantine ne peut pas les modifier
+  </Card>
+  <Card title="Keyrock (gestionnaire de stratégie)" icon="globe" iconType="solid" color="#cd55b7">
+    **Rôle :** Définit et maintient la stratégie d'investissement
+
+    **Contrôle :** Aucun accès direct aux fonds des investisseurs ; peut uniquement ajuster les paramètres de stratégie dans le cadre du mandat
+
+    **Protection :** La logique du protocole empêche toute action en dehors de l'univers de marchés autorisé
+  </Card>
+  <Card title="Marchés de prêt sous-jacents" icon="store" iconType="solid" color="#cd55b7">
+    **Rôle :** Mettre en relation emprunteurs et prêteurs ; gérer le collatéral et les liquidations
+
+    **Contrôle :** Aucun accès direct aux fonds des investisseurs
+
+    **Protection :** Collatéralisation appliquée par leur propre logique de protocole, indépendamment de Byzantine
+  </Card>
+</Columns>
+
+## Comment les actifs sont ségrégués
+
+Vos actifs ne sont jamais mis en commun avec des déposants non vérifiés. Les tokens de reçu représentant votre position sont détenus exclusivement dans votre propre portefeuille - soit un portefeuille auto-géré que vous avez connecté, soit le portefeuille que Byzantine a créé pour vous lors de l'onboarding. À aucun moment les fonds ne sont détenus sur un bilan d'entreprise ou exposés au pouvoir discrétionnaire d'une quelconque partie.
+
+Tous les soldes, positions et flux d'intérêts sont publiquement auditables sur la blockchain à tout moment, ce qui vous donne l'équivalent d'une preuve de réserves en temps réel. Vous pouvez vérifier votre solde directement via le tableau de bord Byzantine ou via l'API.
+
+## Ce qui peut déplacer vos actifs
+
+Les fonds ne peuvent se déplacer que de trois façons, toutes régies par une logique de contrat intelligent prédéfinie et immuable :
+
+1. **Votre dépôt ou retrait** - initié par vous, autorisé par votre signature passkey
+2. **Distribution automatique des intérêts** - crédités directement sur votre position par le contrat intelligent
+3. **Rééquilibrage de la stratégie** - Keyrock déplaçant le capital entre des marchés de prêt pré-approuvés, dans les paramètres stricts de son mandat
+
+Rien d'autre ne peut déplacer vos actifs. Il n'y a pas de dérogations d'urgence, pas de clés administrateur déverrouillant des fonds, et aucun pouvoir discrétionnaire accordé à quelque partie que ce soit.

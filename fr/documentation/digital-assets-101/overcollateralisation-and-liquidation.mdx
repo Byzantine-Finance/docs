@@ -1,0 +1,60 @@
+---
+title: "Surcollateralisation et liquidation"
+description: "Comment le système de collatéral protège les déposants et ce qui se passe lorsqu'il est mis à l'épreuve."
+---
+
+La surcollateralisation est le mécanisme central qui fait de Byzantine Prime un produit de crédit à faible risque. C'est ce qui distingue le crédit numérique du prêt non garanti - et pourquoi les déposants n'ont aucune exposition directe au risque de crédit des emprunteurs individuels.
+
+## Qu'est-ce que la surcollateralisation ?
+
+Pour emprunter l'équivalent de \$1 en stablecoins via un marché de prêt, un emprunteur doit d'abord bloquer entre \$1,20 et \$1,50 en actifs numériques comme garantie. Le prêt ne peut être accordé que si ce collatéral excédentaire est en place et vérifiable on-chain.
+
+**Exemple :** Un market maker souhaite emprunter \$100 000 en USDC (un stablecoin libellé en USD). Avant que le prêt soit accordé, il dépose \$150 000 en ETH dans le contrat intelligent. Le contrat intelligent bloque automatiquement ce collatéral - il ne peut pas être déplacé ni retiré tant que le prêt n'est pas remboursé. Si l'emprunteur disparaît ou fait défaut, le collatéral est déjà là pour rembourser les prêteurs.
+
+Cette exigence de collatéral excédentaire est ce qui rend le système solvable par conception, sans reposer sur la confiance, les vérifications de crédit ou les recours juridiques.
+
+## Pourquoi les emprunteurs acceptent-ils ces conditions ?
+
+Les prêts surcollateralisés sont très utiles pour les emprunteurs disposant d'actifs importants qui ont besoin de liquidités sans vendre. Les cas d'usage courants incluent :
+
+- Un market maker détenant une grande position en ETH qui a besoin de liquidités USDC à court terme pour honorer une obligation - il ne veut pas vendre son ETH, il emprunte donc dessus
+- Un trader d'arbitrage qui a besoin de capitaux rapidement pour capturer une différence de prix entre des plateformes
+- Un fonds qui souhaite couvrir son exposition aux devises (par exemple, passer de positions libellées en EURC à des positions en USDC) sans liquider son portefeuille
+
+Pour ces participants, l'accès à des liquidités instantanées et collatéralisées vaut largement 8 à 10 % par an. Le processus prend quelques secondes, ne nécessite aucun formulaire, et peut être dénouré à tout moment. Pour plus de contexte, consultez [Crédit numérique](/fr/documentation/digital-assets-101/what-is-digital-credit).
+
+## Quels collatéraux sont acceptés ?
+
+Byzantine Prime n'opère que dans des marchés utilisant des collatéraux de haute qualité et très liquides. Actuellement, les types de collatéraux acceptés incluent l'ETH, le stETH (ETH staké) et le WBTC (Bitcoin enveloppé). Ces actifs ont été choisis car :
+
+- Ils font partie des actifs numériques les plus liquides qui existent, avec une profondeur de marché suffisante pour absorber de grandes ventes même en période de stress
+- Leur volatilité, bien que supérieure à celle des monnaies fiduciaires, est bien comprise et gérable dans le cadre de ratios de collatéral conservateurs
+
+Le choix de la qualité du collatéral fait partie du mandat d'investissement de Keyrock. Les marchés utilisant des collatéraux de faible qualité ou peu liquides ne sont jamais sélectionnés, quel que soit le rendement qu'ils proposent.
+
+## Quel est le ratio de collatéral et quand est-il déclenché ?
+
+Chaque marché de prêt dispose d'un seuil de loan-to-value défini - le ratio maximum entre la valeur du prêt et la valeur du collatéral. Pour les marchés qu'utilise Byzantine, ce seuil est généralement d'environ 83 % (ce qui signifie que le collatéral doit rester d'une valeur d'au moins 1,20× le prêt). Si la valeur du collatéral baisse et que le ratio s'approche de ce seuil, le contrat intelligent déclenche automatiquement la liquidation.
+
+<Info>
+  Le ratio de collatéral est surveillé en continu - à chaque bloc de la blockchain, qui est émis environ toutes les 12 secondes sur Ethereum. Il n'y a aucun délai, aucune décision humaine, et aucune période de préavis. Si le seuil est franchi, la liquidation commence immédiatement.
+</Info>
+
+## Comment fonctionne la liquidation ?
+
+Lorsque la valeur du collatéral d'un emprunteur se rapproche trop du montant du prêt, le contrat intelligent déclenche une enchère publique ouverte :
+
+1. Le contrat identifie la position sous-collatéralisée et la marque pour liquidation
+2. Des liquidateurs - des participants indépendants, généralement des market makers professionnels et des bots d'arbitrage - se font concurrence pour rembourser une partie ou la totalité de la dette de l'emprunteur
+3. En échange, ils reçoivent le collatéral de l'emprunteur avec une légère décote de 1 à 5 %, qui constitue leur incitation à agir rapidement
+4. L'enchère se résout en quelques secondes, la dette est effacée, et les prêteurs sont remboursés
+
+Ce mécanisme est ouvert, transparent et sans autorisation - n'importe qui peut agir en tant que liquidateur, ce qui signifie que la concurrence est intense et que les liquidations se font aussi vite que le marché le permet.
+
+## Cela a-t-il déjà échoué ?
+
+Les protocoles qu'utilise Byzantine - Morpho, Aave et Maker/Sky - ont collectivement traité des milliards de dollars de liquidations sur plusieurs années sans jamais accumuler de mauvaises créances. Un test de stress notable a eu lieu le 10 octobre 2025, lorsque ces trois protocoles ont traité plus de \$400 millions de liquidations en quelques heures lors d'un mouvement de marché brusque. Aucune mauvaise créance n'a eu lieu. Aucune interruption de service. Les retraits ont continué normalement tout au long.
+
+En théorie, des mauvaises créances pourraient survenir si les prix des collatéraux s'effondraient plus vite que le mécanisme de liquidation ne pouvait réagir - par exemple, lors d'un flash crash extrême sans liquidité de marché pour absorber les ventes. En pratique, la combinaison de ratios de collatéral conservateurs, d'actifs collatéraux de premier ordre, de vastes réseaux de liquidateurs et de flux de prix en temps réel (fournis par des oracles décentralisés comme Chainlink, mis à jour toutes les quelques secondes) rend ce scénario extrêmement improbable. Même dans les pires scénarios historiques, les pertes pour les prêteurs ont été mesurées en fractions de pourcent.
+
+Pour les clients qui souhaitent une couche de protection supplémentaire au-delà de ces garanties structurelles, Byzantine propose une [police d'assurance](/fr/documentation/asset-protection/insurance) optionnelle couvrant les défaillances de contrats intelligents.

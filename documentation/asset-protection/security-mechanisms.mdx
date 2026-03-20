@@ -2,21 +2,52 @@
 title: "Security mechanisms"
 ---
 
-At Byzantine, safety is our top priority:
+Byzantine Prime's security is built in layers - each one independently limiting what any single party can do with client funds.
 
-- All smart contracts used in this strategy are [audited](/documentation/asset-protection/security-audits) and battle-tested extensively.
-- Byzantine’s vault is built on Morpho V2’s audited architecture, inheriting its security guarantees and further strengthened by Byzantine’s custom risk tooling.
-- The capital is held in a vault that has been [audited](/documentation/asset-protection/security-audits) by seven independent security firms.
-- In addition, Byzantine integrates with [Hypernative](https://www.hypernative.io/), a real-time DeFi risk monitoring platform that continuously detects threats and anomalies, helping to prevent exploits before they impact user funds.
-- Additionally, two live bug bounty programs are in place - see below.
+## Non-custodial architecture
 
-Byzantine Finance never controls your assets. They are held in an account exclusively controlled by you.
+Byzantine Finance never controls your assets. Funds are held in a smart contract vault that is exclusively controlled by you through your passkey. Byzantine cannot move, freeze, or access your funds without your explicit cryptographic authorisation. For more on passkeys and how they work, see [Understanding passkeys](/documentation/account-management/passkeys).
 
-## Bug bounties
+## Audited smart contracts
 
-Bug bounties are monetary rewards for any hackers that identify vulnerabilities and share them with the project team.
+Byzantine's vault is built on Morpho V2's architecture and further strengthened by Byzantine's custom risk tooling. The complete codebase - including all custom adapters - has been independently reviewed by eight security firms. All critical and high-severity findings identified during testing were remediated before deployment.
 
-| **Bug bounty host (with link)**                                              | **Prize money** |
+For the full audit table and reports, see [Security audits](/documentation/asset-protection/security-audits).
+
+## Bug bounty programmes
+
+Two live bug bounty programmes incentivise independent security researchers to find and responsibly disclose any remaining vulnerabilities. Each programme offers up to \$2,500,000:
+
+| **Programme** | **Prize money** |
 | ---------------------------------------------------------------------------- | --------------- |
-| [ImmuneFi](https://immunefi.com/bug-bounty/morpho/information/)              | \$2 500 000     |
-| [Cantina](https://cantina.xyz/bounties/35a5f0a1-2ffd-432c-8f3b-77d169add8c3) | \$2 500 000     |
+| [Immunefi](https://immunefi.com/bug-bounty/morpho/information/)              | \$2,500,000      |
+| [Cantina](https://cantina.xyz/bounties/35a5f0a1-2ffd-432c-8f3b-77d169add8c3) | \$2,500,000     |
+
+Teams that are uncertain about their code don't offer \$2.5 million for someone to find a bug.
+
+## Real-time monitoring with Hypernative
+
+Byzantine integrates with [Hypernative](https://www.hypernative.io/), a real-time threat detection platform used by leading decentralised finance (DeFi) protocols and institutions. Hypernative monitors all deployed contracts and protocol interactions continuously, with triggers including:
+
+- High liquidity utilisation in an underlying lending market
+- Unusually high liquidation volume in an underlying protocol
+- Large or unusual asset movements within a market
+- Suspected attack patterns in newly deployed on-chain code
+
+In most cases, Hypernative notifies Byzantine and Keyrock of any irregularity. In rare, urgent scenarios, Hypernative has the power to trigger an emergency function that withdraws funds from an underlying lending market into the safety of the Byzantine main vault before any exploit can propagate.
+
+## Where your stablecoins are held
+
+Your stablecoins are held on-chain within Byzantine Prime's smart contracts and, when deployed, within the lending markets integrated into the protocol (Aave, Morpho, Maker/Sky). These contracts are non-custodial - no intermediary has discretionary access. Each depositor's position is fully traceable, and total on-chain balances can be verified by anyone at any time.
+
+When you withdraw, the contracts unwind the relevant share of lending positions and transfer stablecoins directly to your wallet.
+
+## Immutability and upgrade controls
+
+Byzantine does not have the ability to upgrade the smart contract that administers user funds. This means no one - including Byzantine - can change the rules governing how your assets are held or deployed, without going through a publicly visible process with a lengthy timelock that gives clients time to withdraw.
+
+Any protocol upgrade or dependency change automatically triggers a new independent audit before redeployment.
+
+## Insurance
+
+For clients who want an additional layer of protection on top of these technical safeguards, Byzantine Prime offers optional institutional insurance through AON, covering losses from smart contract failure. See [Insurance](/documentation/asset-protection/insurance) for full details.

@@ -1,13 +1,57 @@
 ---
-title: "Byzantine Prime - product details"
+title: "Byzantine Prime - détails du produit"
 ---
 
-Byzantine Prime is a digital credit product whose strategy is curated by Keyrock Curation Services, a regulated Digital Asset Service provider.
+Byzantine Prime est un produit de crédit numérique dont la stratégie est gérée par Keyrock, un Prestataire de Services sur Actifs Numériques (PSAN) réglementé.
 
-| **Byzantine Prime**        |                                                                                            |
-| -------------------------- | ------------------------------------------------------------------------------------------ |
-| **Supported assets**       | EUR or USD                                                                                 |
-| **Base & reward currency** | USDC, a USD-pegged [stablecoin](/documentation/digital-assets-101/whats-a-stablecoin).     |
-| **Asset split**            | Assets are allocated to blue-chip lending protocols: Morpho, Aave, Maker/Sky, and Compound |
-| **Returns distribution**   | Returns are earned daily in real-time.                                                     |
-| **Liquidity**              | 24/7 access; withdraw anytime.                                                             |
+| **Byzantine Prime**              |                                                                                            |
+| -------------------------------- | ------------------------------------------------------------------------------------------ |
+| **Actifs acceptés**              | EUR ou USD                                                                                 |
+| **Devise de base et de rendement** | USDC (indexé sur l'USD) ou EURC (indexé sur l'EUR) - [stablecoins](/fr/documentation/digital-assets-101/whats-a-stablecoin) émis par Circle, adossés 1:1 à des liquidités et des obligations d'État à court terme |
+| **Répartition des actifs**       | Les actifs sont répartis entre des protocoles de prêt de premier ordre : Morpho, Aave, Maker/Sky et Compound |
+| **Distribution des rendements**  | Les rendements s'accumulent en temps réel et sont crédités quotidiennement sur votre solde |
+| **Liquidité**                    | Accès 24h/24 7j/7 ; retrait à tout moment, sans période de blocage                        |
+
+## Comment les rendements sont générés
+
+Les rendements proviennent entièrement de l'activité de prêt, non de la spéculation ou du trading. Byzantine Prime dépose du capital dans des marchés de prêt surcollatéralisé où des emprunteurs institutionnels - teneurs de marché, arbitragistes et fonds - paient des intérêts en échange de liquidités à court terme. Ces intérêts sont reversés directement aux déposants.
+
+Chaque prêt dans ces marchés est garanti par plus de collatéral que la valeur du prêt (généralement 120 à 150 %). Si la valeur du collatéral d'un emprunteur tombe trop près de son prêt, le contrat intelligent liquide automatiquement le collatéral pour rembourser les prêteurs avant toute perte. Les déposants n'ont aucune exposition directe aux emprunteurs individuels. Pour une explication complète, voir [Surcollatéralisation et liquidation](/fr/documentation/digital-assets-101/overcollateralisation-and-liquidation).
+
+## Le rendement cible
+
+Byzantine Prime cible le taux des fonds fédéraux (pour les produits USD) ou le taux de la Banque centrale européenne (pour les produits EUR) plus 400 points de base (0,4 %). Aux taux actuels, cela représente environ 8 % par an.
+
+Cet écart existe parce que le capital sur les marchés de prêt numérique est encore plus rare par rapport à la demande des emprunteurs que sur les marchés monétaires traditionnels. Les emprunteurs institutionnels - notamment ceux utilisant des stratégies market-neutral - sont prêts à payer des taux sensiblement plus élevés pour des liquidités instantanées et entièrement collatéralisées. Parce que les rendements sont fixés algorithmiquement par l'utilisation (quelle fraction du pool est empruntée) plutôt que par le pouvoir discrétionnaire d'un gérant de fonds, cette prime est restée structurellement stable dans le temps.
+
+## Ce que signifie le "taux de base"
+
+Le "Base" dans "Base + 400 pdb" désigne le taux des fonds fédéraux pour les produits USD et le taux de la Banque centrale européenne pour les produits EUR. Il est utilisé uniquement comme référence - Byzantine Prime ne détient pas de bons du Trésor ni d'instruments de finance traditionnelle. À mesure que les taux mondiaux évoluent, les taux de prêt numérique les suivent, avec l'écart de 400 points de base lié à l'utilisation qui persiste en fonction de la demande des emprunteurs.
+
+## Devise et couverture
+
+Les dépôts et les rendements sont libellés en stablecoins - USDC pour les produits USD et EURC pour les produits EUR. Au moment du retrait, votre dépôt initial et les intérêts cumulés sont disponibles dans le même stablecoin, prêts à être convertis en monnaie fiduciaire via le service de sortie intégré.
+
+Pour les produits EUR, le risque de change EUR/USD est entièrement couvert - vous n'êtes pas exposé aux fluctuations de change entre votre dépôt en EUR et les marchés de prêt libellés en USDC sous-jacents.
+
+## Produits assurés et non assurés
+
+Byzantine Prime propose deux variantes de chaque produit. Les deux utilisent la même stratégie de prêt et les mêmes protections de surcollatéralisation. Les variantes assurées (marquées ⚡) comportent une couche supplémentaire d'assurance institutionnelle fournie par AON, couvrant les pertes liées à une défaillance du contrat intelligent.
+
+| | **Assuré ⚡** | **Non assuré** |
+|---|---|---|
+| APY | Légèrement inférieur | Légèrement supérieur |
+| Surcollatéralisation | ✅ | ✅ |
+| Audits des contrats intelligents | ✅ | ✅ |
+| Surveillance en temps réel | ✅ | ✅ |
+| Police d'assurance AON | ✅ | ❌ |
+
+Pour plus d'informations sur la police d'assurance, voir [Assurance](/fr/documentation/asset-protection/insurance).
+
+## Frais
+
+**Commission de performance :** Byzantine prélève **10 % des rendements**, calculés quotidiennement et déduits directement des intérêts perçus. Les soldes de compte sont toujours affichés nets de tous frais - le TAP (Taux Annuel en Pourcentage) affiché sur votre tableau de bord est ce que vous percevez réellement. Cette commission unique couvre la technologie et les opérations de Byzantine, les frais de gestion d'actifs de Keyrock, les coûts de garde et toutes les transactions de rééquilibrage internes. Il n'y a pas de frais de gestion, de frais d'entrée ni de frais de sortie.
+
+**Frais de conversion fiduciaire :** Pour les dépôts et retraits en monnaie fiduciaire (EUR ou USD), des **frais de conversion de 0,2 %** s'appliquent aux transactions d'entrée et de sortie, reflétant le coût facturé par Bridge, le partenaire de paiement réglementé. Les dépôts et retraits en stablecoins ne sont pas soumis à ces frais.
+
+En pratique : si les marchés de prêt génèrent un rendement annuel brut de 8,9 %, vous percevez environ 8 % (90 % de 8,9 %). Byzantine ne gagne que lorsque vous gagnez.
