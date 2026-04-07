@@ -50,7 +50,8 @@
                   "get-to-know-your-dashboard",
                   "making-your-first-deposit",
                   "users-and-roles",
-                  "withdrawals"
+                  "withdrawals",
+                  "passkey-reset"
                 ]
               },
               {
@@ -305,7 +306,8 @@
                   "fr/get-to-know-your-dashboard",
                   "fr/making-your-first-deposit",
                   "fr/users-and-roles",
-                  "fr/withdrawals"
+                  "fr/withdrawals",
+                  "fr/passkey-reset"
                 ]
               },
               {
