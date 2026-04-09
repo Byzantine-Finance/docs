@@ -51,7 +51,8 @@
                   "making-your-first-deposit",
                   "users-and-roles",
                   "withdrawals",
-                  "passkey-reset"
+                  "passkey-reset",
+                  "for-wealth-managers"
                 ]
               },
               {
@@ -63,8 +64,7 @@
                   "deposits-and-withdrawals",
                   "currency-and-yield",
                   "security-and-compliance",
-                  "technical-questions",
-                  "for-wealth-managers"
+                  "technical-questions"
                 ]
               }
             ]
@@ -308,7 +308,8 @@
                   "fr/making-your-first-deposit",
                   "fr/users-and-roles",
                   "fr/withdrawals",
-                  "fr/passkey-reset"
+                  "fr/passkey-reset",
+                  "fr/for-wealth-managers"
                 ]
               },
               {
@@ -320,8 +321,7 @@
                   "fr/deposits-and-withdrawals",
                   "fr/currency-and-yield",
                   "fr/security-and-compliance",
-                  "fr/technical-questions",
-                  "fr/for-wealth-managers"
+                  "fr/technical-questions"
                 ]
               }
             ]
