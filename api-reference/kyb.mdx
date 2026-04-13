@@ -5,38 +5,98 @@ title: "Legal entities - KYB"
 Creating an account for an entity means submitting company information and company documents for KYB, as well as beneficiaries and details about them for KYC. This is a regulatory obligation.
 
 <Info>
-  Before creating the entity account, the user must accept the required terms. See [Terms and Conditions](/api-reference/terms-and-conditions).
+  Before creating the entity account, the user must accept the required terms.
+  See [Terms and Conditions](/api-reference/terms-and-conditions).
 </Info>
 
 ### 1. Create the entity account
 
 The creation of the entity account is done by calling this API endpoint:
 
-<Card icon="plus" horizontal href="/api-reference/user-accounts/create-a-byzantine-entity" title="Create an entity">
-  
-</Card>
+<Card
+  icon="plus"
+  horizontal
+  href="/api-reference/customer-management/create-entity-account"
+  title="Create an entity account"
+></Card>
 
-The following information needs to be provided:
+Only the following information needs to be provided:
 
-- Company details
-- Personal data about every ultimate beneficial owner (UBO)/representative of the company
-- Company documents. See the [list of required documents](/api-reference/accepted-documents)
-- (Optional) A list of `authenticators` to register a beneficiary's passkey to their device
+- `businessLegalName`
+- `rootUsers`
+- `byzantineTermsSignedAt`
 
 The entity will receive an `account_id` and an `entity_id`. Every beneficiary/representative of the entity will have a `user_id`.
 
-<Info>
-  When creating an entity, the user creating it **must** add themselves as one of the beneficiaries/representatives.
+<Warning>
+  If you want to register a user's passkey at account creation, include the
+  `authenticators` field in the create call. If no passkey is added at creation,
+  OTP authentication is automatically set up for the user — and OTP will then be
+  required to add a passkey later through a dedicated endpoint.
+</Warning>
 
-  Please refer to the related endpoint page for more details about the requirements.
+<Info>
+  When creating an entity, the user creating it **must** add themselves as one
+  of the beneficiaries/representatives. Please refer to the related endpoint
+  page for more details about the requirements.
 </Info>
 
-### 2. KYB verification
+### 2. Complete the company information
+
+Once the account is created, use the update endpoint to progressively provide or amend the company information and documents needed for KYB verification:
+
+<Card icon="arrow-right" horizontal href="/api-reference/customer-management/update-an-entity-accounts-company-details" title="Update an entity account">
+
+</Card>
+
+The following information can be submitted via one or multiple update calls:
+
+- Company details (legal name, trade name, business type, address, etc.) in `entityInfo`
+- Company documents in `entityDocuments`. See the [list of required documents](/api-reference/accepted-documents)
+- Personal data about every ultimate beneficial owner (UBO)/representative of the company in `associatedPersons`
+
+<Info>
+  The response of both the create and update endpoints will include a
+  `missingDocuments` field listing any remaining required documents, and a
+  `missingCompanyData` field listing any remaining required company information.
+</Info>
+
+### 3. Complete the beneficiaries/representatives information
+
+Every UBO and representative of the entity must be registered and have their identity verified. Use the dedicated associated-person endpoints to add them to the account and to progressively provide their personal information and ID documents.
+
+To add a new beneficiary/representative to the entity, call:
+
+<Card icon="plus" horizontal href="/api-reference/customer-management/add-an-associated-person-to-an-entity-account" title="Add an associated person">
+
+</Card>
+
+The request requires:
+
+- `accountId` — the entity's account ID
+- `associatedPerson.userInfo` — personal data (first name, last name, email, date of birth, nationality, address, phone number, etc.)
+- `associatedPerson.beneficiaryDetails` — including `beneficiaryType` (UBO, representative, or both), `ownershipPercentage` (required for UBOs) and `title` (required for representatives)
+- `associatedPerson.verificationDocuments` — ID documents and proof of address. See the [list of accepted documents](/api-reference/accepted-documents)
+
+A successful call returns a `beneficiaryId` and a `missingDocuments` field listing any remaining required documents that have not yet been submitted.
+
+To amend an existing beneficiary/representative's details or submit additional documents, call:
+
+<Card icon="arrow-right" horizontal href="/api-reference/customer-management/update-an-associated-persons-details" title="Update an associated person">
+
+</Card>
+
+Only the `beneficiaryId` is required — any subset of `userInfo`, `beneficiaryDetails`, or `verificationDocuments` can be provided, and only the fields included will be updated.
+
+<Info>
+  Update endpoints can be called as many times as needed to complete the
+  company/beneficiary's information.
+</Info>
+
+### 4. KYB verification
 
 Byzantine and Bridge will verify the entity's existence, ownership structure, and the identities of all UBOs and representatives of the company. Both Bridge and Byzantine may ask for additional details during this process.
 
 Throughout the KYB process, the root user receives email notifications at every stage with updates on their status.
 
-<Info>
-  This process usually takes 24-48 hours.
-</Info>
+<Info>This process usually takes 24-48 hours.</Info>

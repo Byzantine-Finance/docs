@@ -35,4 +35,4 @@ When the stablecoins arrive in the secure wallet, the **exact** `amount` specifi
 If a user sends fiat directly to their dedicated bank account **without first initiating a deposit on your application**, the full amount will be credited to their idle balance. In practice, this means the funds remain in the user's secure wallet and are not allocated to any specific vault until you move them.
 ## Depositing idle balance
 
-To deposit idle balance into the vault, users must explicitly call the [deposit endpoint](/api-reference/deposit) with the exact idle balance amount. This ensures the wallet maintains zero idle balance if desired.
+To deposit idle balance into the vault, users must explicitly call the [deposit endpoint](/api-reference/transactions/get-deposit-payload) with the exact idle balance amount. This ensures the wallet maintains zero idle balance if desired.

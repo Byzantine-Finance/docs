@@ -34,7 +34,7 @@ flowchart LR
   title="Get invite users payload"
   icon="plus"
   horizontal
-  href="/api-reference/user-management/get-invite-users-payload"
+  href="/api-reference/account-management/step-1-get-invite-users-payload-passkey"
 ></Card>
 
 2. **Submit signed invite-users payload** — Then call the below endpoint with the signed payload to execute the invitations:
@@ -43,7 +43,7 @@ flowchart LR
   title="Invite users to a account"
   icon="plus"
   horizontal
-  href="/api-reference/user-management/invite-users-to-a-byzantine-account-passkey-auth"
+  href="/api-reference/account-management/step-2-send-invitations-passkey"
 ></Card>
 
 ### Accepting an invitation
@@ -54,7 +54,7 @@ flowchart LR
   title="Initialize OTP for a user"
   icon="plus"
   horizontal
-  href="/api-reference/user-management/initialize-otp-for-a-user-email"
+  href="/api-reference/otp-authentication/step-1-initialize-otp-send-email"
 ></Card>
 
 2. **Authenticate with OTP** — Invited user enters the OTP code to create a session and authenticate with OTP. Call this endpoint to submit the authenticated session to accept the invitation:
@@ -63,7 +63,7 @@ flowchart LR
   title="Authenticate with OTP code and create a session"
   icon="plus"
   horizontal
-  href="/api-reference/user-management/authenticate-with-otp-code-and-create-a-session"
+  href="/api-reference/otp-authentication/step-2-authenticate-with-otp-code"
 ></Card>
 
 3. **(Optional) Create a passkey for the new member** — Allow the new user to create a passkey by using the below endpoint. The user must have an active OTP session (from step 1 and 2).
@@ -72,7 +72,7 @@ flowchart LR
   title="Create authenticators"
   icon="plus"
   horizontal
-  href="/api-reference/user-management/create-authenticators-passkeys-for-a-user-otp-auth"
+  href="/api-reference/otp-authentication/step-3-create-passkeys-otp-auth"
 ></Card>
 
 <Note>
@@ -81,7 +81,7 @@ flowchart LR
   withdrawals.
 </Note>
 
-Invitations can be listed per account or per email via the [get-invitations-by-account-id](/api-reference/account-data/get-all-invitations-for-an-account) and [get-invitations-by-email](/api-reference/account-data/get-all-invitations-for-an-email) endpoints.
+Invitations can be listed per account or per email via the [get-invitations-by-account-id](/api-reference/account-management/list-invitations-by-account) and [get-invitations-by-email](/api-reference/account-management/list-invitations-by-email) endpoints.
 
 ### Promoting and demoting roles of a member
 
@@ -91,7 +91,7 @@ Invitations can be listed per account or per email via the [get-invitations-by-a
   title="Get update users role payload"
   icon="plus"
   horizontal
-  href="/api-reference/user-management/get-update-users-role-payload"
+  href="/api-reference/account-management/step-1-get-update-role-payload-passkey"
 ></Card>
 
 - **Submit the signed payload** — Then call the below endpoint with the signed payload to execute the role update:
@@ -100,7 +100,7 @@ Invitations can be listed per account or per email via the [get-invitations-by-a
   title="Update users' role"
   icon="plus"
   horizontal
-  href="/api-reference/user-management/update-users-role-within-a-byzantine-account-passkey-auth"
+  href="/api-reference/account-management/step-2-update-users-role-passkey"
 ></Card>
 
 ## Roles and permissions

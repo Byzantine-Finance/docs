@@ -204,8 +204,11 @@
                         "group": "Customer creation",
                         "pages": [
                           "POST /v1/submit/create-individual-account",
-                          "POST /v1/submit/create-entity",
-                          "PATCH /v1/submit/update-individual-account"
+                          "POST /v1/submit/create-entity-account",
+                          "PATCH /v1/submit/update-individual-account",
+                          "PATCH /v1/submit/update-entity-account",
+                          "POST /v1/submit/add-associated-person",
+                          "PATCH /v1/submit/update-associated-person"
                         ]
                       }
                     ]
