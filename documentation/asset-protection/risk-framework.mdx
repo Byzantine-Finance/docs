@@ -37,13 +37,13 @@ Risk in Byzantine Prime is not abstract. Every material risk is mapped to a meas
   <Accordion title="Byzantine counterparty risk">
     **Definition:** An insider at Byzantine corrupts the smart contract or misappropriates funds.
 
-    **Mitigation:** Byzantine has no ability to upgrade the smart contract that administers user funds. Byzantine never touches or routes user funds - client assets go directly from the client's wallet into the lending markets. There is no Byzantine insider risk at the protocol level.
+    **Mitigation:** Byzantine has no ability to upgrade the smart contract that administers user funds. Byzantine never touches or routes user funds - client assets go directly from the client's account into the lending markets. There is no Byzantine insider risk at the protocol level.
 
-    Byzantine does have the ability to change the asset manager (currently Keyrock), but this is subject to a lengthy timelock - a period during which Byzantine, third-party monitors, and clients can all take action or withdraw before any change takes effect.
+    Byzantine does have the ability to change the strategy curator (currently Keyrock), but this is subject to a lengthy timelock - a period during which Byzantine, third-party monitors, and clients can all take action or withdraw before any change takes effect.
   </Accordion>
 
   <Accordion title="Keyrock counterparty risk">
-    **Definition:** Keyrock (the strategy manager) becomes insolvent or acts against client interests.
+    **Definition:** Keyrock (the strategy curator) becomes insolvent or acts against client interests.
 
     **Mitigation:** Keyrock has mandated control parameters but no custody of client assets. It cannot unilaterally move funds. All operations - deposits, lending, redemptions, and interest distribution - are executed programmatically by the smart contracts. Even in the case of a Keyrock bankruptcy, the strategy they have programmed continues operating without interruption. The protocol enforces total bankruptcy-remoteness.
 
@@ -71,10 +71,10 @@ Risk in Byzantine Prime is not abstract. Every material risk is mapped to a meas
   </Accordion>
 
   <Accordion title="Custody risk">
-    **Definition:** Compromise of keys or unauthorised access to client wallets.
+    **Definition:** Compromise of keys or unauthorised access to client accounts.
 
     **Mitigation:** This risk exists entirely outside Byzantine's purview. Byzantine Prime allows clients to freely choose how they hold their receipt tokens - the cryptographic keys to their deposited assets. Clients who prefer institutional-grade protection can work with a qualified custodian; such organisations are insured against security breaches.
 
-    For clients using Byzantine's built-in wallet, access is secured by passkeys - device-bound cryptographic credentials that cannot be phished or stolen remotely. See [Understanding passkeys](/documentation/account-management/passkeys) for a full explanation.
+    For clients using Byzantine's built-in account, access is secured by passkeys - device-bound cryptographic credentials that cannot be phished or stolen remotely. See [Understanding passkeys](/documentation/account-management/passkeys) for a full explanation.
   </Accordion>
 </AccordionGroup>

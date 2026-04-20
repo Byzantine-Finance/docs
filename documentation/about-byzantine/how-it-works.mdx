@@ -3,13 +3,13 @@ title: "How it works"
 description: "A step-by-step look at how your funds flow through Byzantine Prime."
 ---
 
-Byzantine Prime functions like a digital money-market instrument: capital is lent against collateral, interest accrues daily, and assets are always available for withdrawal. Unlike traditional funds, all of this happens automatically through transparent code on the blockchain - with no intermediary holding your money and no business hours.
+Byzantine Prime works by lending your cash to well-secured borrowers. Interest accrues daily, and your money is always available for withdrawal. Unlike traditional products, all of this happens automatically and transparently, with no intermediary holding your money and no business hours.
 
 ## The flow of funds
 
 <Steps>
   <Step title="Strategy creation">
-    Before any deposits are accepted, Keyrock - Byzantine's regulated strategy manager - programs the investment strategy directly into the Byzantine Prime smart contract. This strategy defines exactly which lending markets capital can flow into, the maximum loan-to-value ratios allowed, the types of collateral accepted, and how to rebalance. Once written, these rules cannot be changed unilaterally by anyone.
+    Before any deposits are accepted, Keyrock, our regulated partner acting as strategy curator, programs the investment strategy directly into the Byzantine Prime smart contract. This strategy defines exactly which lending markets capital can flow into, the maximum loan-to-value ratios allowed, the types of collateral accepted, and how to rebalance. Once written, these rules cannot be changed unilaterally by anyone.
   </Step>
   <Step title="Deposit">
     You transfer funds to your unique account. If depositing in fiat (EUR or USD), a regulated on-ramp partner converts them into stablecoins (EURC or USDC - digital euros and dollars backed 1:1 by real reserves). If depositing in stablecoins directly, they flow in immediately.
@@ -18,7 +18,7 @@ Byzantine Prime functions like a digital money-market instrument: capital is len
     As part of the same deposit transaction, your assets flow directly into the underlying lending markets (Morpho, Aave, Maker/Sky) according to Keyrock's strategy. The Byzantine Prime smart contract does not hold your assets - it routes them automatically, acting as an automated fund registrar rather than a custodian.
   </Step>
   <Step title="Receipt tokens issued">
-    The smart contract issues you receipt tokens representing your share of the pool - similar to fund units. These tokens are held in your own wallet and are the cryptographic proof of your ownership. The contract's security audits exist primarily to guarantee the accuracy of this accounting.
+    The smart contract issues you receipt tokens representing your share of the product - think of them as digital deposit slips showing how much of the product belongs to you. These tokens are held in your own account and are the cryptographic proof of your ownership. The contract's security audits exist primarily to guarantee the accuracy of this accounting.
   </Step>
   <Step title="Borrowers take loans">
     Immediately after deployment, your assets become available for borrowing on the lending markets. Borrowers - typically market makers, arbitrage traders, and institutional funds - post digital asset collateral worth 120–150% of the amount they wish to borrow, then draw on the available liquidity. For more on who borrows and why, see [Digital credit & overcollateralisation](/documentation/digital-assets-101/what-is-digital-credit).
@@ -27,7 +27,7 @@ Byzantine Prime functions like a digital money-market instrument: capital is len
     As borrowers take loans, they pay interest continuously. Interest rates are set algorithmically by each market based on supply and demand - when more of the pool is borrowed, rates rise; when borrowing is lower, rates fall. This interest flows directly to depositors and is credited to your account in real time, every few seconds.
   </Step>
   <Step title="Withdrawal">
-    You can withdraw at any time. The smart contract unwinds your share from the lending markets and returns the stablecoins to your wallet, all within under a minute under normal conditions. Your original deposit plus all accrued interest is available immediately, with no lock-ups or redemption windows.
+    You can withdraw at any time. The smart contract unwinds your share from the lending markets and returns the stablecoins to your account, all within under a minute under normal conditions. Your original deposit plus all accrued interest is available immediately, with no lock-ups or redemption windows.
   </Step>
 </Steps>
 
@@ -41,7 +41,7 @@ Byzantine Prime is structured so that no single party - not Byzantine, not Keyro
 
     **Control:** Can deposit and withdraw your own funds at any time
 
-    **Safeguard:** No access to other investors' positions; funds held in your own wallet
+    **Safeguard:** No access to other investors' positions; funds held in your own account
   </Card>
   <Card title="Byzantine Prime protocol" icon="database" iconType="solid" color="#cd55b7">
     **Role:** Executes the strategy automatically
@@ -50,7 +50,7 @@ Byzantine Prime is structured so that no single party - not Byzantine, not Keyro
 
     **Safeguard:** Rules are immutable once deployed - not even Byzantine can change them
   </Card>
-  <Card title="Keyrock (strategy manager)" icon="globe" iconType="solid" color="#cd55b7">
+  <Card title="Keyrock (strategy curator)" icon="globe" iconType="solid" color="#cd55b7">
     **Role:** Sets and maintains the investment strategy
 
     **Control:** No direct access to investor funds; can only adjust strategy parameters within mandate
@@ -68,7 +68,7 @@ Byzantine Prime is structured so that no single party - not Byzantine, not Keyro
 
 ## How assets are segregated
 
-Your assets are never pooled with non-verified depositors. The receipt tokens representing your position are held exclusively in your own wallet - either a self-custodial wallet you connected, or the wallet Byzantine created for you during onboarding. At no point are funds held on a corporate balance sheet or exposed to any party's operational discretion.
+Your assets are never pooled with non-verified depositors. The receipt tokens representing your position are held exclusively in your own account - either a self-custodial account you connected, or the account Byzantine created for you during onboarding. At no point are funds held on a corporate balance sheet or exposed to any party's operational discretion.
 
 All balances, positions, and interest flows are publicly auditable on the blockchain at any time, giving you the equivalent of real-time proof of reserves. You can verify your balance directly through the Byzantine dashboard or via the API.
 

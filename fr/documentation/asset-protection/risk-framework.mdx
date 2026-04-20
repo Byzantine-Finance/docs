@@ -37,13 +37,13 @@ Le risque dans Byzantine Prime n'est pas abstrait. Chaque risque matériel est a
   <Accordion title="Risque de contrepartie Byzantine">
     **Définition :** Un initié de Byzantine corrompt le contrat intelligent ou détourne des fonds.
 
-    **Atténuation :** Byzantine n'a pas la capacité de mettre à jour le contrat intelligent qui administre les fonds des utilisateurs. Byzantine ne touche jamais ni n'achemine les fonds des utilisateurs - les actifs des clients vont directement du portefeuille du client vers les marchés de prêt. Il n'y a pas de risque initié Byzantine au niveau du protocole.
+    **Atténuation :** Byzantine n'a pas la capacité de mettre à jour le contrat intelligent qui administre les fonds des utilisateurs. Byzantine ne touche jamais ni n'achemine les fonds des utilisateurs - les actifs des clients vont directement du compte du client vers les marchés de prêt. Il n'y a pas de risque initié Byzantine au niveau du protocole.
 
-    Byzantine a bien la capacité de changer le gestionnaire d'actifs (actuellement Keyrock), mais cela est soumis à un long délai de blocage (timelock) - une période pendant laquelle Byzantine, des moniteurs tiers et les clients peuvent tous prendre des mesures ou se retirer avant que tout changement ne prenne effet.
+    Byzantine a bien la capacité de changer le curateur de stratégie (actuellement Keyrock), mais cela est soumis à un long délai de blocage (timelock) - une période pendant laquelle Byzantine, des moniteurs tiers et les clients peuvent tous prendre des mesures ou se retirer avant que tout changement ne prenne effet.
   </Accordion>
 
   <Accordion title="Risque de contrepartie Keyrock">
-    **Définition :** Keyrock (le gestionnaire de stratégie) devient insolvable ou agit contre les intérêts des clients.
+    **Définition :** Keyrock (le curateur de stratégie) devient insolvable ou agit contre les intérêts des clients.
 
     **Atténuation :** Keyrock dispose de paramètres de contrôle mandatés mais n'a pas la garde des actifs des clients. Il ne peut pas déplacer des fonds unilatéralement. Toutes les opérations - dépôts, prêts, remboursements et distribution des intérêts - sont exécutées de manière programmatique par les contrats intelligents. Même en cas de faillite de Keyrock, la stratégie qu'ils ont programmée continue de fonctionner sans interruption. Le protocole assure une totale étanchéité en cas de faillite.
 
@@ -71,10 +71,10 @@ Le risque dans Byzantine Prime n'est pas abstrait. Chaque risque matériel est a
   </Accordion>
 
   <Accordion title="Risque de garde">
-    **Définition :** Compromission des clés ou accès non autorisé aux portefeuilles des clients.
+    **Définition :** Compromission des clés ou accès non autorisé aux comptes des clients.
 
     **Atténuation :** Ce risque existe entièrement en dehors du domaine de Byzantine. Byzantine Prime permet aux clients de choisir librement comment ils détiennent leurs tokens de reçu - les clés cryptographiques de leurs actifs déposés. Les clients qui préfèrent une protection de niveau institutionnel peuvent travailler avec un dépositaire qualifié ; ces organisations sont assurées contre les violations de sécurité.
 
-    Pour les clients utilisant le portefeuille intégré de Byzantine, l'accès est sécurisé par des passkeys - des identifiants cryptographiques liés à l'appareil qui ne peuvent pas être hameçonnés ni volés à distance. Voir [Comprendre les passkeys](/fr/documentation/account-management/passkeys) pour une explication complète.
+    Pour les clients utilisant le compte intégré de Byzantine, l'accès est sécurisé par des passkeys - des identifiants cryptographiques liés à l'appareil qui ne peuvent pas être hameçonnés ni volés à distance. Voir [Comprendre les passkeys](/fr/documentation/account-management/passkeys) pour une explication complète.
   </Accordion>
 </AccordionGroup>
