@@ -16,16 +16,25 @@ Transactions in Byzantine are always **two-step**: you request a payload or an a
 1. **Request body** — Call the appropriate “get payload” or “init” endpoint (e.g. get deposit payload, initiate withdrawal). For passkey, the user signs the returned payload in your app.
 2. **Submit signed transaction** — Call the submit endpoint with the signed payload. Byzantine then broadcasts and executes the transaction (or, for fiat deposits, waits for funds and then executes).
 
-<Info>
-  Transactions go through the following statuses:
-
-- `created`: The transaction has been created and is waiting to be signed.
-- `waiting_for_funds`: The transaction has been signed. The system is waiting for the bank transfer to trigger the broadcasting of the transaction.
-- `funds_in_transfer`: The funds have been scheduled to arrive with Bridge soon.
-- `processing`: The funds have arrived with Bridge and are currently being on-ramped.
-- `completed`: The transaction has been broadcasted and executed.
+## Transaction statuses
 
 The transaction status can be checked by calling the [Get transaction status](/api-reference/transactions/get-single-transaction) endpoint.
-</Info>
+
+<Tabs>
+  <Tab title="Onramp deposit statuses">
+    - `created`: The transaction has been created and is waiting to be signed.
+    - `waiting_for_funds`: The transaction has been signed. The system is waiting for the bank transfer to trigger the broadcasting of the transaction.
+    - `funds_in_transfer`: The funds have been scheduled to arrive with Bridge soon.
+    - `processing`: The funds have arrived with Bridge and are currently being on-ramped. The transaction is being broadcasted.
+    - `completed`: The transaction has been broadcasted and executed. The funds have been transferred to the vault.
+  </Tab>
+  <Tab title="Offramp withdrawal statuses">
+    - `created`: The transaction has been created and is waiting to be signed.
+    - `processing`: The transaction is being broadcasted.
+    - `waiting_for_funds`: On-chain receipt confirms — assets landed at liquidation address, waiting for Bridge to pick them up.
+    - `funds_in_transfer`: Bridge has picked up the assets and is in the process of converting them to fiat.
+    - `completed`: Fiat funds have been transferred to the user's bank account.
+  </Tab>
+</Tabs>
 
 For full request/response details, use the **Transactions with passkey** section in the API endpoints, together with [Authentication methods](/api-reference/authentication-methods).
