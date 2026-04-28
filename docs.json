@@ -251,9 +251,10 @@
                   {
                     "group": "Products",
                     "pages": [
-                      "GET /v1/top-vaults",
-                      "GET /v1/apy/{vault_id}",
-                      "GET /v1/history/{vault_id}"
+                      "GET /v1/query/top-vaults",
+                      "GET /v1/query/apy/{vault_id}",
+                      "GET /v1/query/history/{vault_id}",
+                      "GET /v1/query/assets"
                     ]
                   },
                   {
@@ -267,6 +268,7 @@
                           "POST /v1/query/get-activate-account-payload-passkey",
                           "POST /v1/query/get-deposit-payload-passkey",
                           "POST /v1/query/get-withdraw-payload-passkey",
+                          "POST /v1/query/get-vault-upgrade-payload-passkey",
                           "POST /v1/submit/sign-payload-passkey"
                         ]
                       }

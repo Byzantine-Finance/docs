@@ -881,6 +881,33 @@
                 "operationId": "get_bank_accounts",
                 "parameters": [
                     {
+                        "name": "X-Pubkey",
+                        "in": "header",
+                        "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Timestamp",
+                        "in": "header",
+                        "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Signature",
+                        "in": "header",
+                        "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
                         "name": "account_id",
                         "in": "query",
                         "required": true,
@@ -919,7 +946,12 @@
                     "500": {
                         "description": "Internal server error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "integrator_auth": []
+                    }
+                ]
             }
         },
         "/v1/submit/add-bank-account": {
@@ -1444,7 +1476,7 @@
                 ]
             }
         },
-        "/v1/top-vaults": {
+        "/v1/query/top-vaults": {
             "get": {
                 "tags": [
                     "Products"
@@ -1452,6 +1484,35 @@
                 "summary": "List all products",
                 "description": "Returns a list of all Byzantine vaults from configuration. \"Vaults\" are deposit products, the main entities in the Byzantine protocol.",
                 "operationId": "get_top_vaults",
+                "parameters": [
+                    {
+                        "name": "X-Pubkey",
+                        "in": "header",
+                        "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Timestamp",
+                        "in": "header",
+                        "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Signature",
+                        "in": "header",
+                        "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "List of top vaults retrieved successfully",
@@ -1466,10 +1527,15 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "integrator_auth": []
+                    }
+                ]
             }
         },
-        "/v1/apy/{vault_id}": {
+        "/v1/query/apy/{vault_id}": {
             "get": {
                 "tags": [
                     "Products"
@@ -1478,6 +1544,33 @@
                 "description": "Calculate APY for daily, weekly, monthly, and yearly periods with fallback to oldest available data.",
                 "operationId": "get_vault_apy",
                 "parameters": [
+                    {
+                        "name": "X-Pubkey",
+                        "in": "header",
+                        "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Timestamp",
+                        "in": "header",
+                        "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Signature",
+                        "in": "header",
+                        "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "vault_id",
                         "in": "path",
@@ -1522,10 +1615,15 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "integrator_auth": []
+                    }
+                ]
             }
         },
-        "/v1/history/{vault_id}": {
+        "/v1/query/history/{vault_id}": {
             "get": {
                 "tags": [
                     "Products"
@@ -1534,6 +1632,33 @@
                 "description": "Returns hourly aggregated share price data for a vault.",
                 "operationId": "get_vault_history",
                 "parameters": [
+                    {
+                        "name": "X-Pubkey",
+                        "in": "header",
+                        "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Timestamp",
+                        "in": "header",
+                        "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Signature",
+                        "in": "header",
+                        "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "vault_id",
                         "in": "path",
@@ -1622,7 +1747,80 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "integrator_auth": []
+                    }
+                ]
+            }
+        },
+        "/v1/query/assets": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Get all assets",
+                "operationId": "get_assets",
+                "parameters": [
+                    {
+                        "name": "X-Pubkey",
+                        "in": "header",
+                        "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Timestamp",
+                        "in": "header",
+                        "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Signature",
+                        "in": "header",
+                        "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Assets retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Asset"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "integrator_auth": []
+                    }
+                ]
             }
         },
         "/v1/query/get-transactions": {
@@ -1634,6 +1832,33 @@
                 "description": "Returns all deposit, withdrawal, and approval transactions with pending or completed status.\nExcludes transactions with \"created\" status.",
                 "operationId": "get_transactions",
                 "parameters": [
+                    {
+                        "name": "X-Pubkey",
+                        "in": "header",
+                        "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Timestamp",
+                        "in": "header",
+                        "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Signature",
+                        "in": "header",
+                        "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "account_id",
                         "in": "query",
@@ -1663,7 +1888,12 @@
                     "500": {
                         "description": "Internal server error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "integrator_auth": []
+                    }
+                ]
             }
         },
         "/v1/query/get-transaction": {
@@ -1674,6 +1904,33 @@
                 "summary": "Get single transaction",
                 "operationId": "get_transaction",
                 "parameters": [
+                    {
+                        "name": "X-Pubkey",
+                        "in": "header",
+                        "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Timestamp",
+                        "in": "header",
+                        "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Signature",
+                        "in": "header",
+                        "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "transaction_id",
                         "in": "query",
@@ -1700,7 +1957,12 @@
                     "500": {
                         "description": "Internal server error"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "integrator_auth": []
+                    }
+                ]
             }
         },
         "/v1/query/get-activate-account-payload-passkey": {
@@ -1937,6 +2199,82 @@
                     },
                     "400": {
                         "description": "Invalid chain ID"
+                    }
+                },
+                "security": [
+                    {
+                        "integrator_auth": []
+                    }
+                ]
+            }
+        },
+        "/v1/query/get-vault-upgrade-payload-passkey": {
+            "post": {
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "Get vault upgrade payload (Base -> Ethereum)",
+                "description": "Returns two raw payloads to sign with one passkey prompt: a withdraw from the Base vault\nand a deposit on the destination Ethereum vault. The destination vault address is\nderived from a static mapping on the source vault address.",
+                "operationId": "get_vault_upgrade_payload_passkey",
+                "parameters": [
+                    {
+                        "name": "X-Pubkey",
+                        "in": "header",
+                        "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Timestamp",
+                        "in": "header",
+                        "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Signature",
+                        "in": "header",
+                        "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Request body containing the account ID and source vault address (on Base).",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VaultUpgradeRequestBody"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Payloads to sign created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VaultUpgradePayloadResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request (unmapped vault, zero shares, async vault, pending upgrade, ...)"
+                    },
+                    "401": {
+                        "description": "Unauthorized (account not belonging to integrator or not Atlas-delegated)"
+                    },
+                    "500": {
+                        "description": "Internal server error"
                     }
                 },
                 "security": [
@@ -2379,7 +2717,7 @@
             "AddBankAccountResponse": {
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/OffRampAddress"
+                        "$ref": "#/components/schemas/LiquidationAddress"
                     },
                     {
                         "type": "object"
@@ -2560,6 +2898,56 @@
                     "calculated_at": {
                         "type": "string",
                         "format": "date-time"
+                    }
+                }
+            },
+            "Asset": {
+                "type": "object",
+                "required": [
+                    "address",
+                    "name",
+                    "symbol",
+                    "decimals",
+                    "image_url",
+                    "approx_price",
+                    "category",
+                    "chain_id"
+                ],
+                "properties": {
+                    "address": {
+                        "type": "string",
+                        "description": "Token contract address"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "Token name"
+                    },
+                    "symbol": {
+                        "type": "string",
+                        "description": "Token symbol"
+                    },
+                    "decimals": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Token decimals"
+                    },
+                    "image_url": {
+                        "type": "string",
+                        "description": "Token image URL"
+                    },
+                    "approx_price": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "Approximate price in USD"
+                    },
+                    "category": {
+                        "type": "string",
+                        "description": "Token category (e.g., \"lst\", \"eth\", \"bitcoin\")"
+                    },
+                    "chain_id": {
+                        "type": "integer",
+                        "format": "int32",
+                        "description": "Chain ID"
                     }
                 }
             },
@@ -3252,12 +3640,12 @@
                     },
                     "isPasskeyActivated": {
                         "type": "boolean",
-                        "description": "An indicator showing whether passkey authentication is active for this user. For more information, see [wallet authentication](https://docs.byzantine.fi/api-reference/authentication-methods).",
+                        "description": "An indicator showing whether passkey authentication is active for this user. For more information, see [authentication methods](https://docs.byzantine.fi/api-reference/authentication-methods).",
                         "example": "false"
                     },
                     "isOtpActivated": {
                         "type": "boolean",
-                        "description": "An indicator showing whether OTP authentication is active for this user. For more information, see [wallet authentication](https://docs.byzantine.fi/api-reference/authentication-methods).",
+                        "description": "An indicator showing whether OTP authentication is active for this user. For more information, see [authentication methods](https://docs.byzantine.fi/api-reference/authentication-methods).",
                         "example": "true"
                     },
                     "missingDocuments": {
@@ -3491,7 +3879,7 @@
             },
             "EntityDocumentType": {
                 "type": "string",
-                "description": "Entity document type. For a full list of accepted document types, see [accepted documents](https://docs.byzantine.fi/api-reference/accepted-documents).",
+                "description": "Entity document type. For a full list of accepted document types, see [accepted documents](https://docs.byzantine.fi/api-reference/documents).",
                 "enum": [
                     "directors_registry",
                     "good_standing_cert",
@@ -3685,12 +4073,12 @@
                     },
                     "isPasskeyActivated": {
                         "type": "boolean",
-                        "description": "An indicator showing whether passkey authentication is active for this user. For more information, see [wallet authentication](https://docs.byzantine.fi/api-reference/authentication-methods).",
+                        "description": "An indicator showing whether passkey authentication is active for this user. For more information, see [authentication methods](https://docs.byzantine.fi/api-reference/authentication-methods).",
                         "example": "true"
                     },
                     "isOtpActivated": {
                         "type": "boolean",
-                        "description": "An indicator showing whether OTP authentication is active for this user. For more information, see [wallet authentication](https://docs.byzantine.fi/api-reference/authentication-methods).",
+                        "description": "An indicator showing whether OTP authentication is active for this user. For more information, see [authentication methods](https://docs.byzantine.fi/api-reference/authentication-methods).",
                         "example": "false"
                     }
                 }
@@ -3716,7 +4104,7 @@
             },
             "EntityVerificationDocument": {
                 "type": "object",
-                "description": "Entity verification document object. For a full list of required documents, see [accepted documents](https://docs.byzantine.fi/api-reference/accepted-documents).",
+                "description": "Entity verification document object. For a full list of required documents, see [accepted documents](https://docs.byzantine.fi/api-reference/documents).",
                 "required": [
                     "documentType",
                     "issuingCountry",
@@ -3885,8 +4273,7 @@
                     "accountId",
                     "accountName",
                     "accountType",
-                    "walletAddress",
-                    "isSelfCustodial",
+                    "walletDetails",
                     "createdAt"
                 ],
                 "properties": {
@@ -3907,11 +4294,19 @@
                         ],
                         "nullable": true
                     },
-                    "walletAddress": {
-                        "type": "string"
+                    "walletDetails": {
+                        "$ref": "#/components/schemas/GetWalletDetailsResponse"
                     },
-                    "isSelfCustodial": {
-                        "type": "boolean"
+                    "bankAccounts": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/GetBankAccountItemResponse"
+                        },
+                        "nullable": true
+                    },
+                    "imageUrl": {
+                        "type": "string",
+                        "nullable": true
                     },
                     "createdAt": {
                         "type": "string",
@@ -4007,7 +4402,7 @@
             "GetBankAccountItemResponse": {
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/OffRampAddress"
+                        "$ref": "#/components/schemas/LiquidationAddress"
                     },
                     {
                         "type": "object",
@@ -4413,6 +4808,25 @@
                     }
                 }
             },
+            "GetWalletDetailsResponse": {
+                "type": "object",
+                "required": [
+                    "walletAddress",
+                    "isTurnkeyWallet",
+                    "isSmartAccount"
+                ],
+                "properties": {
+                    "walletAddress": {
+                        "type": "string"
+                    },
+                    "isTurnkeyWallet": {
+                        "type": "boolean"
+                    },
+                    "isSmartAccount": {
+                        "$ref": "#/components/schemas/IsSmartAccountByChain"
+                    }
+                }
+            },
             "HealthResponse": {
                 "type": "object",
                 "required": [
@@ -4771,7 +5185,7 @@
                     },
                     "webAuthnStamp": {
                         "type": "string",
-                        "description": "Cryptographically passkey signed (stamped). For more info, see [wallet authentication](https://docs.byzantine.fi/api-reference/authentication-methods)."
+                        "description": "Cryptographically passkey signed (stamped). For more info, see [authentication methods](https://docs.byzantine.fi/api-reference/authentication-methods)."
                     }
                 }
             },
@@ -4845,6 +5259,59 @@
                     }
                 }
             },
+            "IsSmartAccountByChain": {
+                "type": "object",
+                "required": [
+                    "ethereum",
+                    "base"
+                ],
+                "properties": {
+                    "ethereum": {
+                        "type": "boolean",
+                        "description": "Atlas delegation active on Ethereum Mainnet (chain_id 1)"
+                    },
+                    "base": {
+                        "type": "boolean",
+                        "description": "Atlas delegation active on Base (chain_id 8453)"
+                    }
+                }
+            },
+            "LiquidationAddress": {
+                "type": "object",
+                "required": [
+                    "bankAccountId",
+                    "accountId",
+                    "name",
+                    "liquidationAddress",
+                    "createdAt",
+                    "destinationCurrency",
+                    "destinationRail"
+                ],
+                "properties": {
+                    "bankAccountId": {
+                        "$ref": "#/components/schemas/Uuid"
+                    },
+                    "accountId": {
+                        "$ref": "#/components/schemas/Uuid"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "liquidationAddress": {
+                        "type": "string"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "destinationCurrency": {
+                        "$ref": "#/components/schemas/Currency"
+                    },
+                    "destinationRail": {
+                        "$ref": "#/components/schemas/PaymentRail"
+                    }
+                }
+            },
             "NaiveDateTime": {
                 "type": "string",
                 "format": "date-time",
@@ -4889,38 +5356,6 @@
                     },
                     "oidcToken": {
                         "type": "string"
-                    }
-                }
-            },
-            "OffRampAddress": {
-                "type": "object",
-                "required": [
-                    "bankAccountId",
-                    "accountId",
-                    "name",
-                    "liquidationAddress",
-                    "createdAt",
-                    "currency"
-                ],
-                "properties": {
-                    "bankAccountId": {
-                        "$ref": "#/components/schemas/Uuid"
-                    },
-                    "accountId": {
-                        "$ref": "#/components/schemas/Uuid"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "liquidationAddress": {
-                        "type": "string"
-                    },
-                    "createdAt": {
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "currency": {
-                        "$ref": "#/components/schemas/Currency"
                     }
                 }
             },
@@ -5037,6 +5472,15 @@
                     }
                 }
             },
+            "PaymentRail": {
+                "type": "string",
+                "enum": [
+                    "ach",
+                    "sepa",
+                    "ethereum",
+                    "base"
+                ]
+            },
             "PaymentRailVirtualAccount": {
                 "type": "string",
                 "enum": [
@@ -5116,16 +5560,13 @@
                     "broadcastedAt": {
                         "type": "string",
                         "format": "date-time",
-                        "description": "Exact timestamp when the transaction was broadcasted on-chain. Only available for `completed` transactions.",
+                        "description": "Exact timestamp when the transaction was broadcasted on-chain.",
                         "example": "2025-11-19T21:16:02.894Z",
                         "nullable": true
                     },
-                    "transactionReceipt": {
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/TransactionReceipt"
-                            }
-                        ],
+                    "transactionHash": {
+                        "type": "string",
+                        "description": "The on-chain transaction hash. Available immediately after broadcast - poll\nRPC's `eth_getTransactionReceipt` to get the full receipt.",
                         "nullable": true
                     },
                     "fiatDepositInstructions": {
@@ -5155,14 +5596,14 @@
                 ],
                 "properties": {
                     "signedBody": {
-                        "$ref": "#/components/schemas/SignRawPayloadRequest"
+                        "$ref": "#/components/schemas/SignedBody"
                     },
                     "transactionId": {
                         "$ref": "#/components/schemas/Uuid"
                     },
                     "webAuthnStamp": {
                         "type": "string",
-                        "description": "Cryptographically passkey signed (stamped). For more info, see [wallet authentication](https://docs.byzantine.fi/api-reference/authentication-methods)."
+                        "description": "Cryptographically passkey signed (stamped). For more info, see [authentication methods](https://docs.byzantine.fi/api-reference/authentication-methods)."
                     }
                 }
             },
@@ -5224,6 +5665,67 @@
                     }
                 }
             },
+            "SignRawPayloadsParams": {
+                "type": "object",
+                "description": "The parameters object containing the specific intent data for this batch of transactions.",
+                "required": [
+                    "signWith",
+                    "payloads",
+                    "encoding",
+                    "hashFunction"
+                ],
+                "properties": {
+                    "signWith": {
+                        "type": "string",
+                        "description": "A Wallet account address, Private Key address, or Private Key identifier."
+                    },
+                    "payloads": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "description": "An array of raw unsigned payloads to be signed."
+                    },
+                    "encoding": {
+                        "type": "string",
+                        "description": "How the payload is encoded: `PAYLOAD_ENCODING_HEXADECIMAL` or `PAYLOAD_ENCODING_EIP7702_AUTHORIZATION`",
+                        "example": "PAYLOAD_ENCODING_HEXADECIMAL"
+                    },
+                    "hashFunction": {
+                        "type": "string",
+                        "description": "Rather Turnkey should hash the message or not: `HASH_FUNCTION_NO_OP` or `HASH_FUNCTION_KECCAK256`",
+                        "example": "HASH_FUNCTION_NO_OP"
+                    }
+                }
+            },
+            "SignRawPayloadsRequest": {
+                "type": "object",
+                "description": "The object that needs to be signed by the end user to make a batch of transactions.",
+                "required": [
+                    "type",
+                    "timestampMs",
+                    "organizationId",
+                    "parameters"
+                ],
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "description": "Defaults to `ACTIVITY_TYPE_SIGN_RAW_PAYLOADS`.",
+                        "example": "ACTIVITY_TYPE_SIGN_RAW_PAYLOADS"
+                    },
+                    "timestampMs": {
+                        "type": "string",
+                        "description": "UNIX timestamp of the creation of the transaction."
+                    },
+                    "organizationId": {
+                        "type": "string",
+                        "description": "The account ID making the transaction."
+                    },
+                    "parameters": {
+                        "$ref": "#/components/schemas/SignRawPayloadsParams"
+                    }
+                }
+            },
             "SignTransactionParams": {
                 "type": "object",
                 "description": "The parameters object containing the specific intent data for this transaction.",
@@ -5275,6 +5777,17 @@
                         "$ref": "#/components/schemas/SignTransactionParams"
                     }
                 }
+            },
+            "SignedBody": {
+                "oneOf": [
+                    {
+                        "$ref": "#/components/schemas/SignRawPayloadRequest"
+                    },
+                    {
+                        "$ref": "#/components/schemas/SignRawPayloadsRequest"
+                    }
+                ],
+                "description": "Accepts either a single-payload or a multi-payload request Turnkey request"
             },
             "SourceDepositInstructions": {
                 "type": "object",
@@ -5491,7 +6004,9 @@
                     "waiting_for_funds",
                     "funds_in_transfer",
                     "processing",
-                    "completed"
+                    "completed",
+                    "simulation_failed",
+                    "reverted"
                 ],
                 "example": "completed"
             },
@@ -5503,7 +6018,9 @@
                     "approve",
                     "approve_deposit",
                     "deposit",
-                    "withdraw"
+                    "withdraw",
+                    "transfer",
+                    "withdraw_transfer"
                 ],
                 "example": "deposit"
             },
@@ -5617,12 +6134,20 @@
                             }
                         ],
                         "nullable": true
+                    },
+                    "relatedTransactionId": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Uuid"
+                            }
+                        ],
+                        "nullable": true
                     }
                 }
             },
             "UpdateAssociatedPerson": {
                 "type": "object",
-                "description": "Associated person update payload. All fields are optional - only provided fields are updated.",
+                "description": "Associated person update payload. All fields are optional — only provided fields are updated.",
                 "properties": {
                     "userInfo": {
                         "allOf": [
@@ -5714,7 +6239,7 @@
             },
             "UpdateBeneficiaryDetails": {
                 "type": "object",
-                "description": "Beneficiary details update payload. All fields are optional - only provided fields are updated.",
+                "description": "Beneficiary details update payload. All fields are optional — only provided fields are updated.",
                 "properties": {
                     "beneficiaryType": {
                         "type": "array",
@@ -5818,7 +6343,7 @@
             },
             "UpdateEntityInfo": {
                 "type": "object",
-                "description": "Entity information for update. All fields are optional - only provided fields are updated.",
+                "description": "Entity information for update. All fields are optional — only provided fields are updated.",
                 "properties": {
                     "businessLegalName": {
                         "type": "string",
@@ -6047,7 +6572,7 @@
             },
             "UpdateUserInfo": {
                 "type": "object",
-                "description": "Personal information about the user for update. All fields are optional - only provided fields are updated.\nSame as `UserInfo` but without `email` (email cannot be changed).",
+                "description": "Personal information about the user for update. All fields are optional — only provided fields are updated.\nSame as `UserInfo` but without `email` (email cannot be changed).",
                 "properties": {
                     "firstName": {
                         "type": "string",
@@ -6144,7 +6669,7 @@
                     },
                     "webAuthnStamp": {
                         "type": "string",
-                        "description": "Cryptographically passkey signed (stamped). For more info, see [wallet authentication](https://docs.byzantine.fi/api-reference/authentication-methods)."
+                        "description": "Cryptographically passkey signed (stamped). For more info, see [authentication methods](https://docs.byzantine.fi/api-reference/authentication-methods)."
                     }
                 }
             },
@@ -6207,7 +6732,7 @@
             },
             "UserDocumentType": {
                 "type": "string",
-                "description": "Type of the document. See the full list of [accepted documents](https://docs.byzantine.fi/api-reference/accepted-documents).",
+                "description": "Type of the document. See the full list of [accepted documents](https://docs.byzantine.fi/api-reference/documents).",
                 "enum": [
                     "passport",
                     "national_id_front",
@@ -6391,124 +6916,52 @@
                     }
                 }
             },
-            "VaultV2Transaction": {
+            "VaultUpgradePayloadResponse": {
                 "type": "object",
+                "description": "Response containing the two raw payloads to sign (withdraw from Base and deposit on Ethereum) in one passkey prompt.",
                 "required": [
-                    "timestamp",
-                    "amountAssetsTransferred",
-                    "amountSharesTransferred",
-                    "currentBalanceShares",
-                    "hash",
-                    "type"
+                    "bodyToSign",
+                    "transactionId",
+                    "sourceAmount",
+                    "destinationAmount",
+                    "destinationVaultAddr"
                 ],
                 "properties": {
-                    "timestamp": {
-                        "type": "integer",
-                        "format": "int64",
-                        "description": "Transaction timestamp in milliseconds",
-                        "example": 1754129249000,
-                        "minimum": 0
+                    "bodyToSign": {
+                        "$ref": "#/components/schemas/SignRawPayloadsRequest"
                     },
-                    "amountAssetsTransferred": {
-                        "type": "number",
-                        "format": "double",
-                        "description": "Amount of assets transferred",
-                        "example": 0.1
+                    "transactionId": {
+                        "$ref": "#/components/schemas/Uuid"
                     },
-                    "amountSharesTransferred": {
-                        "type": "number",
-                        "format": "double",
-                        "description": "Amount of shares transferred",
-                        "example": 0.1
+                    "sourceAmount": {
+                        "$ref": "#/components/schemas/Decimal"
                     },
-                    "currentBalanceShares": {
-                        "type": "number",
-                        "format": "double",
-                        "description": "Current balance in shares after this transaction",
-                        "example": 0.1
+                    "destinationAmount": {
+                        "$ref": "#/components/schemas/Decimal"
                     },
-                    "hash": {
+                    "destinationVaultAddr": {
                         "type": "string",
-                        "description": "Transaction hash",
-                        "example": "0x3b398e37cbf1b805c6bbd9d88b2337284dd72c2f29a899454974cbd5b38f13c9"
-                    },
-                    "type": {
-                        "type": "string",
-                        "description": "Transaction type",
-                        "example": "deposit"
+                        "description": "The destination vault address on Ethereum.",
+                        "example": "0x2F99e35Ea811F3cC230B26dfF817604B5D4B6e38"
                     }
-                },
-                "example": {
-                    "amountAssetsTransferred": 0.1,
-                    "amountSharesTransferred": 0.1,
-                    "currentBalanceShares": 0.1,
-                    "hash": "0x3b398e37cbf1b805c6bbd9d88b2337284dd72c2f29a899454974cbd5b38f13c9",
-                    "timestamp": 1754129249000,
-                    "type": "deposit"
                 }
             },
-            "VaultV2VaultPosition": {
+            "VaultUpgradeRequestBody": {
                 "type": "object",
+                "description": "Request body for initiating a vault upgrade (Base -> Ethereum)",
                 "required": [
-                    "addressVault",
-                    "chain_id",
-                    "shares",
-                    "ratio",
-                    "lastUpdateTxHash",
-                    "lastUpdateTimestamp",
-                    "transactions"
+                    "accountId",
+                    "sourceVaultAddr"
                 ],
                 "properties": {
-                    "addressVault": {
+                    "accountId": {
+                        "$ref": "#/components/schemas/Uuid"
+                    },
+                    "sourceVaultAddr": {
                         "type": "string",
-                        "description": "Vault address",
-                        "example": "0xbd9be389743674cd1eba663067eb83d294321a33"
-                    },
-                    "chain_id": {
-                        "type": "integer",
-                        "format": "int32",
-                        "description": "Chain ID",
-                        "example": 1
-                    },
-                    "shares": {
-                        "type": "number",
-                        "format": "double",
-                        "description": "User's shares in this vault",
-                        "example": 249989.0
-                    },
-                    "ratio": {
-                        "type": "number",
-                        "format": "double",
-                        "description": "Share to asset ratio (last share price)",
-                        "example": 1.00054002160086
-                    },
-                    "lastUpdateTxHash": {
-                        "type": "string",
-                        "description": "Hash of the last update transaction",
-                        "example": "0xa5f7a2992c16ef0dc5fcb5824db2f1a8f18f68ae1fecd7ea07780681812c33e1"
-                    },
-                    "lastUpdateTimestamp": {
-                        "type": "integer",
-                        "format": "int64",
-                        "description": "Timestamp of the last update in milliseconds",
-                        "example": 1754506387000,
-                        "minimum": 0
-                    },
-                    "transactions": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/VaultV2Transaction"
-                        },
-                        "description": "List of transactions for this vault"
+                        "description": "The address of the source vault on Base (8453)",
+                        "example": "0x061b3aff8e21a9d194ce43cEfc20A0eFf122Ec69"
                     }
-                },
-                "example": {
-                    "addressVault": "0xbd9be389743674cd1eba663067eb83d294321a33",
-                    "lastUpdateTimestamp": 1754506387000,
-                    "lastUpdateTxHash": "0xa5f7a2992c16ef0dc5fcb5824db2f1a8f18f68ae1fecd7ea07780681812c33e1",
-                    "ratio": 1.00054002160086,
-                    "shares": 249989.0,
-                    "transactions": []
                 }
             },
             "VerificationDocumentResponse": {
@@ -6611,10 +7064,10 @@
             }
         },
         "securitySchemes": {
-            "bearer_auth": {
-                "type": "http",
-                "scheme": "bearer",
-                "bearerFormat": "JWT"
+            "admin_api_key": {
+                "type": "apiKey",
+                "in": "header",
+                "name": "X-API-KEY"
             },
             "integrator_auth": {
                 "type": "apiKey",
