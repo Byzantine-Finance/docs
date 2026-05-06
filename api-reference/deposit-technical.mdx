@@ -5,6 +5,14 @@ description: "How to make a deposit into a Byzantine vault."
 
 Byzantine accepts both stablecoins and fiat deposits. Based on the deposit currency, the process differs slightly.
 
+## Supported assets
+
+Before constructing a deposit, call [`GET /v1/query/assets`](/api-reference/products/get-all-assets) to retrieve the list of tokens currently supported across Byzantine vaults.
+
+<Info>
+  Byzantine currently supports USDC and EURC stablecoins.
+</Info>
+
 A deposit into a Byzantine vault proceeeds in the following steps:
 
 1. Get the deposit payload for the user to sign with the authentication method used.
