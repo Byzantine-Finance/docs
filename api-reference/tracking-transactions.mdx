@@ -1,0 +1,85 @@
+---
+title: "Tracking transactions"
+description: "Transaction types, lifecycle statuses, and how to list them across all your accounts."
+---
+
+Once a transaction is created, you typically want to know what kind it is, where it sits in its lifecycle, and how to retrieve it. This page covers the **types**, the **statuses** they move through, and the endpoint for **listing** them.
+
+## Transaction types
+
+| Type | What it means |
+| --- | --- |
+| `authorization` | EIP-7702 delegation that upgrades the user's EOA into a smart account by setting its code to the Atlas contract. After confirmation, the wallet is also whitelisted on our vaults. |
+| `approve_deposit` | Bundled ERC-20 approval and deposit in a single Atlas batch. Used the first time a user deposits an asset into a vault that has not yet been approved. |
+| `deposit` | Deposit idle balance into a vault. |
+| `onramp` | Convert fiat to stablecoins and receive them in the wallet. No deposit. |
+| `onramp_deposit` | Convert fiat to stablecoins and deposit them into a specific vault. |
+| `withdraw` | Withdraw from a vault to idle balance. |
+| `offramp` | Convert idle stablecoins to fiat into a bank account. _Not supported yet._ |
+| `withdraw_offramp` | Withdraw from a vault and convert to fiat into a bank account. |
+
+## Transaction statuses
+
+The transaction status can be checked by calling the [Get transaction](/api-reference/transactions/get-single-transaction) endpoint.
+
+<Tabs>
+  <Tab title="Onramp deposit statuses">
+    - `created`: The transaction has been created and is waiting to be signed.
+    - `waiting_for_funds`: The transaction has been signed. The system is waiting for the bank transfer to trigger the broadcasting of the transaction.
+    - `funds_in_transfer`: The funds have been scheduled to arrive with Bridge soon.
+    - `processing`: The funds have arrived with Bridge and are currently being on-ramped. The transaction is being broadcasted.
+    - `completed`: The transaction has been broadcasted and executed. The funds have been transferred to the vault.
+  </Tab>
+  <Tab title="Offramp withdrawal statuses">
+    - `created`: The transaction has been created and is waiting to be signed.
+    - `processing`: The transaction is being broadcasted.
+    - `waiting_for_funds`: On-chain receipt confirms — assets landed at liquidation address, waiting for Bridge to pick them up.
+    - `funds_in_transfer`: Bridge has picked up the assets and is in the process of converting them to fiat.
+    - `completed`: Fiat funds have been transferred to the user's bank account.
+  </Tab>
+</Tabs>
+
+## Retrieving transactions
+
+Three endpoints are available depending on what you need: a single transaction by ID, all transactions for one account, or every transaction across all your accounts.
+
+<Tabs>
+  <Tab title="Single transaction">
+    [Get single transaction](/api-reference/transactions/get-single-transaction) returns one transaction by its ID.
+
+    **Query parameters**
+
+    - `transaction_id` — UUID of the transaction.
+
+    You can use this to poll the status of a specific transaction (deposit, withdrawal, etc.) after the user has signed it.
+  </Tab>
+  <Tab title="By account">
+    [List all transactions](/api-reference/transactions/list-all-transactions) returns every active transaction for a specific account. Transactions still in `created` status are excluded.
+
+    **Query parameters**
+
+    - `account_id` — UUID of the account.
+  </Tab>
+  <Tab title="Across all accounts">
+    [List all transactions across every account](/api-reference/transactions/list-all-transactions-across-every-account-of-the-authenticated-integrator) returns every active transaction across all your accounts, paginated. Transactions still in `created` status are excluded.
+
+    **Query parameters**
+
+    - `limit` — page size, clamped to `[1, 100]`. Defaults to `20`.
+    - `offset` — number of records to skip. Defaults to `0`.
+    - `order` — sort direction over `updatedAt`. `desc` (default) returns the most recently updated first; `asc` returns the oldest first.
+
+    **Response**
+
+    ```json
+    {
+      "transactions": [ /* TransactionView, ... */ ],
+      "total":  8753,
+      "limit":  20,
+      "offset": 0
+    }
+    ```
+
+    `total` is the total number of active transactions across all your accounts.
+  </Tab>
+</Tabs>

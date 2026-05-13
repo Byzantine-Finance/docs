@@ -1965,6 +1965,99 @@
                 ]
             }
         },
+        "/v1/query/get-all-transactions": {
+            "get": {
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "List all transactions across every account of the authenticated integrator",
+                "description": "Returns transactions across all accounts owned by the integrator, paginated and ordered (DESC by default).\nExcludes transactions with `created` status.",
+                "operationId": "get_all_transactions",
+                "parameters": [
+                    {
+                        "name": "X-Pubkey",
+                        "in": "header",
+                        "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Timestamp",
+                        "in": "header",
+                        "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Signature",
+                        "in": "header",
+                        "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Page size (max 100). Defaults to 20.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "Number of records to skip. Defaults to 0.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "order",
+                        "in": "query",
+                        "description": "Sort order over the field `updatedAt`. `desc` (default) returns the most recently updated first;\n`asc` returns the oldest first. Combine with `offset` to paginate through every transaction.",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/components/schemas/SortOrder"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Transactions retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetAllTransactionsResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "integrator_auth": []
+                    }
+                ]
+            }
+        },
         "/v1/query/get-activate-account-payload-passkey": {
             "post": {
                 "tags": [
@@ -3074,6 +3167,24 @@
                     }
                 ],
                 "description": "Bank account details where the funds will be transferred to (withdrawals only)."
+            },
+            "BankAccountWrapper": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/BankAccount"
+                    },
+                    {
+                        "type": "object",
+                        "required": [
+                            "objectId"
+                        ],
+                        "properties": {
+                            "objectId": {
+                                "$ref": "#/components/schemas/Uuid"
+                            }
+                        }
+                    }
+                ]
             },
             "BeneficiaryDetails": {
                 "type": "object",
@@ -4367,6 +4478,61 @@
                     }
                 }
             },
+            "GetAllTransactionsQuery": {
+                "type": "object",
+                "properties": {
+                    "limit": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page size (max 100). Defaults to 20.",
+                        "nullable": true
+                    },
+                    "offset": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Number of records to skip. Defaults to 0.",
+                        "nullable": true
+                    },
+                    "order": {
+                        "$ref": "#/components/schemas/SortOrder"
+                    }
+                }
+            },
+            "GetAllTransactionsResponse": {
+                "type": "object",
+                "required": [
+                    "transactions",
+                    "total",
+                    "limit",
+                    "offset"
+                ],
+                "properties": {
+                    "transactions": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TransactionView"
+                        }
+                    },
+                    "total": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Total number of active transactions for this integrator across all accounts.",
+                        "example": 8753
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page size (max 100). Defaults to 20.",
+                        "example": 20
+                    },
+                    "offset": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Number of records to skip. Defaults to 0.",
+                        "example": 0
+                    }
+                }
+            },
             "GetAssociatedPersonResponse": {
                 "type": "object",
                 "description": "Response body for an associated person",
@@ -4703,23 +4869,23 @@
             "GetTransactionResponse": {
                 "allOf": [
                     {
-                        "$ref": "#/components/schemas/TurnkeyTransaction"
+                        "$ref": "#/components/schemas/TransactionView"
                     },
                     {
                         "type": "object",
                         "properties": {
-                            "fiat_deposit_instructions": {
+                            "fiatDepositInstructions": {
                                 "allOf": [
                                     {
-                                        "$ref": "#/components/schemas/SourceDepositInstructions"
+                                        "$ref": "#/components/schemas/SourceDepositInstructionsWrapper"
                                     }
                                 ],
                                 "nullable": true
                             },
-                            "destination_bank_account": {
+                            "destinationBankAccount": {
                                 "allOf": [
                                     {
-                                        "$ref": "#/components/schemas/BankAccount"
+                                        "$ref": "#/components/schemas/BankAccountWrapper"
                                     }
                                 ],
                                 "nullable": true
@@ -5410,45 +5576,6 @@
                     }
                 }
             },
-            "OtpRequestResponse": {
-                "type": "object",
-                "required": [
-                    "accountId",
-                    "transactionType",
-                    "vaultAddr",
-                    "transaction_id"
-                ],
-                "properties": {
-                    "accountId": {
-                        "$ref": "#/components/schemas/Uuid"
-                    },
-                    "transactionType": {
-                        "$ref": "#/components/schemas/TransactionType"
-                    },
-                    "vaultAddr": {
-                        "type": "string",
-                        "description": "The address of the vault.",
-                        "example": "0x1234567890abcdef"
-                    },
-                    "amount": {
-                        "type": "string",
-                        "description": "Amount to deposit.",
-                        "example": "750.25",
-                        "nullable": true
-                    },
-                    "transaction_id": {
-                        "$ref": "#/components/schemas/Uuid"
-                    },
-                    "destinationBankAccount": {
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/BankAccount"
-                            }
-                        ],
-                        "nullable": true
-                    }
-                }
-            },
             "PasskeyPayloadRequestResponse": {
                 "type": "object",
                 "required": [
@@ -5524,23 +5651,6 @@
                     },
                     "invitedBy": {
                         "$ref": "#/components/schemas/Uuid"
-                    }
-                }
-            },
-            "SendOtpTransactionRequestBody": {
-                "type": "object",
-                "required": [
-                    "transactionId",
-                    "otpCode"
-                ],
-                "properties": {
-                    "transactionId": {
-                        "$ref": "#/components/schemas/Uuid"
-                    },
-                    "otpCode": {
-                        "type": "string",
-                        "description": "The OTp code that the user received via email.",
-                        "example": "123456"
                     }
                 }
             },
@@ -5789,6 +5899,14 @@
                 ],
                 "description": "Accepts either a single-payload or a multi-payload request Turnkey request"
             },
+            "SortOrder": {
+                "type": "string",
+                "description": "Chronological sort direction over the field `updatedAt`.",
+                "enum": [
+                    "asc",
+                    "desc"
+                ]
+            },
             "SourceDepositInstructions": {
                 "type": "object",
                 "required": [
@@ -5862,6 +5980,24 @@
                         "nullable": true
                     }
                 }
+            },
+            "SourceDepositInstructionsWrapper": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/SourceDepositInstructions"
+                    },
+                    {
+                        "type": "object",
+                        "required": [
+                            "objectId"
+                        ],
+                        "properties": {
+                            "objectId": {
+                                "$ref": "#/components/schemas/Uuid"
+                            }
+                        }
+                    }
+                ]
             },
             "SubAccountBalances": {
                 "type": "object",
@@ -6003,6 +6139,7 @@
                     "created",
                     "waiting_for_funds",
                     "funds_in_transfer",
+                    "funds_received",
                     "processing",
                     "completed",
                     "simulation_failed",
@@ -6012,7 +6149,7 @@
             },
             "TransactionType": {
                 "type": "string",
-                "description": "Type of transaction that is being submitted.",
+                "description": "Type of transaction stored in the database.",
                 "enum": [
                     "authorization",
                     "approve",
@@ -6020,28 +6157,36 @@
                     "deposit",
                     "withdraw",
                     "transfer",
-                    "withdraw_transfer"
+                    "withdraw_transfer",
+                    "onramp",
+                    "offramp"
                 ],
                 "example": "deposit"
             },
-            "Transports": {
+            "TransactionTypeView": {
                 "type": "string",
+                "description": "Type of transaction returned by the API.",
                 "enum": [
-                    "AUTHENTICATOR_TRANSPORT_BLE",
-                    "AUTHENTICATOR_TRANSPORT_INTERNAL",
-                    "AUTHENTICATOR_TRANSPORT_NFC",
-                    "AUTHENTICATOR_TRANSPORT_USB",
-                    "AUTHENTICATOR_TRANSPORT_HYBRID"
-                ]
+                    "onramp",
+                    "deposit",
+                    "onramp_deposit",
+                    "withdraw",
+                    "offramp",
+                    "withdraw_offramp",
+                    "authorization",
+                    "approve",
+                    "transfer"
+                ],
+                "example": "deposit"
             },
-            "TurnkeyTransaction": {
+            "TransactionView": {
                 "type": "object",
+                "description": "Details of a transaction",
                 "required": [
                     "transactionId",
                     "accountId",
                     "chainId",
-                    "vaultAddr",
-                    "onchainTxAmount",
+                    "intermediaryAmount",
                     "type",
                     "status",
                     "createdAt",
@@ -6059,30 +6204,19 @@
                         "format": "int32"
                     },
                     "vaultAddr": {
-                        "type": "string"
+                        "type": "string",
+                        "nullable": true
                     },
-                    "onchainTxAmount": {
+                    "intermediaryAmount": {
                         "$ref": "#/components/schemas/Decimal"
                     },
                     "type": {
-                        "$ref": "#/components/schemas/TransactionType"
+                        "$ref": "#/components/schemas/TransactionTypeView"
                     },
                     "status": {
                         "$ref": "#/components/schemas/TransactionStatus"
                     },
-                    "fiatAccountId": {
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/Uuid"
-                            }
-                        ],
-                        "nullable": true
-                    },
                     "transactionHash": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "optId": {
                         "type": "string",
                         "nullable": true
                     },
@@ -6115,8 +6249,12 @@
                         ],
                         "nullable": true
                     },
-                    "fiatTransactionId": {
-                        "type": "string",
+                    "sourceAmount": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Decimal"
+                            }
+                        ],
                         "nullable": true
                     },
                     "destinationAmount": {
@@ -6126,24 +6264,18 @@
                             }
                         ],
                         "nullable": true
-                    },
-                    "sourceAmount": {
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/Decimal"
-                            }
-                        ],
-                        "nullable": true
-                    },
-                    "relatedTransactionId": {
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/Uuid"
-                            }
-                        ],
-                        "nullable": true
                     }
                 }
+            },
+            "Transports": {
+                "type": "string",
+                "enum": [
+                    "AUTHENTICATOR_TRANSPORT_BLE",
+                    "AUTHENTICATOR_TRANSPORT_INTERNAL",
+                    "AUTHENTICATOR_TRANSPORT_NFC",
+                    "AUTHENTICATOR_TRANSPORT_USB",
+                    "AUTHENTICATOR_TRANSPORT_HYBRID"
+                ]
             },
             "UpdateAssociatedPerson": {
                 "type": "object",

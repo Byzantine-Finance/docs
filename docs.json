@@ -170,6 +170,7 @@
                           "api-reference/withdrawal-technical"
                         ]
                       },
+                      "api-reference/tracking-transactions",
                       "api-reference/account-balances-idle"
                     ]
                   },
@@ -260,6 +261,7 @@
                   {
                     "group": "Transactions",
                     "pages": [
+                      "GET /v1/query/get-all-transactions",
                       "GET /v1/query/get-transactions",
                       "GET /v1/query/get-transaction",
                       {
