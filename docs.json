@@ -189,6 +189,7 @@
                 "openapi": "api-reference/openapi-integrator.json",
                 "pages": [
                   "api-reference/endpoints-overview",
+                  "api-reference/changelog",
                   {
                     "group": "API health",
                     "pages": [
