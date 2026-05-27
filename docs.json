@@ -11,7 +11,7 @@
   },
   "api": {
     "playground": {
-      "display": "simple"
+      "display": "interactive"
     },
     "examples": {
       "languages": [
@@ -189,6 +189,7 @@
                 "openapi": "api-reference/openapi-integrator.json",
                 "pages": [
                   "api-reference/endpoints-overview",
+                  "api-reference/sandbox-auth",
                   "api-reference/changelog",
                   {
                     "group": "API health",

@@ -8,6 +8,12 @@
         },
         "version": "0.2.0"
     },
+    "servers": [
+        {
+            "url": "https://sandbox.api.byzantine.fi",
+            "description": "Sandbox"
+        }
+    ],
     "paths": {
         "/v1/health": {
             "get": {
@@ -3221,7 +3227,7 @@
                     "ubo",
                     "representative"
                 ],
-                "example": "UBO"
+                "example": "ubo"
             },
             "BigDecimal": {
                 "type": "string",
@@ -3335,7 +3341,7 @@
                     "sole_prop",
                     "trust"
                 ],
-                "example": "LLC"
+                "example": "llc"
             },
             "CheckingOrSavings": {
                 "type": "string",
