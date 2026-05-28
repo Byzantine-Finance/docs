@@ -5,10 +5,10 @@ description: "A single user can be associated with multiple Byzantine accounts."
 
 A user can be associated with multiple accounts. This happens when a user:
 
-- Creates an individual account (receives their own `account_Id`)
+- Creates an individual account (receives their own `account_id`)
 - Is invited to join one or more entity (business) accounts
 
-Each account has its own `account_Id`, wallet, and balances. The user interacts with each account independently.
+Each account has its own `account_id`, wallet, and balances. The user interacts with each account independently.
 
 <Info>
   A user is tied to a specific email address and a specific `integrator_id`. Their `user_Id` remains unchanged regardless of how many accounts they are associated with.
@@ -26,9 +26,9 @@ To see all accounts associated with a user, call the get user details endpoint. 
 
 ```mermaid
 flowchart TD
-    U["User (user_Id)"] --> A1["Individual account (account_Id)"]
-    U --> A2["Entity account A (account_Id)"]
-    U --> A3["Entity account B (account_Id)"]
+    U["User (user_Id)"] --> A1["Individual account (account_id)"]
+    U --> A2["Entity account A (account_id)"]
+    U --> A3["Entity account B (account_id)"]
     A1 --> W1["Wallet"]
     A2 --> W2["Wallet"]
     A3 --> W3["Wallet"]
