@@ -1,0 +1,20 @@
+---
+title: "Sandbox authentication"
+description: "Activate request signing for the interactive API playground"
+---
+
+The interactive API playground on this site signs every request to `sandbox.api.byzantine.fi` automatically when you activate your sandbox integrator key here.
+
+<Warning>
+  Enter a **sandbox** integrator private key only. Production keys have full account privileges — they must never be entered into a documentation page.
+</Warning>
+
+<div id="byz-auth-mount" />
+
+<Accordion title="How it works (security details)">
+  Your private key is imported into the browser's Web Crypto subsystem as a **non-extractable** ECDSA P-256 signing key. The raw key bytes are discarded immediately after import and cannot be read back by any script — `crypto.subtle.exportKey()` on the imported key throws unconditionally.
+
+  The signing key reference is stored in IndexedDB under a randomly generated session ID. The session ID lives in `sessionStorage` (per-tab, cleared automatically on tab close). Activation expires after 30 minutes; closing the tab also clears the session.
+
+  No external libraries are used — all cryptography runs against the browser's built-in `crypto.subtle` API. No requests leave your machine during activation.
+</Accordion>
