@@ -21,8 +21,10 @@
   const IDB_STORE    = "keys";
   const IDB_VERSION  = 1;
   const MOUNT_ID     = "byz-auth-mount";
+  const BADGE_ID     = "byz-badge";
   const SANDBOX_HOST = "sandbox.api.byzantine.fi";
   const PROXY_PATH   = "/_mintlify/api/request";
+  const SANDBOX_AUTH_PATH = "/api-reference/sandbox-auth";
 
   // 35-byte PKCS#8 DER prefix for a P-256 EC private key. Concatenated with
   // a 32-byte scalar produces a valid PKCS#8 that Web Crypto's importKey
@@ -390,7 +392,7 @@
             spellcheck="false"
           />
         </div>
-        <button id="byz-submit" class="byz-btn" type="submit">Activate sandbox auth</button>
+        <button id="byz-submit" class="byz-btn" type="submit">Activate Sandbox authentication</button>
       </form>
       <div id="byz-form-error" class="byz-error" style="display:none"></div>
     `;
@@ -415,7 +417,7 @@
         errEl.textContent   = err.message || String(err);
         errEl.style.display = "block";
         btn.disabled = false;
-        btn.textContent = "Activate sandbox auth";
+        btn.textContent = "Activate Sandbox authentication";
       }
     });
   }
@@ -426,7 +428,7 @@
       <div class="byz-card">
         <div class="byz-card-head">
           <span class="byz-dot"></span>
-          <span class="byz-title">Sandbox auth active</span>
+          <span class="byz-title">Sandbox authentication active</span>
           <span class="byz-countdown" id="byz-countdown"></span>
         </div>
         <div class="byz-card-body">
@@ -476,14 +478,99 @@
 
   function refreshMount() {
     const mount = document.getElementById(MOUNT_ID);
-    if (!mount) return;
+    if (mount) {
+      const session = getSession();
+      const desired = session ? "active" : "setup";
+      if (mount.dataset.byzRendered !== desired) {
+        injectStyles();
+        if (session) renderActiveCard(mount, session);
+        else          renderSetupForm(mount);
+        mount.dataset.byzRendered = desired;
+      }
+    }
+    renderBadge();
+  }
+
+  // ── Floating session countdown badge ───────────────────────────────────
+  // Fixed bottom-right pill visible on every docs page while a session is
+  // active. Click navigates to the sandbox-auth page.
+  let badgeTimer = null;
+
+  function ensureBadge() {
+    let badge = document.getElementById(BADGE_ID);
+    if (badge) return badge;
+    badge = document.createElement("a");
+    badge.id    = BADGE_ID;
+    badge.href  = SANDBOX_AUTH_PATH;
+    badge.title = "Sandbox auth active — click to manage";
+    Object.assign(badge.style, {
+      position:       "fixed",
+      bottom:         "20px",
+      right:          "20px",
+      zIndex:         "99999",
+      background:     "#702963",
+      color:          "#fff",
+      padding:        "8px 14px",
+      borderRadius:   "999px",
+      fontSize:       "12px",
+      fontWeight:     "500",
+      fontFamily:     "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+      boxShadow:      "0 4px 12px rgba(0,0,0,0.25)",
+      cursor:         "pointer",
+      textDecoration: "none",
+      display:        "flex",
+      alignItems:     "center",
+      gap:            "8px",
+      lineHeight:     "1",
+      userSelect:     "none",
+    });
+    document.body.appendChild(badge);
+    return badge;
+  }
+
+  function removeBadge() {
+    const existing = document.getElementById(BADGE_ID);
+    if (existing) existing.remove();
+  }
+
+  function tickBadge() {
     const session = getSession();
-    const desired = session ? "active" : "setup";
-    if (mount.dataset.byzRendered === desired) return;
-    injectStyles();
-    if (session) renderActiveCard(mount, session);
-    else          renderSetupForm(mount);
-    mount.dataset.byzRendered = desired;
+    if (!session) {
+      removeBadge();
+      if (badgeTimer) { clearInterval(badgeTimer); badgeTimer = null; }
+      return;
+    }
+    const ms = session.expiresAt - Date.now();
+    if (ms <= 0) {
+      clearSession();
+      removeBadge();
+      if (badgeTimer) { clearInterval(badgeTimer); badgeTimer = null; }
+      const mount = document.getElementById(MOUNT_ID);
+      if (mount) { mount.dataset.byzRendered = ""; refreshMount(); }
+      return;
+    }
+    const m   = Math.floor(ms / 60_000);
+    const sec = Math.floor((ms % 60_000) / 1000);
+    const urgent = m < 5;
+    // Cache rendered state on the element itself (as a JS property, NOT a
+    // DOM attribute) so reentrant calls from the MutationObserver don't
+    // rewrite innerHTML — which would trigger the observer again and loop.
+    const wantedKey = `${m}m ${String(sec).padStart(2, "0")}s|${urgent ? "u" : "n"}`;
+    const badge = ensureBadge();
+    if (badge.__byzKey === wantedKey) return;
+    badge.__byzKey = wantedKey;
+    const dotColor  = urgent ? "#fb923c" : "#4ade80";
+    const dotShadow = urgent ? "rgba(251,146,60,.3)" : "rgba(74,222,128,.3)";
+    badge.innerHTML =
+      `<span style="width:8px;height:8px;border-radius:50%;background:${dotColor};box-shadow:0 0 0 2px ${dotShadow};flex-shrink:0;"></span>` +
+      `<span>Sandbox auth &middot; ${m}m ${String(sec).padStart(2, "0")}s</span>`;
+  }
+
+  function renderBadge() {
+    tickBadge();
+    if (badgeTimer === null && getSession()) {
+      badgeTimer = setInterval(tickBadge, 1000);
+    }
   }
 
   function startObserving() {
