@@ -1,0 +1,205 @@
+---
+title: "Webhooks"
+description: "Receive signed customer and transaction lifecycle events from Byzantine."
+---
+
+Webhooks let your integration receive asynchronous updates when customer status or transaction status changes. Create one or more webhook subscriptions, choose the event types you want, and Byzantine will deliver signed JSON payloads to your HTTPS endpoint.
+
+Webhook management endpoints use the same API authentication as the rest of the Integrator API.
+
+## When to use webhooks
+
+Use webhooks when your system needs to react to events without polling Byzantine repeatedly:
+
+- update a customer onboarding status when KYC changes;
+- mark a transaction as funded, processing, completed, reverted, or failed;
+- trigger internal support or compliance workflows when more information is required.
+
+For transaction polling and status meanings, see [Tracking Transactions](/api-reference/tracking-transactions).
+
+## Create a subscription
+
+Create a subscription with a public HTTPS URL and the event types you want to receive.
+
+```bash
+curl --request POST \
+  --url https://api.byzantine.fi/v1/webhooks/subscriptions \
+  --header 'Content-Type: application/json' \
+  --header 'X-Pubkey: <your-public-key>' \
+  --header 'X-Timestamp: 1760375826' \
+  --header 'X-Signature: <request-signature>' \
+  --data '{
+    "url": "https://example.com/byzantine/webhooks",
+    "enabled": true,
+    "eventTypes": [
+      "customer.active",
+      "transaction.completed",
+      "transaction.reverted"
+    ]
+  }'
+```
+
+If `eventTypes` is omitted or empty, Byzantine subscribes the endpoint to all subscribable event types.
+
+The create response includes the subscription and its active signing public key:
+
+```json
+{
+  "subscription": {
+    "id": "0f92bb08-0d38-4c4b-96bb-6b5df8434f8d",
+    "integratorId": "8f7064b4-9587-496f-a5cc-00fbf5af01d5",
+    "url": "https://example.com/byzantine/webhooks",
+    "enabled": true,
+    "eventTypes": ["customer.active", "transaction.completed", "transaction.reverted"],
+    "activeSigningKeyId": "4af5f5ff-bf64-4ac6-a24b-9a4d7c41c1d6",
+    "endpointSafetyMetadata": {
+      "normalizedUrl": "https://example.com/byzantine/webhooks",
+      "host": "example.com",
+      "port": 443,
+      "resolvedIps": ["93.184.216.34"],
+      "validatedAt": "2026-06-03T15:00:00Z"
+    },
+    "createdAt": "2026-06-03T15:00:00Z",
+    "updatedAt": "2026-06-03T15:00:00Z"
+  },
+  "publicKey": "0x02...",
+  "algorithm": "ECDSA_P256_SHA256"
+}
+```
+
+Store `publicKey` by subscription. Use it to verify delivery signatures.
+
+## Callback URL requirements
+
+Webhook URLs must be safe for server-to-server delivery:
+
+- HTTPS only;
+- DNS hostname required;
+- no IP literals;
+- no localhost or internal hostnames;
+- no username/password in the URL;
+- no URL fragments;
+- DNS must resolve to public/global IP addresses.
+
+Delivery requests use a 5 second connection timeout and a 10 second total timeout. Response bodies are summarized and capped at 64 KiB.
+
+## Event types
+
+Subscribable customer events:
+
+- `customer.created`
+- `customer.updated`
+- `customer.under_review`
+- `customer.awaiting_information`
+- `customer.awaiting_associated_person_information`
+- `customer.resubmission_requested`
+- `customer.active`
+- `customer.rejected`
+
+Subscribable transaction events:
+
+- `transaction.created`
+- `transaction.waiting_for_funds`
+- `transaction.payment_in_review`
+- `transaction.funds_in_transfer`
+- `transaction.funds_received`
+- `transaction.processing`
+- `transaction.completed`
+- `transaction.simulation_failed`
+- `transaction.reverted`
+
+`webhook.test` is used for test deliveries and is not directly subscribable.
+
+## Delivery payload
+
+Each delivery body is JSON. The exact `data` object depends on the event type.
+
+```json
+{
+  "id": "00000000-0000-4000-8000-000000000001",
+  "eventType": "transaction.completed",
+  "occurredAt": "2026-06-03T15:00:00Z",
+  "livemode": true,
+  "payloadVersion": 1,
+  "integratorId": "8f7064b4-9587-496f-a5cc-00fbf5af01d5",
+  "transactionId": "53f2d2dc-6abc-40fa-b2d2-d6d76b839c09",
+  "provider": "byzantine",
+  "data": {
+    "status": "completed"
+  }
+}
+```
+
+Treat webhook delivery as at-least-once. Your receiver should be idempotent. Use the event id or delivery id to deduplicate work.
+
+## Delivery signatures
+
+Byzantine signs every delivery using ECDSA P-256 with SHA-256.
+
+Each request includes these headers:
+
+| Header | Description |
+|--------|-------------|
+| `X-Byzantine-Webhook-Delivery-Id` | Unique delivery attempt target id. Use for idempotency and debugging. |
+| `X-Byzantine-Webhook-Event-Id` | Event id for the underlying lifecycle event. |
+| `X-Byzantine-Webhook-Timestamp` | Unix timestamp in seconds. |
+| `X-Byzantine-Webhook-Key-Id` | Signing key id associated with the subscription. |
+| `X-Byzantine-Webhook-Algorithm` | Always `ECDSA_P256_SHA256`. |
+| `X-Byzantine-Webhook-Signature` | Hex-encoded ECDSA signature. |
+
+The signing input is the exact raw request body prefixed by dot-separated delivery metadata:
+
+```text
+{deliveryId}.{eventId}.{timestamp}.{rawBody}
+```
+
+Important verification rules:
+
+- verify the exact raw request bytes; do not parse and re-serialize JSON before verification;
+- reject timestamps outside your replay tolerance window; Byzantine's receiver helper uses 300 seconds;
+- verify `X-Byzantine-Webhook-Algorithm` is `ECDSA_P256_SHA256`;
+- decode `publicKey` as a hex-encoded compressed SEC1 P-256 public key;
+- decode `X-Byzantine-Webhook-Signature` as hex. Byzantine emits a 64-byte ECDSA signature in `r || s` form.
+
+## Retries
+
+A delivery succeeds when your endpoint returns any `2xx` HTTP status. Non-2xx responses and transport failures are retried automatically.
+
+Automatic retry schedule:
+
+| Attempt after first failure | Delay |
+|-----------------------------|-------|
+| 1 | 30 seconds |
+| 2 | 60 seconds |
+| 3 | 5 minutes |
+| 4 | 30 minutes |
+| 5 | 2 hours |
+| 6 | 6 hours |
+
+You can list delivery attempts and manually retry a delivery from the webhook delivery endpoints.
+
+## Test deliveries
+
+Use the test endpoint to send a `webhook.test` event to a subscription before relying on production lifecycle events.
+
+```bash
+curl --request POST \
+  --url https://api.byzantine.fi/v1/webhooks/subscriptions/{subscriptionId}/test \
+  --header 'X-Pubkey: <your-public-key>' \
+  --header 'X-Timestamp: 1760375826' \
+  --header 'X-Signature: <request-signature>'
+```
+
+Use the delivery list endpoint to inspect attempts, status codes, response summaries, and next retry time.
+
+## Endpoint reference
+
+See **API endpoints > Webhooks** for request and response schemas for:
+
+- `POST /v1/webhooks/subscriptions`
+- `GET /v1/webhooks/subscriptions`
+- `PATCH /v1/webhooks/subscriptions/{subscription_id}`
+- `DELETE /v1/webhooks/subscriptions/{subscription_id}`
+- `POST /v1/webhooks/subscriptions/{subscription_id}/test`
+- `GET /v1/webhooks/deliveries`
+- `POST /v1/webhooks/deliveries/{delivery_id}/retry`
