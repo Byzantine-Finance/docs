@@ -2690,6 +2690,283 @@
                     }
                 ]
             }
+        },
+        "/v1/webhooks/subscriptions": {
+            "post": {
+                "tags": [
+                    "Webhooks"
+                ],
+                "summary": "Create a webhook subscription",
+                "description": "Registers an integrator-owned webhook endpoint, validates its HTTPS/DNS safety metadata,\ncreates an active P-256 signing key, and returns the public verification key for future deliveries.",
+                "operationId": "create_subscription",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateWebhookSubscriptionRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Webhook subscription created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WebhookSubscriptionResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid webhook subscription",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "integrator_auth": []
+                    }
+                ]
+            },
+            "get": {
+                "tags": [
+                    "Webhooks"
+                ],
+                "summary": "List webhook subscriptions",
+                "description": "Returns all webhook subscriptions owned by the authenticated integrator, including each\nsubscription's active public signing key.",
+                "operationId": "list_subscriptions",
+                "responses": {
+                    "200": {
+                        "description": "Webhook subscriptions",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListWebhookSubscriptionsResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "integrator_auth": []
+                    }
+                ]
+            }
+        },
+        "/v1/webhooks/subscriptions/{subscription_id}": {
+            "parameters": [
+                {
+                    "name": "subscription_id",
+                    "in": "path",
+                    "description": "Webhook subscription ID.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                }
+            ],
+            "patch": {
+                "tags": [
+                    "Webhooks"
+                ],
+                "summary": "Update a webhook subscription",
+                "description": "Updates an integrator-owned webhook subscription. URL changes are revalidated for endpoint\nsafety before being persisted.",
+                "operationId": "update_subscription",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateWebhookSubscriptionRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Webhook subscription updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WebhookSubscriptionResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Webhook subscription not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "integrator_auth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Webhooks"
+                ],
+                "summary": "Delete a webhook subscription",
+                "description": "Deletes a webhook subscription owned by the authenticated integrator and cascades its webhook\ndelivery records according to the database outbox schema.",
+                "operationId": "delete_subscription",
+                "responses": {
+                    "200": {
+                        "description": "Webhook subscription deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "integrator_auth": []
+                    }
+                ]
+            }
+        },
+        "/v1/webhooks/subscriptions/{subscription_id}/test": {
+            "parameters": [
+                {
+                    "name": "subscription_id",
+                    "in": "path",
+                    "description": "Webhook subscription ID.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                }
+            ],
+            "post": {
+                "tags": [
+                    "Webhooks"
+                ],
+                "summary": "Send a signed test webhook",
+                "description": "Creates a durable `webhook.test` event and delivery record, signs the exact outbound JSON body\nwith the subscription's active P-256 key, and attempts delivery to the configured endpoint.",
+                "operationId": "send_test_delivery",
+                "responses": {
+                    "200": {
+                        "description": "Signed test webhook delivery attempted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TestWebhookDeliveryResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Webhook subscription not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "integrator_auth": []
+                    }
+                ]
+            }
+        },
+        "/v1/webhooks/deliveries": {
+            "get": {
+                "tags": [
+                    "Webhooks"
+                ],
+                "summary": "List webhook delivery history",
+                "description": "Returns recent webhook delivery records for the authenticated integrator with their source event\npayloads and recorded delivery attempts.",
+                "operationId": "list_deliveries",
+                "responses": {
+                    "200": {
+                        "description": "Webhook delivery history",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListWebhookDeliveriesResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "integrator_auth": []
+                    }
+                ]
+            }
+        },
+        "/v1/webhooks/deliveries/{delivery_id}/retry": {
+            "parameters": [
+                {
+                    "name": "delivery_id",
+                    "in": "path",
+                    "description": "Webhook delivery ID.",
+                    "required": true,
+                    "schema": {
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                }
+            ],
+            "post": {
+                "tags": [
+                    "Webhooks"
+                ],
+                "summary": "Retry a webhook delivery",
+                "description": "Manually retries a retryable webhook delivery owned by the authenticated integrator. Disabled\nsubscriptions and terminal, succeeded, or in-flight deliveries are rejected.",
+                "operationId": "retry_delivery",
+                "responses": {
+                    "200": {
+                        "description": "Webhook manual retry attempted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TestWebhookDeliveryResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Webhook delivery not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "integrator_auth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -7199,6 +7476,358 @@
                         "nullable": true
                     }
                 }
+            },
+            "CreateWebhookSubscriptionRequest": {
+                "type": "object",
+                "required": [
+                    "url"
+                ],
+                "properties": {
+                    "url": {
+                        "type": "string"
+                    },
+                    "enabled": {
+                        "type": "boolean"
+                    },
+                    "eventTypes": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "UpdateWebhookSubscriptionRequest": {
+                "type": "object",
+                "properties": {
+                    "url": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "enabled": {
+                        "type": "boolean",
+                        "nullable": true
+                    },
+                    "eventTypes": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "nullable": true
+                    }
+                }
+            },
+            "WebhookSubscriptionResponse": {
+                "type": "object",
+                "required": [
+                    "subscription",
+                    "publicKey",
+                    "algorithm"
+                ],
+                "properties": {
+                    "subscription": {
+                        "$ref": "#/components/schemas/WebhookSubscription"
+                    },
+                    "publicKey": {
+                        "type": "string"
+                    },
+                    "algorithm": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ListWebhookDeliveriesResponse": {
+                "type": "object",
+                "required": [
+                    "deliveries"
+                ],
+                "properties": {
+                    "deliveries": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/WebhookDeliveryWithAttempts"
+                        }
+                    }
+                }
+            },
+            "ListWebhookSubscriptionsResponse": {
+                "type": "object",
+                "required": [
+                    "subscriptions"
+                ],
+                "properties": {
+                    "subscriptions": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/WebhookSubscriptionResponse"
+                        }
+                    }
+                }
+            },
+            "TestWebhookDeliveryResponse": {
+                "type": "object",
+                "required": [
+                    "event",
+                    "delivery"
+                ],
+                "properties": {
+                    "event": {
+                        "$ref": "#/components/schemas/WebhookEvent"
+                    },
+                    "delivery": {
+                        "$ref": "#/components/schemas/WebhookDelivery"
+                    },
+                    "attempt": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/WebhookDeliveryAttempt"
+                            }
+                        ],
+                        "nullable": true
+                    }
+                }
+            },
+            "WebhookEvent": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "eventType",
+                    "sourceType",
+                    "sourceId",
+                    "payload",
+                    "payloadVersion",
+                    "sourceTransitionMetadata",
+                    "createdAt"
+                ],
+                "properties": {
+                    "id": {
+                        "$ref": "#/components/schemas/Uuid"
+                    },
+                    "eventType": {
+                        "type": "string"
+                    },
+                    "sourceType": {
+                        "type": "string"
+                    },
+                    "sourceId": {
+                        "type": "string"
+                    },
+                    "payload": {},
+                    "payloadVersion": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "sourceTransitionMetadata": {},
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "WebhookSubscription": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "integratorId",
+                    "url",
+                    "enabled",
+                    "eventTypes",
+                    "endpointSafetyMetadata",
+                    "createdAt",
+                    "updatedAt"
+                ],
+                "properties": {
+                    "id": {
+                        "$ref": "#/components/schemas/Uuid"
+                    },
+                    "integratorId": {
+                        "$ref": "#/components/schemas/Uuid"
+                    },
+                    "url": {
+                        "type": "string"
+                    },
+                    "enabled": {
+                        "type": "boolean"
+                    },
+                    "eventTypes": {},
+                    "activeSigningKeyId": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Uuid"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "endpointSafetyMetadata": {},
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "WebhookDeliveryWithAttempts": {
+                "type": "object",
+                "required": [
+                    "delivery",
+                    "event",
+                    "attempts"
+                ],
+                "properties": {
+                    "delivery": {
+                        "$ref": "#/components/schemas/WebhookDelivery"
+                    },
+                    "event": {
+                        "$ref": "#/components/schemas/WebhookEvent"
+                    },
+                    "attempts": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/WebhookDeliveryAttempt"
+                        }
+                    }
+                }
+            },
+            "WebhookDeliveryAttempt": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "deliveryId",
+                    "attemptNumber",
+                    "outcome",
+                    "signedAt",
+                    "signedTimestamp",
+                    "createdAt"
+                ],
+                "properties": {
+                    "id": {
+                        "$ref": "#/components/schemas/Uuid"
+                    },
+                    "deliveryId": {
+                        "$ref": "#/components/schemas/Uuid"
+                    },
+                    "signingKeyId": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Uuid"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "attemptNumber": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "outcome": {
+                        "$ref": "#/components/schemas/WebhookDeliveryAttemptOutcome"
+                    },
+                    "statusCode": {
+                        "type": "integer",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "error": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "latencyMs": {
+                        "type": "integer",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "signedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "signedTimestamp": {
+                        "type": "string"
+                    },
+                    "responseSummary": {
+                        "nullable": true
+                    },
+                    "actor": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "WebhookDeliveryAttemptOutcome": {
+                "type": "string",
+                "description": "Outcome of one webhook delivery attempt stored as TEXT in Postgres.",
+                "enum": [
+                    "succeeded",
+                    "failed"
+                ],
+                "example": "succeeded"
+            },
+            "WebhookDelivery": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "subscriptionId",
+                    "eventId",
+                    "status",
+                    "attemptCount",
+                    "createdAt",
+                    "updatedAt"
+                ],
+                "properties": {
+                    "id": {
+                        "$ref": "#/components/schemas/Uuid"
+                    },
+                    "subscriptionId": {
+                        "$ref": "#/components/schemas/Uuid"
+                    },
+                    "eventId": {
+                        "$ref": "#/components/schemas/Uuid"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/WebhookDeliveryStatus"
+                    },
+                    "nextAttemptAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "attemptCount": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "terminalReason": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "lastResponseSummary": {
+                        "nullable": true
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "WebhookDeliveryStatus": {
+                "type": "string",
+                "description": "Durable webhook delivery lifecycle status stored as TEXT in Postgres.",
+                "enum": [
+                    "pending",
+                    "sending",
+                    "succeeded",
+                    "failed",
+                    "terminal_failed"
+                ],
+                "example": "pending"
             }
         },
         "securitySchemes": {
