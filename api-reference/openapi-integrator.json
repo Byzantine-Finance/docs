@@ -2690,6 +2690,450 @@
                     }
                 ]
             }
+        },
+        "/v1/webhooks/subscriptions": {
+            "post": {
+                "tags": [
+                    "Webhooks"
+                ],
+                "summary": "Create a webhook subscription",
+                "description": "Registers an integrator-owned webhook endpoint, validates its HTTPS/DNS safety metadata,\ncreates an active P-256 signing key, and returns the public verification key for future deliveries.",
+                "operationId": "create_subscription",
+                "parameters": [
+                    {
+                        "name": "X-Pubkey",
+                        "in": "header",
+                        "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Timestamp",
+                        "in": "header",
+                        "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Signature",
+                        "in": "header",
+                        "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateWebhookSubscriptionRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Webhook subscription created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WebhookSubscriptionResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid webhook subscription",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "integrator_auth": []
+                    }
+                ]
+            },
+            "get": {
+                "tags": [
+                    "Webhooks"
+                ],
+                "summary": "List webhook subscriptions",
+                "description": "Returns all webhook subscriptions owned by the authenticated integrator, including each\nsubscription's active public signing key.",
+                "operationId": "list_subscriptions",
+                "parameters": [
+                    {
+                        "name": "X-Pubkey",
+                        "in": "header",
+                        "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Timestamp",
+                        "in": "header",
+                        "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Signature",
+                        "in": "header",
+                        "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Webhook subscriptions",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListWebhookSubscriptionsResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "integrator_auth": []
+                    }
+                ]
+            }
+        },
+        "/v1/webhooks/subscriptions/{subscription_id}": {
+            "patch": {
+                "tags": [
+                    "Webhooks"
+                ],
+                "summary": "Update a webhook subscription",
+                "description": "Updates an integrator-owned webhook subscription. URL changes are revalidated for endpoint\nsafety before being persisted.",
+                "operationId": "update_subscription",
+                "parameters": [
+                    {
+                        "name": "X-Pubkey",
+                        "in": "header",
+                        "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Timestamp",
+                        "in": "header",
+                        "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Signature",
+                        "in": "header",
+                        "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateWebhookSubscriptionRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Webhook subscription updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/WebhookSubscriptionResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Webhook subscription not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "integrator_auth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Webhooks"
+                ],
+                "summary": "Delete a webhook subscription",
+                "description": "Deletes a webhook subscription owned by the authenticated integrator and cascades its webhook\ndelivery records according to the database outbox schema.",
+                "operationId": "delete_subscription",
+                "parameters": [
+                    {
+                        "name": "X-Pubkey",
+                        "in": "header",
+                        "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Timestamp",
+                        "in": "header",
+                        "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Signature",
+                        "in": "header",
+                        "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Webhook subscription deleted"
+                    }
+                },
+                "security": [
+                    {
+                        "integrator_auth": []
+                    }
+                ]
+            }
+        },
+        "/v1/webhooks/subscriptions/{subscription_id}/test": {
+            "post": {
+                "tags": [
+                    "Webhooks"
+                ],
+                "summary": "Send a signed test webhook",
+                "description": "Creates a durable `webhook.test` event and delivery record, signs the exact outbound JSON body\nwith the subscription's active P-256 key, and attempts delivery to the configured endpoint.",
+                "operationId": "send_test_delivery",
+                "parameters": [
+                    {
+                        "name": "X-Pubkey",
+                        "in": "header",
+                        "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Timestamp",
+                        "in": "header",
+                        "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Signature",
+                        "in": "header",
+                        "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Signed test webhook delivery attempted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TestWebhookDeliveryResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Webhook subscription not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "integrator_auth": []
+                    }
+                ]
+            }
+        },
+        "/v1/webhooks/deliveries": {
+            "get": {
+                "tags": [
+                    "Webhooks"
+                ],
+                "summary": "List webhook delivery history",
+                "description": "Returns recent webhook delivery records for the authenticated integrator with their source event\npayloads and recorded delivery attempts.",
+                "operationId": "list_deliveries",
+                "parameters": [
+                    {
+                        "name": "X-Pubkey",
+                        "in": "header",
+                        "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Timestamp",
+                        "in": "header",
+                        "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Signature",
+                        "in": "header",
+                        "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Webhook delivery history",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListWebhookDeliveriesResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "integrator_auth": []
+                    }
+                ]
+            }
+        },
+        "/v1/webhooks/deliveries/{delivery_id}/retry": {
+            "post": {
+                "tags": [
+                    "Webhooks"
+                ],
+                "summary": "Retry a webhook delivery",
+                "description": "Manually retries a retryable webhook delivery owned by the authenticated integrator. Disabled\nsubscriptions and terminal, succeeded, or in-flight deliveries are rejected.",
+                "operationId": "retry_delivery",
+                "parameters": [
+                    {
+                        "name": "X-Pubkey",
+                        "in": "header",
+                        "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Timestamp",
+                        "in": "header",
+                        "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Signature",
+                        "in": "header",
+                        "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Webhook manual retry attempted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/TestWebhookDeliveryResponse"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Webhook delivery not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "integrator_auth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -3347,7 +3791,8 @@
                 "type": "string",
                 "enum": [
                     "checking",
-                    "savings"
+                    "savings",
+                    "unknown"
                 ]
             },
             "CountryCode": {
@@ -3491,7 +3936,8 @@
                     "VNM",
                     "YEM",
                     "ZMB",
-                    "ZWE"
+                    "ZWE",
+                    "SMR"
                 ],
                 "example": "FRA"
             },
@@ -4945,6 +5391,14 @@
                             }
                         ],
                         "nullable": true
+                    },
+                    "countryOfBirth": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CountryCode"
+                            }
+                        ],
+                        "nullable": true
                     }
                 }
             },
@@ -5920,8 +6374,7 @@
                     "bankName",
                     "bankAddress",
                     "paymentRails",
-                    "bankBeneficiaryName",
-                    "bankBeneficiaryAddress"
+                    "bankBeneficiaryName"
                 ],
                 "properties": {
                     "currency": {
@@ -6270,6 +6723,14 @@
                             }
                         ],
                         "nullable": true
+                    },
+                    "relatedTransactionId": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Uuid"
+                            }
+                        ],
+                        "nullable": true
                     }
                 }
             },
@@ -6280,7 +6741,8 @@
                     "AUTHENTICATOR_TRANSPORT_INTERNAL",
                     "AUTHENTICATOR_TRANSPORT_NFC",
                     "AUTHENTICATOR_TRANSPORT_USB",
-                    "AUTHENTICATOR_TRANSPORT_HYBRID"
+                    "AUTHENTICATOR_TRANSPORT_HYBRID",
+                    "Unknown"
                 ]
             },
             "UpdateAssociatedPerson": {
@@ -6768,6 +7230,14 @@
                         "type": "string",
                         "description": "URL of the user's profile picture (can be an avatar)",
                         "nullable": true
+                    },
+                    "countryOfBirth": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CountryCode"
+                            }
+                        ],
+                        "nullable": true
                     }
                 }
             },
@@ -6946,6 +7416,14 @@
                     "profilePictureUrl": {
                         "type": "string",
                         "description": "URL of the user's profile picture (can be an avatar)",
+                        "nullable": true
+                    },
+                    "countryOfBirth": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/CountryCode"
+                            }
+                        ],
                         "nullable": true
                     }
                 }
@@ -7199,6 +7677,528 @@
                         "nullable": true
                     }
                 }
+            },
+            "CreateWebhookSubscriptionRequest": {
+                "type": "object",
+                "required": [
+                    "url"
+                ],
+                "properties": {
+                    "url": {
+                        "type": "string"
+                    },
+                    "enabled": {
+                        "type": "boolean"
+                    },
+                    "eventTypes": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "ListWebhookDeliveriesResponse": {
+                "type": "object",
+                "required": [
+                    "deliveries"
+                ],
+                "properties": {
+                    "deliveries": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/WebhookDeliveryWithAttempts"
+                        }
+                    }
+                }
+            },
+            "ListWebhookSubscriptionsResponse": {
+                "type": "object",
+                "required": [
+                    "subscriptions"
+                ],
+                "properties": {
+                    "subscriptions": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/WebhookSubscriptionResponse"
+                        }
+                    }
+                }
+            },
+            "TestWebhookDeliveryResponse": {
+                "type": "object",
+                "required": [
+                    "event",
+                    "delivery"
+                ],
+                "properties": {
+                    "event": {
+                        "$ref": "#/components/schemas/WebhookEvent"
+                    },
+                    "delivery": {
+                        "$ref": "#/components/schemas/WebhookDelivery"
+                    },
+                    "attempt": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/WebhookDeliveryAttempt"
+                            }
+                        ],
+                        "nullable": true
+                    }
+                }
+            },
+            "UpdateWebhookSubscriptionRequest": {
+                "type": "object",
+                "properties": {
+                    "url": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "enabled": {
+                        "type": "boolean",
+                        "nullable": true
+                    },
+                    "eventTypes": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "nullable": true
+                    }
+                }
+            },
+            "WebhookDelivery": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "subscriptionId",
+                    "eventId",
+                    "status",
+                    "attemptCount",
+                    "createdAt",
+                    "updatedAt"
+                ],
+                "properties": {
+                    "id": {
+                        "$ref": "#/components/schemas/Uuid"
+                    },
+                    "subscriptionId": {
+                        "$ref": "#/components/schemas/Uuid"
+                    },
+                    "eventId": {
+                        "$ref": "#/components/schemas/Uuid"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/WebhookDeliveryStatus"
+                    },
+                    "nextAttemptAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "attemptCount": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "terminalReason": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "lastResponseSummary": {
+                        "nullable": true
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "WebhookDeliveryAttempt": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "deliveryId",
+                    "attemptNumber",
+                    "outcome",
+                    "signedAt",
+                    "signedTimestamp",
+                    "createdAt"
+                ],
+                "properties": {
+                    "id": {
+                        "$ref": "#/components/schemas/Uuid"
+                    },
+                    "deliveryId": {
+                        "$ref": "#/components/schemas/Uuid"
+                    },
+                    "signingKeyId": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Uuid"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "attemptNumber": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "outcome": {
+                        "$ref": "#/components/schemas/WebhookDeliveryAttemptOutcome"
+                    },
+                    "statusCode": {
+                        "type": "integer",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "error": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "latencyMs": {
+                        "type": "integer",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "signedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "signedTimestamp": {
+                        "type": "string"
+                    },
+                    "responseSummary": {
+                        "nullable": true
+                    },
+                    "actor": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "WebhookDeliveryAttemptOutcome": {
+                "type": "string",
+                "description": "Outcome of one webhook delivery attempt stored as TEXT in Postgres.",
+                "enum": [
+                    "succeeded",
+                    "failed"
+                ],
+                "example": "succeeded"
+            },
+            "WebhookDeliveryStatus": {
+                "type": "string",
+                "description": "Durable webhook delivery lifecycle status stored as TEXT in Postgres.",
+                "enum": [
+                    "pending",
+                    "sending",
+                    "succeeded",
+                    "failed",
+                    "terminal_failed"
+                ],
+                "example": "pending"
+            },
+            "WebhookDeliveryWithAttempts": {
+                "type": "object",
+                "required": [
+                    "delivery",
+                    "event",
+                    "attempts"
+                ],
+                "properties": {
+                    "delivery": {
+                        "$ref": "#/components/schemas/WebhookDelivery"
+                    },
+                    "event": {
+                        "$ref": "#/components/schemas/WebhookEvent"
+                    },
+                    "attempts": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/WebhookDeliveryAttempt"
+                        }
+                    }
+                }
+            },
+            "WebhookEvent": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "eventType",
+                    "sourceType",
+                    "sourceId",
+                    "payload",
+                    "payloadVersion",
+                    "sourceTransitionMetadata",
+                    "createdAt"
+                ],
+                "properties": {
+                    "id": {
+                        "$ref": "#/components/schemas/Uuid"
+                    },
+                    "eventType": {
+                        "type": "string"
+                    },
+                    "sourceType": {
+                        "type": "string"
+                    },
+                    "sourceId": {
+                        "type": "string"
+                    },
+                    "payload": {},
+                    "payloadVersion": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "sourceTransitionMetadata": {},
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "WebhookEventProvider": {
+                "type": "string",
+                "description": "Provider/source that caused a public lifecycle webhook event.",
+                "enum": [
+                    "byzantine",
+                    "sumsub",
+                    "bridge",
+                    "onchain"
+                ],
+                "example": "byzantine"
+            },
+            "WebhookEventType": {
+                "type": "string",
+                "description": "Public outbound webhook event names. Stored as TEXT in Postgres.",
+                "enum": [
+                    "webhook.test",
+                    "customer.created",
+                    "customer.updated",
+                    "customer.under_review",
+                    "customer.awaiting_information",
+                    "customer.awaiting_associated_person_information",
+                    "customer.resubmission_requested",
+                    "customer.active",
+                    "customer.rejected",
+                    "customer.deleted",
+                    "transaction.created",
+                    "transaction.waiting_for_funds",
+                    "transaction.payment_in_review",
+                    "transaction.funds_in_transfer",
+                    "transaction.funds_received",
+                    "transaction.processing",
+                    "transaction.completed",
+                    "transaction.simulation_failed",
+                    "transaction.reverted"
+                ],
+                "example": "customer.created"
+            },
+            "WebhookLifecycleEventPayload": {
+                "type": "object",
+                "description": "Stable public webhook payload shared by customer and transaction lifecycle events.",
+                "required": [
+                    "id",
+                    "eventType",
+                    "occurredAt",
+                    "livemode",
+                    "payloadVersion",
+                    "integratorId"
+                ],
+                "properties": {
+                    "id": {
+                        "$ref": "#/components/schemas/Uuid"
+                    },
+                    "eventType": {
+                        "$ref": "#/components/schemas/WebhookEventType"
+                    },
+                    "occurredAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "livemode": {
+                        "type": "boolean"
+                    },
+                    "payloadVersion": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "integratorId": {
+                        "$ref": "#/components/schemas/Uuid"
+                    },
+                    "accountId": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Uuid"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "userId": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Uuid"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "entityId": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Uuid"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "beneficiaryId": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Uuid"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "transactionId": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Uuid"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "provider": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/WebhookEventProvider"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "providerEventId": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "data": {}
+                }
+            },
+            "WebhookSigningKey": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "subscriptionId",
+                    "publicKeyHex",
+                    "encryptionKeyVersion",
+                    "keyPurpose",
+                    "algorithm",
+                    "activeAt",
+                    "createdAt"
+                ],
+                "properties": {
+                    "id": {
+                        "$ref": "#/components/schemas/Uuid"
+                    },
+                    "subscriptionId": {
+                        "$ref": "#/components/schemas/Uuid"
+                    },
+                    "publicKeyHex": {
+                        "type": "string"
+                    },
+                    "encryptionKeyVersion": {
+                        "type": "string"
+                    },
+                    "keyPurpose": {
+                        "type": "string"
+                    },
+                    "algorithm": {
+                        "type": "string"
+                    },
+                    "activeAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "rotatedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "WebhookSubscription": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "integratorId",
+                    "url",
+                    "enabled",
+                    "eventTypes",
+                    "endpointSafetyMetadata",
+                    "createdAt",
+                    "updatedAt"
+                ],
+                "properties": {
+                    "id": {
+                        "$ref": "#/components/schemas/Uuid"
+                    },
+                    "integratorId": {
+                        "$ref": "#/components/schemas/Uuid"
+                    },
+                    "url": {
+                        "type": "string"
+                    },
+                    "enabled": {
+                        "type": "boolean"
+                    },
+                    "eventTypes": {},
+                    "activeSigningKeyId": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Uuid"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "endpointSafetyMetadata": {},
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updatedAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "WebhookSubscriptionResponse": {
+                "type": "object",
+                "required": [
+                    "subscription",
+                    "publicKey",
+                    "algorithm"
+                ],
+                "properties": {
+                    "subscription": {
+                        "$ref": "#/components/schemas/WebhookSubscription"
+                    },
+                    "publicKey": {
+                        "type": "string"
+                    },
+                    "algorithm": {
+                        "type": "string"
+                    }
+                }
             }
         },
         "securitySchemes": {
@@ -7238,6 +8238,10 @@
         {
             "name": "OTP authentication",
             "description": "Endpoints to initialize and manage user authentication with OTP."
+        },
+        {
+            "name": "Webhooks",
+            "description": "Integrator-managed outbound webhook subscriptions and delivery history."
         }
     ]
 }
