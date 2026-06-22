@@ -282,23 +282,13 @@
                   {
                     "group": "Webhooks",
                     "pages": [
-                      {
-                        "group": "Subscriptions",
-                        "pages": [
-                          "POST /v1/webhooks/subscriptions",
-                          "GET /v1/webhooks/subscriptions",
-                          "PATCH /v1/webhooks/subscriptions/{subscription_id}",
-                          "DELETE /v1/webhooks/subscriptions/{subscription_id}",
-                          "POST /v1/webhooks/subscriptions/{subscription_id}/test"
-                        ]
-                      },
-                      {
-                        "group": "Deliveries",
-                        "pages": [
-                          "GET /v1/webhooks/deliveries",
-                          "POST /v1/webhooks/deliveries/{delivery_id}/retry"
-                        ]
-                      }
+                      "POST /v1/webhooks/subscriptions",
+                      "GET /v1/webhooks/subscriptions",
+                      "PATCH /v1/webhooks/subscriptions/{subscription_id}",
+                      "DELETE /v1/webhooks/subscriptions/{subscription_id}",
+                      "POST /v1/webhooks/subscriptions/{subscription_id}/test",
+                      "GET /v1/webhooks/deliveries",
+                      "POST /v1/webhooks/deliveries/{delivery_id}/retry"
                     ]
                   },
                   {
