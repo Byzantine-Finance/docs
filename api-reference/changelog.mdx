@@ -8,6 +8,100 @@ All notable changes to this project will be documented in this page.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.21.1] - 2026-06-19
+
+### 🐛 Bug Fixes
+
+- _(tx-status)_ Correct the withdraw tx-status during a vault upgrade
+
+- _(emails)_ Capitalize first name when fetching it from Sumsub
+
+### 🚀 Features
+
+- _(tx-status)_ Process Bridge refunds webhooks
+
+- _(upgrade)_ Revert the upgrade if amount to Bridge < 1 EURC
+
+- _(emails)_ Send withdraw completed emails for offramps
+
+- _(emails)_ Send vault upgrade completed email when funds have landed on Ethereum
+
+## [1.21.0] - 2026-06-15
+
+### ⚙️ Miscellaneous Tasks
+
+- _(ci)_ Improve workflow with nightly fmt, rust-cache and --locked
+
+- _(chore)_ Track Cargo.lock for reproducible builds
+
+### 🐛 Bug Fixes
+
+- _(webhooks)_ Make webhook event publishing idempotent
+
+- _(schemas)_ Sync diesel schemas with new DB schemas
+
+- _(vault-upgrade)_ Ensure fiat_account_id is null for vault upgrade deposit payloads
+
+### 🚀 Features
+
+- _(webhooks)_ Add webhook event contract
+
+- _(bridge)_ Add EEA regulatory field seams
+
+- _(getters)_ Returns related_transaction_id in transaction(s) getter(s)
+
+### 🧪 Testing
+
+- _(webhooks)_ Add webhook e2e harness
+
+- _(webhooks)_ Run webhook e2e tests
+
+## [1.20.0] - 2026-05-22
+
+### 🐛 Bug Fixes
+
+- Harden webhook delivery scaffolding
+
+- Address webhook review findings
+
+### 📚 Documentation
+
+- Add webhook delivery ADR
+
+- Clarify webhook API documentation
+
+- Update webhook changelog
+
+### 🚀 Features
+
+- Add webhook outbox schema
+
+- Add webhook signature envelope
+
+- Add webhook endpoint safety checks
+
+- Add webhook control plane
+
+### 🚜 Refactor
+
+- Extract private key encryption helper
+
+- Type webhook delivery states
+
+## [1.19.1] - 2026-05-20
+
+### 🐛 Bug Fixes
+
+- _(getters)_ Read company email from fixedInfo.companyInfo
+
+- _(serde)_ Add FedNow variant and Unknown catch-all to deserialized enums
+
+- _(webhooks)_ Run Bridge customer creation in background task
+
+### 🚀 Features
+
+- _(workflow)_ Route SSH via AWS SSM Session Manager (SOC2)
+
 ## [1.19.0] - 2026-05-12
 
 ### 🐛 Bug Fixes
