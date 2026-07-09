@@ -1,0 +1,45 @@
+---
+title: "Transactions (available soon)"
+description: "Deposit and withdrawal lifecycle webhook events."
+---
+
+Transaction events track the lifecycle of a deposit or withdrawal. Subscribe to them to reconcile funding and settlement in your own system.
+
+## Populated fields
+
+Each transaction event populates `transactionId` and `accountId`. The `provider` field indicates the source of the change (for example `byzantine`, `bridge`, or `onchain`).
+
+## Event types
+
+| Event | Fires when |
+|-------|------------|
+| `transaction.created` | A transaction has been created. |
+| `transaction.waiting_for_funds` | Byzantine is waiting for incoming funds. |
+| `transaction.payment_in_review` | The payment is under review. |
+| `transaction.funds_in_transfer` | Funds are being transferred. |
+| `transaction.funds_received` | Funds have been received. |
+| `transaction.processing` | The transaction is being processed on-chain. |
+| `transaction.completed` | The transaction completed successfully. |
+| `transaction.simulation_failed` | The transaction simulation failed. |
+| `transaction.reverted` | The transaction was reverted. |
+
+For status meanings and polling as an alternative to webhooks, see [Tracking Transactions](/api-reference/tracking-transactions).
+
+## Example payload
+
+```json
+{
+  "id": "00000000-0000-4000-8000-000000000001",
+  "eventType": "transaction.completed",
+  "occurredAt": "2026-06-03T15:00:00Z",
+  "livemode": true,
+  "payloadVersion": 1,
+  "integratorId": "8f7064b4-9587-496f-a5cc-00fbf5af01d5",
+  "transactionId": "53f2d2dc-6abc-40fa-b2d2-d6d76b839c09",
+  "accountId": "b3f2d2dc-6abc-40fa-b2d2-d6d76b839c09",
+  "provider": "byzantine",
+  "data": {
+    "status": "completed"
+  }
+}
+```

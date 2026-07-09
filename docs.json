@@ -174,7 +174,14 @@
                       "api-reference/account-balances-idle"
                     ]
                   },
-                  "api-reference/webhooks",
+                  {
+                    "group": "Webhooks",
+                    "pages": [
+                      "api-reference/webhooks/overview",
+                      "api-reference/webhooks/customers",
+                      "api-reference/webhooks/transactions"
+                    ]
+                  },
                   {
                     "group": "Account management",
                     "pages": [

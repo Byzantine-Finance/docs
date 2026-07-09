@@ -1,5 +1,5 @@
 ---
-title: "Webhooks"
+title: "Overview"
 description: "Receive signed customer and transaction lifecycle events from Byzantine."
 ---
 
@@ -85,34 +85,16 @@ Delivery requests use a 5 second connection timeout and a 10 second total timeou
 
 ## Event types
 
-Subscribable customer events:
+Byzantine emits two families of lifecycle events, documented on their own pages:
 
-- `customer.created`
-- `customer.updated`
-- `customer.under_review`
-- `customer.awaiting_information`
-- `customer.awaiting_associated_person_information`
-- `customer.resubmission_requested`
-- `customer.active`
-- `customer.rejected`
-
-Subscribable transaction events:
-
-- `transaction.created`
-- `transaction.waiting_for_funds`
-- `transaction.payment_in_review`
-- `transaction.funds_in_transfer`
-- `transaction.funds_received`
-- `transaction.processing`
-- `transaction.completed`
-- `transaction.simulation_failed`
-- `transaction.reverted`
+- [Customers](/api-reference/webhooks/customers) — KYC/KYB onboarding status changes;
+- [Transactions](/api-reference/webhooks/transactions) — deposit and withdrawal status changes.
 
 `webhook.test` is used for test deliveries and is not directly subscribable.
 
 ## Delivery payload
 
-Each delivery body is JSON. The exact `data` object depends on the event type.
+Each delivery body is JSON and shares a common envelope ([`WebhookLifecycleEventPayload`](#endpoint-reference)). The identifier fields that are populated (`accountId`, `userId`, `entityId`, `beneficiaryId`, `transactionId`) and the exact `data` object depend on the event type.
 
 ```json
 {
@@ -196,10 +178,10 @@ Use the delivery list endpoint to inspect attempts, status codes, response summa
 
 See **API endpoints > Webhooks** for request and response schemas for:
 
-- `POST /v1/webhooks/subscriptions`
-- `GET /v1/webhooks/subscriptions`
-- `PATCH /v1/webhooks/subscriptions/{subscription_id}`
-- `DELETE /v1/webhooks/subscriptions/{subscription_id}`
-- `POST /v1/webhooks/subscriptions/{subscription_id}/test`
-- `GET /v1/webhooks/deliveries`
-- `POST /v1/webhooks/deliveries/{delivery_id}/retry`
+- [`POST /v1/webhooks/subscriptions`](/api-reference/webhooks/create-a-webhook-subscription)
+- [`GET /v1/webhooks/subscriptions`](/api-reference/webhooks/list-webhook-subscriptions)
+- [`PATCH /v1/webhooks/subscriptions/{subscription_id}`](/api-reference/webhooks/update-a-webhook-subscription)
+- [`DELETE /v1/webhooks/subscriptions/{subscription_id}`](/api-reference/webhooks/delete-a-webhook-subscription)
+- [`POST /v1/webhooks/subscriptions/{subscription_id}/test`](/api-reference/webhooks/send-a-signed-test-webhook)
+- [`GET /v1/webhooks/deliveries`](/api-reference/webhooks/list-webhook-delivery-history)
+- [`POST /v1/webhooks/deliveries/{delivery_id}/retry`](/api-reference/webhooks/retry-a-webhook-delivery)

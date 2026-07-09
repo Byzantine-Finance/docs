@@ -3,7 +3,38 @@ title: "Multi-users account"
 description: "Managing multi-users Byzantine accounts via the Integrator API."
 ---
 
-Multi-users account covers inviting users to an existing account, updating their roles, and allowing them to create their own passkeys.
+Multi-users account covers accounts with several signers, inviting users to an existing account, updating their roles, and allowing them to create their own passkeys.
+
+## Which accounts can have multiple users
+
+Both entity and individual accounts can have more than one signer (`root` user), each controlling the account with their own passkey:
+
+- **Entity accounts** are multi-user by design: each root user and each beneficiary/representative is a separate person. Someone can be a signer without being a UBO, and a UBO without being a signer.
+- **Individual accounts** can now also have several signers. Every signer is listed in the `rootUsers` field of the [create-individual-account](/api-reference/kyc) call, mirroring how entity accounts are created.
+
+<Info>
+  On any account, `userInfo` / `entityInfo` describes **who is being verified** (the customer), while `rootUsers` describes **who can sign**. For a standard individual account these are the same person; the sections below cover the cases where they differ.
+</Info>
+
+## Creating an account on behalf of a client
+
+A wealth manager / CGP can create and manage an individual account for a client. This relies on the split between the verified customer and the signer:
+
+- **`userInfo`** — the client. They are the KYC subject and appear as the account's customer from the moment it is created.
+- **`rootUsers`** — the signer(s), for example the wealth manager, who control the account with their own passkeys.
+
+```mermaid
+flowchart LR
+    A["1 - CGP creates the account: client in userInfo, CGP in rootUsers"] --> B["2 - Client is KYC-verified and is the account's customer from day one"]
+    B --> C["3 - CGP invites the client to join as a signer"]
+    C --> D["4 - Client accepts, creates a passkey, and can sign transactions"]
+```
+
+The client is the account's customer immediately, even before they sign anything. When they are ready to take part in signing, invite them with the standard [invitation flow](#accepting-an-invitation) below. Once they accept and create a passkey, they become a signer (or `root` user) alongside the CGP.
+
+<Tip>
+  To hand over full control, the client (once a `root` signer) can demote the CGP to a `view` user by [updating roles](#promoting-and-demoting-roles-of-a-member). This leaves the client in control while the CGP keeps only the access you agree on.
+</Tip>
 
 ## High-level flows
 

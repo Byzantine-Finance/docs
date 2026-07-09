@@ -16,16 +16,28 @@ The creation of the individual account is done by calling this API endpoint:
 
 </Card>
 
+An individual account is described by two distinct fields:
+
+- **`userInfo`** — the person being verified. They are the KYC subject and the account's customer.
+- **`rootUsers`** — the signer(s) who control the account. Each root user holds their own passkey and can sign transactions, exactly like the root users of an entity account. Every entry carries its own `firstName`, `lastName`, `email`, and `authenticators`.
+
+For a standard, self-created account, the account holder is both the verified customer and the signer — include the **same person in both `userInfo` and `rootUsers`, using the same email**.
+
 Only the following fields are required to create the account:
 
 - `firstName`, `lastName`, `email` (in `userInfo`)
+- one signer in `rootUsers` (`firstName`, `lastName`, `email`)
 - `byzantineTermsSignedAt`
 
-The individual user will receive an `accountId` and a `userId`.
+The account receives an `accountId`, and every person on it gets their own `userId`: one for the verified customer in `userInfo`, and one for each signer in `rootUsers`. In a standard self-created account, `userInfo` and the single root user are the same person, so there is just one `userId`.
 
 <Warning>
-  If you want to register a user's passkey at account creation, include the `authenticators` field in the create call. If no passkey is added at creation, OTP authentication is automatically set up for the user — and OTP will then be required to add a passkey later through a dedicated endpoint.
+  To register a passkey at account creation, provide the `authenticators` inside the corresponding `rootUsers` entry. If no passkey is added at creation, OTP authentication is automatically set up for that user — and OTP will then be required to add a passkey later through a dedicated endpoint.
 </Warning>
+
+<Note>
+  An individual account can have **more than one signer**, and you can create an account **on behalf of a client** (for example as a wealth manager / CGP) by verifying one person in `userInfo` while a different person signs via `rootUsers`. See [Multi-users account](/api-reference/multi-users-account).
+</Note>
 
 ### 2. Complete the application
 
