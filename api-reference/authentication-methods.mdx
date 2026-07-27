@@ -92,10 +92,15 @@ The authentication method for Byzantine accounts is passkey (WebAuthn). Once set
         headers: { /* ... */ },
         body: {
           // ... other required fields
-          authenticators: [{
-            authenticatorName: "passkey",
-            challenge: challengeFromClientData,
-            attestation: attestationData
+          rootUsers: [{
+            firstName: "John",
+            lastName: "Doe",
+            email: "user@example.com",
+            authenticators: [{
+              authenticatorName: "passkey",
+              challenge: challengeFromClientData,
+              attestation: attestationData
+            }]
           }]
         },
       }

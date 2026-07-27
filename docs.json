@@ -170,6 +170,7 @@
                           "api-reference/withdrawal-technical"
                         ]
                       },
+                      "api-reference/transfer",
                       "api-reference/tracking-transactions",
                       "api-reference/account-balances-idle"
                     ]
@@ -281,6 +282,7 @@
                           "POST /v1/query/get-deposit-payload-passkey",
                           "POST /v1/query/get-withdraw-payload-passkey",
                           "POST /v1/query/get-vault-upgrade-payload-passkey",
+                          "POST /v1/query/get-transfer-payload-passkey",
                           "POST /v1/submit/sign-payload-passkey"
                         ]
                       }

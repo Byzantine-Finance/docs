@@ -1,0 +1,36 @@
+---
+title: "Stablecoin transfer"
+description: "How to transfer assets from a Byzantine account to any wallet."
+---
+
+## Transferring out of a Byzantine account
+
+A transfer moves stablecoins directly from the user's secure Byzantine account wallet to **any destination wallet address** on-chain. Unlike a withdrawal — which off-ramps funds back to a bank account — a transfer sends the assets straight to another wallet you specify, leaving the Byzantine vault flow entirely.
+
+Transfers are authorized by the account's signer with their passkey, so no intermediary (Byzantine or the integrator) can move the funds on the user's behalf.
+
+<Info>
+  Only on-chain currencies are supported for transfers: `usdc` and `eurc`.
+</Info>
+
+## What the endpoint does
+
+[`POST /v1/query/get-transfer-payload-passkey`](/api-reference/transactions/get-transfer-payload) returns the raw transaction payload the user must sign to send assets from their account wallet to the destination address. It takes:
+
+- `accountId` — the Byzantine account the funds are transferred from.
+- `currency` — the on-chain currency to transfer (`usdc` or `eurc`).
+- `amount` — the amount to transfer.
+- `destinationAddress` — the wallet address that will receive the funds.
+
+Signing follows the same two-step pattern as deposits and withdrawals:
+
+<Tabs>
+  <Tab title="Passkey">
+    1. [Get transfer payload](/api-reference/transactions/get-transfer-payload), which requests the transaction body to sign.
+    2. [Sign a payload (passkey)](/api-reference/transactions/sign-payload), which submits the signed transaction and executes the transfer.
+  </Tab>
+</Tabs>
+
+<Warning>
+  On-chain transfers are **irreversible**. If the `destinationAddress` is incorrect, malformed, or otherwise not a valid wallet the user controls, the funds will be sent there anyway and **lost permanently** — they cannot be recovered by Byzantine or the integrator. Always validate the destination address before signing the transfer.
+</Warning>
