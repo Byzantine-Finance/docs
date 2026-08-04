@@ -3343,6 +3343,307 @@
                     }
                 ]
             }
+        },
+        "/v1/integrator/whoami": {
+            "get": {
+                "tags": [
+                    "Integrator key management"
+                ],
+                "summary": "Get current integrator credential capabilities",
+                "description": "Returns the authenticated integrator id, credential access scope, and capability flags for frontend UX.",
+                "operationId": "get_current_integrator_capabilities",
+                "parameters": [
+                    {
+                        "name": "X-Pubkey",
+                        "in": "header",
+                        "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Timestamp",
+                        "in": "header",
+                        "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Signature",
+                        "in": "header",
+                        "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Current integrator credential capabilities",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CurrentIntegratorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request - Missing or invalid auth headers"
+                    },
+                    "401": {
+                        "description": "Unauthorized - Invalid credential or signature"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "integrator_auth": []
+                    }
+                ]
+            }
+        },
+        "/v1/integrator/credentials": {
+            "post": {
+                "tags": [
+                    "Integrator key management"
+                ],
+                "summary": "Issue a credential for the authenticated integrator",
+                "description": "Generates a new credential keypair and stores the public key as an active credential with the\nrequested access scope (`read_only` by default). The private key is returned only in this\ncreation response and is not stored by the API. Requires a read-write credential.",
+                "operationId": "create_credential",
+                "parameters": [
+                    {
+                        "name": "X-Pubkey",
+                        "in": "header",
+                        "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Timestamp",
+                        "in": "header",
+                        "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Signature",
+                        "in": "header",
+                        "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateCredentialPayload"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Credential issued successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreateCredentialResponse"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - Invalid credential or signature"
+                    },
+                    "403": {
+                        "description": "Forbidden - Read-only credentials cannot issue credentials"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "integrator_auth": []
+                    }
+                ]
+            }
+        },
+        "/v1/integrator/credentials/{pubkey}": {
+            "patch": {
+                "tags": [
+                    "Integrator key management"
+                ],
+                "summary": "Update a credential",
+                "description": "Partially updates a credential owned by the authenticated integrator: `label`, `active`, and\n`accessScope` can each be changed independently; omitted fields are left untouched. The\ncredential signing the current request can only change its own label, not its own `active`\nstatus or access scope, so an integrator always keeps one working read-write credential.\nRequires a read-write credential.",
+                "operationId": "update_credential",
+                "parameters": [
+                    {
+                        "name": "X-Pubkey",
+                        "in": "header",
+                        "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Timestamp",
+                        "in": "header",
+                        "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Signature",
+                        "in": "header",
+                        "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pubkey",
+                        "in": "path",
+                        "description": "Public key of the credential",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateCredentialPayload"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Credential updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CredentialSummaryResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request - Empty update or credential demoting/deactivating itself"
+                    },
+                    "401": {
+                        "description": "Unauthorized - Invalid credential or signature"
+                    },
+                    "403": {
+                        "description": "Forbidden - Read-only credentials cannot edit credentials"
+                    },
+                    "404": {
+                        "description": "Credential not found for this integrator"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "integrator_auth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Integrator key management"
+                ],
+                "summary": "Delete an integrator credential",
+                "description": "Permanently removes a credential owned by the authenticated integrator; the associated public\nkey stops authenticating immediately. The credential signing the current request cannot delete\nitself, so an integrator always keeps at least one working read-write credential.\nRequires a read-write credential.",
+                "operationId": "delete_credential",
+                "parameters": [
+                    {
+                        "name": "X-Pubkey",
+                        "in": "header",
+                        "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Timestamp",
+                        "in": "header",
+                        "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Signature",
+                        "in": "header",
+                        "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "pubkey",
+                        "in": "path",
+                        "description": "Public key of the credential",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Credential deleted"
+                    },
+                    "400": {
+                        "description": "Bad request - A credential cannot delete itself"
+                    },
+                    "401": {
+                        "description": "Unauthorized - Invalid credential or signature"
+                    },
+                    "403": {
+                        "description": "Forbidden - Read-only credentials cannot delete credentials"
+                    },
+                    "404": {
+                        "description": "Credential not found for this integrator"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "integrator_auth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -4248,6 +4549,54 @@
                     }
                 }
             },
+            "CreateCredentialPayload": {
+                "type": "object",
+                "properties": {
+                    "accessScope": {
+                        "$ref": "#/components/schemas/IntegratorAccessScope"
+                    },
+                    "label": {
+                        "type": "string",
+                        "description": "Optional label for the new credential.",
+                        "nullable": true
+                    }
+                }
+            },
+            "CreateCredentialResponse": {
+                "type": "object",
+                "required": [
+                    "pubkey",
+                    "privateKey",
+                    "integratorId",
+                    "accessScope",
+                    "active"
+                ],
+                "properties": {
+                    "pubkey": {
+                        "type": "string",
+                        "description": "Public key identifying the newly issued credential."
+                    },
+                    "privateKey": {
+                        "type": "string",
+                        "description": "Private key for the newly issued credential. Returned only at creation time."
+                    },
+                    "integratorId": {
+                        "$ref": "#/components/schemas/Uuid"
+                    },
+                    "accessScope": {
+                        "$ref": "#/components/schemas/IntegratorAccessScope"
+                    },
+                    "active": {
+                        "type": "boolean",
+                        "description": "Whether the credential is active immediately after creation."
+                    },
+                    "label": {
+                        "type": "string",
+                        "description": "Label of the credential.",
+                        "nullable": true
+                    }
+                }
+            },
             "CreateEntityAccountRequest": {
                 "type": "object",
                 "description": "Request body for creating a Byzantine entity",
@@ -4595,6 +4944,36 @@
                     }
                 }
             },
+            "CredentialSummaryResponse": {
+                "type": "object",
+                "required": [
+                    "pubkey",
+                    "integratorId",
+                    "accessScope",
+                    "active"
+                ],
+                "properties": {
+                    "pubkey": {
+                        "type": "string",
+                        "description": "Public key identifying the credential."
+                    },
+                    "integratorId": {
+                        "$ref": "#/components/schemas/Uuid"
+                    },
+                    "accessScope": {
+                        "$ref": "#/components/schemas/IntegratorAccessScope"
+                    },
+                    "active": {
+                        "type": "boolean",
+                        "description": "Whether the credential is active."
+                    },
+                    "label": {
+                        "type": "string",
+                        "description": "Label of the credential.",
+                        "nullable": true
+                    }
+                }
+            },
             "CryptoCurrency": {
                 "type": "string",
                 "description": "On-chain currencies only (subset of `Currency`), for requests where fiat makes no sense.",
@@ -4611,6 +4990,38 @@
                     "usdc",
                     "eurc"
                 ]
+            },
+            "CurrentIntegratorCapabilities": {
+                "type": "object",
+                "required": [
+                    "canWrite"
+                ],
+                "properties": {
+                    "canWrite": {
+                        "type": "boolean",
+                        "description": "Whether the current credential may call mutation-capable routes.",
+                        "example": true
+                    }
+                }
+            },
+            "CurrentIntegratorResponse": {
+                "type": "object",
+                "required": [
+                    "integratorId",
+                    "accessScope",
+                    "capabilities"
+                ],
+                "properties": {
+                    "integratorId": {
+                        "$ref": "#/components/schemas/Uuid"
+                    },
+                    "accessScope": {
+                        "$ref": "#/components/schemas/IntegratorAccessScope"
+                    },
+                    "capabilities": {
+                        "$ref": "#/components/schemas/CurrentIntegratorCapabilities"
+                    }
+                }
             },
             "CustomerQueryType": {
                 "type": "string",
@@ -6113,6 +6524,14 @@
                     }
                 }
             },
+            "IntegratorAccessScope": {
+                "type": "string",
+                "enum": [
+                    "read_write",
+                    "read_only"
+                ],
+                "example": "read_write"
+            },
             "InvitationStatus": {
                 "type": "string",
                 "description": "Status of an invitation.",
@@ -7442,6 +7861,29 @@
                         "format": "double",
                         "description": "Required for UBOs. The % of direct or indirect business ownership.",
                         "example": "50.0",
+                        "nullable": true
+                    }
+                }
+            },
+            "UpdateCredentialPayload": {
+                "type": "object",
+                "properties": {
+                    "accessScope": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/IntegratorAccessScope"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "active": {
+                        "type": "boolean",
+                        "description": "New active status for the credential. Left untouched when omitted.",
+                        "nullable": true
+                    },
+                    "label": {
+                        "type": "string",
+                        "description": "New label for the credential. Left untouched when omitted.",
                         "nullable": true
                     }
                 }
@@ -8813,6 +9255,10 @@
         {
             "name": "Webhooks",
             "description": "Integrator-managed outbound webhook subscriptions and delivery history."
+        },
+        {
+            "name": "Integrator key management",
+            "description": "Endpoints to inspect the current integrator credential scope, create, update and delete integrator keys."
         }
     ]
 }

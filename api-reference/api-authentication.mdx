@@ -145,6 +145,26 @@ Each API request requires the following headers:
 
 <Warning>**Keep your Integrator Private Key secure!**</Warning>
 
+## Managing your integrator keys
+
+You can manage your integrator credentials programmatically — there's no need to contact us to rotate or scope a key. Each credential is an ECDSA keypair with an access scope:
+
+- **`read_write`** — full access, including mutations and key management.
+- **`read_only`** — restricted to read/query endpoints.
+
+| Action | Endpoint |
+| ------ | -------- |
+| Inspect the current credential's id, scope & capabilities | [`GET /v1/integrator/whoami`](/api-reference/integrator-key-management/get-current-integrator-credential-capabilities) |
+| Issue a new credential | [`POST /v1/integrator/credentials`](/api-reference/integrator-key-management/issue-a-credential-for-the-authenticated-integrator) |
+| Update a credential's label, scope, or active status | [`PATCH /v1/integrator/credentials/{pubkey}`](/api-reference/integrator-key-management/update-a-credential) |
+| Delete a credential | [`DELETE /v1/integrator/credentials/{pubkey}`](/api-reference/integrator-key-management/delete-an-integrator-credential) |
+
+You can call these endpoints directly, or use the [Byzantine SDK](/api-reference/byzantine-sdk)'s typed method wrappers to manage your keys without building the requests by hand.
+
+<Note>
+  Managing keys requires a `read_write` credential, and a credential can't deactivate, rescope, or delete **itself**, so you always keep at least one working read-write key.
+</Note>
+
 ## OpenAPI Specification
 
 Explore the full structure and generate your own client using our [OpenAPI specification](http://docs.byzantine.fi/api-reference/openapi-integrator.json).

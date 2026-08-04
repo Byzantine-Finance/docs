@@ -153,6 +153,14 @@
                   },
                   "api-reference/account-activation",
                   {
+                    "group": "Account management",
+                    "pages": [
+                      "api-reference/management-overview",
+                      "api-reference/multi-users-account",
+                      "api-reference/bank-account"
+                    ]
+                  },
+                  {
                     "group": "Transactions",
                     "pages": [
                       "api-reference/transactions-overview",
@@ -181,14 +189,6 @@
                       "api-reference/webhooks/overview",
                       "api-reference/webhooks/customers",
                       "api-reference/webhooks/transactions"
-                    ]
-                  },
-                  {
-                    "group": "Account management",
-                    "pages": [
-                      "api-reference/management-overview",
-                      "api-reference/multi-users-account",
-                      "api-reference/bank-account"
                     ]
                   }
                 ]
@@ -306,6 +306,15 @@
                       "POST /v1/submit/init-otp",
                       "POST /v1/submit/otp-auth",
                       "POST /v1/submit/create-authenticators-otp"
+                    ]
+                  },
+                  {
+                    "group": "Integrator key management",
+                    "pages": [
+                      "GET /v1/integrator/whoami",
+                      "POST /v1/integrator/credentials",
+                      "PATCH /v1/integrator/credentials/{pubkey}",
+                      "DELETE /v1/integrator/credentials/{pubkey}"
                     ]
                   }
                 ]
