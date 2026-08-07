@@ -1,36 +1,18 @@
 ---
-title: "What is a stablecoin?"
+title: "Understanding EUR- and USD-linked units"
 ---
 
-<Info>
-  **In short:** Stablecoins are real money in digital form - stable, transparent, and always redeemable 1:1.
-</Info>
+# Familiar currency. A modern settlement rail.
 
-Stablecoins are digital versions of traditional currencies like the euro or the dollar. Each stablecoin is backed 1:1 by real assets - cash or short-term government bonds - held by regulated institutions.
+USDC and EURC are units linked to USD and EUR. They are issued by Circle, designed to be redeemable at equal value and backed by reserves.
 
-1 USDC = \$1 held in reserve. 1 EURC = €1 held in reserve.
+Byzantine uses them as an internal settlement layer. Users can add or withdraw EUR or USD by bank transfer through regulated partners.
 
-## Why do stablecoins exist?
+## Why they are used
 
-Traditional money is slow. Bank transfers can take days. International payments involve fees, intermediaries, and business-hours constraints. Stablecoins combine the stability of traditional money with the speed and efficiency of digital infrastructure - moving instantly, 24/7, anywhere in the world, at near-zero cost.
+- Continuous settlement
+- Transparent movement records
+- Compatibility with automatic strategy execution
+- Exposure in the selected currency
 
-For products like Byzantine Prime, stablecoins are the operating currency: they let users deposit in familiar EUR or USD, earn yield in the same currency, and withdraw at any time - all without the friction of the traditional banking system.
-
-## Are stablecoins safe?
-
-The stablecoins used by Byzantine Prime are USDC (US dollar) and EURC (euro), both issued by Circle, a regulated US financial institution. They are:
-
-- **Fully backed by real reserves:** Every token in circulation is matched by an equal amount of cash and short-term US government securities held in segregated accounts
-- **Regularly audited:** Circle publishes monthly reserve attestations confirmed by a major accounting firm, proving the 1:1 backing at all times
-- **Regulated:** Circle operates under US money transmission licences and is subject to regulatory oversight
-- **MiCA-compliant:** EURC is issued in compliance with the European Union's Markets in Crypto-Assets Regulation (MiCA) - the first comprehensive EU legal framework for digital assets - providing the same legal certainty as traditional financial products
-
-For more on the MiCA regulatory framework, see [What is MiCA?](/documentation/digital-assets-101/what-is-mica).
-
-## How does the peg stay at exactly \$1 or €1?
-
-Every stablecoin in circulation is matched by an equal amount of real money held in reserve.
-
-When someone buys USDC, Circle receives the equivalent dollars and holds them in segregated accounts. When someone redeems USDC, Circle returns the dollars and destroys the corresponding tokens - keeping the supply and reserves in perfect balance. This mint-and-burn process means the total number of tokens in circulation always equals the total value of reserves, regardless of how much demand rises or falls.
-
-The stability does not depend on algorithms or market incentives. It follows directly from the 1:1 reserve backing: if every token can be redeemed for exactly \$1 in cash, then no rational market participant will sell it for less. The monthly reserve attestations described above exist precisely so that this claim can be verified independently, by anyone, at any time.
+The issuer, reserves, redemption conditions, regulatory status and partner terms remain important considerations.

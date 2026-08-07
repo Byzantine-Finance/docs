@@ -1,11 +1,16 @@
 ---
-title: "What is a smart contract vault?"
+title: "Comment la stratégie s'exécute automatiquement"
 ---
 
-A smart contract is self-executing code on the blockchain that automates financial transactions.
+# Des règles claires. Une exécution automatique.
 
-It removes the need for intermediaries: Once programmed, it runs exactly as written.
+Un contrat automatisé est un logiciel qui applique des règles prédéfinies. Pour Byzantine Prime, ces règles orientent les fonds, suivent les positions et les rendements, puis traitent les demandes de retrait.
 
-Smart contract *vaults* are special smart contracts designed for the handling and distribution of assets.
+## Qui fait quoi
 
-The smart contract vaults used by Byzantine have been [extensively audited by third-party security firms](/documentation/asset-protection/security-audits) to ensure they’re safe before being used in production.
+- **Keyrock Curation Services :** Définit les paramètres de la stratégie
+- **Byzantine :** Fournit l'interface et l'infrastructure technique
+- **Le contrat automatisé :** Exécute les instructions dans les limites prévues
+- **Vous :** Autorisez les opérations et les demandes de retrait
+
+Byzantine ne conserve pas les actifs des clients. Les contrats et adaptateurs développés pour Byzantine sont examinés par des équipes de sécurité indépendantes.
