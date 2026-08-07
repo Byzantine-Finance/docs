@@ -2,54 +2,20 @@
 title: "Dépôts et retraits"
 ---
 
-Byzantine Prime accepte les dépôts en monnaie fiduciaire (EUR et USD) et en stablecoins, et permet des retraits instantanés à tout moment.
+# Faites entrer les fonds. Retirez-les simplement.
 
-## Dépôts en monnaie fiduciaire (EUR ou USD)
+Ajoutez des EUR ou des USD par virement bancaire. Un prestataire de paiement réglementé prend en charge toute conversion nécessaire avant l'allocation des fonds dans la stratégie choisie.
 
-Chaque utilisateur peut déposer directement en EUR ou USD fiduciaires. Un partenaire d'entrée réglementé (Bridge, une société Stripe) crée un compte bancaire unique (IBAN pour EUR via SEPA, numéro de routage pour USD via ACH ou virement) exclusivement pour votre compte. Vous transférez des fonds depuis votre banque comme un virement bancaire standard. Bridge convertit la monnaie fiduciaire en stablecoins (EURC pour les dépôts en EUR, USDC pour les dépôts en USD) et les fonds se déploient automatiquement dans le produit sélectionné.
+## Dépôts
 
-Vous serez notifié lorsque votre virement arrivera et que le déploiement sera terminé. Pour les délais détaillés par rail de paiement, voir [Délais de transaction](#délais-de-transaction) ci-dessous.
+1. Ouvrez les instructions de dépôt dans votre tableau de bord
+2. Envoyez les fonds depuis une banque vérifiée
+3. Suivez le transfert jusqu'à son allocation
 
-## Dépôts en stablecoins (USDC ou EURC)
-
-Les utilisateurs avancés disposant d'un compte auto-géré peuvent déposer des stablecoins directement - en contournant entièrement le service d'entrée fiduciaire. Cela permet un déploiement quasi instantané (en moins de 30 secondes) sans frais de conversion.
-
-Pour déposer en stablecoins, vous devez avoir sélectionné l'option "Compte auto-géré" lors de l'onboarding. Si vous souhaitez passer à ce type de compte après l'onboarding, contactez [info@byzantine.fi](mailto:info@byzantine.fi).
-
-## Vue d'ensemble des dépôts et retraits
-
-| Devise | Processus de dépôt | Processus de retrait |
-| --- | --- | --- |
-| Fiduciaire (EUR/USD) | Virement bancaire → conversion d'entrée en stablecoin → déploiement | Retrait du protocole → conversion de sortie en fiduciaire → virement bancaire |
-| Stablecoins (USDC/EURC) | Dépôt direct → déploiement | Retrait direct vers le compte |
-
-<Info>
-  Pour les détails d'intégration technique, consultez les sections [Dépôt](/api-reference/deposit-overview) et [Retrait](/api-reference/withdrawal-overview) dans la documentation API.
-</Info>
+Les configurations éligibles en auto-conservation peuvent aussi utiliser un transfert direct compatible.
 
 ## Retraits
 
-Les retraits peuvent être initiés à tout moment - il n'y a pas de périodes de blocage, de fenêtres de remboursement ni de préavis requis. Dans des conditions de marché normales, les retraits en stablecoins se règlent en moins d'une minute. Les retraits en monnaie fiduciaire (conversion des stablecoins en EUR ou USD et envoi sur votre compte bancaire) ajoutent le délai de traitement du service de sortie.
+Demandez un retrait à tout moment. Le délai de réception dépend de la devise, du réseau de paiement, de la banque, de la liquidité du marché et des délais des partenaires.
 
-Seuls les utilisateurs Admin peuvent effectuer des retraits. Les utilisateurs en lecture seule peuvent consulter les soldes du compte mais ne peuvent pas déplacer des fonds.
-
-## Liquidité dans les scénarios de stress
-
-Byzantine Prime est conçu pour une liquidité quotidienne avec un règlement on-chain quasi instantané. Même en cas d'urgence, il n'y a aucun obstacle au retrait - les contrats intelligents permettent un remboursement total à tout moment.
-
-Dans le rare scénario où un marché de prêt sous-jacent connaît une utilisation temporairement élevée (ce qui signifie qu'une grande fraction du capital déposé est actuellement empruntée), la file d'attente de retrait automatique du marché traite les remboursements aussi vite que les liquidités deviennent disponibles. Le mandat d'investissement de Keyrock exige une surveillance continue pour éviter les marchés où cela pourrait devenir une contrainte - ils sont tenus de sortir des marchés avant que l'utilisation n'atteigne des niveaux qui retarderaient les remboursements.
-
-## Délais de transaction
-
-Le règlement on-chain de Byzantine Prime est instantané. La conversion des stablecoins en dépôt bancaire ajoute une étape de traitement déterminée par le rail de paiement, et non par Byzantine - le partenaire de sortie intégré (Bridge) gère toute la conversion fiduciaire.
-
-| **Opération** | **Rail de paiement** | **Devise** | **Délai** |
-| --- | --- | --- | --- |
-| <div>**Entrée (on-ramp)**</div> <div>Envoi de monnaie fiduciaire vers un compte bancaire et conversion en USDC/EURC</div> | SEPA | EUR | <div>Instantané : &lt;30 secondes (24h/24 7j/7).</div> <div>Crédit : 1 à 3 jours ouvrés.</div> |
-| | ACH | USD | <div>ACH J+1 : Les fonds arrivent généralement en 1 à 3 jours ouvrés.</div><div>ACH jour même : Arrive le jour même si envoyé avant 9h30, 13h45 ou 15h45 ET.</div> |
-| | Virement | USD | Environ 2 heures après l'envoi. Réception avant 17h00 ET pour un traitement le jour même ; sinon le prochain jour ouvré. |
-| <div>**Sortie (off-ramp)**</div> <div>Envoi de USDC/EURC vers un compte bancaire et conversion en fiduciaire</div> | SEPA | EUR | <div>Instantané : &lt;30 secondes.</div> <div>Crédit : 1 à 3 jours ouvrés.</div> |
-| | ACH | USD | <div>ACH jour même : Jour même si avant 9h30, 13h45 ou 15h45 ET.</div> <div>ACH J+1 : Généralement 1 à 2 jours bancaires.</div> |
-| **Dépôt direct en stablecoins** | - | USDC/EURC | Moins de 30 secondes |
-
-Les liquidités en stablecoins sont toujours disponibles immédiatement - le délai de règlement bancaire est déterminé par le rail de paiement.
+Seuls les utilisateurs Admin peuvent soumettre un retrait. Les utilisateurs en lecture seule peuvent suivre les soldes et l'activité.
