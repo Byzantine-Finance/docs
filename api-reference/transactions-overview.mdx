@@ -7,14 +7,14 @@ Transactions in Byzantine are always **two-step**: you request a payload or an a
 
 ## What you can do
 
-- **Deposit** — Deposit can be made in stablecoins or fiat. Fiat deposits also involve on-ramping via a dedicated bank account. See [Deposit](/api-reference/deposit-overview) and [Deposit (technical)](/api-reference/deposit-technical).
-- **Withdraw** — Move funds out of a vault to stablecoins or to a bank account (off-ramp). No vault approval is needed; withdrawals use the same two-step pattern and are available at any time. See [Withdrawal](/api-reference/withdrawal-overview) and [Withdrawal (technical)](/api-reference/withdrawal-technical).
-- **Account balances and idle** — Balances in the vault earn yield; stablecoins left in the user’s secure wallet are **idle balance** and do not. Idle balance can be deposited manually into the vault later. See [Account balances & idle](/api-reference/account-balances-idle).
+- **Deposit** - Deposit can be made in stablecoins or fiat. Fiat deposits also involve on-ramping via a dedicated bank account. See [Deposit](/api-reference/deposit-overview) and [Deposit (technical)](/api-reference/deposit-technical).
+- **Withdraw** - Move funds out of a vault to stablecoins or to a bank account (off-ramp). No vault approval is needed; withdrawals use the same two-step pattern and are available at any time. See [Withdrawal](/api-reference/withdrawal-overview) and [Withdrawal (technical)](/api-reference/withdrawal-technical).
+- **Account balances and idle** - Balances in the vault earn yield; stablecoins left in the user’s secure wallet are **idle balance** and do not. Idle balance can be deposited manually into the vault later. See [Account balances & idle](/api-reference/account-balances-idle).
 
 ## Two-step pattern
 
-1. **Request body** — Call the appropriate “get payload” or “init” endpoint (e.g. get deposit payload, initiate withdrawal). For passkey, the user signs the returned payload in your app.
-2. **Submit signed transaction** — Call the submit endpoint with the signed payload. Byzantine then broadcasts and executes the transaction (or, for fiat deposits, waits for funds and then executes).
+1. **Request body** - Call the appropriate “get payload” or “init” endpoint (e.g. get deposit payload, initiate withdrawal). For passkey, the user signs the returned payload in your app.
+2. **Submit signed transaction** - Call the submit endpoint with the signed payload. Byzantine then broadcasts and executes the transaction (or, for fiat deposits, waits for funds and then executes).
 
 For transaction types, lifecycle statuses, and how to list transactions across all your accounts, see [Tracking transactions](/api-reference/tracking-transactions).
 

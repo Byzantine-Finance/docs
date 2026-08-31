@@ -45,7 +45,7 @@ See [API authentication](/api-reference/api-authentication) for full details and
 
 The SDK generates the authentication headers required for every API request:
 
-- **`getStamp(method, pathAndQuery, body)`** — Returns an object with `X-Pubkey`, `X-Timestamp`, `X-Signature`, and `Content-Type` that you pass as request headers.
+- **`getStamp(method, pathAndQuery, body)`** - Returns an object with `X-Pubkey`, `X-Timestamp`, `X-Signature`, and `Content-Type` that you pass as request headers.
 
 Use this for all calls to the Byzantine API (sandbox or production). Full specification and manual implementation details are in [API authentication](/api-reference/api-authentication).
 
@@ -53,8 +53,8 @@ Use this for all calls to the Byzantine API (sandbox or production). Full specif
 
 For end-user–owned wallets and transaction approval, the SDK supports WebAuthn:
 
-- **Passkey creation** — Register passkeys for users and attach them to Byzantine accounts during [account creation](/api-reference/authentication-methods).
-- **Transaction signing** — Get WebAuthn signatures for transaction payloads via the SDK so users approve with their passkey instead of a shared secret.
+- **Passkey creation** - Register passkeys for users and attach them to Byzantine accounts during [account creation](/api-reference/authentication-methods).
+- **Transaction signing** - Get WebAuthn signatures for transaction payloads via the SDK so users approve with their passkey instead of a shared secret.
 
 Configuration (e.g. `rpId`, `rpName`, timeouts) and flows for discoverable vs non-discoverable credentials are documented in [Authentication methods](/api-reference/authentication-methods).
 
@@ -64,9 +64,9 @@ Beyond raw request signing, the SDK exposes methods that wrap Byzantine API endp
 
 ## Next steps
 
-- [API authentication](/api-reference/api-authentication) — Header format, signature scheme, and manual implementation.
-- [Authentication methods](/api-reference/authentication-methods) — Passkey creation and WebAuthn transaction flows.
-- [Sandbox](/api-reference/sandbox) — Test your integration against the sandbox environment.
-- [OpenAPI specification](openapi-integrator.json) — Full API surface for code generation and reference.
+- [API authentication](/api-reference/api-authentication) - Header format, signature scheme, and manual implementation.
+- [Authentication methods](/api-reference/authentication-methods) - Passkey creation and WebAuthn transaction flows.
+- [Sandbox](/api-reference/sandbox) - Test your integration against the sandbox environment.
+- [OpenAPI specification](openapi-integrator.json) - Full API surface for code generation and reference.
 
 <Warning>**Keep your Integrator Private Key secure.** </Warning>

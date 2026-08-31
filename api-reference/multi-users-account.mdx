@@ -20,8 +20,8 @@ Both entity and individual accounts can have more than one signer (`root` user),
 
 A wealth manager / CGP can create and manage an individual account for a client. This relies on the split between the verified customer and the signer:
 
-- **`userInfo`** — the client. They are the KYC subject and appear as the account's customer from the moment it is created.
-- **`rootUsers`** — the signer(s), for example the wealth manager, who control the account with their own passkeys.
+- **`userInfo`** - the client. They are the KYC subject and appear as the account's customer from the moment it is created.
+- **`rootUsers`** - the signer(s), for example the wealth manager, who control the account with their own passkeys.
 
 ```mermaid
 flowchart LR
@@ -59,7 +59,7 @@ flowchart LR
 
 ### Inviting users
 
-1. **Get invite users payload** — Request the payload that a root user must sign with their passkey to invite new users to the account. Use this endpoint to get the payload:
+1. **Get invite users payload** - Request the payload that a root user must sign with their passkey to invite new users to the account. Use this endpoint to get the payload:
 
 <Card
   title="Get invite users payload"
@@ -68,7 +68,7 @@ flowchart LR
   href="/api-reference/account-management/step-1-get-invite-users-payload-passkey"
 ></Card>
 
-2. **Submit signed invite-users payload** — Then call the below endpoint with the signed payload to execute the invitations:
+2. **Submit signed invite-users payload** - Then call the below endpoint with the signed payload to execute the invitations:
 
 <Card
   title="Invite users to a account"
@@ -79,7 +79,7 @@ flowchart LR
 
 ### Accepting an invitation
 
-1. **Initialize OTP for a user** — Initialize an OTP for the invited person to authenticate by calling this endpoint:
+1. **Initialize OTP for a user** - Initialize an OTP for the invited person to authenticate by calling this endpoint:
 
 <Card
   title="Initialize OTP for a user"
@@ -88,7 +88,7 @@ flowchart LR
   href="/api-reference/otp-authentication/step-1-initialize-otp-send-email"
 ></Card>
 
-2. **Authenticate with OTP** — Invited user enters the OTP code to create a session and authenticate with OTP. Call this endpoint to submit the authenticated session to accept the invitation:
+2. **Authenticate with OTP** - Invited user enters the OTP code to create a session and authenticate with OTP. Call this endpoint to submit the authenticated session to accept the invitation:
 
 <Card
   title="Authenticate with OTP code and create a session"
@@ -97,7 +97,7 @@ flowchart LR
   href="/api-reference/otp-authentication/step-2-authenticate-with-otp-code"
 ></Card>
 
-3. **(Optional) Create a passkey for the new member** — Allow the new user to create a passkey by using the below endpoint. The user must have an active OTP session (from step 1 and 2).
+3. **(Optional) Create a passkey for the new member** - Allow the new user to create a passkey by using the below endpoint. The user must have an active OTP session (from step 1 and 2).
 
 <Card
   title="Create authenticators"
@@ -116,7 +116,7 @@ Invitations can be listed per account or per email via the [get-invitations-by-a
 
 ### Promoting and demoting roles of a member
 
-- **Get update users role payload** — Request the payload that the root user must sign to change users’ roles. Call this endpoint:
+- **Get update users role payload** - Request the payload that the root user must sign to change users’ roles. Call this endpoint:
 
 <Card
   title="Get update users role payload"
@@ -125,7 +125,7 @@ Invitations can be listed per account or per email via the [get-invitations-by-a
   href="/api-reference/account-management/step-1-get-update-role-payload-passkey"
 ></Card>
 
-- **Submit the signed payload** — Then call the below endpoint with the signed payload to execute the role update:
+- **Submit the signed payload** - Then call the below endpoint with the signed payload to execute the role update:
 
 <Card
   title="Update users' role"

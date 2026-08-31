@@ -31,7 +31,7 @@ The entity will receive an `account_id` and an `entity_id`. Every beneficiary/re
 <Warning>
   If you want to register a user's passkey at account creation, include the
   `authenticators` field in the create call. If no passkey is added at creation,
-  OTP authentication is automatically set up for the user — and OTP will then be
+  OTP authentication is automatically set up for the user - and OTP will then be
   required to add a passkey later through a dedicated endpoint.
 </Warning>
 
@@ -73,10 +73,10 @@ To add a new beneficiary/representative to the entity, call:
 
 The request requires:
 
-- `accountId` — the entity's account ID
-- `associatedPerson.userInfo` — personal data (first name, last name, email, date of birth, nationality, address, phone number, etc.)
-- `associatedPerson.beneficiaryDetails` — including `beneficiaryType` (UBO, representative, or both), `ownershipPercentage` (required for UBOs) and `title` (required for representatives)
-- `associatedPerson.verificationDocuments` — ID documents and proof of address. See the [list of accepted documents](/api-reference/accepted-documents)
+- `accountId` - the entity's account ID
+- `associatedPerson.userInfo` - personal data (first name, last name, email, date of birth, nationality, address, phone number, etc.)
+- `associatedPerson.beneficiaryDetails` - including `beneficiaryType` (UBO, representative, or both), `ownershipPercentage` (required for UBOs) and `title` (required for representatives)
+- `associatedPerson.verificationDocuments` - ID documents and proof of address. See the [list of accepted documents](/api-reference/accepted-documents)
 
 A successful call returns a `beneficiaryId` and a `missingDocuments` field listing any remaining required documents that have not yet been submitted.
 
@@ -86,7 +86,7 @@ To amend an existing beneficiary/representative's details or submit additional d
 
 </Card>
 
-Only the `beneficiaryId` is required — any subset of `userInfo`, `beneficiaryDetails`, or `verificationDocuments` can be provided, and only the fields included will be updated.
+Only the `beneficiaryId` is required - any subset of `userInfo`, `beneficiaryDetails`, or `verificationDocuments` can be provided, and only the fields included will be updated.
 
 <Info>
   Update endpoints can be called as many times as needed to complete the

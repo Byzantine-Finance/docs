@@ -57,7 +57,7 @@ While a withdrawal is queued, the amount still sits in the vault and is reported
 
 A withdrawal can be cancelled for as long as it is still `pending`. Cancellation is itself a signed action, so it follows the same two-step pattern as the withdrawal it cancels:
 
-1. [Get cancellation payload for a withdrawal request](/api-reference/transactions/get-cancellation-payload-for-a-withdrawal-request) — pass the `chain_id` as a query parameter and the `transactionId` of the queued withdrawal in the body. It returns the body to sign.
-2. [Sign a payload](/api-reference/transactions/sign-payload) — submit the signed body to execute the cancellation.
+1. [Get cancellation payload for a withdrawal request](/api-reference/transactions/get-cancellation-payload-for-a-withdrawal-request) - pass the `chain_id` as a query parameter and the `transactionId` of the queued withdrawal in the body. It returns the body to sign.
+2. [Sign a payload](/api-reference/transactions/sign-payload) - submit the signed body to execute the cancellation.
 
 Once the cancellation is executed, the transaction status becomes `cancelled`, `withdrawalRequest.status` becomes `cancelled`, and the funds remain in the vault.
