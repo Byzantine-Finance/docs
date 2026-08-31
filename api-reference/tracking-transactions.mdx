@@ -10,6 +10,7 @@ Once a transaction is created, you typically want to know what kind it is, where
 | Type | What it means |
 | --- | --- |
 | `authorization` | EIP-7702 delegation that upgrades the user's EOA into a smart account by setting its code to the Atlas contract. After confirmation, the wallet is also whitelisted on our vaults. |
+| `approve` | Standalone ERC-20 approval, granting an allowance over the user's tokens without a deposit bundled in. |
 | `approve_deposit` | Bundled ERC-20 approval and deposit in a single Atlas batch. Used the first time a user deposits an asset into a vault that has not yet been approved. |
 | `deposit` | Deposit idle balance into a vault. |
 | `onramp` | Convert fiat to stablecoins and receive them in the wallet. No deposit. |
@@ -17,25 +18,53 @@ Once a transaction is created, you typically want to know what kind it is, where
 | `withdraw` | Withdraw from a vault to idle balance. |
 | `offramp` | Convert idle stablecoins to fiat into a bank account. _Not supported yet._ |
 | `withdraw_offramp` | Withdraw from a vault and convert to fiat into a bank account. |
+| `transfer` | Send stablecoins from the account wallet straight to any destination wallet address on-chain, leaving the vault flow entirely. See [Stablecoin transfer](/api-reference/transfer). |
+
+## The signing window
+
+Initiating a transaction — [Get withdraw payload](/api-reference/transactions/get-withdraw-payload), [Get deposit payload](/api-reference/transactions/get-deposit-payload), or any other payload endpoint — creates a **draft transaction** and returns its `transaction_id` together with the payload to sign. Until the signature is submitted through [Sign a payload](/api-reference/transactions/sign-payload), this draft only exists internally — in a `created` or `claimed` status the API never returns. It is not listed by [List all transactions](/api-reference/transactions/list-all-transactions) or [List all transactions across every account](/api-reference/transactions/list-all-transactions-across-every-account-of-the-authenticated-integrator), and [Get single transaction](/api-reference/transactions/get-single-transaction) returns `404 Not Found` for its ID.
+
+Draft transactions are also ephemeral. **At most one unsigned draft exists per account**: initiating a new transaction discards any previous unsigned draft, and its `transaction_id` becomes permanently invalid.
+
+<Warning>
+Do not persist or poll a `transaction_id` before [Sign a payload](/api-reference/transactions/sign-payload) has succeeded. Treat the ID returned at creation as valid only for the signing step that immediately follows.
+</Warning>
+
+Once the payload is signed, the transaction becomes visible with one of the [statuses documented below](#transaction-statuses) (`withdrawal_initiated`, `processing`, `completed`, …). A `404` from [Get single transaction](/api-reference/transactions/get-single-transaction) therefore means one of three things:
+
+- the ID never existed;
+- it belonged to an unsigned draft that has been superseded by a newer one;
+- the transaction is still inside the brief signing window, and will appear once signed.
 
 ## Transaction statuses
 
-The transaction status can be checked by calling the [Get transaction](/api-reference/transactions/get-single-transaction) endpoint.
+The transaction status can be checked by calling the [Get transaction](/api-reference/transactions/get-single-transaction) endpoint. Only signed transactions carry a status — drafts waiting to be signed are not returned by the API at all, as described in [the signing window](#the-signing-window) above.
 
 <Tabs>
   <Tab title="Onramp deposit statuses">
-    - `created`: The transaction has been created and is waiting to be signed.
     - `waiting_for_funds`: The transaction has been signed. The system is waiting for the bank transfer to trigger the broadcasting of the transaction.
     - `funds_in_transfer`: The funds have been scheduled to arrive with Bridge soon.
     - `processing`: The funds have arrived with Bridge and are currently being on-ramped. The transaction is being broadcasted.
     - `completed`: The transaction has been broadcasted and executed. The funds have been transferred to the vault.
   </Tab>
   <Tab title="Offramp withdrawal statuses">
-    - `created`: The transaction has been created and is waiting to be signed.
     - `processing`: The transaction is being broadcasted.
     - `waiting_for_funds`: On-chain receipt confirms — assets landed at liquidation address, waiting for Bridge to pick them up.
     - `funds_in_transfer`: Bridge has picked up the assets and is in the process of converting them to fiat.
     - `completed`: Fiat funds have been transferred to the user's bank account.
+  </Tab>
+  <Tab title="Queued withdrawal statuses">
+    A withdrawal that a vault cannot serve immediately is placed in the vault's withdrawal queue instead of being broadcast straight away. [Sign a payload](/api-reference/transactions/sign-payload) then answers `202 Accepted` rather than `200 OK`, and the transaction carries an extra `withdrawalRequest` object.
+
+    - `withdrawal_initiated`: The withdrawal has been signed and queued. It has not left the vault yet.
+    - `cancelled`: The queued withdrawal was cancelled before it settled.
+
+    `withdrawalRequest` describes the queue entry itself:
+
+    - `requestId` — UUID of the queued withdrawal request.
+    - `status` — `pending`, `settled`, or `cancelled`.
+
+    See [Withdrawing from a vault](/api-reference/withdrawal-technical#queued-withdrawals) for the full flow, including how to cancel a queued withdrawal.
   </Tab>
 </Tabs>
 
@@ -54,14 +83,14 @@ Three endpoints are available depending on what you need: a single transaction b
     You can use this to poll the status of a specific transaction (deposit, withdrawal, etc.) after the user has signed it.
   </Tab>
   <Tab title="By account">
-    [List all transactions](/api-reference/transactions/list-all-transactions) returns every active transaction for a specific account. Transactions still in `created` status are excluded.
+    [List all transactions](/api-reference/transactions/list-all-transactions) returns every active transaction for a specific account. Transactions still in an internal status (`created`, `claimed`) are excluded.
 
     **Query parameters**
 
     - `account_id` — UUID of the account.
   </Tab>
   <Tab title="Across all accounts">
-    [List all transactions across every account](/api-reference/transactions/list-all-transactions-across-every-account-of-the-authenticated-integrator) returns every active transaction across all your accounts, paginated. Transactions still in `created` status are excluded.
+    [List all transactions across every account](/api-reference/transactions/list-all-transactions-across-every-account-of-the-authenticated-integrator) returns every active transaction across all your accounts, paginated. Transactions still in an internal status (`created`, `claimed`) are excluded.
 
     **Query parameters**
 

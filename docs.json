@@ -242,6 +242,7 @@
                         "pages": [
                           "GET /v1/query/get-invitations-by-account-id",
                           "GET /v1/query/get-invitations-by-email",
+                          "GET /v1/query/get-all-invitations",
                           {
                             "group": "Add team member",
                             "pages": [
@@ -283,6 +284,7 @@
                           "POST /v1/query/get-withdraw-payload-passkey",
                           "POST /v1/query/get-vault-upgrade-payload-passkey",
                           "POST /v1/query/get-transfer-payload-passkey",
+                          "POST /v1/query/get-cancel-withdrawal-payload-passkey",
                           "POST /v1/submit/sign-payload-passkey"
                         ]
                       }
@@ -301,6 +303,12 @@
                     ]
                   },
                   {
+                    "group": "Events",
+                    "pages": [
+                      "GET /v1/query/events"
+                    ]
+                  },
+                  {
                     "group": "OTP authentication",
                     "pages": [
                       "POST /v1/submit/init-otp",
@@ -312,6 +320,7 @@
                     "group": "Integrator key management",
                     "pages": [
                       "GET /v1/integrator/whoami",
+                      "GET /v1/integrator/credentials",
                       "POST /v1/integrator/credentials",
                       "PATCH /v1/integrator/credentials/{pubkey}",
                       "DELETE /v1/integrator/credentials/{pubkey}"

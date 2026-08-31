@@ -33,6 +33,34 @@ When the stablecoins arrive in the secure wallet, the **exact** `amount` specifi
 ### Fiat transfers without a deposit being initiated
 
 If a user sends fiat directly to their dedicated bank account **without first initiating a deposit on your application**, the full amount will be credited to their idle balance. In practice, this means the funds remain in the user's secure wallet and are not allocated to any specific vault until you move them.
+
 ## Depositing idle balance
 
 To deposit idle balance into the vault, users must explicitly call the [deposit endpoint](/api-reference/transactions/get-deposit-payload) with the exact idle balance amount. This ensures the wallet maintains zero idle balance if desired.
+
+## Pending withdrawals
+
+Funds sitting in an asynchronous vault's [withdrawal queue](/api-reference/withdrawal-technical#queued-withdrawals) are neither idle balance nor withdrawn: the shares are still held by the vault until the request settles.
+
+[Get account balances](/api-reference/account-management/get-single-account-balances) reports them separately, under `pending_withdrawals` on each vault balance:
+
+```json
+{
+  "chain_id": 8453,
+  "vault_address": "0x...",
+  "is_async_vault": true,
+  "currency": "eur",
+  "balance": "1000.00",
+  "shares": "980.00",
+  "price_per_share": "1.0204",
+  "pending_withdrawals": {
+    "balance": "250.00",
+    "shares": "245.00"
+  }
+}
+```
+
+- `pending_withdrawals.balance` — currency value of the queued withdrawals.
+- `pending_withdrawals.shares` — vault shares locked by them.
+
+The field is `null` when the vault has no queued withdrawal.

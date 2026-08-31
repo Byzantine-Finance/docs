@@ -21,3 +21,43 @@ The integrator will have to call different API endpoints based on the authentica
     ![Flow to withdraw with Passkey](/images/withdraw-passkey.png)
   </Tab>
 </Tabs>
+
+## Queued withdrawals
+
+Not every vault can serve a withdrawal on the spot. Asynchronous vaults place the withdrawal in a queue instead of broadcasting it straight away.
+
+For those, [Sign a payload](/api-reference/transactions/sign-payload) answers `202 Accepted` rather than `200 OK`, and the response carries a `withdrawalRequest` object:
+
+```json
+{
+  "transactionId": "53f2d2dc-6abc-40fa-b2d2-d6d76b839c09",
+  "status": "withdrawal_initiated",
+  "withdrawalRequest": {
+    "requestId": "9c1b7f0e-2f3a-4a6d-9f21-7c3a5b0d1e88",
+    "status": "pending"
+  }
+}
+```
+
+<Info>
+Treat `202` as a success. The withdrawal has been accepted and signed; it simply has not left the vault yet. A `transaction.withdrawal_initiated` [webhook](/api-reference/webhooks/transactions) fires at the same time.
+</Info>
+
+The queue entry moves through three states, reported by `withdrawalRequest.status`:
+
+| `withdrawalRequest.status` | Transaction `status` | Meaning |
+| --- | --- | --- |
+| `pending` | `withdrawal_initiated` | Queued, waiting for the vault to release the funds. |
+| `settled` | continues its normal lifecycle | The vault released the funds and the withdrawal proceeds as usual. |
+| `cancelled` | `cancelled` | The queued withdrawal was cancelled before it settled. |
+
+While a withdrawal is queued, the amount still sits in the vault and is reported separately under `pending_withdrawals` on the account balance. See [Idle balance](/api-reference/account-balances-idle#pending-withdrawals).
+
+## Cancelling a queued withdrawal
+
+A withdrawal can be cancelled for as long as it is still `pending`. Cancellation is itself a signed action, so it follows the same two-step pattern as the withdrawal it cancels:
+
+1. [Get cancellation payload for a withdrawal request](/api-reference/transactions/get-cancellation-payload-for-a-withdrawal-request) — pass the `chain_id` as a query parameter and the `transactionId` of the queued withdrawal in the body. It returns the body to sign.
+2. [Sign a payload](/api-reference/transactions/sign-payload) — submit the signed body to execute the cancellation.
+
+Once the cancellation is executed, the transaction status becomes `cancelled`, `withdrawalRequest.status` becomes `cancelled`, and the funds remain in the vault.

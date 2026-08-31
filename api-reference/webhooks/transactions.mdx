@@ -14,6 +14,7 @@ Each transaction event populates `transactionId` and `accountId`. The `provider`
 | Event | Fires when |
 |-------|------------|
 | `transaction.created` | A transaction has been created. |
+| `transaction.withdrawal_initiated` | A withdrawal has been signed and placed in the vault's withdrawal queue. |
 | `transaction.waiting_for_funds` | Byzantine is waiting for incoming funds. |
 | `transaction.payment_in_review` | The payment is under review. |
 | `transaction.funds_in_transfer` | Funds are being transferred. |

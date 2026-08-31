@@ -1178,6 +1178,99 @@
                 ]
             }
         },
+        "/v1/query/get-all-invitations": {
+            "get": {
+                "tags": [
+                    "Account management"
+                ],
+                "summary": "List all invitations across every account of the authenticated integrator",
+                "description": "Returns invitations across all accounts owned by the integrator, paginated and ordered (DESC by default).",
+                "operationId": "get_all_invitations",
+                "parameters": [
+                    {
+                        "name": "X-Pubkey",
+                        "in": "header",
+                        "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Timestamp",
+                        "in": "header",
+                        "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Signature",
+                        "in": "header",
+                        "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Page size (max 100). Defaults to 20.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "description": "Number of records to skip. Defaults to 0.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "order",
+                        "in": "query",
+                        "description": "Sort order over the field `updatedAt`. `desc` (default) returns the most recently updated first;\n`asc` returns the oldest first. Combine with `offset` to paginate through every invitation.",
+                        "required": false,
+                        "schema": {
+                            "$ref": "#/components/schemas/SortOrder"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Invitations retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetAllInvitationsResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "integrator_auth": []
+                    }
+                ]
+            }
+        },
         "/v1/query/get-invite-users-payload-passkey": {
             "post": {
                 "tags": [
@@ -1835,7 +1928,7 @@
                     "Transactions"
                 ],
                 "summary": "List all transactions",
-                "description": "Returns all deposit, withdrawal, and approval transactions with pending or completed status.\nExcludes transactions with \"created\" status.",
+                "description": "Returns all deposit, withdrawal, and approval transactions with pending or completed status.\nExcludes transactions still in an internal status (`created`, `claimed`).",
                 "operationId": "get_transactions",
                 "parameters": [
                     {
@@ -1908,6 +2001,7 @@
                     "Transactions"
                 ],
                 "summary": "Get single transaction",
+                "description": "Transactions still awaiting signature (unsigned drafts) return 404: they only become\nvisible once `sign-payload` has succeeded.",
                 "operationId": "get_transaction",
                 "parameters": [
                     {
@@ -1958,7 +2052,7 @@
                         }
                     },
                     "404": {
-                        "description": "Transaction not found"
+                        "description": "Transaction not found, or still awaiting signature"
                     },
                     "500": {
                         "description": "Internal server error"
@@ -1977,7 +2071,7 @@
                     "Transactions"
                 ],
                 "summary": "List all transactions across every account of the authenticated integrator",
-                "description": "Returns transactions across all accounts owned by the integrator, paginated and ordered (DESC by default).\nExcludes transactions with `created` status.",
+                "description": "Returns transactions across all accounts owned by the integrator, paginated and ordered (DESC by default).\nExcludes transactions still in an internal status (`created`, `claimed`).",
                 "operationId": "get_all_transactions",
                 "parameters": [
                     {
@@ -2307,6 +2401,90 @@
                 ]
             }
         },
+        "/v1/query/get-cancel-withdrawal-payload-passkey": {
+            "post": {
+                "tags": [
+                    "Transactions"
+                ],
+                "summary": "Get cancellation payload for a withdrawal request",
+                "description": "Get the payload to sign in order to cancel a queued withdrawal. Part of the passkey authentication flow.",
+                "operationId": "get_cancel_withdrawal_payload_passkey",
+                "parameters": [
+                    {
+                        "name": "X-Pubkey",
+                        "in": "header",
+                        "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Timestamp",
+                        "in": "header",
+                        "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Signature",
+                        "in": "header",
+                        "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "chain_id",
+                        "in": "query",
+                        "description": "Chain ID (1 for Ethereum, 8453 for Base)",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32",
+                            "minimum": 0
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Cancel withdrawal request body",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CancelWithdrawalRequestBody"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/PasskeyPayloadRequestResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unknown transaction, wrong chain, or withdrawal not cancellable"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "integrator_auth": []
+                    }
+                ]
+            }
+        },
         "/v1/query/get-transfer-payload-passkey": {
             "post": {
                 "tags": [
@@ -2534,8 +2712,177 @@
                             }
                         }
                     },
+                    "202": {
+                        "description": "Withdrawal initiated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/SendTransactionResponseBody"
+                                }
+                            }
+                        }
+                    },
                     "400": {
                         "description": "Invalid chain ID"
+                    }
+                },
+                "security": [
+                    {
+                        "integrator_auth": []
+                    }
+                ]
+            }
+        },
+        "/v1/query/events": {
+            "get": {
+                "tags": [
+                    "Events"
+                ],
+                "summary": "Lists persisted lifecycle events owned by the authenticated integrator, newest first.",
+                "operationId": "list_events",
+                "parameters": [
+                    {
+                        "name": "X-Pubkey",
+                        "in": "header",
+                        "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Timestamp",
+                        "in": "header",
+                        "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Signature",
+                        "in": "header",
+                        "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "accountId",
+                        "in": "query",
+                        "description": "Filter by account ID.",
+                        "required": false,
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/components/schemas/Uuid"
+                                }
+                            ],
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "userId",
+                        "in": "query",
+                        "description": "Filter by user ID.",
+                        "required": false,
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/components/schemas/Uuid"
+                                }
+                            ],
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "transactionId",
+                        "in": "query",
+                        "description": "Filter by transaction ID.",
+                        "required": false,
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/components/schemas/Uuid"
+                                }
+                            ],
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "eventType",
+                        "in": "query",
+                        "description": "Filter by a lifecycle event type. `webhook.test` is not a lifecycle event.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "createdAfter",
+                        "in": "query",
+                        "description": "Exclusive lower bound on database creation time.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time",
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "createdBefore",
+                        "in": "query",
+                        "description": "Exclusive upper bound on database creation time.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time",
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "cursor",
+                        "in": "query",
+                        "description": "Opaque page cursor. Keep filters unchanged while paging.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "nullable": true
+                        }
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "Page size from 1 to 250. Defaults to 100.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64",
+                            "nullable": true
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Event history",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListEventsResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request - Invalid filter, cursor or limit"
+                    },
+                    "401": {
+                        "description": "Unauthorized - Invalid credential or signature"
+                    },
+                    "500": {
+                        "description": "Internal server error"
                     }
                 },
                 "security": [
@@ -3350,7 +3697,7 @@
                     "Integrator key management"
                 ],
                 "summary": "Get current integrator credential capabilities",
-                "description": "Returns the authenticated integrator id, credential access scope, and capability flags for frontend UX.",
+                "description": "Returns the authenticated integrator id, credential access scope, label, and capability flags for frontend UX.",
                 "operationId": "get_current_integrator_capabilities",
                 "parameters": [
                     {
@@ -3410,6 +3757,69 @@
             }
         },
         "/v1/integrator/credentials": {
+            "get": {
+                "tags": [
+                    "Integrator key management"
+                ],
+                "summary": "List integrator credentials",
+                "description": "Returns every credential owned by the authenticated integrator, oldest first: public key,\naccess scope, active status, label, and creation time. Private keys are returned only in the\ncreation response and are not stored by the API, so they never appear in this list.",
+                "operationId": "list_credentials",
+                "parameters": [
+                    {
+                        "name": "X-Pubkey",
+                        "in": "header",
+                        "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Timestamp",
+                        "in": "header",
+                        "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Signature",
+                        "in": "header",
+                        "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Credentials owned by the authenticated integrator",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListCredentialsResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request - Missing or invalid auth headers"
+                    },
+                    "401": {
+                        "description": "Unauthorized - Invalid credential or signature"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "integrator_auth": []
+                    }
+                ]
+            },
             "post": {
                 "tags": [
                     "Integrator key management"
@@ -4351,6 +4761,17 @@
                 ],
                 "example": "llc"
             },
+            "CancelWithdrawalRequestBody": {
+                "type": "object",
+                "required": [
+                    "transactionId"
+                ],
+                "properties": {
+                    "transactionId": {
+                        "$ref": "#/components/schemas/Uuid"
+                    }
+                }
+            },
             "CheckingOrSavings": {
                 "type": "string",
                 "enum": [
@@ -4950,7 +5371,8 @@
                     "pubkey",
                     "integratorId",
                     "accessScope",
-                    "active"
+                    "active",
+                    "createdAt"
                 ],
                 "properties": {
                     "pubkey": {
@@ -4971,6 +5393,11 @@
                         "type": "string",
                         "description": "Label of the credential.",
                         "nullable": true
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Creation time of the credential."
                     }
                 }
             },
@@ -5017,6 +5444,11 @@
                     },
                     "accessScope": {
                         "$ref": "#/components/schemas/IntegratorAccessScope"
+                    },
+                    "label": {
+                        "type": "string",
+                        "description": "Label of the credential used for the current request.",
+                        "nullable": true
                     },
                     "capabilities": {
                         "$ref": "#/components/schemas/CurrentIntegratorCapabilities"
@@ -5427,6 +5859,26 @@
                 ],
                 "example": "1000000_9999999"
             },
+            "EventHistoryItem": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/WebhookLifecycleEventPayload"
+                    },
+                    {
+                        "type": "object",
+                        "required": [
+                            "createdAt"
+                        ],
+                        "properties": {
+                            "createdAt": {
+                                "type": "string",
+                                "format": "date-time"
+                            }
+                        }
+                    }
+                ],
+                "description": "Canonical lifecycle event payload plus its database creation time."
+            },
             "ExpectedMonthlyPayments": {
                 "type": "string",
                 "description": "Expected monthly payments in USD. Required for high risk users.",
@@ -5475,6 +5927,16 @@
                         "example": "false"
                     }
                 }
+            },
+            "FxhWithdrawalStatus": {
+                "type": "string",
+                "description": "Lifecycle status of a queued FXH withdrawal request.",
+                "enum": [
+                    "pending",
+                    "cancelled",
+                    "settled"
+                ],
+                "example": "pending"
             },
             "GetAccountBalanceQuery": {
                 "type": "object",
@@ -5663,6 +6125,61 @@
                     "createdAt": {
                         "type": "string",
                         "format": "date-time"
+                    }
+                }
+            },
+            "GetAllInvitationsQuery": {
+                "type": "object",
+                "properties": {
+                    "limit": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page size (max 100). Defaults to 20.",
+                        "nullable": true
+                    },
+                    "offset": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Number of records to skip. Defaults to 0.",
+                        "nullable": true
+                    },
+                    "order": {
+                        "$ref": "#/components/schemas/SortOrder"
+                    }
+                }
+            },
+            "GetAllInvitationsResponse": {
+                "type": "object",
+                "required": [
+                    "invitations",
+                    "total",
+                    "limit",
+                    "offset"
+                ],
+                "properties": {
+                    "invitations": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/GetInvitationResponse"
+                        }
+                    },
+                    "total": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Total number of invitations for this integrator across all accounts.",
+                        "example": 342
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page size (max 100). Defaults to 20.",
+                        "example": 20
+                    },
+                    "offset": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Number of records to skip. Defaults to 0.",
+                        "example": 0
                     }
                 }
             },
@@ -6755,6 +7272,97 @@
                     }
                 }
             },
+            "ListCredentialsResponse": {
+                "type": "object",
+                "required": [
+                    "credentials"
+                ],
+                "properties": {
+                    "credentials": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CredentialSummaryResponse"
+                        },
+                        "description": "Credentials owned by the authenticated integrator, oldest first."
+                    }
+                }
+            },
+            "ListEventsQuery": {
+                "type": "object",
+                "properties": {
+                    "accountId": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Uuid"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "userId": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Uuid"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "transactionId": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Uuid"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "eventType": {
+                        "type": "string",
+                        "description": "Filter by a lifecycle event type. `webhook.test` is not a lifecycle event.",
+                        "nullable": true
+                    },
+                    "createdAfter": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Exclusive lower bound on database creation time.",
+                        "nullable": true
+                    },
+                    "createdBefore": {
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "Exclusive upper bound on database creation time.",
+                        "nullable": true
+                    },
+                    "cursor": {
+                        "type": "string",
+                        "description": "Opaque page cursor. Keep filters unchanged while paging.",
+                        "nullable": true
+                    },
+                    "limit": {
+                        "type": "integer",
+                        "format": "int64",
+                        "description": "Page size from 1 to 250. Defaults to 100.",
+                        "nullable": true
+                    }
+                }
+            },
+            "ListEventsResponse": {
+                "type": "object",
+                "description": "One page of events with an opaque cursor for the next page, if any.",
+                "required": [
+                    "events"
+                ],
+                "properties": {
+                    "events": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/EventHistoryItem"
+                        }
+                    },
+                    "nextCursor": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                }
+            },
             "ListWebhookDeliveriesQuery": {
                 "type": "object",
                 "description": "Delivery history filters accept documented camelCase query names plus snake_case aliases for operator ergonomics.",
@@ -7054,6 +7662,21 @@
                     }
                 }
             },
+            "PendingWithdrawals": {
+                "type": "object",
+                "required": [
+                    "balance",
+                    "shares"
+                ],
+                "properties": {
+                    "balance": {
+                        "$ref": "#/components/schemas/Decimal"
+                    },
+                    "shares": {
+                        "$ref": "#/components/schemas/Decimal"
+                    }
+                }
+            },
             "SendTransactionResponseBody": {
                 "type": "object",
                 "required": [
@@ -7065,7 +7688,7 @@
                         "$ref": "#/components/schemas/Uuid"
                     },
                     "status": {
-                        "$ref": "#/components/schemas/TransactionStatus"
+                        "$ref": "#/components/schemas/TransactionStatusView"
                     },
                     "broadcastedAt": {
                         "type": "string",
@@ -7091,6 +7714,14 @@
                         "allOf": [
                             {
                                 "$ref": "#/components/schemas/BankAccount"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "withdrawalRequest": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/WithdrawalRequestView"
                             }
                         ],
                         "nullable": true
@@ -7505,6 +8136,14 @@
                     },
                     "is_asynchronous": {
                         "type": "boolean"
+                    },
+                    "strategy_vault_address": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "fallback_adapter": {
+                        "type": "string",
+                        "nullable": true
                     }
                 }
             },
@@ -7555,11 +8194,11 @@
                     }
                 }
             },
-            "TransactionStatus": {
+            "TransactionStatusView": {
                 "type": "string",
-                "description": "The current status of the transaction.",
+                "description": "The current status of the transaction, as returned by the API.",
                 "enum": [
-                    "created",
+                    "withdrawal_initiated",
                     "waiting_for_funds",
                     "funds_in_transfer",
                     "funds_received",
@@ -7567,7 +8206,8 @@
                     "completed",
                     "simulation_failed",
                     "reverted",
-                    "refunded"
+                    "refunded",
+                    "cancelled"
                 ],
                 "example": "completed"
             },
@@ -7646,7 +8286,7 @@
                         "$ref": "#/components/schemas/TransactionTypeView"
                     },
                     "status": {
-                        "$ref": "#/components/schemas/TransactionStatus"
+                        "$ref": "#/components/schemas/TransactionStatusView"
                     },
                     "transactionHash": {
                         "type": "string",
@@ -7705,6 +8345,14 @@
                         "allOf": [
                             {
                                 "$ref": "#/components/schemas/AccountMinimalView"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "withdrawalRequest": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/WithdrawalRequestView"
                             }
                         ],
                         "nullable": true
@@ -8630,6 +9278,14 @@
                     },
                     "price_per_share": {
                         "$ref": "#/components/schemas/Decimal"
+                    },
+                    "pending_withdrawals": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/PendingWithdrawals"
+                            }
+                        ],
+                        "nullable": true
                     }
                 }
             },
@@ -8968,6 +9624,7 @@
                     "customer.rejected",
                     "customer.deleted",
                     "transaction.created",
+                    "transaction.withdrawal_initiated",
                     "transaction.waiting_for_funds",
                     "transaction.payment_in_review",
                     "transaction.funds_in_transfer",
@@ -9212,6 +9869,21 @@
                         "nullable": true
                     }
                 }
+            },
+            "WithdrawalRequestView": {
+                "type": "object",
+                "required": [
+                    "requestId",
+                    "status"
+                ],
+                "properties": {
+                    "requestId": {
+                        "$ref": "#/components/schemas/Uuid"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/FxhWithdrawalStatus"
+                    }
+                }
             }
         },
         "securitySchemes": {
@@ -9251,6 +9923,10 @@
         {
             "name": "OTP authentication",
             "description": "Endpoints to initialize and manage user authentication with OTP."
+        },
+        {
+            "name": "Events",
+            "description": "Endpoints to list lifecycle events."
         },
         {
             "name": "Webhooks",
