@@ -197,6 +197,79 @@
                 ]
             }
         },
+        "/v1/query/get-associated-person-details": {
+            "get": {
+                "tags": [
+                    "Customer management"
+                ],
+                "summary": "Get details of a single associated person",
+                "description": "This endpoint returns the full record of one beneficiary or representative of an entity:\n- Personal information (name, contact, birth details, residential address)\n- Beneficiary details (type, title held at the business, ownership share)\n- Verification status and the documents still missing\n\nThe `beneficiaryId` is returned by `get-entity-details` and by the associated person submit\nendpoints. A person belonging to another integrator returns the same 404 as one that does\nnot exist, so this endpoint never reveals the existence of a foreign record.",
+                "operationId": "get_associated_person_details",
+                "parameters": [
+                    {
+                        "name": "X-Pubkey",
+                        "in": "header",
+                        "description": "Integrator's ECDSA public key (P-256 curve, compressed SEC1 format). Example: 0x038fedef7c12f93bbf342ad8943b7a825a3b41f61c9dc118b2c718efebabbf62fd",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Timestamp",
+                        "in": "header",
+                        "description": "Unix timestamp in seconds (UTC). Must be within tolerance window (1 minute) to prevent replay attacks. Example: 1760375826",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Signature",
+                        "in": "header",
+                        "description": "ECDSA signature (DER-encoded, hex with 0x prefix). Signs the message: {timestamp}{METHOD}{path_and_query}{json_body}. Example: 0x3045022100...",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "beneficiaryId",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/Uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Associated person retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AssociatedPersonResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request - Invalid beneficiary_id"
+                    },
+                    "404": {
+                        "description": "Associated person not found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                },
+                "security": [
+                    {
+                        "integrator_auth": []
+                    }
+                ]
+            }
+        },
         "/v1/query/get-customers": {
             "get": {
                 "tags": [
@@ -3557,7 +3630,7 @@
                     {
                         "name": "accountId",
                         "in": "query",
-                        "description": "Restrict to lifecycle events for an account id in the webhook payload.",
+                        "description": "Restrict to lifecycle events related to one account id.",
                         "required": false,
                         "schema": {
                             "allOf": [
@@ -3565,16 +3638,6 @@
                                     "$ref": "#/components/schemas/Uuid"
                                 }
                             ],
-                            "nullable": true
-                        }
-                    },
-                    {
-                        "name": "providerEventId",
-                        "in": "query",
-                        "description": "Restrict to lifecycle events with this provider event id in the webhook payload.",
-                        "required": false,
-                        "schema": {
-                            "type": "string",
                             "nullable": true
                         }
                     },
@@ -4469,6 +4532,18 @@
                     }
                 }
             },
+            "AssociatedPersonDetailsQuery": {
+                "type": "object",
+                "description": "Query parameters for getting a single associated person",
+                "required": [
+                    "beneficiaryId"
+                ],
+                "properties": {
+                    "beneficiaryId": {
+                        "$ref": "#/components/schemas/Uuid"
+                    }
+                }
+            },
             "AssociatedPersonResponse": {
                 "type": "object",
                 "description": "Response body for an associated person",
@@ -4635,6 +4710,30 @@
                         "description": "Required for UBOs. The % of direct or indirect business ownership.",
                         "example": "32.5",
                         "nullable": true
+                    }
+                }
+            },
+            "BeneficiarySummary": {
+                "type": "object",
+                "description": "`data.beneficiary`: the UBO a beneficiary-scoped `customer.*` event is about.",
+                "required": [
+                    "beneficiaryId",
+                    "firstName",
+                    "lastName",
+                    "verificationStatus"
+                ],
+                "properties": {
+                    "beneficiaryId": {
+                        "$ref": "#/components/schemas/Uuid"
+                    },
+                    "firstName": {
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "type": "string"
+                    },
+                    "verificationStatus": {
+                        "$ref": "#/components/schemas/VerificationStatus"
                     }
                 }
             },
@@ -5455,6 +5554,33 @@
                     }
                 }
             },
+            "CustomerEventData": {
+                "type": "object",
+                "description": "`data` of every `customer.*` event. `customer` is always the main customer (entity or\nindividual); `beneficiary` is set on UBO-scoped events and then carries the status the event\nis about; `reasonCodes` is set on `resubmission_requested` and `rejected`. Every key is\nalways emitted (`null` when not applicable): strict schema validators must not see keys\nappear and disappear with the event type.",
+                "required": [
+                    "customer"
+                ],
+                "properties": {
+                    "customer": {
+                        "$ref": "#/components/schemas/CustomerSummary"
+                    },
+                    "beneficiary": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/BeneficiarySummary"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "reasonCodes": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "nullable": true
+                    }
+                }
+            },
             "CustomerQueryType": {
                 "type": "string",
                 "description": "Filter type for the get-customers endpoint",
@@ -5463,6 +5589,65 @@
                     "individual",
                     "all"
                 ]
+            },
+            "CustomerSummary": {
+                "type": "object",
+                "description": "`data.customer`: canonical summary of the KYC/KYB subject (individual user or entity).",
+                "required": [
+                    "accountId",
+                    "customerType",
+                    "name",
+                    "verificationStatus",
+                    "createdAt"
+                ],
+                "properties": {
+                    "accountId": {
+                        "$ref": "#/components/schemas/Uuid"
+                    },
+                    "customerType": {
+                        "$ref": "#/components/schemas/CustomerType"
+                    },
+                    "userId": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Uuid"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "entityId": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Uuid"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "\"FirstName LastName\" for an individual, the company name for an entity."
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "The user's email for an individual, the company email declared at KYB for an entity\n(`null` when the entity declared none).",
+                        "nullable": true
+                    },
+                    "verificationStatus": {
+                        "$ref": "#/components/schemas/VerificationStatus"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "CustomerType": {
+                "type": "string",
+                "enum": [
+                    "individual",
+                    "entity"
+                ],
+                "example": "entity"
             },
             "Decimal": {
                 "type": "string",
@@ -6248,6 +6433,22 @@
                     "beneficiaryType"
                 ],
                 "properties": {
+                    "beneficiaryId": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Uuid"
+                            }
+                        ],
+                        "nullable": true
+                    },
+                    "userId": {
+                        "allOf": [
+                            {
+                                "$ref": "#/components/schemas/Uuid"
+                            }
+                        ],
+                        "nullable": true
+                    },
                     "firstName": {
                         "type": "string"
                     },
@@ -7429,11 +7630,6 @@
                                 "$ref": "#/components/schemas/Uuid"
                             }
                         ],
-                        "nullable": true
-                    },
-                    "providerEventId": {
-                        "type": "string",
-                        "description": "Restrict to lifecycle events with this provider event id in the webhook payload.",
                         "nullable": true
                     }
                 }
@@ -9563,111 +9759,55 @@
                 }
             },
             "WebhookEvent": {
-                "type": "object",
-                "required": [
-                    "id",
-                    "eventType",
-                    "sourceType",
-                    "sourceId",
-                    "payload",
-                    "payloadVersion",
-                    "sourceTransitionMetadata",
-                    "createdAt"
-                ],
-                "properties": {
-                    "id": {
-                        "$ref": "#/components/schemas/Uuid"
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/WebhookEventRelated"
                     },
-                    "eventType": {
-                        "type": "string"
-                    },
-                    "sourceType": {
-                        "type": "string"
-                    },
-                    "sourceId": {
-                        "type": "string"
-                    },
-                    "payload": {},
-                    "payloadVersion": {
-                        "type": "integer",
-                        "format": "int32"
-                    },
-                    "sourceTransitionMetadata": {},
-                    "createdAt": {
-                        "type": "string",
-                        "format": "date-time"
+                    {
+                        "type": "object",
+                        "required": [
+                            "id",
+                            "eventType",
+                            "sourceType",
+                            "sourceId",
+                            "payload",
+                            "payloadVersion",
+                            "createdAt",
+                            "integratorId"
+                        ],
+                        "properties": {
+                            "id": {
+                                "$ref": "#/components/schemas/Uuid"
+                            },
+                            "eventType": {
+                                "type": "string"
+                            },
+                            "sourceType": {
+                                "type": "string"
+                            },
+                            "sourceId": {
+                                "type": "string"
+                            },
+                            "payload": {},
+                            "payloadVersion": {
+                                "type": "integer",
+                                "format": "int32"
+                            },
+                            "createdAt": {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "integratorId": {
+                                "$ref": "#/components/schemas/Uuid"
+                            }
+                        }
                     }
-                }
+                ]
             },
-            "WebhookEventProvider": {
-                "type": "string",
-                "description": "Provider/source that caused a public lifecycle webhook event.",
-                "enum": [
-                    "byzantine",
-                    "sumsub",
-                    "bridge",
-                    "onchain"
-                ],
-                "example": "byzantine"
-            },
-            "WebhookEventType": {
-                "type": "string",
-                "description": "Public outbound webhook event names. Stored as TEXT in Postgres.",
-                "enum": [
-                    "webhook.test",
-                    "customer.created",
-                    "customer.updated",
-                    "customer.under_review",
-                    "customer.awaiting_associated_person_information",
-                    "customer.resubmission_requested",
-                    "customer.active",
-                    "customer.rejected",
-                    "customer.deleted",
-                    "transaction.created",
-                    "transaction.withdrawal_initiated",
-                    "transaction.waiting_for_funds",
-                    "transaction.payment_in_review",
-                    "transaction.funds_in_transfer",
-                    "transaction.funds_received",
-                    "transaction.processing",
-                    "transaction.completed",
-                    "transaction.simulation_failed",
-                    "transaction.reverted"
-                ],
-                "example": "customer.created"
-            },
-            "WebhookLifecycleEventPayload": {
+            "WebhookEventRelated": {
                 "type": "object",
-                "description": "Stable public webhook payload shared by customer and transaction lifecycle events.",
-                "required": [
-                    "id",
-                    "eventType",
-                    "occurredAt",
-                    "livemode",
-                    "payloadVersion",
-                    "integratorId"
-                ],
+                "description": "Routing block of the public envelope: only the ids relevant to the event are set, the others\nare `null`. Also persisted as typed columns on `webhook_events` for history filters.",
                 "properties": {
-                    "id": {
-                        "$ref": "#/components/schemas/Uuid"
-                    },
-                    "eventType": {
-                        "$ref": "#/components/schemas/WebhookEventType"
-                    },
-                    "occurredAt": {
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "livemode": {
-                        "type": "boolean"
-                    },
-                    "payloadVersion": {
-                        "type": "integer",
-                        "format": "int32"
-                    },
-                    "integratorId": {
-                        "$ref": "#/components/schemas/Uuid"
-                    },
                     "accountId": {
                         "allOf": [
                             {
@@ -9707,20 +9847,69 @@
                             }
                         ],
                         "nullable": true
+                    }
+                }
+            },
+            "WebhookEventType": {
+                "type": "string",
+                "description": "Public outbound webhook event names (`domain.action`). Stored as TEXT in Postgres.",
+                "enum": [
+                    "webhook.test",
+                    "customer.created",
+                    "customer.under_review",
+                    "customer.awaiting_associated_person_information",
+                    "customer.resubmission_requested",
+                    "customer.active",
+                    "customer.rejected",
+                    "customer.deactivated",
+                    "customer.deleted",
+                    "transaction.withdrawal_initiated",
+                    "transaction.waiting_for_funds",
+                    "transaction.payment_in_review",
+                    "transaction.funds_in_transfer",
+                    "transaction.funds_received",
+                    "transaction.processing",
+                    "transaction.completed",
+                    "transaction.simulation_failed",
+                    "transaction.reverted"
+                ],
+                "example": "customer.created"
+            },
+            "WebhookLifecycleEventPayload": {
+                "type": "object",
+                "description": "Public envelope shared by every lifecycle event: the signed webhook body and the\n`GET /v1/query/events` item (which adds `createdAt`).",
+                "required": [
+                    "id",
+                    "type",
+                    "occurredAt",
+                    "livemode",
+                    "payloadVersion",
+                    "related"
+                ],
+                "properties": {
+                    "id": {
+                        "$ref": "#/components/schemas/Uuid"
                     },
-                    "provider": {
-                        "allOf": [
-                            {
-                                "$ref": "#/components/schemas/WebhookEventProvider"
-                            }
-                        ],
-                        "nullable": true
+                    "type": {
+                        "$ref": "#/components/schemas/WebhookEventType"
                     },
-                    "providerEventId": {
+                    "occurredAt": {
                         "type": "string",
-                        "nullable": true
+                        "format": "date-time"
                     },
-                    "data": {}
+                    "livemode": {
+                        "type": "boolean"
+                    },
+                    "payloadVersion": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "related": {
+                        "$ref": "#/components/schemas/WebhookEventRelated"
+                    },
+                    "data": {
+                        "description": "Event-type specific resource, named per domain (`customer`, `transaction`, ...)."
+                    }
                 }
             },
             "WebhookSigningKey": {

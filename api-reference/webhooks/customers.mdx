@@ -7,7 +7,7 @@ Customer events track the KYC/KYB onboarding lifecycle of a customer. Subscribe 
 
 ## Populated fields
 
-Each customer event populates `accountId` and, depending on the customer type, `userId` (individual) or `entityId` (entity). `beneficiaryId` is set when the event concerns a specific associated person of an entity. The `provider` field indicates the source of the change (for example `sumsub` or `bridge`).
+Every customer event carries the ids it concerns in the envelope's `related` block. `accountId` is always set, together with `userId` for an individual customer or `entityId` for an entity. `beneficiaryId` is set when the event concerns one specific associated person of an entity. Keys that do not apply are `null` rather than absent.
 
 ## Event types
 
@@ -19,8 +19,23 @@ Each customer event populates `accountId` and, depending on the customer type, `
 | `customer.resubmission_requested` | Additional information or documents are required from the customer. |
 | `customer.active` | Verification is approved; the account can transact. |
 | `customer.rejected` | Verification was rejected. |
+| `customer.deactivated` | A previously active customer was deactivated and can no longer transact. |
 
 For the full meaning of each state, see [Verification statuses](/api-reference/verification-statuses).
+
+## The `data` object
+
+Every `customer.*` event carries the same three keys under `data`. All three are always present - they are set to `null` when they do not apply, so a strict schema validator never sees keys appear and disappear between event types.
+
+| Key | Set when | Contents |
+| --- | --- | --- |
+| `customer` | Always | The KYC/KYB subject: `accountId`, `customerType` (`individual` or `entity`), `userId` **or** `entityId`, `name`, `email`, `verificationStatus`, `createdAt`. |
+| `beneficiary` | UBO-scoped events only | The associated person the event is about: `beneficiaryId`, `firstName`, `lastName`, `verificationStatus`. `null` otherwise. |
+| `reasonCodes` | `resubmission_requested` and `rejected` | Array of reason codes explaining the decision. `null` otherwise. |
+
+<Note>
+`name` is `"FirstName LastName"` for an individual and the company name for an entity. `email` is the user's email for an individual, or the company email declared at KYB for an entity - `null` when the entity declared none.
+</Note>
 
 ## Example payload by event type
 
@@ -29,27 +44,30 @@ For the full meaning of each state, see [Verification statuses](/api-reference/v
 ```json
 {
   "id": "b278e1f9-01fb-fd5a-b415-ceadcea59371",
-  "eventType": "customer.created",
+  "type": "customer.created",
   "occurredAt": "2026-06-30T12:26:56.332244878Z",
   "livemode": true,
   "payloadVersion": 1,
-  "integratorId": "a2d10a77-4e92-4b5f-c236-aef978975260",
-  "accountId": "34158778-3bb4-d6b6-3b18-60413b83d7cb",
-  "userId": "bd4ca296-067f-5847-5854-d054d84d4a62",
-  "provider": "sumsub",
-  "providerEventId": "db3960a8fc93af8da0a67c458b50d588",
+  "related": {
+    "accountId": "34158778-3bb4-d6b6-3b18-60413b83d7cb",
+    "userId": "bd4ca296-067f-5847-5854-d054d84d4a62",
+    "entityId": null,
+    "beneficiaryId": null,
+    "transactionId": null
+  },
   "data": {
-    "customerType": "individual",
-    "provider": "sumsub",
-    "providerEventId": "db3960a8fc93af8da0a67c458b50d588",
-    "reasonCodes": null,
-    "reviewAnswer": null,
-    "reviewRejectType": null,
-    "sumsubApplicantId": "334ce71338ef9eae2312bcaf",
-    "sumsubInspectionId": "334ce71338ef9eae2312bcaf",
-    "sumsubReviewStatus": "init",
-    "sumsubWebhookType": "applicantCreated",
-    "verificationStatus": "under_review"
+    "customer": {
+      "accountId": "34158778-3bb4-d6b6-3b18-60413b83d7cb",
+      "customerType": "individual",
+      "userId": "bd4ca296-067f-5847-5854-d054d84d4a62",
+      "entityId": null,
+      "name": "Ada Lovelace",
+      "email": "ada@example.com",
+      "verificationStatus": "under_review",
+      "createdAt": "2026-06-30T12:26:56.101877000Z"
+    },
+    "beneficiary": null,
+    "reasonCodes": null
   }
 }
 ```
@@ -59,59 +77,70 @@ For the full meaning of each state, see [Verification statuses](/api-reference/v
 ```json
 {
   "id": "84160c37-bc5e-6a66-8e96-7743ffb7d933",
-  "eventType": "customer.under_review",
+  "type": "customer.under_review",
   "occurredAt": "2026-06-30T13:18:29.838139831Z",
   "livemode": true,
   "payloadVersion": 1,
-  "integratorId": "a2d10a77-4e92-4b5f-c236-aef978975260",
-  "accountId": "e47d2ac4-bedc-6cee-a622-bfc39c00c1b9",
-  "userId": "40c2d1d2-23a2-510e-aabf-b004995bd450",
-  "provider": "sumsub",
-  "providerEventId": "75b027242ee537c024a1320d91302856",
+  "related": {
+    "accountId": "e47d2ac4-bedc-6cee-a622-bfc39c00c1b9",
+    "userId": "40c2d1d2-23a2-510e-aabf-b004995bd450",
+    "entityId": null,
+    "beneficiaryId": null,
+    "transactionId": null
+  },
   "data": {
-    "customerType": "individual",
-    "provider": "sumsub",
-    "providerEventId": "75b027242ee537c024a1320d91302856",
-    "reasonCodes": null,
-    "reviewAnswer": "GREEN",
-    "reviewRejectType": null,
-    "sumsubApplicantId": "ae95a70b080f57c4a0331b50",
-    "sumsubInspectionId": "ae95a70b080f57c4a0331b50",
-    "sumsubReviewStatus": "onHold",
-    "sumsubWebhookType": "applicantOnHold",
-    "verificationStatus": "under_review"
+    "customer": {
+      "accountId": "e47d2ac4-bedc-6cee-a622-bfc39c00c1b9",
+      "customerType": "individual",
+      "userId": "40c2d1d2-23a2-510e-aabf-b004995bd450",
+      "entityId": null,
+      "name": "Ada Lovelace",
+      "email": "ada@example.com",
+      "verificationStatus": "under_review",
+      "createdAt": "2026-06-30T12:26:56.101877000Z"
+    },
+    "beneficiary": null,
+    "reasonCodes": null
   }
 }
 ```
 
 ### `customer.awaiting_associated_person_information`
 
+An entity event scoped to one associated person: `related.beneficiaryId` is set, and `data.beneficiary` carries that person's own verification status.
+
 ```json
 {
   "id": "923db2c1-a246-7fc2-ac1e-80a41f7ae2e3",
-  "eventType": "customer.awaiting_associated_person_information",
+  "type": "customer.awaiting_associated_person_information",
   "occurredAt": "2026-06-30T13:54:33.639484252Z",
   "livemode": true,
   "payloadVersion": 1,
-  "integratorId": "a2d10a77-4e92-4b5f-c236-aef978975260",
-  "accountId": "08873ea7-1fdb-9aa1-1103-d8d8250c48d6",
-  "entityId": "48de5c25-114b-3ca8-9c3e-ce5a8882f35f",
-  "provider": "sumsub",
-  "providerEventId": "76af255a5ab7e7ea6f51c097d59f97db",
+  "related": {
+    "accountId": "08873ea7-1fdb-9aa1-1103-d8d8250c48d6",
+    "userId": null,
+    "entityId": "48de5c25-114b-3ca8-9c3e-ce5a8882f35f",
+    "beneficiaryId": "6f2a11d0-3c8e-4a52-9f77-1b0d5c8e4a31",
+    "transactionId": null
+  },
   "data": {
-    "customerType": "entity",
-    "provider": "sumsub",
-    "providerEventId": "76af255a5ab7e7ea6f51c097d59f97db",
-    "reasonCodes": [
-      "NOT_ALL_CHECKS_COMPLETED"
-    ],
-    "reviewAnswer": "GREEN",
-    "reviewRejectType": null,
-    "sumsubApplicantId": "b000f2cb9974a87cc85ce070",
-    "sumsubInspectionId": "b000f2cb9974a87cc85ce070",
-    "sumsubReviewStatus": "awaitingUser",
-    "sumsubWebhookType": "applicantAwaitingUser",
-    "verificationStatus": "awaiting_associated_person_information"
+    "customer": {
+      "accountId": "08873ea7-1fdb-9aa1-1103-d8d8250c48d6",
+      "customerType": "entity",
+      "userId": null,
+      "entityId": "48de5c25-114b-3ca8-9c3e-ce5a8882f35f",
+      "name": "Analytical Engines Ltd",
+      "email": "compliance@example.com",
+      "verificationStatus": "awaiting_associated_person_information",
+      "createdAt": "2026-06-29T09:12:04.771003000Z"
+    },
+    "beneficiary": {
+      "beneficiaryId": "6f2a11d0-3c8e-4a52-9f77-1b0d5c8e4a31",
+      "firstName": "Charles",
+      "lastName": "Babbage",
+      "verificationStatus": "awaiting_information"
+    },
+    "reasonCodes": null
   }
 }
 ```
@@ -121,31 +150,34 @@ For the full meaning of each state, see [Verification statuses](/api-reference/v
 ```json
 {
   "id": "c9e18f88-5b82-c884-09c3-f024717029c0",
-  "eventType": "customer.resubmission_requested",
+  "type": "customer.resubmission_requested",
   "occurredAt": "2026-06-30T13:02:36.065663638Z",
   "livemode": true,
   "payloadVersion": 1,
-  "integratorId": "a2d10a77-4e92-4b5f-c236-aef978975260",
-  "accountId": "212f38c2-51ec-941d-2fec-fd05c463cc3d",
-  "userId": "8b4cc5ab-e3b7-40bd-f4e8-378bcd1e39a7",
-  "provider": "sumsub",
-  "providerEventId": "599d26badc2e76b82884bc9d139e7419",
+  "related": {
+    "accountId": "212f38c2-51ec-941d-2fec-fd05c463cc3d",
+    "userId": "8b4cc5ab-e3b7-40bd-f4e8-378bcd1e39a7",
+    "entityId": null,
+    "beneficiaryId": null,
+    "transactionId": null
+  },
   "data": {
-    "customerType": "individual",
-    "provider": "sumsub",
-    "providerEventId": "599d26badc2e76b82884bc9d139e7419",
+    "customer": {
+      "accountId": "212f38c2-51ec-941d-2fec-fd05c463cc3d",
+      "customerType": "individual",
+      "userId": "8b4cc5ab-e3b7-40bd-f4e8-378bcd1e39a7",
+      "entityId": null,
+      "name": "Ada Lovelace",
+      "email": "ada@example.com",
+      "verificationStatus": "resubmission_requested",
+      "createdAt": "2026-06-30T12:26:56.101877000Z"
+    },
+    "beneficiary": null,
     "reasonCodes": [
       "BAD_PROOF_OF_ADDRESS",
       "PROBLEMATIC_APPLICANT_DATA",
       "WRONG_ADDRESS"
-    ],
-    "reviewAnswer": "RED",
-    "reviewRejectType": "RETRY",
-    "sumsubApplicantId": "f7e5e932379c74f49d29ac19",
-    "sumsubInspectionId": "f7e5e932379c74f49d29ac19",
-    "sumsubReviewStatus": "completed",
-    "sumsubWebhookType": "applicantReviewed",
-    "verificationStatus": "resubmission_requested"
+    ]
   }
 }
 ```
@@ -155,27 +187,30 @@ For the full meaning of each state, see [Verification statuses](/api-reference/v
 ```json
 {
   "id": "adc728e7-fdb9-3ce1-a1bf-36ff45178322",
-  "eventType": "customer.active",
+  "type": "customer.active",
   "occurredAt": "2026-06-30T13:51:58.453021093Z",
   "livemode": true,
   "payloadVersion": 1,
-  "integratorId": "a2d10a77-4e92-4b5f-c236-aef978975260",
-  "accountId": "2e598259-4992-a7a4-a930-33bf1994f4d8",
-  "userId": "944a0d48-dc02-a4b9-474c-259e05a64ba5",
-  "provider": "sumsub",
-  "providerEventId": "1988857e60296e36e2f1fb066be20e43",
+  "related": {
+    "accountId": "2e598259-4992-a7a4-a930-33bf1994f4d8",
+    "userId": "944a0d48-dc02-a4b9-474c-259e05a64ba5",
+    "entityId": null,
+    "beneficiaryId": null,
+    "transactionId": null
+  },
   "data": {
-    "customerType": "individual",
-    "provider": "sumsub",
-    "providerEventId": "1988857e60296e36e2f1fb066be20e43",
-    "reasonCodes": null,
-    "reviewAnswer": "GREEN",
-    "reviewRejectType": null,
-    "sumsubApplicantId": "00ed11e2cb6646ba6cc018ca",
-    "sumsubInspectionId": "00ed11e2cb6646ba6cc018ca",
-    "sumsubReviewStatus": "completed",
-    "sumsubWebhookType": "applicantReviewed",
-    "verificationStatus": "active"
+    "customer": {
+      "accountId": "2e598259-4992-a7a4-a930-33bf1994f4d8",
+      "customerType": "individual",
+      "userId": "944a0d48-dc02-a4b9-474c-259e05a64ba5",
+      "entityId": null,
+      "name": "Ada Lovelace",
+      "email": "ada@example.com",
+      "verificationStatus": "active",
+      "createdAt": "2026-06-30T12:26:56.101877000Z"
+    },
+    "beneficiary": null,
+    "reasonCodes": null
   }
 }
 ```
@@ -185,31 +220,66 @@ For the full meaning of each state, see [Verification statuses](/api-reference/v
 ```json
 {
   "id": "78e51990-f219-558f-d301-054b1f3dd9a8",
-  "eventType": "customer.rejected",
+  "type": "customer.rejected",
   "occurredAt": "2026-06-30T12:50:11.512839296Z",
   "livemode": true,
   "payloadVersion": 1,
-  "integratorId": "a2d10a77-4e92-4b5f-c236-aef978975260",
-  "accountId": "a6fbfc44-3071-604f-1e3a-57e63b67ecac",
-  "userId": "b43c6126-b6a5-ffaf-7bea-7a1ef44a6048",
-  "provider": "sumsub",
-  "providerEventId": "36eb4739aa2311fb0cef97caed8626f4",
+  "related": {
+    "accountId": "a6fbfc44-3071-604f-1e3a-57e63b67ecac",
+    "userId": "b43c6126-b6a5-ffaf-7bea-7a1ef44a6048",
+    "entityId": null,
+    "beneficiaryId": null,
+    "transactionId": null
+  },
   "data": {
-    "customerType": "individual",
-    "provider": "sumsub",
-    "providerEventId": "36eb4739aa2311fb0cef97caed8626f4",
+    "customer": {
+      "accountId": "a6fbfc44-3071-604f-1e3a-57e63b67ecac",
+      "customerType": "individual",
+      "userId": "b43c6126-b6a5-ffaf-7bea-7a1ef44a6048",
+      "entityId": null,
+      "name": "Ada Lovelace",
+      "email": "ada@example.com",
+      "verificationStatus": "rejected",
+      "createdAt": "2026-06-30T12:26:56.101877000Z"
+    },
+    "beneficiary": null,
     "reasonCodes": [
       "INCORRECT_SOCIAL_NUMBER",
       "COMPROMISED_PERSONS"
-    ],
-    "reviewAnswer": "RED",
-    "reviewRejectType": "FINAL",
-    "sumsubApplicantId": "c68396da4e0fa1819f0ee0d0",
-    "sumsubInspectionId": "c68396da4e0fa1819f0ee0d0",
-    "sumsubReviewStatus": "completed",
-    "sumsubWebhookType": "applicantReviewed",
-    "verificationStatus": "rejected"
+    ]
   }
 }
 ```
 
+### `customer.deactivated`
+
+```json
+{
+  "id": "1d0c4b7a-9e33-4f18-b0a5-2c7e19f4d8b6",
+  "type": "customer.deactivated",
+  "occurredAt": "2026-07-02T08:14:22.004311000Z",
+  "livemode": true,
+  "payloadVersion": 1,
+  "related": {
+    "accountId": "2e598259-4992-a7a4-a930-33bf1994f4d8",
+    "userId": "944a0d48-dc02-a4b9-474c-259e05a64ba5",
+    "entityId": null,
+    "beneficiaryId": null,
+    "transactionId": null
+  },
+  "data": {
+    "customer": {
+      "accountId": "2e598259-4992-a7a4-a930-33bf1994f4d8",
+      "customerType": "individual",
+      "userId": "944a0d48-dc02-a4b9-474c-259e05a64ba5",
+      "entityId": null,
+      "name": "Ada Lovelace",
+      "email": "ada@example.com",
+      "verificationStatus": "inactive",
+      "createdAt": "2026-06-30T12:26:56.101877000Z"
+    },
+    "beneficiary": null,
+    "reasonCodes": null
+  }
+}
+```

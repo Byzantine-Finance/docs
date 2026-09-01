@@ -7,13 +7,12 @@ Transaction events track the lifecycle of a deposit or withdrawal. Subscribe to 
 
 ## Populated fields
 
-Each transaction event populates `transactionId` and `accountId`. The `provider` field indicates the source of the change (for example `byzantine`, `bridge`, or `onchain`).
+Each transaction event sets `transactionId` and `accountId` in the envelope's `related` block. The other `related` keys are `null`.
 
 ## Event types
 
 | Event | Fires when |
 |-------|------------|
-| `transaction.created` | A transaction has been created. |
 | `transaction.withdrawal_initiated` | A withdrawal has been signed and placed in the vault's withdrawal queue. |
 | `transaction.waiting_for_funds` | Byzantine is waiting for incoming funds. |
 | `transaction.payment_in_review` | The payment is under review. |
@@ -31,14 +30,17 @@ For status meanings and polling as an alternative to webhooks, see [Tracking Tra
 ```json
 {
   "id": "00000000-0000-4000-8000-000000000001",
-  "eventType": "transaction.completed",
+  "type": "transaction.completed",
   "occurredAt": "2026-06-03T15:00:00Z",
   "livemode": true,
   "payloadVersion": 1,
-  "integratorId": "8f7064b4-9587-496f-a5cc-00fbf5af01d5",
-  "transactionId": "53f2d2dc-6abc-40fa-b2d2-d6d76b839c09",
-  "accountId": "b3f2d2dc-6abc-40fa-b2d2-d6d76b839c09",
-  "provider": "byzantine",
+  "related": {
+    "accountId": "b3f2d2dc-6abc-40fa-b2d2-d6d76b839c09",
+    "userId": null,
+    "entityId": null,
+    "beneficiaryId": null,
+    "transactionId": "53f2d2dc-6abc-40fa-b2d2-d6d76b839c09"
+  },
   "data": {
     "status": "completed"
   }

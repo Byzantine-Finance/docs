@@ -212,6 +212,7 @@
                       "GET /v1/query/get-customers",
                       "GET /v1/query/get-user-details",
                       "GET /v1/query/get-entity-details",
+                      "GET /v1/query/get-associated-person-details",
                       {
                         "group": "Customer creation",
                         "pages": [

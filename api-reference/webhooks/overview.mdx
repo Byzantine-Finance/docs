@@ -94,23 +94,31 @@ Byzantine emits two families of lifecycle events, documented on their own pages:
 
 ## Delivery payload
 
-Each delivery body is JSON and shares a common envelope ([`WebhookLifecycleEventPayload`](#endpoint-reference)). The identifier fields that are populated (`accountId`, `userId`, `entityId`, `beneficiaryId`, `transactionId`) and the exact `data` object depend on the event type.
+Each delivery body is JSON and shares a common envelope ([`WebhookLifecycleEventPayload`](#endpoint-reference)). The event name is in `type`, the ids the event concerns are grouped under `related`, and the shape of `data` depends on the event type.
 
 ```json
 {
   "id": "00000000-0000-4000-8000-000000000001",
-  "eventType": "transaction.completed",
+  "type": "transaction.completed",
   "occurredAt": "2026-06-03T15:00:00Z",
   "livemode": true,
   "payloadVersion": 1,
-  "integratorId": "8f7064b4-9587-496f-a5cc-00fbf5af01d5",
-  "transactionId": "53f2d2dc-6abc-40fa-b2d2-d6d76b839c09",
-  "provider": "byzantine",
+  "related": {
+    "accountId": "b3f2d2dc-6abc-40fa-b2d2-d6d76b839c09",
+    "userId": null,
+    "entityId": null,
+    "beneficiaryId": null,
+    "transactionId": "53f2d2dc-6abc-40fa-b2d2-d6d76b839c09"
+  },
   "data": {
     "status": "completed"
   }
 }
 ```
+
+`related` always carries all five keys. Only the ones relevant to the event are set; the rest are `null` rather than absent, so you can read them without existence checks.
+
+The same envelope is what [`GET /v1/query/events`](/api-reference/events/lists-persisted-lifecycle-events-owned-by-the-authenticated-integrator-newest-first) returns for each stored event, with a `createdAt` added. A receiver written against webhook deliveries can therefore parse replayed events unchanged.
 
 Treat webhook delivery as at-least-once. Your receiver should be idempotent. Use the event id or delivery id to deduplicate work.
 

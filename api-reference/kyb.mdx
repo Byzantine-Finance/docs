@@ -16,7 +16,7 @@ The creation of the entity account is done by calling this API endpoint:
 <Card
   icon="plus"
   horizontal
-  href="/api-reference/customer-management/create-entity-account"
+  href="/api-reference/customer-management/create-entity"
   title="Create an entity account"
 ></Card>
 
@@ -87,6 +87,14 @@ To amend an existing beneficiary/representative's details or submit additional d
 </Card>
 
 Only the `beneficiaryId` is required - any subset of `userInfo`, `beneficiaryDetails`, or `verificationDocuments` can be provided, and only the fields included will be updated.
+
+To read back one person's full record - personal information, beneficiary details, verification status, and the documents still missing - call:
+
+<Card icon="magnifying-glass" horizontal href="/api-reference/customer-management/get-details-of-a-single-associated-person" title="Get details of a single associated person">
+
+</Card>
+
+It takes the `beneficiaryId` as a query parameter. A person belonging to another integrator returns the same `404` as one that does not exist, so the endpoint never reveals whether a foreign record exists.
 
 <Info>
   Update endpoints can be called as many times as needed to complete the
