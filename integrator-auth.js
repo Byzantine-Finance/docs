@@ -239,6 +239,163 @@
     return body != null ? JSON.stringify(body) : "";
   }
 
+  // ── Playground body normalisation ──────────────────────────────────────
+  // rootUsers[].authenticators prefills as placeholder strings. It is a
+  // real WebAuthn passkey attestation, which no amount of typing into a
+  // docs form can produce, and the field is nullable — so it is dropped
+  // from the outgoing body. This one has to happen here rather than in the
+  // form: the panel offers no way to remove a nested object.
+  //
+  // Emails are *not* touched here. They are tagged visibly in the form
+  // itself, so the address that gets created is the address on screen and
+  // the user can edit or replace the tag — see prefillEmailFields.
+
+  const AUTHENTICATORS_KEY = "authenticators";
+
+  // Walks the parsed body in place. `inRootUsers` tracks whether we are
+  // inside a rootUsers array — the only place authenticators is nullable.
+  // CreateUserParam and CreateAuthenticatorsOtpRequest both require a
+  // genuine attestation, so their authenticators are left untouched.
+  function dropRootUserAuthenticators(node, inRootUsers, log) {
+    if (Array.isArray(node)) {
+      for (const item of node) dropRootUserAuthenticators(item, inRootUsers, log);
+      return;
+    }
+    if (!node || typeof node !== "object") return;
+
+    if (inRootUsers && AUTHENTICATORS_KEY in node) {
+      delete node[AUTHENTICATORS_KEY];
+      log.dropped += 1;
+    }
+
+    for (const [key, value] of Object.entries(node)) {
+      if (value && typeof value === "object") {
+        dropRootUserAuthenticators(value, inRootUsers || key === "rootUsers", log);
+      }
+    }
+  }
+
+  function normalizePlaygroundBody(env) {
+    if (!env.body || typeof env.body !== "object") return;
+    const log = { dropped: 0 };
+    dropRootUserAuthenticators(env.body, false, log);
+    if (log.dropped) {
+      console.log(
+        "[Byzantine Auth] Dropped placeholder rootUsers authenticators:",
+        log.dropped
+      );
+    }
+  }
+
+  // ── Unique-email prefill ───────────────────────────────────────────────
+  // Every example address in the spec is the same literal, and the create
+  // endpoints reject an address that already exists — so a first-time
+  // visitor clicking Send gets a duplicate-email error. We tag the address
+  // in the form field itself, which keeps the playground honest: what is
+  // on screen is what gets created, and the tag is editable like any other
+  // value.
+  //
+  // Body fields only. get-user-details and get-invitations-by-email take
+  // `email` as a *lookup* key, and tagging those would turn a working
+  // request into a guaranteed empty result.
+
+  // One tag per visit, shared by every field tagged while it is current,
+  // so addresses that are meant to match still match — create-individual-
+  // account's userInfo.email and rootUsers[].email both describe the owner
+  // and the schema allows them to be the same person. It is minted fresh
+  // on navigation and after each Send, so repeated Sends do not collide.
+  let emailTag = null;
+  let emailTagPath = null;
+
+  function currentEmailTag() {
+    if (emailTag === null || emailTagPath !== location.pathname) {
+      emailTag = String(Math.floor(Date.now() / 1000));
+      emailTagPath = location.pathname;
+    }
+    return emailTag;
+  }
+
+  // Appended, never substituted, so an address that already carries a tag
+  // (the docs suggest alice+1@example.com) stays recognisable:
+  // alice+1@example.com → alice+1+1760375826@example.com.
+  function tagEmail(value, tag) {
+    const at = value.lastIndexOf("@");
+    if (at <= 0 || at === value.length - 1) return null;
+    return value.slice(0, at) + "+" + tag + value.slice(at);
+  }
+
+  // The email inputs of the playground's Body panel. Panel identity comes
+  // from the section button's title, the same anchor the section cleanup
+  // uses.
+  function bodyEmailInputs() {
+    for (const button of document.querySelectorAll(
+      'button[aria-label$="input section"]'
+    )) {
+      const title = button.firstElementChild;
+      if (!title || title.textContent.trim() !== "Body") continue;
+      const wrapper = button.parentElement;
+      if (!wrapper) continue;
+      return [...wrapper.querySelectorAll("input")].filter((input) => {
+        const al = input.getAttribute("aria-label") || "";
+        return /email/i.test(al) && input.value.includes("@");
+      });
+    }
+    return [];
+  }
+
+  // React owns these inputs, so the value has to go through the native
+  // setter and be announced with an input event or the component's state
+  // keeps the old address.
+  const nativeInputValue = Object.getOwnPropertyDescriptor(
+    window.HTMLInputElement.prototype,
+    "value"
+  ).set;
+
+  function prefillEmailFields() {
+    const inputs = bodyEmailInputs();
+    if (!inputs.length) return;
+    const tag = currentEmailTag();
+    const filled = [];
+
+    for (const input of inputs) {
+      // Already handled: either still holding our tag, or edited since —
+      // either way it is the user's value now, so leave it alone.
+      if (input.__byzTagged !== undefined) continue;
+
+      // Always tag the address the spec supplied, never the one we last
+      // wrote, so a re-tag replaces the previous tag instead of stacking
+      // another one on top of it (…+1788513286+1788513331@…).
+      const base = input.__byzOriginal !== undefined ? input.__byzOriginal : input.value;
+      const tagged = tagEmail(base, tag);
+      if (!tagged || tagged === input.value) continue;
+
+      input.__byzOriginal = base;
+      nativeInputValue.call(input, tagged);
+      input.dispatchEvent(new Event("input", { bubbles: true }));
+      input.__byzTagged = tagged;
+      filled.push(tagged);
+    }
+
+    if (filled.length) {
+      console.log("[Byzantine Auth] Prefilled unique emails:", filled.join(", "));
+    }
+  }
+
+  // After a Send, mint a new tag and re-tag any field the user left
+  // untouched, so clicking Send again creates a different account instead
+  // of colliding with the one just created. A field the user edited keeps
+  // their value.
+  function retagEmailFields() {
+    const untouched = bodyEmailInputs().filter(
+      (input) => input.__byzTagged !== undefined && input.__byzTagged === input.value
+    );
+    if (!untouched.length) return;
+    emailTag = null;
+    for (const input of untouched) input.__byzTagged = undefined;
+    prefillEmailFields();
+  }
+
+
   function deferredSignAndSend(xhr, originalBody) {
     (async () => {
       try {
@@ -262,12 +419,20 @@
           return _xhrSend.call(xhr, originalBody);
         }
 
+        // Must happen before the body is stringified for signing, so the
+        // signature covers exactly what the proxy forwards.
+        normalizePlaygroundBody(env);
+        const normalizedBody = JSON.stringify(env);
+
+        // Whatever the outcome, the next Send should use a new address.
+        xhr.addEventListener("loadend", retagEmailFields, { once: true });
+
         const pathAndQuery = pathAndQueryFor(targetUrl, env.query);
         const bodyStr      = bodyStringFor(env.body);
         const auth = await computeHeaders(env.method, pathAndQuery, bodyStr);
         if (!auth) {
           console.log("[Byzantine Auth] No active session — request goes unsigned to:", pathAndQuery);
-          return _xhrSend.call(xhr, originalBody);
+          return _xhrSend.call(xhr, normalizedBody);
         }
 
         env.header = { ...(env.header || {}), ...auth };
@@ -489,6 +654,7 @@
       }
     }
     renderBadge();
+    cleanAuthSections();
   }
 
   // ── Floating session countdown badge ───────────────────────────────────
@@ -571,6 +737,168 @@
     if (badgeTimer === null && getSession()) {
       badgeTimer = setInterval(tickBadge, 1000);
     }
+  }
+
+  // ── Signed-header section cleanup ──────────────────────────────────────
+  // Every signed endpoint declares X-Pubkey / X-Timestamp / X-Signature
+  // twice in the OpenAPI spec: once as the `integrator_auth` security
+  // scheme (whose `name` is the literal string "X-Pubkey, X-Timestamp,
+  // X-Signature") and once as three header parameters. Mintlify renders
+  // both — two full reference sections plus two collapsible playground
+  // panels with four empty input boxes. Every one of those boxes is dead
+  // weight: the real values are generated here at send time and injected
+  // into the proxy envelope, so anything typed into them is discarded.
+  //
+  // We collapse all of it to a single line. Guarded throughout: a section
+  // is only touched when *every* field in it is one of the signing
+  // headers, so an endpoint that also takes a genuine header — or that
+  // uses the X-API-KEY admin scheme — is left exactly as Mintlify drew it.
+
+  const SIGNED_HEADERS = ["X-Pubkey", "X-Timestamp", "X-Signature"];
+  const SCHEME_NAME    = SIGNED_HEADERS.join(", ");
+  const SECTION_STYLE_ID = "byz-section-styles";
+
+  function isSigningName(name) {
+    return name === SCHEME_NAME || SIGNED_HEADERS.includes(name);
+  }
+
+  function injectSectionStyles() {
+    if (document.getElementById(SECTION_STYLE_ID)) return;
+    const s = document.createElement("style");
+    s.id = SECTION_STYLE_ID;
+    s.textContent = `
+      .byz-auth-doc, .byz-pg-note {
+        display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+        font-size: 13px; color: #6b7280;
+      }
+      .byz-auth-doc { padding: 14px 0; }
+      .byz-auth-doc code, .byz-pg-note code {
+        font-family: Monaco, Menlo, monospace; font-size: 12px;
+        color: #374151; background: #f3f4f6;
+        padding: 2px 6px; border-radius: 4px;
+      }
+      .byz-pg-note {
+        padding: 10px 14px; font-size: 12px;
+        border: 1px solid #e5e7eb; border-radius: 12px;
+        background: #f9fafb;
+      }
+      .byz-pg-note a { color: #702963; font-weight: 500; text-decoration: none; }
+      .byz-pg-note a:hover { text-decoration: underline; }
+      .dark .byz-auth-doc, .dark .byz-pg-note { color: #9ca3af; }
+      .dark .byz-auth-doc code, .dark .byz-pg-note code {
+        color: #d1d5db; background: rgba(255,255,255,.08);
+      }
+      .dark .byz-pg-note { border-color: rgba(255,255,255,.1); background: rgba(255,255,255,.03); }
+      .dark .byz-pg-note a { color: #cd55b7; }
+    `;
+    document.head.appendChild(s);
+  }
+
+  // ── Reference sections (below the endpoint title) ──────────────────────
+  // Field name inside a rendered parameter block.
+  function docFieldName(block) {
+    const el = block.querySelector(".param-head div.font-semibold");
+    return el ? el.textContent.trim() : null;
+  }
+
+  function collapseDocSections() {
+    for (const section of document.querySelectorAll("div.api-section")) {
+      if (section.__byzCollapsed) continue;
+
+      const heading = section.querySelector("h4.api-section-heading-title");
+      if (!heading) continue;
+      const title = heading.textContent.trim();
+      if (title !== "Authorizations" && title !== "Headers") continue;
+
+      const blocks = [...section.children].filter(
+        (c) => !c.classList.contains("api-section-heading")
+      );
+      const names = blocks.map(docFieldName);
+      if (!names.length || !names.every(isSigningName)) continue;
+
+      section.__byzCollapsed = true;
+
+      // "Authorizations" is a pure duplicate of "Headers" here — drop it
+      // and let the Headers section carry the one remaining line.
+      if (title === "Authorizations") {
+        section.style.display = "none";
+        continue;
+      }
+
+      for (const b of blocks) b.style.display = "none";
+      const line = document.createElement("div");
+      line.className = "byz-auth-doc";
+      line.innerHTML =
+        SIGNED_HEADERS.map((h) => `<code>${h}</code>`).join("") +
+        "<span>signed for you from your sandbox session key</span>";
+      section.appendChild(line);
+    }
+  }
+
+  // ── Playground panels ──────────────────────────────────────────────────
+  // A panel qualifies only if it has at least one field and every field is
+  // a signing header. Mintlify labels each input "Enter <field name>".
+  function panelIsSigningOnly(wrapper) {
+    const fields = wrapper.querySelectorAll("input, select, textarea");
+    if (!fields.length) return false;
+    return [...fields].every((f) => {
+      const al = f.getAttribute("aria-label") || "";
+      return al.startsWith("Enter ") && isSigningName(al.slice(6));
+    });
+  }
+
+  function noteMarkup() {
+    const names = SIGNED_HEADERS.map((h) => `<code>${h}</code>`).join("");
+    if (getSession()) {
+      return `<span>Signed automatically</span>${names}`;
+    }
+    return `<span>Requires a sandbox session</span>` +
+           `<a href="${SANDBOX_AUTH_PATH}">Set up &rsaquo;</a>`;
+  }
+
+  // The note is a plain node inside a React-managed container, so React can
+  // discard it on re-render — the observer simply puts it back. Its state is
+  // cached as a JS property (not an attribute) so a no-op pass makes no DOM
+  // change and the observer converges.
+  function ensurePlaygroundNote(container, before) {
+    const wanted = getSession() ? "active" : "setup";
+    let note = container.querySelector(":scope > .byz-pg-note");
+    if (note && note.__byzState === wanted) return;
+    if (!note) {
+      note = document.createElement("div");
+      note.className = "byz-pg-note";
+      container.insertBefore(note, before);
+    }
+    note.innerHTML = noteMarkup();
+    note.__byzState = wanted;
+  }
+
+  function collapsePlaygroundSections() {
+    for (const button of document.querySelectorAll(
+      'button[aria-label$="input section"]'
+    )) {
+      // The section title lives in the button's first child. Read
+      // textContent, not innerText — innerText collapses differently once
+      // we have hidden the wrapper, so the label would stop matching on
+      // later passes.
+      const title = button.firstElementChild;
+      const label = title ? title.textContent.trim() : "";
+      if (label !== "Authorization" && label !== "Header") continue;
+
+      const wrapper = button.parentElement;
+      const container = wrapper && wrapper.parentElement;
+      if (!container || !panelIsSigningOnly(wrapper)) continue;
+
+      wrapper.style.display = "none";
+      ensurePlaygroundNote(container, wrapper);
+    }
+  }
+
+  function cleanAuthSections() {
+    injectSectionStyles();
+    collapseDocSections();
+    collapsePlaygroundSections();
+    prefillEmailFields();
   }
 
   function startObserving() {

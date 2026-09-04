@@ -4708,7 +4708,7 @@
                         "type": "number",
                         "format": "double",
                         "description": "Required for UBOs. The % of direct or indirect business ownership.",
-                        "example": "32.5",
+                        "example": 32.5,
                         "nullable": true
                     }
                 }
@@ -5953,12 +5953,12 @@
                     "isPasskeyActivated": {
                         "type": "boolean",
                         "description": "An indicator showing whether passkey authentication is active for this user. For more information, see [authentication methods](https://docs.byzantine.fi/api-reference/authentication-methods).",
-                        "example": "true"
+                        "example": true
                     },
                     "isOtpActivated": {
                         "type": "boolean",
                         "description": "An indicator showing whether OTP authentication is active for this user. For more information, see [authentication methods](https://docs.byzantine.fi/api-reference/authentication-methods).",
-                        "example": "false"
+                        "example": false
                     }
                 }
             },
@@ -6105,11 +6105,11 @@
                     "expectedMonthlyPaymentsUsd": {
                         "type": "integer",
                         "format": "int64",
-                        "example": "5000000"
+                        "example": 5000000
                     },
                     "hasMaterialIntermediaryEntityOwner": {
                         "type": "boolean",
-                        "example": "false"
+                        "example": false
                     }
                 }
             },
@@ -6948,7 +6948,7 @@
                 "properties": {
                     "operatesInProhibitedCountries": {
                         "type": "boolean",
-                        "example": "false",
+                        "example": false,
                         "nullable": true
                     },
                     "highRiskActivities": {
@@ -6965,7 +6965,7 @@
                     },
                     "conductsMoneyServices": {
                         "type": "boolean",
-                        "example": "false",
+                        "example": false,
                         "nullable": true
                     },
                     "conductsMoneyServicesDescription": {
@@ -7203,12 +7203,12 @@
                     "isPasskeyActivated": {
                         "type": "boolean",
                         "description": "An indicator showing whether passkey authentication is active for this root user. For more information, see [authentication methods](https://docs.byzantine.fi/api-reference/authentication-methods).",
-                        "example": "true"
+                        "example": true
                     },
                     "isOtpActivated": {
                         "type": "boolean",
                         "description": "An indicator showing whether OTP authentication is active for this root user. For more information, see [authentication methods](https://docs.byzantine.fi/api-reference/authentication-methods).",
-                        "example": "false"
+                        "example": false
                     }
                 }
             },
@@ -8704,7 +8704,7 @@
                         "type": "number",
                         "format": "double",
                         "description": "Required for UBOs. The % of direct or indirect business ownership.",
-                        "example": "50.0",
+                        "example": 50.0,
                         "nullable": true
                     }
                 }
