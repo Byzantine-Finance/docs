@@ -101,7 +101,7 @@ async function boundedResponseText(response, maxBytes) {
 async function fetchTextWithRetry(
   source,
   options,
-  { attempts = 3, timeoutMs = 10_000, maxBytes = 10 * 1024 * 1024 } = {},
+  { attempts = 3, timeoutMs = 10_000, maxBytes = 10 * 1024 * 1024, fetchImpl = fetch } = {},
 ) {
   if (!Number.isInteger(attempts) || attempts < 1) {
     throw new Error("attempts must be a positive integer");
@@ -120,7 +120,7 @@ async function fetchTextWithRetry(
     const timer = setTimeout(() => controller.abort(), timeoutMs);
 
     try {
-      const response = await fetch(source, {
+      const response = await fetchImpl(source, {
         ...options,
         redirect: "manual",
         signal: controller.signal,
@@ -163,6 +163,7 @@ export async function loadOpenApi(
     timeoutMs = 10_000,
     maxBytes = 10 * 1024 * 1024,
     allowedOrigins = [],
+    fetchImpl = fetch,
   } = {},
 ) {
   if (!source) throw new Error("An OpenAPI source URL or file path is required");
@@ -190,7 +191,7 @@ export async function loadOpenApi(
     const response = await fetchTextWithRetry(
       source,
       { headers },
-      { attempts, timeoutMs, maxBytes },
+      { attempts, timeoutMs, maxBytes, fetchImpl },
     );
     if (!response.ok) {
       if (response.redirect) throw new Error(`${source} redirects are not allowed`);

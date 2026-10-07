@@ -12,6 +12,7 @@ npm run openapi:diff -- \
   --after <current-openapi.json> \
   --json-out <report.json> \
   --markdown-out <report.md>
+npm run openapi:resolve-deployed -- --output <scratch-openapi.json>
 npm run delivery:queue -- acquire \
   --database /opt/data/state/byzantine-docs/queue.sqlite \
   --owner <worker-id>
@@ -30,20 +31,19 @@ npm run delivery:queue -- acquire \
 ## Event flow
 
 ```text
-GitHub push on byzantine-api/main
-  -> public HTTPS webhook
-  -> Hermes HMAC verification
-  -> scripts/hermes/byzantine-api-push.py
+Scheduled deployment reconciliation
+  -> latest successful byzantine-api/main production deployment
+  -> stable double-fetch of the fixed production OpenAPI URL
   -> durable SQLite queue, delivery deduplication, repository lease
-  -> deterministic OpenAPI export, sync, and semantic diff
+  -> deterministic OpenAPI sync and semantic diff
   -> documentation impact scan across every locale in docs.json
   -> update an eligible open PR or create a new one
   -> tests, secret scan, independent review, then push
 ```
 
-The webhook payload is only a wake-up signal. The filter bounds and validates the JSON object, accepts `Byzantine-Finance/byzantine-api` on `refs/heads/main`, validates the commit identifiers, removes untrusted commit text, derives a deterministic delivery ID, and persists the event before an agent run starts. Duplicate events do not wake the agent. `scripts/lib/delivery-queue.mjs` uses SQLite WAL, unique delivery IDs, forced-push preservation, owner-guarded renewable leases, retries, and terminal failure records. The worker must re-read the current GitHub default branch instead of trusting payload descriptions.
+The scheduled job is sufficient for production operation; no public ingress is required. An optional webhook can reduce latency, but its payload is only a wake-up hint. The filter bounds and validates the JSON object, accepts `Byzantine-Finance/byzantine-api` on `refs/heads/main`, validates the commit identifiers, removes untrusted commit text, derives a deterministic delivery ID, and persists the event before an agent run starts. Duplicate events do not wake the agent. `scripts/lib/delivery-queue.mjs` uses SQLite WAL, unique delivery IDs, forced-push preservation, owner-guarded renewable leases, retries, and terminal failure records.
 
-`scripts/reconcile-delivery.mjs` is the polling safety net. It first verifies that the watermark's SHA-256 matches the committed OpenAPI artifact, then compares the merged documentation watermark with the current API main SHA and queues the complete undocumented range once. It does not replace the webhook.
+`scripts/resolve-deployed-openapi.mjs` is the source preflight. It exhaustively paginates the fixed workflow history, rejects every still-running production-capable workflow, validates timestamps, rejects tied latest completion times, orders completed runs by completion update rather than creation time, requires the last completed run to be a successful `main` push whose SHA still equals current `main`, and rejects a later failed or manual run. It then fetches the fixed production OpenAPI endpoint twice without forwarding GitHub credentials, requires identical hashes, and requires three matching snapshots of `main` plus every production-capable run, including run attempt and status, before accepting the snapshot. These invariants close the mutable-branch checkout, hidden or rerun older workflow, and out-of-order completion races in the existing deployment workflow without changing the API repository. `scripts/reconcile-delivery.mjs` then verifies the watermark artifact hash and queues the complete undocumented deployed range once.
 
 ## Pull-request consolidation
 
@@ -59,7 +59,7 @@ Automation PRs carry a machine-readable HTML marker containing the documented so
 
 ## Anti-hallucination rule
 
-Deterministic evidence from the API implementation, exact OpenAPI export, tests, or existing product documentation must support every substantive statement. If those sources conflict or do not establish the product meaning, the worker pauses the affected edits and sends Benoît a Slack DM containing:
+Deterministic evidence from the deployed OpenAPI snapshot, API implementation at the associated deployment SHA, tests, or existing product documentation must support every substantive statement. If those sources conflict or do not establish the product meaning, the worker pauses the affected edits and sends Benoît a Slack DM containing:
 
 - the source commits and affected endpoints or schemas;
 - facts already verified;
@@ -71,14 +71,12 @@ The worker never merges its own PR.
 
 ## Runtime setup
 
-Hermes has a local subscription named `byzantine-api-docs` on port `8644`, with Slack delivery to the existing `benoit-brain` DM. The route script is installed at `/opt/data/scripts/byzantine-api-push.py` on the worker host.
+Hermes has a scheduled reconciliation job and an optional local subscription named `byzantine-api-docs`, with Slack delivery to the existing `benoit-brain` DM. The route script is installed at `/opt/data/scripts/byzantine-api-push.py` on the worker host, but production correctness does not depend on a public webhook.
 
 Production activation still requires:
 
-1. a stable public HTTPS endpoint for port `8644`;
-2. the GitHub App webhook URL and matching HMAC secret;
-3. push-event delivery for `Byzantine-Finance/byzantine-api`;
-4. merge of the API helper that exposes `cargo run --bin export_integrator_openapi` at an exact commit;
-5. an initial validated `.github/byzantine-docs-watermark.json` on docs main.
+1. merge of this automation PR;
+2. an initial validated `.github/byzantine-docs-watermark.json` on docs main;
+3. activation of the existing 15-minute reconciliation job.
 
-Do not pass a GitHub write token to a URL supplied by a webhook payload. The OpenAPI source must be fixed or exported from an exact checked-out API commit.
+Do not pass a GitHub token to an OpenAPI host. Both the GitHub workflow endpoint and production OpenAPI source are fixed in code; any ambiguous deployment state fails closed.
