@@ -7,6 +7,7 @@ import { exportIntegratorOpenApiAtCommit } from "./lib/api-openapi-export.mjs";
 import { loadAllWorkflowRuns } from "./lib/github-workflow-runs.mjs";
 import {
   PRODUCTION_OPENAPI_URL,
+  productionOpenApiCurlArguments,
   resolveProvenanceVerifiedOpenApi,
 } from "./lib/deployed-openapi.mjs";
 
@@ -21,24 +22,17 @@ function argument(name) {
 async function loadProductionOpenApi() {
   const { stdout } = await execFileAsync(
     "curl",
-    [
-      "--disable",
-      "--fail",
-      "--silent",
-      "--show-error",
-      "--proto",
-      "=https",
-      "--connect-timeout",
-      "10",
-      "--max-time",
-      "30",
-      "--max-filesize",
-      "10485760",
-      PRODUCTION_OPENAPI_URL,
-    ],
-    { encoding: "utf8", maxBuffer: MAX_OUTPUT_BYTES },
+    productionOpenApiCurlArguments(PRODUCTION_OPENAPI_URL),
+    { encoding: "buffer", maxBuffer: MAX_OUTPUT_BYTES },
   );
-  return JSON.parse(stdout);
+  const rawBytes = Buffer.from(stdout);
+  let spec;
+  try {
+    spec = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(rawBytes));
+  } catch {
+    throw new Error("Production OpenAPI is not valid UTF-8 JSON");
+  }
+  return { rawBytes, spec };
 }
 
 async function main() {

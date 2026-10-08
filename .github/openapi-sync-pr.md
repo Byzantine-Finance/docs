@@ -25,9 +25,9 @@ Synchronizes one provenance-verified Byzantine API deployment across the generat
 
 ## Verification
 
-- [ ] Production OpenAPI was stable across repeated reads
+- [ ] Production OpenAPI raw bytes and SHA-256 were stable across repeated reads
 - [ ] Exact-commit OpenAPI export matches production semantically
-- [ ] Docs and SDK consumed the same captured artifact
+- [ ] Docs and SDK consumed identical captured bytes and verified the recorded SHA-256
 - [ ] Semantic diff generated
 - [ ] All configured locales inspected
 - [ ] Tests pass

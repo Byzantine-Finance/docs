@@ -6,6 +6,22 @@ import { decidePrPolicy, parsePrMarker, renderPrMarker } from "../scripts/lib/pr
 const NOW = "2026-10-06T12:00:00.000Z";
 const BASE_SHA = "a".repeat(40);
 const TARGET_SHA = "b".repeat(40);
+const OPENAPI_SHA256 = "c".repeat(64);
+const DEPLOYMENT_RUN_ID = 123456;
+const COMPANION_SDK_PR = "https://github.com/Byzantine-Finance/integrator-sdk/pull/22";
+
+function marker(windowStart) {
+  return {
+    deploymentRunId: DEPLOYMENT_RUN_ID,
+    baseSourceSha: BASE_SHA,
+    targetSha: TARGET_SHA,
+    openapiSha256: OPENAPI_SHA256,
+    windowStart,
+    generatorVersion: 2,
+    includedCommits: [TARGET_SHA],
+    companionSdkPr: COMPANION_SDK_PR,
+  };
+}
 
 function change(relationship = "compatible", size = "small") {
   return { relationship, size };
@@ -14,13 +30,7 @@ function change(relationship = "compatible", size = "small") {
 function openPr(windowStart) {
   return {
     state: "open",
-    marker: {
-      baseSourceSha: BASE_SHA,
-      targetSha: TARGET_SHA,
-      windowStart,
-      generatorVersion: 1,
-      includedCommits: [TARGET_SHA],
-    },
+    marker: marker(windowStart),
   };
 }
 
@@ -104,15 +114,10 @@ test("queues an unrelated change only after the 24-hour boundary", () => {
 });
 
 test("renders a deterministic machine-readable PR marker", () => {
+  const value = marker("2026-10-06T00:00:00.000Z");
   assert.equal(
-    renderPrMarker({
-      baseSourceSha: BASE_SHA,
-      targetSha: TARGET_SHA,
-      windowStart: "2026-10-06T00:00:00.000Z",
-      generatorVersion: 1,
-      includedCommits: [TARGET_SHA],
-    }),
-    `<!-- byzantine-docs-pr:{"baseSourceSha":"${BASE_SHA}","targetSha":"${TARGET_SHA}","windowStart":"2026-10-06T00:00:00.000Z","generatorVersion":1,"includedCommits":["${TARGET_SHA}"]} -->`,
+    renderPrMarker(value),
+    `<!-- byzantine-docs-pr:${JSON.stringify(value)} -->`,
   );
 });
 
@@ -130,15 +135,9 @@ test("requires every machine-readable marker field", () => {
 });
 
 test("parses the machine-readable PR marker from a PR body", () => {
-  const marker = {
-    baseSourceSha: BASE_SHA,
-    targetSha: TARGET_SHA,
-    windowStart: "2026-10-06T00:00:00.000Z",
-    generatorVersion: 1,
-    includedCommits: [TARGET_SHA],
-  };
+  const value = marker("2026-10-06T00:00:00.000Z");
 
-  assert.deepEqual(parsePrMarker(`Summary\n\n${renderPrMarker(marker)}\n`), marker);
+  assert.deepEqual(parsePrMarker(`Summary\n\n${renderPrMarker(value)}\n`), value);
 });
 
 test("ignores missing, malformed, or incomplete PR markers", () => {

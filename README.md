@@ -41,7 +41,7 @@ The repository includes commands to:
 - detect affected endpoints and shared schemas;
 - verify per-repository release watermarks;
 - serialize one release event into coordinated docs and Integrator SDK pull requests;
-- feed the same captured OpenAPI bytes into the SDK generator, avoiding a second mutable production fetch;
+- feed the same captured production-response bytes and SHA-256 into the docs watermark, both PR markers, and the SDK generator, avoiding any reserialization or second mutable production fetch;
 - enforce bounded retries, renewable leases, and pull-request consolidation policy.
 
 Run `npm run` to list the available commands.

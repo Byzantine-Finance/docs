@@ -39,6 +39,11 @@ function spec(version = "1.0.0") {
   };
 }
 
+function capturedSpec(version = "1.0.0") {
+  const document = spec(version);
+  return { rawBytes: Buffer.from(JSON.stringify(document)), spec: document };
+}
+
 function jsonResponse(value, init = {}) {
   return new Response(JSON.stringify(value), {
     status: 200,
@@ -48,6 +53,15 @@ function jsonResponse(value, init = {}) {
 }
 
 const mainShaLoader = async () => SHA_A;
+
+test("configures production curl to reject the first redirect", async () => {
+  const module = await import("../scripts/lib/deployed-openapi.mjs");
+  assert.equal(typeof module.productionOpenApiCurlArguments, "function");
+  const args = module.productionOpenApiCurlArguments(OPENAPI_URL);
+  assert.ok(args.includes("--location"));
+  assert.equal(args[args.indexOf("--max-redirs") + 1], "0");
+  assert.equal(args.at(-1), OPENAPI_URL);
+});
 
 test("selects the last completed successful main deployment by completion time", () => {
   const selected = selectStableProductionDeployment(
@@ -363,11 +377,25 @@ test("fails closed if the main SHA, deployment, or OpenAPI bytes change during c
   );
 });
 
+test("rejects a production capture that omits raw bytes", async () => {
+  await assert.rejects(
+    () =>
+      resolveProvenanceVerifiedOpenApi({
+        output: "/unused/openapi.json",
+        workflowRunsLoader: async () => [run()],
+        openApiLoader: async () => spec(),
+        exactOpenApiLoader: async () => spec(),
+      }),
+    /raw bytes.*required/i,
+  );
+});
+
 test("verifies a deployed OpenAPI against its exact run SHA even when main advanced", async () => {
   const directory = await mkdtemp(path.join(os.tmpdir(), "provenance-openapi-"));
   const output = path.join(directory, "openapi.json");
   const deployedRun = run({ head_sha: SHA_A });
   const snapshots = [[deployedRun], [deployedRun], [deployedRun]];
+  const rawArtifact = Buffer.from(`${JSON.stringify(spec())}\n`);
   let productionLoads = 0;
   const exportedCommits = [];
 
@@ -377,7 +405,7 @@ test("verifies a deployed OpenAPI against its exact run SHA even when main advan
       workflowRunsLoader: async () => snapshots.shift(),
       openApiLoader: async () => {
         productionLoads += 1;
-        return spec();
+        return { rawBytes: rawArtifact, spec: spec() };
       },
       exactOpenApiLoader: async (sourceCommit) => {
         exportedCommits.push(sourceCommit);
@@ -390,7 +418,11 @@ test("verifies a deployed OpenAPI against its exact run SHA even when main advan
     assert.equal(result.provenanceVerified, true);
     assert.equal(productionLoads, 3);
     assert.deepEqual(exportedCommits, [SHA_A]);
-    assert.deepEqual(JSON.parse(await readFile(output, "utf8")), spec());
+    assert.deepEqual(await readFile(output), rawArtifact);
+    assert.equal(
+      result.openapiSha256,
+      (await import("node:crypto")).createHash("sha256").update(rawArtifact).digest("hex"),
+    );
   } finally {
     await rm(directory, { recursive: true, force: true });
   }
@@ -414,7 +446,7 @@ test("rejects a deployment that starts after the third production read", async (
       resolveProvenanceVerifiedOpenApi({
         output: path.join(directory, "openapi.json"),
         workflowRunsLoader: async () => snapshots.shift(),
-        openApiLoader: async () => spec(),
+        openApiLoader: async () => capturedSpec(),
         exactOpenApiLoader: async () => spec(),
       }),
     /deployment changed|still in progress|unfinished/i,
@@ -439,7 +471,7 @@ test("rejects any unfinished production-capable deployment", async (t) => {
       resolveProvenanceVerifiedOpenApi({
         output: path.join(directory, "openapi.json"),
         workflowRunsLoader: async () => snapshot,
-        openApiLoader: async () => spec(),
+        openApiLoader: async () => capturedSpec(),
         exactOpenApiLoader: async () => spec(),
       }),
     /unfinished|still in progress/i,
@@ -452,7 +484,7 @@ test("rejects production OpenAPI that cannot be reproduced from the deployment S
       resolveProvenanceVerifiedOpenApi({
         output: "/unused/openapi.json",
         workflowRunsLoader: async () => [run()],
-        openApiLoader: async () => spec("2.0.0"),
+        openApiLoader: async () => capturedSpec("2.0.0"),
         exactOpenApiLoader: async () => spec("1.0.0"),
       }),
     /does not match the exact deployment commit/i,
@@ -465,7 +497,7 @@ test("rejects tied latest production completion timestamps", async () => {
       resolveProvenanceVerifiedOpenApi({
         output: "/unused/openapi.json",
         workflowRunsLoader: async () => [run({ id: 100 }), run({ id: 101, head_sha: SHA_B })],
-        openApiLoader: async () => spec(),
+        openApiLoader: async () => capturedSpec(),
         exactOpenApiLoader: async () => spec(),
       }),
     /same completion time|ambiguous/i,

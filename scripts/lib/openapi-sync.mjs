@@ -213,28 +213,50 @@ export async function loadOpenApi(
   return spec;
 }
 
-export async function syncOpenApi({ spec, target }) {
+export async function syncOpenApi({ spec, rawArtifact, target }) {
   validateOpenApi(spec, "OpenAPI source");
   const targetPath = resolve(target);
   let current;
+  let currentBytes;
   let currentRaw;
 
   try {
-    currentRaw = await readFile(targetPath, "utf8");
+    currentBytes = await readFile(targetPath);
+    currentRaw = currentBytes.toString("utf8");
     current = JSON.parse(currentRaw);
   } catch (error) {
     if (error.code !== "ENOENT") throw error;
   }
 
-  const changed = current === undefined || semanticJson(current) !== semanticJson(spec);
+  let artifactBytes;
+  if (rawArtifact !== undefined) {
+    artifactBytes = Buffer.from(rawArtifact);
+    let artifactSpec;
+    try {
+      const decoded = new TextDecoder("utf-8", { fatal: true }).decode(artifactBytes);
+      artifactSpec = JSON.parse(decoded);
+    } catch {
+      throw new Error("Raw OpenAPI artifact must be valid UTF-8 JSON");
+    }
+    validateOpenApi(artifactSpec, "Raw OpenAPI artifact");
+    if (semanticJson(artifactSpec) !== semanticJson(spec)) {
+      throw new Error("Raw OpenAPI artifact does not match the verified OpenAPI document");
+    }
+  }
+
+  const changed = artifactBytes
+    ? currentBytes === undefined || !currentBytes.equals(artifactBytes)
+    : current === undefined || semanticJson(current) !== semanticJson(spec);
   const style = jsonStyle(currentRaw);
   const serialized = JSON.stringify(spec, null, style.indent).replaceAll(
     "\n",
     style.newline,
   );
-  const output = changed
-    ? `${serialized}${style.finalNewline ? style.newline : ""}`
-    : currentRaw;
+  const output = artifactBytes ?? (
+    changed
+      ? `${serialized}${style.finalNewline ? style.newline : ""}`
+      : currentRaw
+  );
   const sha256 = createHash("sha256").update(output).digest("hex");
 
   if (changed) {

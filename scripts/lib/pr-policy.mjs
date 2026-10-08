@@ -1,17 +1,26 @@
 const CONSOLIDATION_WINDOW_MS = 24 * 60 * 60 * 1_000;
 const SHA_PATTERN = /^[0-9a-f]{40}$/u;
+const SHA256_PATTERN = /^[0-9a-f]{64}$/u;
+const COMPANION_SDK_PR_PATTERN =
+  /^https:\/\/github\.com\/Byzantine-Finance\/integrator-sdk\/pull\/[1-9][0-9]*$/u;
 
 function isCompleteMarker({
+  deploymentRunId,
   baseSourceSha,
   targetSha,
+  openapiSha256,
   windowStart,
   generatorVersion,
   includedCommits,
+  companionSdkPr,
 } = {}, now) {
   const windowTime = Date.parse(windowStart);
   return (
+    Number.isSafeInteger(deploymentRunId) &&
+    deploymentRunId > 0 &&
     SHA_PATTERN.test(baseSourceSha ?? "") &&
     SHA_PATTERN.test(targetSha ?? "") &&
+    SHA256_PATTERN.test(openapiSha256 ?? "") &&
     baseSourceSha !== targetSha &&
     Number.isFinite(windowTime) &&
     (now === undefined || windowTime <= Date.parse(now)) &&
@@ -21,7 +30,8 @@ function isCompleteMarker({
     includedCommits.length > 0 &&
     includedCommits.every((commit) => SHA_PATTERN.test(commit)) &&
     new Set(includedCommits).size === includedCommits.length &&
-    includedCommits.includes(targetSha)
+    includedCommits.includes(targetSha) &&
+    COMPANION_SDK_PR_PATTERN.test(companionSdkPr ?? "")
   );
 }
 
@@ -30,13 +40,25 @@ export function renderPrMarker(marker) {
     throw new Error("A complete PR marker is required");
   }
 
-  const { baseSourceSha, targetSha, windowStart, generatorVersion, includedCommits } = marker;
-  return `<!-- byzantine-docs-pr:${JSON.stringify({
+  const {
+    deploymentRunId,
     baseSourceSha,
     targetSha,
+    openapiSha256,
     windowStart,
     generatorVersion,
     includedCommits,
+    companionSdkPr,
+  } = marker;
+  return `<!-- byzantine-docs-pr:${JSON.stringify({
+    deploymentRunId,
+    baseSourceSha,
+    targetSha,
+    openapiSha256,
+    windowStart,
+    generatorVersion,
+    includedCommits,
+    companionSdkPr,
   })} -->`;
 }
 

@@ -217,6 +217,22 @@ test("syncOpenApi preserves the target indentation and final-newline style on ch
   );
 });
 
+test("syncOpenApi writes an immutable raw artifact byte-for-byte", async () => {
+  const dir = await mkdtemp(join(tmpdir(), "openapi-sync-"));
+  const target = join(dir, "openapi.json");
+  const rawArtifact = Buffer.from(`${JSON.stringify(SPEC)}\n`);
+  await writeFile(target, JSON.stringify(SPEC, null, 4));
+
+  const result = await syncOpenApi({ spec: SPEC, rawArtifact, target });
+
+  assert.equal(result.changed, true);
+  assert.deepEqual(await readFile(target), rawArtifact);
+  assert.equal(
+    result.sha256,
+    (await import("node:crypto")).createHash("sha256").update(rawArtifact).digest("hex"),
+  );
+});
+
 test("syncOpenApi is a no-op when the semantic document is unchanged", async () => {
   const dir = await mkdtemp(join(tmpdir(), "openapi-sync-"));
   const target = join(dir, "openapi.json");

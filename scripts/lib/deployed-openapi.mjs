@@ -9,6 +9,30 @@ export const MAIN_COMMIT_URL =
 export const PRODUCTION_OPENAPI_URL =
   "https://api.byzantine.fi/api-docs/openapi-integrator.json";
 
+export function productionOpenApiCurlArguments(url = PRODUCTION_OPENAPI_URL) {
+  if (url !== PRODUCTION_OPENAPI_URL) {
+    throw new Error("Production OpenAPI URL is not allowlisted");
+  }
+  return [
+    "--disable",
+    "--fail",
+    "--silent",
+    "--show-error",
+    "--proto",
+    "=https",
+    "--connect-timeout",
+    "10",
+    "--max-time",
+    "30",
+    "--max-filesize",
+    "10485760",
+    "--location",
+    "--max-redirs",
+    "0",
+    url,
+  ];
+}
+
 const SHA_PATTERN = /^[a-f0-9]{40}$/u;
 const MAX_GITHUB_RESPONSE_BYTES = 2 * 1024 * 1024;
 const MAX_WORKFLOW_PAGES = 100;
@@ -240,6 +264,35 @@ function semanticHash(spec) {
   return createHash("sha256").update(JSON.stringify(canonicalize(spec))).digest("hex");
 }
 
+function capturedOpenApi(value, { requireRawBytes = false } = {}) {
+  if (
+    value &&
+    typeof value === "object" &&
+    Object.hasOwn(value, "rawBytes") &&
+    Object.hasOwn(value, "spec")
+  ) {
+    const rawBytes = Buffer.from(value.rawBytes);
+    let rawSpec;
+    try {
+      rawSpec = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(rawBytes));
+    } catch {
+      throw new Error("Captured OpenAPI raw bytes must be valid UTF-8 JSON");
+    }
+    if (semanticHash(rawSpec) !== semanticHash(value.spec)) {
+      throw new Error("Captured OpenAPI raw bytes do not match the parsed document");
+    }
+    return { rawBytes, spec: value.spec };
+  }
+  if (requireRawBytes) {
+    throw new Error("Production OpenAPI raw bytes are required");
+  }
+  return { rawBytes: undefined, spec: value };
+}
+
+function sameCapturedBytes(left, right) {
+  return left.rawBytes.equals(right.rawBytes);
+}
+
 function selectRecentProductionCandidate(runs) {
   if (!Array.isArray(runs) || runs.length === 0 || runs.some((run) => !validateRun(run))) {
     throw new Error("GitHub returned malformed recent deployment workflow runs");
@@ -300,15 +353,18 @@ export async function resolveProvenanceVerifiedOpenApi({
 
   const beforeRuns = await workflowRunsLoader();
   const deployment = selectRecentProductionCandidate(beforeRuns);
-  const first = await openApiLoader();
-  const second = await openApiLoader();
-  const productionHash = semanticHash(first);
-  if (productionHash !== semanticHash(second)) {
+  const first = capturedOpenApi(await openApiLoader(), { requireRawBytes: true });
+  const second = capturedOpenApi(await openApiLoader(), { requireRawBytes: true });
+  const productionHash = semanticHash(first.spec);
+  if (
+    productionHash !== semanticHash(second.spec) ||
+    !sameCapturedBytes(first, second)
+  ) {
     throw new Error("The production OpenAPI snapshot changed during capture");
   }
 
-  const exact = await exactOpenApiLoader(deployment.sourceCommit);
-  if (semanticHash(exact) !== productionHash) {
+  const exact = capturedOpenApi(await exactOpenApiLoader(deployment.sourceCommit));
+  if (semanticHash(exact.spec) !== productionHash) {
     throw new Error("The production OpenAPI does not match the exact deployment commit");
   }
 
@@ -322,8 +378,11 @@ export async function resolveProvenanceVerifiedOpenApi({
     throw new Error("The production deployment changed during OpenAPI capture");
   }
 
-  const third = await openApiLoader();
-  if (semanticHash(third) !== productionHash) {
+  const third = capturedOpenApi(await openApiLoader(), { requireRawBytes: true });
+  if (
+    semanticHash(third.spec) !== productionHash ||
+    !sameCapturedBytes(first, third)
+  ) {
     throw new Error("The production OpenAPI snapshot changed during confirmation");
   }
 
@@ -337,7 +396,11 @@ export async function resolveProvenanceVerifiedOpenApi({
     throw new Error("The production deployment changed during OpenAPI confirmation");
   }
 
-  const sync = await syncOpenApi({ spec: first, target: output });
+  const sync = await syncOpenApi({
+    spec: first.spec,
+    rawArtifact: first.rawBytes,
+    target: output,
+  });
   return {
     ...deployment,
     openapiSha256: sync.sha256,
