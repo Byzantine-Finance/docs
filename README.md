@@ -1,43 +1,57 @@
-# Mintlify Starter Kit
+# Byzantine documentation
 
-Use the starter kit to get your docs deployed and ready to customize.
+This repository contains Byzantine's Mintlify documentation and deterministic tooling for reviewing API contract changes.
 
-Click the green **Use this template** button at the top of this repo to copy the Mintlify starter kit. The starter kit contains examples with
+## Local preview
 
-- Guide pages
-- Navigation
-- Customizations
-- API reference pages
-- Use of popular components
+Install the [Mintlify CLI](https://www.npmjs.com/package/mint):
 
-**[Follow the full quickstart guide](https://starter.mintlify.com/quickstart)**
-
-## Development
-
-Install the [Mintlify CLI](https://www.npmjs.com/package/mint) to preview your documentation changes locally. To install, use the following command:
-
-```
+```bash
 npm i -g mint
 ```
 
-Run the following command at the root of your documentation, where your `docs.json` is located:
+Run the documentation site from the repository root:
 
-```
+```bash
 mint dev
 ```
 
-View your local preview at `http://localhost:3000`.
+The local preview is available at `http://localhost:3000`.
 
-## Publishing changes
+If the preview fails, run `mint update` and try again. A 404 usually means the page is missing from `docs.json` or its path is incorrect.
 
-Install our GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app) to propagate changes from your repo to your deployment. Changes are deployed to production automatically after pushing to the default branch.
+## Validation
 
-## Need help?
+Before opening a documentation pull request, run:
 
-### Troubleshooting
+```bash
+mint broken-links
+npm test
+```
 
-- If your dev environment isn't running: Run `mint update` to ensure you have the most recent version of the CLI.
-- If a page loads as a 404: Make sure you are running in a folder with a valid `docs.json`.
+`mint broken-links` checks documentation navigation and links. `npm test` checks the deterministic OpenAPI comparison and delivery-policy tooling.
 
-### Resources
+## OpenAPI tooling
+
+The repository includes commands to:
+
+- resolve a recent production deployment and reproduce its OpenAPI from the exact API commit;
+- validate and synchronize `api-reference/openapi-integrator.json` without reordering source keys;
+- generate a semantic OpenAPI diff;
+- detect affected endpoints and shared schemas;
+- verify per-repository release watermarks;
+- serialize one release event into coordinated docs and Integrator SDK pull requests;
+- feed the same captured production-response bytes and SHA-256 into the docs watermark, both PR markers, and the SDK generator, avoiding any reserialization or second mutable production fetch;
+- keep the raw production artifact byte-identical even when it is minified onto one line; GitHub's file diff may therefore be unreadable, so every PR must carry the generated semantic change table and documentation-impact review;
+- encode the companion SDK outcome as its Integrator SDK PR URL, `none` after verified no-op generation, or `blocked` for a delivery that cannot proceed;
+- enforce bounded retries, renewable leases, and pull-request consolidation policy.
+
+Run `npm run` to list the available commands.
+
+## Publishing
+
+Changes merged into the default branch are published through the configured Mintlify GitHub integration. API documentation updates are always delivered through a reviewable pull request; the automation does not merge its own changes.
+
+## Resources
+
 - [Mintlify documentation](https://mintlify.com/docs)

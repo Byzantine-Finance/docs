@@ -1,0 +1,7 @@
+# Non-content automation and repository files
+.github/**
+scripts/**
+tests/**
+package.json
+package-lock.json
+README.md
