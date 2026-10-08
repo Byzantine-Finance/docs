@@ -42,6 +42,8 @@ The repository includes commands to:
 - verify per-repository release watermarks;
 - serialize one release event into coordinated docs and Integrator SDK pull requests;
 - feed the same captured production-response bytes and SHA-256 into the docs watermark, both PR markers, and the SDK generator, avoiding any reserialization or second mutable production fetch;
+- keep the raw production artifact byte-identical even when it is minified onto one line; GitHub's file diff may therefore be unreadable, so every PR must carry the generated semantic change table and documentation-impact review;
+- encode the companion SDK outcome as its Integrator SDK PR URL, `none` after verified no-op generation, or `blocked` for a delivery that cannot proceed;
 - enforce bounded retries, renewable leases, and pull-request consolidation policy.
 
 Run `npm run` to list the available commands.

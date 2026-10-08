@@ -121,6 +121,53 @@ test("renders a deterministic machine-readable PR marker", () => {
   );
 });
 
+test("accepts an explicit companion SDK outcome when no SDK PR exists", () => {
+  for (const companionSdkPr of ["none", "blocked"]) {
+    const value = {
+      ...marker("2026-10-06T00:00:00.000Z"),
+      companionSdkPr,
+    };
+
+    assert.deepEqual(parsePrMarker(renderPrMarker(value)), value);
+  }
+});
+
+test("rejects an arbitrary companion SDK state or unrelated PR URL", () => {
+  for (const companionSdkPr of [
+    "unchanged maybe",
+    "https://github.com/Byzantine-Finance/docs/pull/13",
+  ]) {
+    assert.throws(
+      () =>
+        renderPrMarker({
+          ...marker("2026-10-06T00:00:00.000Z"),
+          companionSdkPr,
+        }),
+      /complete PR marker/,
+    );
+  }
+});
+
+test("rejects non-string companion SDK outcomes", () => {
+  for (const companionSdkPr of [
+    ["none"],
+    ["blocked"],
+    [COMPANION_SDK_PR],
+    { state: "none" },
+    22,
+    null,
+  ]) {
+    assert.throws(
+      () =>
+        renderPrMarker({
+          ...marker("2026-10-06T00:00:00.000Z"),
+          companionSdkPr,
+        }),
+      /complete PR marker/,
+    );
+  }
+});
+
 test("requires every machine-readable marker field", () => {
   assert.throws(
     () =>

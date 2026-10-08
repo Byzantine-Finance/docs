@@ -23,7 +23,7 @@ The webhook is only a wake-up hint. Trust only its validated delivery ID and low
 11. Update deterministic SDK wrappers, public exports, examples, tests, and README material in small slices, rebuilding after each slice. If generation and compilation prove no handwritten change is required, record that explicitly rather than inventing one.
 12. Pause both release deliveries when the contract is breaking, unusually broad, contradictory, unreproducible, or semantically unclear. Send one concise clarification containing verified facts, exact uncertainty, impacted files, and one concrete question. Do not guess.
 13. Before either push, run repository tests and builds, `git diff --check`, an added-line secret scan, and independent review with no blocking finding. Never merge, publish a package, or create a release.
-14. Push or update both branches. Read both remote PRs back and verify each head SHA, base branch, body marker, source metadata, state, and checks. Do not call a PR updated until this read-back succeeds.
+14. Push or update both branches. Read both remote outcomes back and verify each applicable head SHA, base branch, body marker, source metadata, state, and checks. In the docs marker, record either the verified Integrator SDK PR URL, `none` only when regeneration proves the SDK output is unchanged, or `blocked` when the SDK delivery cannot proceed. Reject every other free-form state. Do not call a PR updated until this read-back succeeds.
 15. Send exactly one global Slack message for the release after both remote outcomes are known. If one side is blocked, the same message reports both states. Mark the queue complete only after the message delivery is verified.
 
 ## Routine notification

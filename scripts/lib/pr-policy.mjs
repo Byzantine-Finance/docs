@@ -1,8 +1,8 @@
 const CONSOLIDATION_WINDOW_MS = 24 * 60 * 60 * 1_000;
 const SHA_PATTERN = /^[0-9a-f]{40}$/u;
 const SHA256_PATTERN = /^[0-9a-f]{64}$/u;
-const COMPANION_SDK_PR_PATTERN =
-  /^https:\/\/github\.com\/Byzantine-Finance\/integrator-sdk\/pull\/[1-9][0-9]*$/u;
+const COMPANION_SDK_OUTCOME_PATTERN =
+  /^(?:https:\/\/github\.com\/Byzantine-Finance\/integrator-sdk\/pull\/[1-9][0-9]*|none|blocked)$/u;
 
 function isCompleteMarker({
   deploymentRunId,
@@ -31,7 +31,8 @@ function isCompleteMarker({
     includedCommits.every((commit) => SHA_PATTERN.test(commit)) &&
     new Set(includedCommits).size === includedCommits.length &&
     includedCommits.includes(targetSha) &&
-    COMPANION_SDK_PR_PATTERN.test(companionSdkPr ?? "")
+    typeof companionSdkPr === "string" &&
+    COMPANION_SDK_OUTCOME_PATTERN.test(companionSdkPr)
   );
 }
 
