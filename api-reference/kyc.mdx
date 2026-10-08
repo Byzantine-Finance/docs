@@ -57,7 +57,17 @@ The following information can be submitted via one or multiple update calls:
   The response of both the create and update endpoints will include a `missingDocuments` field listing any remaining required documents that have not yet been submitted.
 </Info>
 
-### 3. KYC verification
+### 3. Read the current user details
+
+Use the user-details endpoint to retrieve the current KYC information and the accounts associated with the person:
+
+<Card icon="magnifying-glass" horizontal href="/api-reference/customer-management/get-details-of-a-single-user" title="Get user details">
+
+</Card>
+
+The response's `userInfo` includes `firstName`, `lastName`, and `email`, plus the available optional fields: `middleName`, `phone`, `birthDate`, `nationality`, `countryOfBirth`, and `residentialAddress`.
+
+### 4. KYC verification
 
 Byzantine and Bridge will verify the individual's identity and address. Both Bridge and Byzantine may ask for additional details during this process.
 

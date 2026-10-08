@@ -428,6 +428,12 @@
       }
     ]
   },
+  "redirects": [
+    {
+      "source": "/api-reference/documents",
+      "destination": "/api-reference/accepted-documents"
+    }
+  ],
   "logo": {
     "light": "/logo/dark_logo.png",
     "dark": "/logo/light_logo.png"

@@ -3383,6 +3383,16 @@
                             }
                         }
                     },
+                    "400": {
+                        "description": "Invalid webhook subscription patch",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
                     "404": {
                         "description": "Webhook subscription not found",
                         "content": {
@@ -5134,6 +5144,7 @@
                         "items": {
                             "$ref": "#/components/schemas/EntityVerificationDocument"
                         },
+                        "description": "Entity verification documents. The verification check is only requested once the four required\ngroups are covered: company details, ownership structure, source of funds and proof of address.\nSee [accepted documents](https://docs.byzantine.fi/api-reference/documents).",
                         "nullable": true
                     },
                     "rootUsers": {
@@ -5230,7 +5241,7 @@
                         "items": {
                             "type": "string"
                         },
-                        "description": "List of missing required entity verification documents. Present only if not all required documents have been submitted.",
+                        "description": "List of missing required entity verification documents. Present only if not all required documents have been submitted.\nValues: `COMPANY_DETAILS_DOCUMENT`, `OWNERSHIP_STRUCTURE_DOCUMENT`, `SOURCE_OF_FUNDS_DOCUMENT`,\n`PROOF_OF_ADDRESS_DOCUMENT`, `PHYSICAL_ADDRESS_QUESTIONNAIRE`, `ACTIVITY_INFO_QUESTIONNAIRE`,\n`FINANCIAL_INFO_QUESTIONNAIRE`.",
                         "nullable": true
                     }
                 }
@@ -5461,6 +5472,14 @@
                         "items": {
                             "type": "string"
                         }
+                    },
+                    "httpHeaders": {
+                        "type": "object",
+                        "description": "Optional custom HTTP headers sent with every delivery (max 16, 8 KiB total).\nOmit or pass null/{} for no custom headers.\nNames are case-insensitive; transport and Byzantine signature headers are reserved.",
+                        "additionalProperties": {
+                            "type": "string"
+                        },
+                        "nullable": true
                     }
                 }
             },
@@ -5758,7 +5777,7 @@
             },
             "EntityDocumentType": {
                 "type": "string",
-                "description": "Entity document type. For a full list of accepted document types, see [accepted documents](https://docs.byzantine.fi/api-reference/documents).",
+                "description": "Entity document type. For a full list of accepted document types, see [accepted documents](https://docs.byzantine.fi/api-reference/documents).\n\nFour document groups are required before the verification check can be requested; a missing group\nis reported in `missingDocuments` with the code in brackets:\n- company details (`COMPANY_DETAILS_DOCUMENT`): `incorporation_cert`, `incorporation_articles` or `state_registry`\n- ownership structure (`OWNERSHIP_STRUCTURE_DOCUMENT`): `shareholder_registry`, `information_statement`, `trust_agreement` or `partnership_agreement`\n- source of funds (`SOURCE_OF_FUNDS_DOCUMENT`): `source_of_funds`\n- proof of address (`PROOF_OF_ADDRESS_DOCUMENT`): `proof_of_address`, a document in the entity's name proving its physical address (utility bill, lease, bank statement, ...)\n\n`directors_registry`, `good_standing_cert`, `incumbency_cert`, `power_of_attorney` and `other` are optional.",
                 "enum": [
                     "directors_registry",
                     "good_standing_cert",
@@ -6824,11 +6843,24 @@
                     "firstName": {
                         "type": "string"
                     },
+                    "middleName": {
+                        "type": "string",
+                        "nullable": true
+                    },
                     "lastName": {
                         "type": "string"
                     },
                     "email": {
                         "type": "string"
+                    },
+                    "phone": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "birthDate": {
+                        "type": "string",
+                        "example": "1990-01-01",
+                        "nullable": true
                     },
                     "nationality": {
                         "allOf": [
@@ -8755,6 +8787,7 @@
                         "items": {
                             "$ref": "#/components/schemas/EntityVerificationDocument"
                         },
+                        "description": "Additional entity verification documents, typically the ones listed in `missingDocuments` of a\nprevious response. See [accepted documents](https://docs.byzantine.fi/api-reference/documents).",
                         "nullable": true
                     }
                 }
@@ -8797,7 +8830,7 @@
                         "items": {
                             "type": "string"
                         },
-                        "description": "List of missing required entity verification documents. Present only if not all required documents have been submitted.",
+                        "description": "List of missing required entity verification documents. Present only if not all required documents have been submitted.\nValues: `COMPANY_DETAILS_DOCUMENT`, `OWNERSHIP_STRUCTURE_DOCUMENT`, `SOURCE_OF_FUNDS_DOCUMENT`,\n`PROOF_OF_ADDRESS_DOCUMENT`, `PHYSICAL_ADDRESS_QUESTIONNAIRE`, `ACTIVITY_INFO_QUESTIONNAIRE`,\n`FINANCIAL_INFO_QUESTIONNAIRE`.",
                         "nullable": true
                     },
                     "missingCompanyData": {
@@ -9208,6 +9241,15 @@
                         "type": "array",
                         "items": {
                             "type": "string"
+                        },
+                        "nullable": true
+                    },
+                    "httpHeaders": {
+                        "type": "object",
+                        "description": "Per-header patch merged into the current custom headers: a string sets or replaces that\nheader, null deletes it, and an absent name keeps its value. Omit, null or {} to leave\nall headers unchanged. Every name in the patch must be a valid, non-reserved HTTP header\nname; limits (max 16, 8 KiB total) and case-insensitive duplicates are validated on the\nmerged result.",
+                        "additionalProperties": {
+                            "type": "string",
+                            "nullable": true
                         },
                         "nullable": true
                     }
@@ -9958,7 +10000,7 @@
                     }
                 }
             },
-            "WebhookSubscription": {
+            "WebhookSubscriptionDetails": {
                 "type": "object",
                 "required": [
                     "id",
@@ -9967,6 +10009,7 @@
                     "enabled",
                     "eventTypes",
                     "endpointSafetyMetadata",
+                    "httpHeaders",
                     "createdAt",
                     "updatedAt"
                 ],
@@ -9997,6 +10040,13 @@
                         "nullable": true
                     },
                     "endpointSafetyMetadata": {},
+                    "httpHeaders": {
+                        "type": "object",
+                        "description": "Custom HTTP headers sent with every delivery, keyed by lowercase name.",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
                     "createdAt": {
                         "type": "string",
                         "format": "date-time"
@@ -10016,7 +10066,7 @@
                 ],
                 "properties": {
                     "subscription": {
-                        "$ref": "#/components/schemas/WebhookSubscription"
+                        "$ref": "#/components/schemas/WebhookSubscriptionDetails"
                     },
                     "publicKey": {
                         "type": "string"

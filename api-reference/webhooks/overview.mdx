@@ -35,7 +35,11 @@ curl --request POST \
       "customer.active",
       "transaction.completed",
       "transaction.reverted"
-    ]
+    ],
+    "httpHeaders": {
+      "authorization": "Bearer example-token",
+      "x-tenant-id": "tenant_123"
+    }
   }'
 ```
 
@@ -52,6 +56,10 @@ The create response includes the subscription and its active signing public key:
     "enabled": true,
     "eventTypes": ["customer.active", "transaction.completed", "transaction.reverted"],
     "activeSigningKeyId": "4af5f5ff-bf64-4ac6-a24b-9a4d7c41c1d6",
+    "httpHeaders": {
+      "authorization": "Bearer example-token",
+      "x-tenant-id": "tenant_123"
+    },
     "endpointSafetyMetadata": {
       "normalizedUrl": "https://example.com/byzantine/webhooks",
       "host": "example.com",
@@ -68,6 +76,32 @@ The create response includes the subscription and its active signing public key:
 ```
 
 Store `publicKey` by subscription. Use it to verify delivery signatures.
+
+## Custom delivery headers
+
+Use `httpHeaders` when your receiver requires an API token, tenant identifier, or another custom header. Byzantine encrypts these values at rest and adds them to every delivery for that subscription.
+
+- A subscription can have up to 16 custom headers, with a combined name-and-value size of 8 KiB.
+- Header names are case-insensitive and returned in lowercase.
+- `Host`, `Content-Type`, `Content-Length`, `Content-Encoding`, `Connection`, `Transfer-Encoding`, `TE`, `Trailer`, `Upgrade`, `Keep-Alive`, `Expect`, and names beginning with `Proxy-` or `X-Byzantine-` are reserved.
+- Creating or updating a subscription with an invalid, duplicate, reserved, or oversized header returns `400`.
+
+<Warning>
+  Subscription management responses include the current `httpHeaders` values. Treat these responses and their logs as sensitive when a header contains a credential.
+</Warning>
+
+To update headers, send a per-header patch to `PATCH /v1/webhooks/subscriptions/{subscription_id}`. A string sets or replaces a header, while `null` deletes it. Headers not included in the patch remain unchanged.
+
+```json
+{
+  "httpHeaders": {
+    "authorization": "Bearer replacement-token",
+    "x-tenant-id": null
+  }
+}
+```
+
+Omitting `httpHeaders`, passing `null`, or passing an empty object leaves all existing headers unchanged.
 
 ## Callback URL requirements
 

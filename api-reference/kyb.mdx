@@ -52,14 +52,28 @@ Once the account is created, use the update endpoint to progressively provide or
 The following information can be submitted via one or multiple update calls:
 
 - Company details (legal name, trade name, business type, address, etc.) in `entityInfo`
-- Company documents in `entityDocuments`. See the [list of required documents](/api-reference/accepted-documents)
+- Company documents in `entityDocuments`. Before verification can start, submit at least one document from each required group:
+  - company details (`COMPANY_DETAILS_DOCUMENT`);
+  - ownership structure (`OWNERSHIP_STRUCTURE_DOCUMENT`);
+  - source of funds (`SOURCE_OF_FUNDS_DOCUMENT`);
+  - proof of the entity's physical address (`PROOF_OF_ADDRESS_DOCUMENT`).
+  See the [list of required documents](/api-reference/accepted-documents) for the accepted types in each group.
 - Personal data about every ultimate beneficial owner (UBO)/representative of the company in `associatedPersons`
 
 <Info>
   The response of both the create and update endpoints will include a
   `missingDocuments` field listing any remaining required documents, and a
   `missingCompanyData` field listing any remaining required company information.
+  Byzantine requests the KYB verification check only when both fields are
+  absent, meaning no required document, questionnaire, or company information
+  remains outstanding.
 </Info>
+
+`missingDocuments` can also report incomplete company questionnaires:
+
+- `PHYSICAL_ADDRESS_QUESTIONNAIRE` — complete `entityInfo.physicalAddress`;
+- `ACTIVITY_INFO_QUESTIONNAIRE` — complete `entityInfo.activityInfo`;
+- `FINANCIAL_INFO_QUESTIONNAIRE` — complete `entityInfo.financialInfo`.
 
 ### 3. Complete the beneficiaries/representatives information
 
