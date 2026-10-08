@@ -26,27 +26,38 @@ We accept the following documents:
 
 ## For legal entities:
 
-### Proof of registration
+Submit at least one document from each of the four required groups below. The `missingDocuments` field uses the code shown beside each heading until that group is covered. It can also contain questionnaire-backed requirements for the entity's physical address, business activity, or financial information; see the [KYB guide](/api-reference/kyb#2-complete-the-company-information).
 
-- Certificate of incorporation
-- Articles of association
-- Proof of registration
-- Attestation d’immatriculation au RNE  (for France)
-- Kbis (for France)
+### Company details (`COMPANY_DETAILS_DOCUMENT`)
 
-### Ownership structure
+- Certificate of incorporation (`incorporation_cert`)
+- Articles of association (`incorporation_articles`)
+- State or company registry extract (`state_registry`), including an attestation d’immatriculation au RNE or Kbis in France
 
-- Shareholder registry
-- Trust agreement
-- Partnership agreement
-- Statement of information
+### Ownership structure (`OWNERSHIP_STRUCTURE_DOCUMENT`)
 
-### Source of funds
+- Shareholder registry (`shareholder_registry`)
+- Trust agreement (`trust_agreement`)
+- Partnership agreement (`partnership_agreement`)
+- Statement of information (`information_statement`)
 
-- Audited Financials
-- Bank/brokerage account statement
-- Tax return
-- Invoices to clients proving nature of business
+### Source of funds (`SOURCE_OF_FUNDS_DOCUMENT`)
+
+Upload the supporting file with the `source_of_funds` document type. Common examples include:
+
+- audited financial statements;
+- bank or brokerage account statements;
+- tax returns;
+- invoices to clients proving the nature of the business.
+
+### Proof of business address (`PROOF_OF_ADDRESS_DOCUMENT`)
+
+The document must be in the entity's name and prove its physical address. Upload it with the `proof_of_address` document type. Common examples include:
+
+- utility bills;
+- lease agreements;
+- bank statements;
+- government or tax correspondence.
 
 ### Representatives authorisation
 
@@ -54,4 +65,6 @@ We accept the following documents:
   Needed only in case a representative is not listed in the ownership structure or registration documents.
 </Info>
 
-- Power of attorney
+- Power of attorney (`power_of_attorney`)
+
+Other optional entity document types include `directors_registry`, `good_standing_cert`, `incumbency_cert`, and `other`. They can provide supporting evidence but do not satisfy one of the four required groups above.
