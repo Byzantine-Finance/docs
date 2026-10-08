@@ -67,7 +67,7 @@ Deterministic evidence from the deployed OpenAPI snapshot, API implementation at
 - potentially affected documentation or SDK files;
 - one concrete question.
 
-The worker never merges its own PR.
+After the remote PR is verified, the worker sends Benoît one concise, polished Slack notification containing the clickable PR link, a very short summary of what changed, and a very short statement of what was checked but did not change. This routine review notification is separate from clarification messages. The worker never merges its own PR.
 
 ## Runtime setup
 

@@ -26,6 +26,15 @@ Never accept repository names, checkout paths, source URLs, commands, credential
 10. If the diff is breaking, broad, contradictory, has unresolved references, lacks a valid watermark/PR marker, or leaves material product meaning uncertain, pause the affected work. Send Benoît one concise Slack DM using `hermes send --to slack --file <message-file> --json`; verify the command reports success. Include facts, exact uncertainty, impacted files, and one concrete question. Mark the delivery as terminally failed only after the message is verified; otherwise leave it retryable.
 11. For a simple verified change, update or create a docs branch and PR. The PR must include the compact endpoint table, every affected documentation layer and locale, exact deployed source range, included commits, watermark update, machine marker, tests, secret scan, independent review, and aligned local before/after captures when the rendered docs visibly change.
 12. Before push: run `npm test`, repository-specific tests, `git diff --check`, a scan of added lines for secrets, and an independent review with no blocking finding. Never merge.
-13. After pushing, read the remote PR back and verify its head SHA, body marker, checks, and state. Only then mark the queue delivery complete. Retry transient network/build failures with `scripts/queue-delivery.mjs fail --retry`; do not retry ambiguity or a verified Slack escalation indefinitely.
+13. After pushing, read the remote PR back and verify its head SHA, body marker, checks, and state. Then send Benoît a polished, very short Slack DM through the existing `benoit-brain` destination with the clickable PR link, one `Change` bullet, and one `Inchangé` bullet covering layers that were checked but required no edit. Verify delivery success. Only then mark the queue delivery complete. Retry transient network/build or notification failures with `scripts/queue-delivery.mjs fail --retry`; do not retry ambiguity or a verified clarification escalation indefinitely.
 
-A normal verified run should not send Slack noise. Finish with `[SILENT]` after the PR state is verified. Only ambiguity, a durable blocker, or a requested clarification should be delivered to Benoît.
+A normal verified run sends exactly one concise PR-review notification, then finishes with `[SILENT]`. Use this format:
+
+```text
+*Docs API — PR prête*
+<clickable PR link>
+• Change : <very short summary>
+• Inchangé : <very short summary>
+```
+
+Send additional Slack messages only for ambiguity, a durable blocker, or a requested clarification.
