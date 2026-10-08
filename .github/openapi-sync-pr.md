@@ -1,11 +1,14 @@
 ## Summary
 
-Synchronizes Byzantine API changes across the generated reference and every affected handwritten documentation layer.
+Synchronizes one provenance-verified Byzantine API deployment across the generated reference and every affected handwritten documentation layer.
 
-## Source range
+## Release source
 
+- Deployment run: `<run-id>`
 - Base API commit: `<base-sha>`
 - Target API commit: `<target-sha>`
+- OpenAPI SHA-256: `<artifact-sha256>`
+- Companion SDK PR: `<sdk-pr-link-or-state>`
 - Included merges: `<commit-list>`
 
 ## API changes
@@ -18,22 +21,23 @@ Synchronizes Byzantine API changes across the generated reference and every affe
 - Guides and concepts: `<updated-or-checked>`
 - Academy, onboarding, and FAQ: `<updated-or-checked>`
 - Configured locales: `<locale-list>`
-- Integrator SDK: `<updated-or-checked>`
 - Changelog: `<updated-or-not-required>`
 
 ## Verification
 
-- [ ] Exact-commit OpenAPI export completed
+- [ ] Production OpenAPI was stable across repeated reads
+- [ ] Exact-commit OpenAPI export matches production semantically
+- [ ] Docs and SDK consumed the same captured artifact
 - [ ] Semantic diff generated
 - [ ] All configured locales inspected
 - [ ] Tests pass
 - [ ] `git diff --check` passes
 - [ ] Secret scan passes
 - [ ] Independent review has no blocking finding
-- [ ] Before/after captures use identical stable landmarks
+- [ ] Before/after captures use identical stable landmarks, when applicable
 
 ## Escalation
 
 State either `No escalation required` with the supporting deterministic evidence, or link the resolved Slack clarification. Never fill an ambiguity with an inferred product meaning.
 
-<!-- byzantine-docs-pr:{"baseSourceSha":"<base-sha>","targetSha":"<target-sha>","windowStart":"<ISO-8601>","generatorVersion":1,"includedCommits":["<target-sha>"]} -->
+<!-- byzantine-docs-pr:{"deploymentRunId":"<run-id>","baseSourceSha":"<base-sha>","targetSha":"<target-sha>","openapiSha256":"<artifact-sha256>","windowStart":"<ISO-8601>","generatorVersion":2,"includedCommits":["<target-sha>"],"companionSdkPr":"<sdk-pr-link-or-state>"} -->

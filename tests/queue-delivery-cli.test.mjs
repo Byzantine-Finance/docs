@@ -74,3 +74,54 @@ test("queue CLI enqueues idempotently and acquires one leased delivery", async (
   assert.equal(renewed.code, 0, renewed.stderr);
   assert.deepEqual(JSON.parse(renewed.stdout), { renewed: true });
 });
+
+test("queue CLI reports delayed retries", async (t) => {
+  const directory = await mkdtemp(path.join(os.tmpdir(), "byzantine-queue-cli-retry-"));
+  t.after(() => rm(directory, { recursive: true, force: true }));
+  const database = path.join(directory, "queue.sqlite");
+  const deliveryId = "e".repeat(64);
+  const payload = JSON.stringify({
+    deliveryId,
+    repository: "Byzantine-Finance/byzantine-api",
+    ref: "refs/heads/main",
+    before: "a".repeat(40),
+    after: "b".repeat(40),
+    forced: false,
+  });
+
+  assert.equal((await run(["enqueue", "--database", database], payload)).code, 0);
+  assert.equal(
+    (
+      await run([
+        "acquire",
+        "--database",
+        database,
+        "--owner",
+        "worker-1",
+        "--now",
+        "2026-10-06T15:00:00.000Z",
+      ])
+    ).code,
+    0,
+  );
+
+  const failed = await run([
+    "fail",
+    "--database",
+    database,
+    "--owner",
+    "worker-1",
+    "--delivery-id",
+    deliveryId,
+    "--error",
+    "temporary",
+    "--retry",
+    "--now",
+    "2026-10-06T15:00:10.000Z",
+  ]);
+  assert.equal(failed.code, 0, failed.stderr);
+  const result = JSON.parse(failed.stdout);
+  assert.equal(result.retryScheduled, true);
+  assert.equal(result.exhausted, false);
+  assert.match(result.nextAttemptAt, /^2026-10-06T15:0[01]:/u);
+});

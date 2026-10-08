@@ -240,6 +240,113 @@ function semanticHash(spec) {
   return createHash("sha256").update(JSON.stringify(canonicalize(spec))).digest("hex");
 }
 
+function selectRecentProductionCandidate(runs) {
+  if (!Array.isArray(runs) || runs.length === 0 || runs.some((run) => !validateRun(run))) {
+    throw new Error("GitHub returned malformed recent deployment workflow runs");
+  }
+  const relevant = runs
+    .filter(
+      (run) =>
+        (run.event === "push" && run.head_branch === "main") ||
+        run.event === "workflow_dispatch",
+    );
+  if (relevant.some((run) => run.status !== "completed")) {
+    throw new Error("A production-capable deployment is unfinished");
+  }
+  relevant.sort(
+      (left, right) =>
+        timestamp(right.updated_at) - timestamp(left.updated_at) || right.id - left.id,
+    );
+  const latest = relevant[0];
+  if (!latest) throw new Error("No recent production deployment is available");
+  if (
+    relevant.filter((run) => timestamp(run.updated_at) === timestamp(latest.updated_at)).length !== 1
+  ) {
+    throw new Error("Production deployment provenance is ambiguous at the same completion time");
+  }
+  if (latest.status !== "completed") {
+    throw new Error("The latest production deployment is still in progress");
+  }
+  if (latest.event === "workflow_dispatch") {
+    throw new Error("The latest production deployment is manual and ambiguous");
+  }
+  if (latest.conclusion !== "success") {
+    throw new Error("The latest production deployment did not succeed");
+  }
+  if (!SHA_PATTERN.test(latest.head_sha)) {
+    throw new Error("The latest production deployment has a malformed source SHA");
+  }
+  return {
+    runId: latest.id,
+    sourceCommit: latest.head_sha,
+    createdAt: latest.created_at,
+  };
+}
+
+export async function resolveProvenanceVerifiedOpenApi({
+  output,
+  workflowRunsLoader,
+  openApiLoader,
+  exactOpenApiLoader,
+}) {
+  if (!output) throw new Error("An output path is required");
+  if (
+    typeof workflowRunsLoader !== "function" ||
+    typeof openApiLoader !== "function" ||
+    typeof exactOpenApiLoader !== "function"
+  ) {
+    throw new Error("Deployment, production OpenAPI, and exact-commit loaders are required");
+  }
+
+  const beforeRuns = await workflowRunsLoader();
+  const deployment = selectRecentProductionCandidate(beforeRuns);
+  const first = await openApiLoader();
+  const second = await openApiLoader();
+  const productionHash = semanticHash(first);
+  if (productionHash !== semanticHash(second)) {
+    throw new Error("The production OpenAPI snapshot changed during capture");
+  }
+
+  const exact = await exactOpenApiLoader(deployment.sourceCommit);
+  if (semanticHash(exact) !== productionHash) {
+    throw new Error("The production OpenAPI does not match the exact deployment commit");
+  }
+
+  const afterRuns = await workflowRunsLoader();
+  const confirmed = selectRecentProductionCandidate(afterRuns);
+  if (
+    relevantWorkflowFingerprint(beforeRuns) !== relevantWorkflowFingerprint(afterRuns) ||
+    confirmed.runId !== deployment.runId ||
+    confirmed.sourceCommit !== deployment.sourceCommit
+  ) {
+    throw new Error("The production deployment changed during OpenAPI capture");
+  }
+
+  const third = await openApiLoader();
+  if (semanticHash(third) !== productionHash) {
+    throw new Error("The production OpenAPI snapshot changed during confirmation");
+  }
+
+  const finalRuns = await workflowRunsLoader();
+  const finalConfirmation = selectRecentProductionCandidate(finalRuns);
+  if (
+    relevantWorkflowFingerprint(beforeRuns) !== relevantWorkflowFingerprint(finalRuns) ||
+    finalConfirmation.runId !== deployment.runId ||
+    finalConfirmation.sourceCommit !== deployment.sourceCommit
+  ) {
+    throw new Error("The production deployment changed during OpenAPI confirmation");
+  }
+
+  const sync = await syncOpenApi({ spec: first, target: output });
+  return {
+    ...deployment,
+    openapiSha256: sync.sha256,
+    output,
+    changed: sync.changed,
+    provenanceVerified: true,
+  };
+}
+
 export async function resolveDeployedOpenApi({
   githubToken,
   output,

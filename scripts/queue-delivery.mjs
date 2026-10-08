@@ -71,13 +71,16 @@ async function main() {
     }
 
     if (command === "fail") {
-      queue.fail(
+      const result = queue.fail(
         option(args, "--delivery-id"),
         option(args, "--owner"),
         option(args, "--error"),
-        { retry: args.includes("--retry") },
+        {
+          retry: args.includes("--retry"),
+          now: option(args, "--now", { required: false }) ?? new Date().toISOString(),
+        },
       );
-      writeJson({ failed: true, retry: args.includes("--retry") });
+      writeJson(result);
       return;
     }
 

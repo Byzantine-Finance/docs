@@ -228,7 +228,7 @@ export async function syncOpenApi({ spec, target }) {
 
   const changed = current === undefined || semanticJson(current) !== semanticJson(spec);
   const style = jsonStyle(currentRaw);
-  const serialized = JSON.stringify(canonicalize(spec), null, style.indent).replaceAll(
+  const serialized = JSON.stringify(spec, null, style.indent).replaceAll(
     "\n",
     style.newline,
   );

@@ -6,6 +6,7 @@ import test from "node:test";
 
 import {
   resolveDeployedOpenApi,
+  resolveProvenanceVerifiedOpenApi,
   selectStableProductionDeployment,
 } from "../scripts/lib/deployed-openapi.mjs";
 
@@ -359,5 +360,114 @@ test("fails closed if the main SHA, deployment, or OpenAPI bytes change during c
         fetchImpl: async () => responses.shift(),
       }),
     /deployment changed|main branch changed/i,
+  );
+});
+
+test("verifies a deployed OpenAPI against its exact run SHA even when main advanced", async () => {
+  const directory = await mkdtemp(path.join(os.tmpdir(), "provenance-openapi-"));
+  const output = path.join(directory, "openapi.json");
+  const deployedRun = run({ head_sha: SHA_A });
+  const snapshots = [[deployedRun], [deployedRun], [deployedRun]];
+  let productionLoads = 0;
+  const exportedCommits = [];
+
+  try {
+    const result = await resolveProvenanceVerifiedOpenApi({
+      output,
+      workflowRunsLoader: async () => snapshots.shift(),
+      openApiLoader: async () => {
+        productionLoads += 1;
+        return spec();
+      },
+      exactOpenApiLoader: async (sourceCommit) => {
+        exportedCommits.push(sourceCommit);
+        return spec();
+      },
+    });
+
+    assert.equal(result.sourceCommit, SHA_A);
+    assert.equal(result.runId, 100);
+    assert.equal(result.provenanceVerified, true);
+    assert.equal(productionLoads, 3);
+    assert.deepEqual(exportedCommits, [SHA_A]);
+    assert.deepEqual(JSON.parse(await readFile(output, "utf8")), spec());
+  } finally {
+    await rm(directory, { recursive: true, force: true });
+  }
+});
+
+test("rejects a deployment that starts after the third production read", async (t) => {
+  const directory = await mkdtemp(path.join(os.tmpdir(), "provenance-final-race-"));
+  t.after(() => rm(directory, { recursive: true, force: true }));
+  const deployedRun = run({ id: 100, head_sha: SHA_A });
+  const newerRun = run({
+    id: 101,
+    head_sha: SHA_B,
+    status: "in_progress",
+    conclusion: null,
+    updated_at: "2026-10-08T10:20:00Z",
+  });
+  const snapshots = [[deployedRun], [deployedRun], [newerRun, deployedRun]];
+
+  await assert.rejects(
+    () =>
+      resolveProvenanceVerifiedOpenApi({
+        output: path.join(directory, "openapi.json"),
+        workflowRunsLoader: async () => snapshots.shift(),
+        openApiLoader: async () => spec(),
+        exactOpenApiLoader: async () => spec(),
+      }),
+    /deployment changed|still in progress|unfinished/i,
+  );
+});
+
+test("rejects any unfinished production-capable deployment", async (t) => {
+  const directory = await mkdtemp(path.join(os.tmpdir(), "provenance-unfinished-"));
+  t.after(() => rm(directory, { recursive: true, force: true }));
+  const deployedRun = run({ id: 200, updated_at: "2026-10-08T10:10:00Z" });
+  const staleWaiting = run({
+    id: 50,
+    status: "waiting",
+    conclusion: null,
+    created_at: "2026-09-01T10:00:00Z",
+    updated_at: "2026-09-01T10:10:00Z",
+  });
+  const snapshot = [deployedRun, staleWaiting];
+
+  await assert.rejects(
+    () =>
+      resolveProvenanceVerifiedOpenApi({
+        output: path.join(directory, "openapi.json"),
+        workflowRunsLoader: async () => snapshot,
+        openApiLoader: async () => spec(),
+        exactOpenApiLoader: async () => spec(),
+      }),
+    /unfinished|still in progress/i,
+  );
+});
+
+test("rejects production OpenAPI that cannot be reproduced from the deployment SHA", async () => {
+  await assert.rejects(
+    () =>
+      resolveProvenanceVerifiedOpenApi({
+        output: "/unused/openapi.json",
+        workflowRunsLoader: async () => [run()],
+        openApiLoader: async () => spec("2.0.0"),
+        exactOpenApiLoader: async () => spec("1.0.0"),
+      }),
+    /does not match the exact deployment commit/i,
+  );
+});
+
+test("rejects tied latest production completion timestamps", async () => {
+  await assert.rejects(
+    () =>
+      resolveProvenanceVerifiedOpenApi({
+        output: "/unused/openapi.json",
+        workflowRunsLoader: async () => [run({ id: 100 }), run({ id: 101, head_sha: SHA_B })],
+        openApiLoader: async () => spec(),
+        exactOpenApiLoader: async () => spec(),
+      }),
+    /same completion time|ambiguous/i,
   );
 });

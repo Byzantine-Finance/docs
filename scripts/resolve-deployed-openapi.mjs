@@ -3,9 +3,11 @@
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 
+import { exportIntegratorOpenApiAtCommit } from "./lib/api-openapi-export.mjs";
+import { loadAllWorkflowRuns } from "./lib/github-workflow-runs.mjs";
 import {
   PRODUCTION_OPENAPI_URL,
-  resolveDeployedOpenApi,
+  resolveProvenanceVerifiedOpenApi,
 } from "./lib/deployed-openapi.mjs";
 
 const execFileAsync = promisify(execFile);
@@ -14,57 +16,6 @@ const MAX_OUTPUT_BYTES = 12 * 1024 * 1024;
 function argument(name) {
   const index = process.argv.indexOf(name);
   return index === -1 ? undefined : process.argv[index + 1];
-}
-
-async function loadWorkflowRuns() {
-  const runs = [];
-  const seenRunIds = new Set();
-  let expectedTotal;
-  for (let page = 1; page <= 100; page += 1) {
-    const { stdout } = await execFileAsync(
-      "gh",
-      [
-        "api",
-        "--method",
-        "GET",
-        "repos/Byzantine-Finance/byzantine-api/actions/workflows/deploy-api.yml/runs",
-        "-f",
-        "per_page=100",
-        "-f",
-        `page=${page}`,
-      ],
-      { encoding: "utf8", maxBuffer: MAX_OUTPUT_BYTES },
-    );
-    const payload = JSON.parse(stdout);
-    if (!Number.isSafeInteger(payload.total_count) || !Array.isArray(payload.workflow_runs)) {
-      throw new Error("GitHub returned malformed paginated deployment workflow runs");
-    }
-    if (expectedTotal === undefined) expectedTotal = payload.total_count;
-    if (payload.total_count !== expectedTotal) {
-      throw new Error("GitHub deployment workflow history changed during pagination");
-    }
-    for (const run of payload.workflow_runs) {
-      if (!Number.isSafeInteger(run?.id) || seenRunIds.has(run.id)) {
-        throw new Error("GitHub returned duplicate or malformed paginated workflow runs");
-      }
-      seenRunIds.add(run.id);
-      runs.push(run);
-    }
-    if (runs.length === expectedTotal) return runs;
-    if (runs.length > expectedTotal || payload.workflow_runs.length === 0) {
-      throw new Error("GitHub returned an incomplete paginated workflow history");
-    }
-  }
-  throw new Error("GitHub deployment workflow history exceeds the safe pagination limit");
-}
-
-async function loadMainSha() {
-  const { stdout } = await execFileAsync(
-    "gh",
-    ["api", "repos/Byzantine-Finance/byzantine-api/commits/main", "--jq", ".sha"],
-    { encoding: "utf8", maxBuffer: MAX_OUTPUT_BYTES },
-  );
-  return stdout.trim();
 }
 
 async function loadProductionOpenApi() {
@@ -92,13 +43,26 @@ async function loadProductionOpenApi() {
 
 async function main() {
   const output = argument("--output");
-  if (!output) throw new Error("Pass --output <openapi.json>");
+  const apiRepository = argument("--api-repository");
+  const workspaceDirectory = argument("--workspace");
+  const cargoTargetDirectory = argument("--cargo-target");
+  if (!output || !apiRepository || !workspaceDirectory || !cargoTargetDirectory) {
+    throw new Error(
+      "Pass --output, --api-repository, --workspace, and --cargo-target",
+    );
+  }
 
-  const result = await resolveDeployedOpenApi({
+  const result = await resolveProvenanceVerifiedOpenApi({
     output,
-    mainShaLoader: loadMainSha,
-    workflowRunsLoader: loadWorkflowRuns,
+    workflowRunsLoader: loadAllWorkflowRuns,
     openApiLoader: loadProductionOpenApi,
+    exactOpenApiLoader: (sourceCommit) =>
+      exportIntegratorOpenApiAtCommit({
+        apiRepository,
+        sourceCommit,
+        workspaceDirectory,
+        cargoTargetDirectory,
+      }),
   });
   process.stdout.write(`${JSON.stringify(result)}\n`);
 }

@@ -1,9 +1,13 @@
 import { DatabaseSync } from "node:sqlite";
+import { createHash } from "node:crypto";
 
 const SHA_PATTERN = /^[0-9a-f]{40}$/u;
 const DELIVERY_ID_PATTERN = /^[A-Za-z0-9._:-]{1,128}$/u;
 const SOURCE_REPOSITORY = "Byzantine-Finance/byzantine-api";
 const SOURCE_REF = "refs/heads/main";
+const DEFAULT_MAX_ATTEMPTS = 5;
+const DEFAULT_BASE_RETRY_MS = 60_000;
+const DEFAULT_MAX_RETRY_MS = 60 * 60 * 1_000;
 
 function isoMilliseconds(value, field) {
   const milliseconds = Date.parse(value);
@@ -42,7 +46,27 @@ function publicDelivery(row) {
 }
 
 export class DeliveryQueue {
-  constructor(databasePath) {
+  constructor(
+    databasePath,
+    {
+      maxAttempts = DEFAULT_MAX_ATTEMPTS,
+      baseRetryMs = DEFAULT_BASE_RETRY_MS,
+      maxRetryMs = DEFAULT_MAX_RETRY_MS,
+    } = {},
+  ) {
+    if (
+      !Number.isInteger(maxAttempts) ||
+      maxAttempts < 1 ||
+      !Number.isInteger(baseRetryMs) ||
+      baseRetryMs < 1 ||
+      !Number.isInteger(maxRetryMs) ||
+      maxRetryMs < baseRetryMs
+    ) {
+      throw new Error("Invalid retry policy");
+    }
+    this.maxAttempts = maxAttempts;
+    this.baseRetryMs = baseRetryMs;
+    this.maxRetryMs = maxRetryMs;
     this.database = new DatabaseSync(databasePath);
     this.database.exec("PRAGMA journal_mode = WAL; PRAGMA busy_timeout = 5000;");
     this.database.exec(`
@@ -57,6 +81,7 @@ export class DeliveryQueue {
         status TEXT NOT NULL DEFAULT 'queued'
           CHECK (status IN ('queued', 'processing', 'completed', 'failed')),
         attempts INTEGER NOT NULL DEFAULT 0,
+        next_attempt_at INTEGER NOT NULL DEFAULT 0,
         lease_owner TEXT,
         lease_until INTEGER,
         error TEXT
@@ -67,6 +92,9 @@ export class DeliveryQueue {
     const columns = this.database.prepare("PRAGMA table_info(deliveries)").all();
     if (!columns.some(({ name }) => name === "forced")) {
       this.database.exec("ALTER TABLE deliveries ADD COLUMN forced INTEGER NOT NULL DEFAULT 0");
+    }
+    if (!columns.some(({ name }) => name === "next_attempt_at")) {
+      this.database.exec("ALTER TABLE deliveries ADD COLUMN next_attempt_at INTEGER NOT NULL DEFAULT 0");
     }
   }
 
@@ -100,10 +128,21 @@ export class DeliveryQueue {
       this.database
         .prepare(`
           UPDATE deliveries
+          SET status = 'failed', lease_owner = NULL, lease_until = NULL,
+              next_attempt_at = 0,
+              error = 'Delivery lease expired after maximum attempts'
+          WHERE repository = ? AND status = 'processing' AND lease_until <= ?
+            AND attempts >= ?
+        `)
+        .run(repository, nowMs, this.maxAttempts);
+      this.database
+        .prepare(`
+          UPDATE deliveries
           SET status = 'queued', lease_owner = NULL, lease_until = NULL
           WHERE repository = ? AND status = 'processing' AND lease_until <= ?
+            AND attempts < ?
         `)
-        .run(repository, nowMs);
+        .run(repository, nowMs, this.maxAttempts);
 
       const active = this.database
         .prepare(`
@@ -119,13 +158,13 @@ export class DeliveryQueue {
 
       const next = this.database
         .prepare(`
-          SELECT delivery_id FROM deliveries
+          SELECT delivery_id, next_attempt_at FROM deliveries
           WHERE repository = ? AND status = 'queued'
           ORDER BY received_at, delivery_id
           LIMIT 1
         `)
         .get(repository);
-      if (!next) {
+      if (!next || next.next_attempt_at > nowMs) {
         this.database.exec("COMMIT");
         return null;
       }
@@ -176,17 +215,42 @@ export class DeliveryQueue {
     if (Number(result.changes) !== 1) throw new Error("Delivery lease is not owned by worker");
   }
 
-  fail(deliveryId, owner, error, { retry }) {
+  fail(deliveryId, owner, error, { retry, now = new Date().toISOString() }) {
     if (typeof error !== "string" || error.length === 0) throw new Error("Invalid delivery error");
-    const status = retry ? "queued" : "failed";
+    const row = this.database
+      .prepare(
+        "SELECT attempts FROM deliveries WHERE delivery_id = ? AND status = 'processing' AND lease_owner = ?",
+      )
+      .get(deliveryId, owner);
+    if (!row) throw new Error("Delivery lease is not owned by worker");
+
+    const exhausted = retry && row.attempts >= this.maxAttempts;
+    const retryScheduled = retry && !exhausted;
+    const status = retryScheduled ? "queued" : "failed";
+    let nextAttemptAt = 0;
+    if (retryScheduled) {
+      const nowMs = isoMilliseconds(now, "retry time");
+      const exponential = Math.min(
+        this.maxRetryMs,
+        this.baseRetryMs * 2 ** Math.max(0, row.attempts - 1),
+      );
+      const digest = createHash("sha256").update(`${deliveryId}:${row.attempts}`).digest();
+      const jitter = 0.75 + (digest.readUInt16BE(0) / 65_535) * 0.5;
+      nextAttemptAt = nowMs + Math.round(exponential * jitter);
+    }
     const result = this.database
       .prepare(`
         UPDATE deliveries
-        SET status = ?, lease_owner = NULL, lease_until = NULL, error = ?
+        SET status = ?, next_attempt_at = ?, lease_owner = NULL, lease_until = NULL, error = ?
         WHERE delivery_id = ? AND status = 'processing' AND lease_owner = ?
       `)
-      .run(status, error, deliveryId, owner);
+      .run(status, nextAttemptAt, error, deliveryId, owner);
     if (Number(result.changes) !== 1) throw new Error("Delivery lease is not owned by worker");
+    return {
+      retryScheduled,
+      exhausted,
+      nextAttemptAt: retryScheduled ? new Date(nextAttemptAt).toISOString() : null,
+    };
   }
 
   count() {

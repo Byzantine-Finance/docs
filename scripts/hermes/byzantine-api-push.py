@@ -7,12 +7,12 @@ import os
 import re
 import subprocess
 import sys
+from pathlib import Path
 
 REPOSITORY = "Byzantine-Finance/byzantine-api"
 REF = "refs/heads/main"
 SHA = re.compile(r"^[0-9a-f]{40}$")
-DEFAULT_QUEUE_CLI = "/opt/data/work/byzantine-docs-automation/scripts/queue-delivery.mjs"
-DEFAULT_QUEUE_DATABASE = "/opt/data/state/byzantine-docs/queue.sqlite"
+DEFAULT_QUEUE_CLI = str(Path(__file__).resolve().parents[1] / "queue-delivery.mjs")
 MAX_PAYLOAD_BYTES = 64 * 1024
 
 
@@ -53,13 +53,18 @@ def main() -> int:
         "after": after,
         "forced": payload.get("forced") is True,
     }
+    queue_database = os.environ.get("BYZANTINE_DOCS_QUEUE_DATABASE")
+    if not queue_database:
+        sys.stderr.write("BYZANTINE_DOCS_QUEUE_DATABASE is required\n")
+        return 1
+
     queued = subprocess.run(
         [
             "node",
             os.environ.get("BYZANTINE_DOCS_QUEUE_CLI", DEFAULT_QUEUE_CLI),
             "enqueue",
             "--database",
-            os.environ.get("BYZANTINE_DOCS_QUEUE_DATABASE", DEFAULT_QUEUE_DATABASE),
+            queue_database,
         ],
         input=json.dumps(trusted, separators=(",", ":"), sort_keys=True),
         capture_output=True,

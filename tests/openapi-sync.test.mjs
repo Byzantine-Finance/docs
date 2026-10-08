@@ -173,29 +173,18 @@ test("loadOpenApi rejects content that is not an OpenAPI document", async () => 
   await assert.rejects(() => loadOpenApi(source), /valid OpenAPI document/);
 });
 
-test("syncOpenApi normalizes object key order in written artifacts", async () => {
+test("syncOpenApi preserves source object key order in written artifacts", async () => {
   const dir = await mkdtemp(join(tmpdir(), "openapi-sync-"));
   const target = join(dir, "openapi.json");
-  const unordered = {
+  const sourceOrdered = {
     paths: SPEC.paths,
     openapi: SPEC.openapi,
     info: { version: "1.0.0", title: "Example" },
   };
 
-  await syncOpenApi({ spec: unordered, target });
+  await syncOpenApi({ spec: sourceOrdered, target });
 
-  assert.equal(
-    await readFile(target, "utf8"),
-    `${JSON.stringify(
-      {
-        info: { title: "Example", version: "1.0.0" },
-        openapi: "3.0.3",
-        paths: SPEC.paths,
-      },
-      null,
-      2,
-    )}\n`,
-  );
+  assert.equal(await readFile(target, "utf8"), `${JSON.stringify(sourceOrdered, null, 2)}\n`);
 });
 
 test("syncOpenApi writes deterministic formatted JSON and reports a change", async () => {
@@ -208,7 +197,7 @@ test("syncOpenApi writes deterministic formatted JSON and reports a change", asy
   assert.match(result.sha256, /^[a-f0-9]{64}$/);
   assert.equal(
     await readFile(target, "utf8"),
-    `${JSON.stringify({ info: SPEC.info, openapi: SPEC.openapi, paths: SPEC.paths }, null, 2)}\n`,
+    `${JSON.stringify(SPEC, null, 2)}\n`,
   );
 });
 
@@ -224,11 +213,7 @@ test("syncOpenApi preserves the target indentation and final-newline style on ch
   assert.equal(result.changed, true);
   assert.equal(
     await readFile(target, "utf8"),
-    JSON.stringify(
-      { info: changedSpec.info, openapi: changedSpec.openapi, paths: changedSpec.paths },
-      null,
-      4,
-    ),
+    JSON.stringify(changedSpec, null, 4),
   );
 });
 

@@ -135,9 +135,9 @@ test("renews an owned lease to prevent overlapping workers", async (t) => {
   queue.close();
 });
 
-test("requeues retryable failures and records terminal failures", async (t) => {
+test("backs off retryable failures and stops after the attempt ceiling", async (t) => {
   const { database } = await withQueue(t);
-  const queue = new DeliveryQueue(database);
+  const queue = new DeliveryQueue(database, { maxAttempts: 2, baseRetryMs: 60_000 });
   queue.enqueue(delivery("delivery-1"));
 
   queue.acquireNext({
@@ -146,21 +146,138 @@ test("requeues retryable failures and records terminal failures", async (t) => {
     now: "2026-10-06T12:02:00.000Z",
     leaseMs: 60_000,
   });
-  queue.fail("delivery-1", "worker-a", "temporary", { retry: true });
+  const scheduled = queue.fail("delivery-1", "worker-a", "temporary", {
+    retry: true,
+    now: "2026-10-06T12:02:10.000Z",
+  });
+  assert.equal(scheduled.retryScheduled, true);
+  assert.equal(scheduled.exhausted, false);
+
+  assert.equal(
+    queue.acquireNext({
+      repository: "Byzantine-Finance/byzantine-api",
+      owner: "worker-b",
+      now: "2026-10-06T12:02:11.000Z",
+      leaseMs: 60_000,
+    }),
+    null,
+  );
 
   const retry = queue.acquireNext({
     repository: "Byzantine-Finance/byzantine-api",
     owner: "worker-b",
-    now: "2026-10-06T12:02:01.000Z",
+    now: "2026-10-06T12:04:00.000Z",
     leaseMs: 60_000,
   });
   assert.equal(retry.attempts, 2);
-  queue.fail("delivery-1", "worker-b", "ambiguous contract", { retry: false });
+  const exhausted = queue.fail("delivery-1", "worker-b", "still temporary", {
+    retry: true,
+    now: "2026-10-06T12:04:10.000Z",
+  });
+  assert.equal(exhausted.retryScheduled, false);
+  assert.equal(exhausted.exhausted, true);
 
   assert.deepEqual(queue.get("delivery-1"), {
     deliveryId: "delivery-1",
     status: "failed",
     attempts: 2,
+    error: "still temporary",
+  });
+  queue.close();
+});
+
+test("expires crashed workers at the attempt ceiling", async (t) => {
+  const { database } = await withQueue(t);
+  const queue = new DeliveryQueue(database, { maxAttempts: 2 });
+  queue.enqueue(delivery("delivery-1"));
+  queue.enqueue(delivery("delivery-2", SHA_C, "2026-10-06T12:01:00.000Z"));
+
+  queue.acquireNext({
+    repository: "Byzantine-Finance/byzantine-api",
+    owner: "worker-a",
+    now: "2026-10-06T12:02:00.000Z",
+    leaseMs: 60_000,
+  });
+  const retry = queue.acquireNext({
+    repository: "Byzantine-Finance/byzantine-api",
+    owner: "worker-b",
+    now: "2026-10-06T12:03:01.000Z",
+    leaseMs: 60_000,
+  });
+  assert.equal(retry.deliveryId, "delivery-1");
+  assert.equal(retry.attempts, 2);
+
+  const next = queue.acquireNext({
+    repository: "Byzantine-Finance/byzantine-api",
+    owner: "worker-c",
+    now: "2026-10-06T12:04:02.000Z",
+    leaseMs: 60_000,
+  });
+  assert.equal(next.deliveryId, "delivery-2");
+  assert.deepEqual(queue.get("delivery-1"), {
+    deliveryId: "delivery-1",
+    status: "failed",
+    attempts: 2,
+    error: "Delivery lease expired after maximum attempts",
+  });
+  queue.close();
+});
+
+test("does not let a newer delivery overtake an older delayed retry", async (t) => {
+  const { database } = await withQueue(t);
+  const queue = new DeliveryQueue(database, { baseRetryMs: 60_000 });
+  queue.enqueue(delivery("delivery-1"));
+  queue.enqueue(delivery("delivery-2", SHA_C, "2026-10-06T12:01:00.000Z"));
+
+  queue.acquireNext({
+    repository: "Byzantine-Finance/byzantine-api",
+    owner: "worker-a",
+    now: "2026-10-06T12:02:00.000Z",
+    leaseMs: 60_000,
+  });
+  queue.fail("delivery-1", "worker-a", "temporary", {
+    retry: true,
+    now: "2026-10-06T12:02:10.000Z",
+  });
+
+  assert.equal(
+    queue.acquireNext({
+      repository: "Byzantine-Finance/byzantine-api",
+      owner: "worker-b",
+      now: "2026-10-06T12:02:11.000Z",
+      leaseMs: 60_000,
+    }),
+    null,
+  );
+  const retry = queue.acquireNext({
+    repository: "Byzantine-Finance/byzantine-api",
+    owner: "worker-b",
+    now: "2026-10-06T12:04:00.000Z",
+    leaseMs: 60_000,
+  });
+  assert.equal(retry.deliveryId, "delivery-1");
+  queue.close();
+});
+
+test("records explicit terminal failures without retrying", async (t) => {
+  const { database } = await withQueue(t);
+  const queue = new DeliveryQueue(database);
+  queue.enqueue(delivery("delivery-1"));
+  queue.acquireNext({
+    repository: "Byzantine-Finance/byzantine-api",
+    owner: "worker-a",
+    now: "2026-10-06T12:02:00.000Z",
+    leaseMs: 60_000,
+  });
+  queue.fail("delivery-1", "worker-a", "ambiguous contract", {
+    retry: false,
+    now: "2026-10-06T12:02:10.000Z",
+  });
+
+  assert.deepEqual(queue.get("delivery-1"), {
+    deliveryId: "delivery-1",
+    status: "failed",
+    attempts: 1,
     error: "ambiguous contract",
   });
   queue.close();
