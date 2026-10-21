@@ -38,20 +38,23 @@ try {
     await page.locator('#content-area #page-title').waitFor();
     await page.evaluate(() => document.fonts.ready);
     const surface = page.locator('#content-area');
+    await page.evaluate(() => window.scrollTo(0, 0));
     const box = await surface.boundingBox();
     assert.ok(box.width > 400 && box.height > 100, route);
     const styling = await surface.evaluate(element => ({ font: getComputedStyle(element).fontFamily, stylesheets: document.styleSheets.length, fonts: document.fonts.status }));
     assert.ok(styling.stylesheets > 0 && styling.fonts === 'loaded');
-    const png = await surface.screenshot({ type: 'png', animations: 'disabled' });
-    const webp = await page.evaluate(async encoded => {
+    // Crop a full-page capture, avoiding locator auto-scroll that can put the
+    // article title underneath Mintlify's fixed navigation bar.
+    const png = await page.screenshot({ type: 'png', fullPage: true, animations: 'disabled' });
+    const webp = await page.evaluate(async ({encoded, box}) => {
       const image = new Image();
       image.src = `data:image/png;base64,${encoded}`;
       await image.decode();
       const canvas = document.createElement('canvas');
-      canvas.width = image.width; canvas.height = image.height;
-      canvas.getContext('2d').drawImage(image, 0, 0);
+      canvas.width = Math.round(box.width); canvas.height = Math.round(box.height);
+      canvas.getContext('2d').drawImage(image, box.x, box.y, box.width, box.height, 0, 0, canvas.width, canvas.height);
       return canvas.toDataURL('image/webp', 0.95).split(',')[1];
-    }, png.toString('base64'));
+    }, {encoded: png.toString('base64'), box});
     const file = `${subject}-${phase}.webp`;
     await writeFile(path.join(output, file), Buffer.from(webp, 'base64'));
     captures.push({ subject, route, file, sourceCommit, title: await page.title(), styling, errors });
