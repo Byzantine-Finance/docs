@@ -40,10 +40,6 @@ Vous devrez signer la transaction avec votre passkey pour continuer.
 
 **Temps de virement :** 4-5 minutes en moyenne
 
-## Vérification d’un paiement
-
-Un paiement bancaire peut passer par une vérification avant la fin du financement. Dans l’API, l’état `payment_in_review` est distinct de `completed` ; un paiement remboursé est signalé par `refunded`. Les intégrateurs peuvent suivre ces changements grâce aux [webhooks de transaction](/api-reference/webhooks/transactions), sans considérer une vérification comme un dépôt réussi.
-
 ## Étape 4: Conversion automatique & déploiement
 
 Une fois les fonds arrivés :

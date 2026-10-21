@@ -40,10 +40,6 @@ Enter the amount you wish to deposit. Once confirmed, you will sign the order wi
 
 **Transfer time:** 4-5 minutes on average
 
-## Payment review
-
-A bank payment may enter a review stage before funding completes. In the API, this is `payment_in_review`, distinct from `completed`; a refunded payment is reported as `refunded`. Integrators can follow these changes through [transaction webhooks](/api-reference/webhooks/transactions) instead of interpreting a review as a successful deposit.
-
 ## Step 4: Automatic deployment
 
 Once funds arrive, they are automatically converted and deployed into the product of your choice. You will receive an email as soon as the funds have been received and processed.

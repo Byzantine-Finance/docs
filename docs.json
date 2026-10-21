@@ -431,6 +431,10 @@
   },
   "redirects": [
     {
+      "source": "/api-reference/products/get-single-vault-history",
+      "destination": "/api-reference/products/get-single-product-apy-history"
+    },
+    {
       "source": "/api-reference/documents",
       "destination": "/api-reference/accepted-documents"
     }

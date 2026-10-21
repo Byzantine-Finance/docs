@@ -5,9 +5,36 @@ description: "Version 2 transaction lifecycle events, payment review, refunds, a
 
 Transaction events track every observable status transition, including transfers, deposits, and withdrawals. Subscribe to reconcile funding and settlement without polling.
 
-## Version 2 payload
+## Breaking: version 1 to version 2
 
-New `transaction.*` events use `payloadVersion: 2`. Their `data` contains:
+New `transaction.*` events use `payloadVersion: 2`. **`data.status` has been removed.** A consumer reading it will no longer find the current status: branch on event type and `payloadVersion`, then read `data.transaction.status` for version 2. Keep a version 1 parser for historical retries and event history.
+
+| Version 1 | Version 2 |
+| --- | --- |
+| `payloadVersion: 1`, `data.status` | `payloadVersion: 2`, `data.transaction.status` |
+| Only status in `data` | Post-transition summary in `data.transaction`, plus nullable `data.previousStatus` |
+| Historical transaction deliveries | New transaction events; customer/test events still use version 1 |
+
+**Before — version 1 `data`:**
+
+```json transaction-v1-data
+{
+  "status": "completed"
+}
+```
+
+**After — version 2 `data`** (excerpt; the [complete example](#example-completed-transfer) below includes every summary field):
+
+```json transaction-v2-data-excerpt
+{
+  "transaction": {
+    "status": "completed"
+  },
+  "previousStatus": "processing"
+}
+```
+
+The version 2 `data` contains:
 
 - `transaction`: the transaction **after** the transition, including its public status, amounts, chain, timestamps, and any queued `withdrawalRequest`;
 - `previousStatus`: the previous observable status, or `null` for a first event or a transition out of the internal `created` / `claimed` states. Internal states never emit events.
@@ -40,7 +67,9 @@ An event reports a persisted transition, not a promise that every transaction pa
 
 ## Example: completed transfer
 
-```json
+Illustrative version 2 event (not a production observation):
+
+```json transaction-v2-completed
 {
   "id": "00000000-0000-4000-8000-000000000001",
   "type": "transaction.completed",
