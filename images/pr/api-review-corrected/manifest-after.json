@@ -1,0 +1,230 @@
+[
+  {
+    "subject": "transactions",
+    "route": "/api-reference/webhooks/transactions",
+    "file": "transactions-after.webp",
+    "sourceCommit": "83e5ec3d7e02656090e7e27a3ad1e1e8c88e861a",
+    "title": "Transaction webhooks - Byzantine Finance",
+    "styling": {
+      "font": "Inter, -apple-system, BlinkMacSystemFont, \"Segoe UI\", system-ui, sans-serif, -apple-system, BlinkMacSystemFont, \"Segoe UI\", system-ui, sans-serif",
+      "stylesheets": 9,
+      "fonts": "loaded"
+    },
+    "crop": {
+      "x": 272,
+      "y": 144,
+      "width": 784,
+      "height": 1200
+    },
+    "errors": []
+  },
+  {
+    "subject": "webhook-overview",
+    "route": "/api-reference/webhooks/overview",
+    "file": "webhook-overview-after.webp",
+    "sourceCommit": "83e5ec3d7e02656090e7e27a3ad1e1e8c88e861a",
+    "title": "Overview - Byzantine Finance",
+    "styling": {
+      "font": "Inter, -apple-system, BlinkMacSystemFont, \"Segoe UI\", system-ui, sans-serif, -apple-system, BlinkMacSystemFont, \"Segoe UI\", system-ui, sans-serif",
+      "stylesheets": 9,
+      "fonts": "loaded"
+    },
+    "crop": {
+      "x": 272,
+      "y": 3874.296875,
+      "width": 784,
+      "height": 900
+    },
+    "errors": []
+  },
+  {
+    "subject": "endpoint-overview",
+    "route": "/api-reference/endpoints-overview",
+    "file": "endpoint-overview-after.webp",
+    "sourceCommit": "83e5ec3d7e02656090e7e27a3ad1e1e8c88e861a",
+    "title": "Overview - Byzantine Finance",
+    "styling": {
+      "font": "Inter, -apple-system, BlinkMacSystemFont, \"Segoe UI\", system-ui, sans-serif, -apple-system, BlinkMacSystemFont, \"Segoe UI\", system-ui, sans-serif",
+      "stylesheets": 9,
+      "fonts": "loaded"
+    },
+    "crop": {
+      "x": 272,
+      "y": 144,
+      "width": 784,
+      "height": 1100
+    },
+    "errors": []
+  },
+  {
+    "subject": "authentication",
+    "route": "/api-reference/api-authentication",
+    "file": "authentication-after.webp",
+    "sourceCommit": "83e5ec3d7e02656090e7e27a3ad1e1e8c88e861a",
+    "title": "API authentication - Byzantine Finance",
+    "styling": {
+      "font": "Inter, -apple-system, BlinkMacSystemFont, \"Segoe UI\", system-ui, sans-serif, -apple-system, BlinkMacSystemFont, \"Segoe UI\", system-ui, sans-serif",
+      "stylesheets": 9,
+      "fonts": "loaded"
+    },
+    "crop": {
+      "x": 272,
+      "y": 144,
+      "width": 784,
+      "height": 1000
+    },
+    "errors": []
+  },
+  {
+    "subject": "sdk-auth",
+    "route": "/api-reference/byzantine-sdk",
+    "file": "sdk-auth-after.webp",
+    "sourceCommit": "83e5ec3d7e02656090e7e27a3ad1e1e8c88e861a",
+    "title": "Byzantine SDK - Byzantine Finance",
+    "styling": {
+      "font": "Inter, -apple-system, BlinkMacSystemFont, \"Segoe UI\", system-ui, sans-serif, -apple-system, BlinkMacSystemFont, \"Segoe UI\", system-ui, sans-serif",
+      "stylesheets": 9,
+      "fonts": "loaded"
+    },
+    "crop": {
+      "x": 272,
+      "y": 1437.953125,
+      "width": 784,
+      "height": 750
+    },
+    "errors": []
+  },
+  {
+    "subject": "tracking",
+    "route": "/api-reference/tracking-transactions",
+    "file": "tracking-after.webp",
+    "sourceCommit": "83e5ec3d7e02656090e7e27a3ad1e1e8c88e861a",
+    "title": "Tracking transactions - Byzantine Finance",
+    "styling": {
+      "font": "Inter, -apple-system, BlinkMacSystemFont, \"Segoe UI\", system-ui, sans-serif, -apple-system, BlinkMacSystemFont, \"Segoe UI\", system-ui, sans-serif",
+      "stylesheets": 9,
+      "fonts": "loaded"
+    },
+    "crop": {
+      "x": 272,
+      "y": 2581.3125,
+      "width": 784,
+      "height": 855.6875
+    },
+    "errors": []
+  },
+  {
+    "subject": "changelog",
+    "route": "/api-reference/changelog",
+    "file": "changelog-after.webp",
+    "sourceCommit": "83e5ec3d7e02656090e7e27a3ad1e1e8c88e861a",
+    "title": "Changelog - Byzantine Finance",
+    "styling": {
+      "font": "Inter, -apple-system, BlinkMacSystemFont, \"Segoe UI\", system-ui, sans-serif, -apple-system, BlinkMacSystemFont, \"Segoe UI\", system-ui, sans-serif",
+      "stylesheets": 8,
+      "fonts": "loaded"
+    },
+    "crop": {
+      "x": 272,
+      "y": 144,
+      "width": 784,
+      "height": 1200
+    },
+    "errors": []
+  },
+  {
+    "subject": "apy-reference",
+    "route": "/api-reference/products/get-single-product-apy",
+    "file": "apy-reference-after.webp",
+    "sourceCommit": "83e5ec3d7e02656090e7e27a3ad1e1e8c88e861a",
+    "title": "Get single product APY - Byzantine Finance",
+    "styling": {
+      "font": "Inter, -apple-system, BlinkMacSystemFont, \"Segoe UI\", system-ui, sans-serif, -apple-system, BlinkMacSystemFont, \"Segoe UI\", system-ui, sans-serif",
+      "stylesheets": 9,
+      "fonts": "loaded"
+    },
+    "crop": {
+      "x": 272,
+      "y": 144,
+      "width": 640,
+      "height": 1100
+    },
+    "errors": []
+  },
+  {
+    "subject": "history-reference",
+    "route": "/api-reference/products/get-single-product-apy-history",
+    "file": "history-reference-after.webp",
+    "sourceCommit": "83e5ec3d7e02656090e7e27a3ad1e1e8c88e861a",
+    "title": "Get single product APY history - Byzantine Finance",
+    "styling": {
+      "font": "Inter, -apple-system, BlinkMacSystemFont, \"Segoe UI\", system-ui, sans-serif, -apple-system, BlinkMacSystemFont, \"Segoe UI\", system-ui, sans-serif",
+      "stylesheets": 9,
+      "fonts": "loaded"
+    },
+    "crop": {
+      "x": 272,
+      "y": 144,
+      "width": 640,
+      "height": 1100
+    },
+    "errors": []
+  },
+  {
+    "subject": "performance-guide",
+    "route": "/api-reference/vault-performance",
+    "file": "performance-guide-after.webp",
+    "sourceCommit": "83e5ec3d7e02656090e7e27a3ad1e1e8c88e861a",
+    "title": "Vault APY and history - Byzantine Finance",
+    "styling": {
+      "font": "Inter, -apple-system, BlinkMacSystemFont, \"Segoe UI\", system-ui, sans-serif, -apple-system, BlinkMacSystemFont, \"Segoe UI\", system-ui, sans-serif",
+      "stylesheets": 9,
+      "fonts": "loaded"
+    },
+    "crop": {
+      "x": 272,
+      "y": 144,
+      "width": 784,
+      "height": 1100
+    },
+    "errors": []
+  },
+  {
+    "subject": "performance-fields",
+    "route": "/api-reference/vault-performance",
+    "file": "performance-fields-after.webp",
+    "sourceCommit": "83e5ec3d7e02656090e7e27a3ad1e1e8c88e861a",
+    "title": "Vault APY and history - Byzantine Finance",
+    "styling": {
+      "font": "Inter, -apple-system, BlinkMacSystemFont, \"Segoe UI\", system-ui, sans-serif, -apple-system, BlinkMacSystemFont, \"Segoe UI\", system-ui, sans-serif",
+      "stylesheets": 9,
+      "fonts": "loaded"
+    },
+    "crop": {
+      "x": 272,
+      "y": 1016.46875,
+      "width": 784,
+      "height": 1300
+    },
+    "errors": []
+  },
+  {
+    "subject": "performance-history",
+    "route": "/api-reference/vault-performance",
+    "file": "performance-history-after.webp",
+    "sourceCommit": "83e5ec3d7e02656090e7e27a3ad1e1e8c88e861a",
+    "title": "Vault APY and history - Byzantine Finance",
+    "styling": {
+      "font": "Inter, -apple-system, BlinkMacSystemFont, \"Segoe UI\", system-ui, sans-serif, -apple-system, BlinkMacSystemFont, \"Segoe UI\", system-ui, sans-serif",
+      "stylesheets": 9,
+      "fonts": "loaded"
+    },
+    "crop": {
+      "x": 272,
+      "y": 3190.46875,
+      "width": 784,
+      "height": 1200
+    },
+    "errors": []
+  }
+]
