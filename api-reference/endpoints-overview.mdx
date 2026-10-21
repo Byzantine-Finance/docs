@@ -5,7 +5,7 @@ title: "Overview"
 Byzantine has built an API to simplify the integration of our platform into your own.
 
 <Info>
-  Download the [OpenAPI specification](openapi-integrator.json) to view the full API endpoints.
+  Download the [OpenAPI specification](openapi-integrator.json) to view the full API endpoints. **Public access:** `/v1/query/apy` and `/v1/query/apy-history` require no integrator authentication; protected endpoints still require signed requests. See the [breaking migration guide](/api-reference/vault-performance).
 </Info>
 
 ## Account creation
@@ -29,7 +29,7 @@ Byzantine has built an API to simplify the integration of our platform into your
 
 ## Vault data
 
-- Discover active vaults and their performance using `Top vaults`, `Vault APY`, and `History` endpoints.
+- Discover active vaults with `Top vaults`, then use the public `/v1/query/apy` and `/v1/query/apy-history` endpoints with a vault address and chain. See [Vault APY and history](/api-reference/vault-performance) for ratio units, sampling, and migration from the removed vault-ID routes.
 - Retrieve the list of supported deposit tokens and their on-chain details using the `Assets` endpoint.
 
 ## Account data

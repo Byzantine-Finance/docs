@@ -130,25 +130,9 @@ Byzantine emits two families of lifecycle events, documented on their own pages:
 
 Each delivery body is JSON and shares a common envelope ([`WebhookLifecycleEventPayload`](#endpoint-reference)). The event name is in `type`, the ids the event concerns are grouped under `related`, and the shape of `data` depends on the event type.
 
-```json
-{
-  "id": "00000000-0000-4000-8000-000000000001",
-  "type": "transaction.completed",
-  "occurredAt": "2026-06-03T15:00:00Z",
-  "livemode": true,
-  "payloadVersion": 1,
-  "related": {
-    "accountId": "b3f2d2dc-6abc-40fa-b2d2-d6d76b839c09",
-    "userId": null,
-    "entityId": null,
-    "beneficiaryId": null,
-    "transactionId": "53f2d2dc-6abc-40fa-b2d2-d6d76b839c09"
-  },
-  "data": {
-    "status": "completed"
-  }
-}
-```
+New transaction events use `payloadVersion: 2`, with `data.transaction` (the post-transition summary) and `data.previousStatus`. See the [complete version 2 example](/api-reference/webhooks/transactions#example-completed-transfer).
+
+Customer and test events remain at version 1. Dispatch by event type and version: previously stored transaction payloads keep their original version when retried or read from event history.
 
 `related` always carries all five keys. Only the ones relevant to the event are set; the rest are `null` rather than absent, so you can read them without existence checks.
 

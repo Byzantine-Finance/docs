@@ -3,11 +3,15 @@ title: "API authentication"
 description: "Authentication for the Byzantine API."
 ---
 
-All API requests must be authenticated using ECDSA signature-based authentication. You'll use your **Integrator Private Key** to sign each request and include the signature in the request headers.
+Authenticated endpoints use ECDSA signature-based authentication: sign each request with your **Integrator Private Key** and include the signature headers below.
+
+<Info>
+  **Public performance endpoints:** `GET /v1/query/apy` and `GET /v1/query/apy-history` require **no integrator authentication**. Do not require an integrator key to read these public vault metrics. See [Vault APY and history](/api-reference/vault-performance). This exception does not change authentication for protected customer/account/transaction endpoints.
+</Info>
 
 ### Authentication Headers
 
-Each API request requires the following headers:
+Each authenticated API request requires the following headers:
 
 | Header         | Description                                                                 |
 | -------------- | --------------------------------------------------------------------------- |

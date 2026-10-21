@@ -1,39 +1,81 @@
 ---
-title: "Transaction webhooks (available soon)"
-description: "Deposit and withdrawal lifecycle webhook events."
+title: "Transaction webhooks"
+description: "Version 2 transaction lifecycle events, payment review, refunds, and cancellation."
 ---
 
-Transaction events track the lifecycle of a deposit or withdrawal. Subscribe to them to reconcile funding and settlement in your own system.
+Transaction events track every observable status transition, including transfers, deposits, and withdrawals. Subscribe to reconcile funding and settlement without polling.
 
-## Populated fields
+## Breaking: version 1 to version 2
 
-Each transaction event sets `transactionId` and `accountId` in the envelope's `related` block. The other `related` keys are `null`.
+New `transaction.*` events use `payloadVersion: 2`. **`data.status` has been removed.** A consumer reading it will no longer find the current status: branch on event type and `payloadVersion`, then read `data.transaction.status` for version 2. Keep a version 1 parser for historical retries and event history.
+
+| Version 1 | Version 2 |
+| --- | --- |
+| `payloadVersion: 1`, `data.status` | `payloadVersion: 2`, `data.transaction.status` |
+| Only status in `data` | Post-transition summary in `data.transaction`, plus nullable `data.previousStatus` |
+| Historical transaction deliveries | New transaction events; customer/test events still use version 1 |
+
+**Before — version 1 `data`:**
+
+```json transaction-v1-data
+{
+  "status": "completed"
+}
+```
+
+**After — version 2 `data`** (excerpt; the [complete example](#example-completed-transfer) below includes every summary field):
+
+```json transaction-v2-data-excerpt
+{
+  "transaction": {
+    "status": "completed"
+  },
+  "previousStatus": "processing"
+}
+```
+
+The version 2 `data` contains:
+
+- `transaction`: the transaction **after** the transition, including its public status, amounts, chain, timestamps, and any queued `withdrawalRequest`;
+- `previousStatus`: the previous observable status, or `null` for a first event or a transition out of the internal `created` / `claimed` states. Internal states never emit events.
+
+The transaction summary uses camelCase keys and includes nullable keys explicitly as `null`. It does not duplicate the nested `account` object returned by transaction queries; `accountId` remains available.
+
+<Warning>
+  Dispatch by both event type and `payloadVersion`. Customer and test events remain at version 1. Previously stored payloads are not rewritten when retried: old version 1 transaction deliveries may still arrive.
+</Warning>
+
+Each transaction event sets `transactionId` and `accountId` in `related`. The other three routing keys are `null`.
 
 ## Event types
 
-| Event | Fires when |
-|-------|------------|
-| `transaction.withdrawal_initiated` | A withdrawal has been signed and placed in the vault's withdrawal queue. |
-| `transaction.waiting_for_funds` | Byzantine is waiting for incoming funds. |
-| `transaction.payment_in_review` | The payment is under review. |
+| Event | Observable status |
+| --- | --- |
+| `transaction.withdrawal_initiated` | A signed withdrawal is queued pending vault liquidity. |
+| `transaction.waiting_for_funds` | The transaction is waiting for funds. |
+| `transaction.payment_in_review` | The payment is under review. This is not a completed payment. |
 | `transaction.funds_in_transfer` | Funds are being transferred. |
 | `transaction.funds_received` | Funds have been received. |
-| `transaction.processing` | The transaction is being processed on-chain. |
+| `transaction.processing` | The transaction is being processed. |
 | `transaction.completed` | The transaction completed successfully. |
-| `transaction.simulation_failed` | The transaction simulation failed. |
-| `transaction.reverted` | The transaction was reverted. |
+| `transaction.simulation_failed` | Transaction simulation failed. |
+| `transaction.reverted` | The on-chain transaction reverted. |
+| `transaction.refunded` | The payment was refunded. |
+| `transaction.cancelled` | The queued withdrawal was cancelled. |
 
-For status meanings and polling as an alternative to webhooks, see [Tracking Transactions](/api-reference/tracking-transactions).
+An event reports a persisted transition, not a promise that every transaction passes through every status. For status meanings and polling, see [Tracking transactions](/api-reference/tracking-transactions).
 
-## Example payload
+## Example: completed transfer
 
-```json
+Illustrative version 2 event (not a production observation):
+
+```json transaction-v2-completed
 {
   "id": "00000000-0000-4000-8000-000000000001",
   "type": "transaction.completed",
-  "occurredAt": "2026-06-03T15:00:00Z",
+  "occurredAt": "2026-10-20T15:00:00Z",
   "livemode": true,
-  "payloadVersion": 1,
+  "payloadVersion": 2,
   "related": {
     "accountId": "b3f2d2dc-6abc-40fa-b2d2-d6d76b839c09",
     "userId": null,
@@ -42,7 +84,33 @@ For status meanings and polling as an alternative to webhooks, see [Tracking Tra
     "transactionId": "53f2d2dc-6abc-40fa-b2d2-d6d76b839c09"
   },
   "data": {
-    "status": "completed"
+    "transaction": {
+      "transactionId": "53f2d2dc-6abc-40fa-b2d2-d6d76b839c09",
+      "accountId": "b3f2d2dc-6abc-40fa-b2d2-d6d76b839c09",
+      "type": "transfer",
+      "status": "completed",
+      "chainId": 8453,
+      "vaultAddr": null,
+      "sourceCurrency": "eurc",
+      "sourceAmount": "100",
+      "destinationCurrency": "eurc",
+      "destinationAmount": "100",
+      "intermediaryAmount": "100",
+      "transactionHash": "0x1111111111111111111111111111111111111111111111111111111111111111",
+      "broadcastedAt": "2026-10-20T14:59:50Z",
+      "relatedTransactionId": null,
+      "destinationAddress": "0x1111111111111111111111111111111111111111",
+      "withdrawalRequest": null,
+      "createdAt": "2026-10-20T14:59:40Z",
+      "updatedAt": "2026-10-20T15:00:00Z"
+    },
+    "previousStatus": "processing"
   }
 }
 ```
+
+## Reconciliation and replay
+
+Verify signatures against the exact raw request body, acknowledge deliveries idempotently, and deduplicate by the event `id`. Delivery order should not be used as your only source of truth: retries can arrive after later events. Query the current transaction when reconciling its latest state.
+
+`GET /v1/query/events` exposes the same persisted lifecycle envelope with an additional `createdAt`. Replays and delivery retries retain the original payload version. See [Webhook delivery and signatures](/api-reference/webhooks/overview).

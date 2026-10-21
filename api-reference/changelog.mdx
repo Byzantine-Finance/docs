@@ -8,6 +8,31 @@ All notable changes to this project will be documented in this page.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Production deployment fb3952a - 2026-10-20
+
+<Note>
+  Version-label exception: no release version is established for this deployment. Both the prior and deployed OpenAPI advertise `0.2.0`, while the deployed Cargo package declares `0.1.0`; neither identifies a new release after `[1.21.1]`. This entry uses the deployed source revision instead of inventing an `[x.y.z]` version. Existing versioned entries retain the `[x.y.z] - date` convention.
+</Note>
+
+### Breaking
+
+- Removed `/v1/query/apy/{vault_id}` and `/v1/query/history/{vault_id}`. Migrate to address/chain queries, new decimal-string APY windows and sampled history. The old yearly APY and period-day fields have no replacement. See the complete [request/response migration](/api-reference/vault-performance#breaking-migration-requests-and-fields).
+- New transaction webhooks use payload version 2: **`data.status` is removed**; use `data.transaction.status`, with the post-transition summary and nullable `data.previousStatus`. Maintain a version 1 parser for historical retries/replay; customer/test events remain version 1. See [before/after payloads](/api-reference/webhooks/transactions#breaking-version-1-to-version-2).
+
+### Additive
+
+- New public `/v1/query/apy` and `/v1/query/apy-history` endpoints; `apy_12h` and `apy_3d` windows and snapshot metadata.
+- `TransactionStatusView` adds `payment_in_review`; `WebhookEventType` adds `transaction.refunded` and `transaction.cancelled`. These enum additions are not wholesale breaking replacements, but exhaustive consumers must handle new values. Refund/cancel statuses and the payment-review event name already existed in the prior contract.
+
+### Behavioral / access model
+
+- The new vault performance endpoints require **no integrator authentication**; no signed headers. Other protected endpoints are unchanged.
+- History now returns bounded samples of hourly indexer APYs, not a paginated share-price series; see sampling and empty-result behavior in the migration guide.
+
+### Documentation correction (not an API change)
+
+- Transaction lookup parameters are `transactionId` and `accountId`, already camelCase in the prior OpenAPI. This corrects handwritten documentation only.
+
 ## [1.21.1] - 2026-06-19
 
 ### 🐛 Bug Fixes

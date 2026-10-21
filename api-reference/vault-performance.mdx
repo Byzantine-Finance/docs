@@ -1,0 +1,177 @@
+---
+title: "Vault APY and history"
+description: "Migrate vault-ID queries to public address/chain endpoints and hourly APY samples."
+---
+
+## Public access: no integrator authentication
+
+<Info>
+  `GET /v1/query/apy` and `GET /v1/query/apy-history` are **public, read-only endpoints**. Unlike the removed vault-ID routes, they require no `X-Pubkey`, `X-Timestamp`, or `X-Signature` headers. Customer, account, transaction, and other protected endpoints still require authentication.
+</Info>
+
+Identify an **active top vault** by its on-chain `vault_address` (required), not its former database `vault_id`. Supply `chain_id` when the same address is listed on multiple chains; sending it explicitly is recommended. Resolve the address/chain from your vault metadata rather than treating an old vault ID as an address.
+
+| Endpoint | Purpose |
+| --- | --- |
+| `GET /v1/query/apy` | Latest indexed snapshot's 12-hour, 24-hour, 3-day, 7-day, and 31-day trailing APYs. |
+| `GET /v1/query/apy-history` | Bounded samples of hourly snapshots with those APYs and share price. |
+
+## Breaking migration: requests and fields
+
+<Warning>
+  `/v1/query/apy/{vault_id}` and `/v1/query/history/{vault_id}` have been removed. Change request construction, response parsing, and chart assumptions together. This is not a URL-only rename or a numerical equivalence guarantee.
+</Warning>
+
+### Latest APY
+
+The old handler calculated APYs on demand from share-price history. The new handler reads precomputed hourly indexer snapshots. The nearest windows below are migration choices, not aliases with identical calculations.
+
+| Before | Now / required action |
+| --- | --- |
+| `vault_id` path parameter and response field | `vault_address` query/response field plus `chain_id`. |
+| Signed integrator headers | No integrator authentication for these two public endpoints. |
+| `period` query (`daily`, `weekly`, `monthly`, `yearly`, `all`) | Removed; the old implementation accepted but did not use this selector. The new response always includes all five windows. |
+| `daily_apy` (nominal 1 day) | Nearest window: `apy_24h` (24 hours); decimal string instead of nullable JSON number. |
+| `weekly_apy` (nominal 7 days) | Nearest window: `apy_7d` (7 days); decimal string. |
+| `monthly_apy` (nominal 30 days) | `apy_31d` covers **31 days**, not the old **30 days**. Relabel charts; do not preserve a 30-day label. |
+| `yearly_apy` (nominal 365 days) | Removed, **no replacement**. No yearly trailing window is returned. All APYs are annualized, which does not make them yearly-window returns. |
+| `daily_period_days`, `weekly_period_days`, `monthly_period_days`, `yearly_period_days` | Removed, no replacement reporting actual calculation duration. Do not manufacture these values from window names. |
+| `latest_share_price` | Removed from latest APY; history samples contain `share_price`. |
+| `calculated_at` | Use snapshot block-time `timestamp` and new `block_number` for freshness, not request-time calculation. |
+| No 12-hour or 3-day field | Additional `apy_12h` and `apy_3d` windows. |
+
+**Before — authenticated request** (a fresh signature must cover this exact path/query):
+
+```bash
+curl 'https://api.byzantine.fi/v1/query/apy/<vault-id>?period=all' \
+  -H 'X-Pubkey: <integrator-public-key>' \
+  -H 'X-Timestamp: <unix-seconds>' \
+  -H 'X-Signature: <signature>'
+```
+
+Illustrative old response, not a production observation:
+
+```json apy-before
+{
+  "vault_id": "<vault-id>",
+  "daily_apy": 0.05,
+  "weekly_apy": 0.049,
+  "monthly_apy": 0.048,
+  "yearly_apy": 0.047,
+  "daily_period_days": 1,
+  "weekly_period_days": 7,
+  "monthly_period_days": 30,
+  "yearly_period_days": 365,
+  "latest_share_price": "1.05",
+  "calculated_at": "2026-10-20T15:00:00"
+}
+```
+
+**After — public request** (substitute an active top vault's real address):
+
+```bash
+curl --get 'https://api.byzantine.fi/v1/query/apy' \
+  --data-urlencode 'vault_address=0x1111111111111111111111111111111111111111' \
+  --data-urlencode 'chain_id=8453'
+```
+
+Illustrative new response; independent values, not a conversion of the old example:
+
+```json apy-after
+{
+  "vault_address": "0x1111111111111111111111111111111111111111",
+  "chain_id": 8453,
+  "apy_12h": "0.051",
+  "apy_24h": "0.05",
+  "apy_3d": "0.0495",
+  "apy_7d": "0.049",
+  "apy_31d": "0.048",
+  "timestamp": "2026-10-20T15:00:00Z",
+  "block_number": 36000000
+}
+```
+
+### History: samples, not pagination
+
+| Before | Now / required action |
+| --- | --- |
+| `/v1/query/history/{vault_id}` | `/v1/query/apy-history?vault_address=…&chain_id=…`. |
+| Paginated hourly aggregated share-price series | Bounded samples from hourly indexer snapshots with five trailing APYs. Do not assume every hour is present. |
+| `limit` / `offset` | Removed; use `points` (maximum 1–365, default 100), not page iteration. |
+| `start_date` / `end_date` | Retained as inclusive RFC 3339 bounds, evaluated at whole Unix-second precision. |
+| `order` | Retained as `asc` (default) or `desc`; reverses the same sampled set rather than paging a series. |
+| `vault_id` / `total_count` | `vault_address` plus `chain_id` / no total count. `data.length` is only the returned sample count. |
+| Numeric `share_price` | Decimal-string `share_price` in vault asset units. |
+| `total_assets` | Removed, no replacement in APY history. |
+| `hourly_apy` | Removed; not equivalent to any new trailing window. Read `apy_12h`, `apy_24h`, `apy_3d`, `apy_7d`, `apy_31d` computed at each snapshot time. |
+| Hour-aligned `timestamp` | Original snapshot `timestamp` and new `block_number`; buckets are not calendar-aligned. |
+| No history data returned `404` | A resolved vault with no matching snapshots returns `data: []`; an unresolved/inactive vault still returns `404`. |
+
+**Before — authenticated paginated request:**
+
+```bash
+curl 'https://api.byzantine.fi/v1/query/history/<vault-id>?start_date=2026-10-01T00:00:00&end_date=2026-10-20T23:59:59&limit=30&offset=0&order=asc' \
+  -H 'X-Pubkey: <integrator-public-key>' \
+  -H 'X-Timestamp: <unix-seconds>' \
+  -H 'X-Signature: <signature>'
+```
+
+Illustrative old response:
+
+```json history-before
+{
+  "vault_id": "<vault-id>",
+  "data": [
+    {
+      "timestamp": "2026-10-20T15:00:00",
+      "share_price": 1.05,
+      "total_assets": 1000000,
+      "hourly_apy": 0.05
+    }
+  ],
+  "total_count": 1
+}
+```
+
+**After — public sampled request:**
+
+```bash
+curl --get 'https://api.byzantine.fi/v1/query/apy-history' \
+  --data-urlencode 'vault_address=0x1111111111111111111111111111111111111111' \
+  --data-urlencode 'chain_id=8453' \
+  --data-urlencode 'start_date=2026-10-01T00:00:00Z' \
+  --data-urlencode 'end_date=2026-10-20T23:59:59Z' \
+  --data-urlencode 'points=30' \
+  --data-urlencode 'order=asc'
+```
+
+Illustrative new response:
+
+```json history-after
+{
+  "vault_address": "0x1111111111111111111111111111111111111111",
+  "chain_id": 8453,
+  "data": [
+    {
+      "timestamp": "2026-10-20T15:00:00Z",
+      "block_number": 36000000,
+      "share_price": "1.05",
+      "apy_12h": "0.051",
+      "apy_24h": "0.05",
+      "apy_3d": "0.0495",
+      "apy_7d": "0.049",
+      "apy_31d": "0.048"
+    }
+  ]
+}
+```
+
+## Reading and sampling snapshots
+
+APYs are decimal **ratios**, serialized as strings: `"0.05"` means 5%, not 0.05%. They annualize price-per-share changes over trailing windows, not returns earned by an account. A vault younger than a window uses its oldest available snapshot as the boundary; the response does not report that boundary's age. Use `timestamp` and `block_number` to check freshness.
+
+The API divides the span from first to last matching snapshot into equal-width buckets of at least one hour, retaining the latest snapshot in each nonempty bucket. Empty buckets are omitted: no interpolation or gap filling. The newest matching snapshot is always included; `points=1` returns only that snapshot. Count is a maximum, not a calendar frequency. For a vault with data starting in October, a January-to-December request samples the available October-to-December span.
+
+APYs are computed at snapshot time, **not** bucket averages or returns recalculated between selected points. Invalid bounds (pre-epoch dates or inverted ranges), unsupported `order`, out-of-range `points`, or an ambiguous address without `chain_id` return `400`. Latest APY returns `404` if no indexed snapshot exists yet.
+
+See the generated [latest APY](/api-reference/products/get-single-product-apy) and [APY history](/api-reference/products/get-single-product-apy-history) references for exact schemas.
