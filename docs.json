@@ -265,9 +265,10 @@
                   {
                     "group": "Products",
                     "pages": [
+                      "api-reference/vault-performance",
                       "GET /v1/query/top-vaults",
-                      "GET /v1/query/apy/{vault_id}",
-                      "GET /v1/query/history/{vault_id}",
+                      "GET /v1/query/apy",
+                      "GET /v1/query/apy-history",
                       "GET /v1/query/assets"
                     ]
                   },

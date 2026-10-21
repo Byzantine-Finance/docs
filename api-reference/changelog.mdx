@@ -8,6 +8,20 @@ All notable changes to this project will be documented in this page.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Production API update — 2026-10-20
+
+### Breaking: public vault performance API
+
+- Replace `/v1/query/apy/{vault_id}` with `/v1/query/apy`, using `vault_address` and, when needed, `chain_id`. No integrator authentication is required.
+- Replace `/v1/query/history/{vault_id}` with `/v1/query/apy-history`. History is now a sample of hourly APY snapshots, including share price, rather than a paginated share-price series. Migrate request controls and response parsing together.
+- See [Vault APY and history](/api-reference/vault-performance) for trailing ratio units, snapshot freshness, date bounds, and `points` sampling.
+
+### Transaction lifecycle events
+
+- New transaction events use payload version 2 with `data.transaction` and nullable `data.previousStatus`.
+- Payment review is observable as `payment_in_review`; transaction subscriptions and history include refund and cancellation events.
+- Customer/test events remain at version 1, and previously persisted payloads retain their original version on retries and replay. See [Transaction webhooks](/api-reference/webhooks/transactions).
+
 ## [1.21.1] - 2026-06-19
 
 ### 🐛 Bug Fixes

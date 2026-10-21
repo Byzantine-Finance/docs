@@ -43,11 +43,11 @@ See [API authentication](/api-reference/api-authentication) for full details and
 
 ## Integrator API authentication
 
-The SDK generates the authentication headers required for every API request:
+For endpoints requiring integrator authentication, the SDK generates the signed request headers:
 
 - **`getStamp(method, pathAndQuery, body)`** - Returns an object with `X-Pubkey`, `X-Timestamp`, `X-Signature`, and `Content-Type` that you pass as request headers.
 
-Use this for all calls to the Byzantine API (sandbox or production). Full specification and manual implementation details are in [API authentication](/api-reference/api-authentication).
+Generate a fresh stamp for each authenticated call (sandbox or production). The public [vault APY and history endpoints](/api-reference/vault-performance) do not require an integrator stamp. Full signing details are in [API authentication](/api-reference/api-authentication).
 
 ## WebAuthn (passkey) authentication
 

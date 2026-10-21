@@ -68,6 +68,12 @@ The transaction status can be checked by calling the [Get transaction](/api-refe
   </Tab>
 </Tabs>
 
+## Lifecycle events, review, and refunds
+
+The public `payment_in_review` status means a payment is under review; do not treat it as funding completion. `refunded` means the payment was refunded. Other observable statuses include `funds_received`, `simulation_failed`, and `reverted`; transactions do not necessarily visit every status.
+
+[Transaction webhooks](/api-reference/webhooks/transactions) now emit version 2 events for observable status transitions, including review, refunds, and cancellation. Read the current summary from `data.transaction` and its previous observable status from `data.previousStatus` (which can be `null`). Continue accepting the original version on retried historical deliveries.
+
 ## Retrieving transactions
 
 Three endpoints are available depending on what you need: a single transaction by ID, all transactions for one account, or every transaction across all your accounts.
@@ -78,7 +84,7 @@ Three endpoints are available depending on what you need: a single transaction b
 
     **Query parameters**
 
-    - `transaction_id` - UUID of the transaction.
+    - `transactionId` - UUID of the transaction.
 
     You can use this to poll the status of a specific transaction (deposit, withdrawal, etc.) after the user has signed it.
   </Tab>
@@ -87,7 +93,7 @@ Three endpoints are available depending on what you need: a single transaction b
 
     **Query parameters**
 
-    - `account_id` - UUID of the account.
+    - `accountId` - UUID of the account.
   </Tab>
   <Tab title="Across all accounts">
     [List all transactions across every account](/api-reference/transactions/list-all-transactions-across-every-account-of-the-authenticated-integrator) returns every active transaction across all your accounts, paginated. Transactions still in an internal status (`created`, `claimed`) are excluded.

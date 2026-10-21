@@ -1,0 +1,71 @@
+---
+title: "Vault APY and history"
+description: "Read trailing APY ratios and sampled hourly snapshots using a vault address and chain."
+---
+
+## Public vault performance endpoints
+
+These endpoints do not require integrator authentication. Identify an **active top vault** by its on-chain address, not by a database vault ID.
+
+| Endpoint | Purpose |
+| --- | --- |
+| `GET /v1/query/apy` | Latest indexed snapshot's 12-hour, 24-hour, 3-day, 7-day, and 31-day trailing APYs. |
+| `GET /v1/query/apy-history` | A bounded sample of hourly snapshots, each containing those APYs and the share price. |
+
+Both accept `vault_address` (required) and `chain_id` (optional unless that address is listed on multiple chains). Parameter names and performance response fields use **snake_case**, unlike the camelCase transaction webhook envelope.
+
+```bash
+curl --get 'https://api.byzantine.fi/v1/query/apy' \
+  --data-urlencode 'vault_address=<vault-address>' \
+  --data-urlencode 'chain_id=8453'
+```
+
+## Reading APY values
+
+APYs are decimal **ratios**, serialized as strings: `"0.05"` means 5%, not 0.05%. The trailing windows are annualizations of price-per-share changes, not returns earned by a particular account.
+
+The API reads hourly indexer snapshots. A vault younger than a window uses its oldest available snapshot as the boundary. The indexer accepts ratios in `[0, 2]`; outside that range it retains the previous valid value for the same window, or zero if none exists. A positive value may therefore remain after a share-price decline. Use the snapshot `timestamp` and `block_number` when checking freshness; do not interpret APY as a guaranteed future return.
+
+## Sampling history
+
+```bash
+curl --get 'https://api.byzantine.fi/v1/query/apy-history' \
+  --data-urlencode 'vault_address=<vault-address>' \
+  --data-urlencode 'chain_id=8453' \
+  --data-urlencode 'start_date=2026-10-01T00:00:00Z' \
+  --data-urlencode 'end_date=2026-10-20T23:59:59Z' \
+  --data-urlencode 'points=30' \
+  --data-urlencode 'order=asc'
+```
+
+| Parameter | Meaning |
+| --- | --- |
+| `start_date`, `end_date` | Optional inclusive RFC 3339 bounds, evaluated at whole Unix-second precision. Dates before the Unix epoch and inverted ranges are rejected. |
+| `points` | Maximum result count, 1–365; default 100. Not a guaranteed count or a calendar sampling frequency. |
+| `order` | `asc` (default) or `desc`. Reverses the same selected points, rather than selecting a different sample. |
+
+The API divides the span from the first to the last matching snapshot into equal-width buckets of at least one hour, retaining the latest snapshot in each nonempty bucket. Buckets are not calendar-aligned. Empty buckets are omitted, with no interpolation or gap filling; the newest matching snapshot is always included. `points=1` returns only that newest snapshot.
+
+For a vault whose data begins in October, a January-to-December request samples the available October-to-December span rather than reserving empty buckets for earlier months.
+
+Each `data` item has its original `timestamp`, `block_number`, `share_price` (in vault asset units), and `apy_12h`, `apy_24h`, `apy_3d`, `apy_7d`, `apy_31d` ratios. APYs are those computed at snapshot time, **not** bucket averages or returns recalculated between the selected points.
+
+- Invalid parameters or an ambiguous multi-chain address return `400`.
+- An address that is not an active top vault returns `404`.
+- The latest APY endpoint returns `404` when no indexed snapshot exists yet.
+- History returns `data: []` when the vault resolves but no snapshots match the bounds.
+
+## Migration from the former endpoints
+
+<Warning>
+  `/v1/query/apy/{vault_id}` and `/v1/query/history/{vault_id}` have been removed. Do not simply rename the history URL: its result semantics have changed.
+</Warning>
+
+| Before | Now |
+| --- | --- |
+| Vault ID embedded in the path | `vault_address` query parameter, with `chain_id` for disambiguation. |
+| Former APY response | Snapshot metadata plus five explicit trailing APY ratios. |
+| Share-price history with pagination | Sampled APY snapshots that also include `share_price`. |
+| `limit` / `offset` history controls | Inclusive date bounds and a maximum `points` count. |
+
+Update request construction, response parsing, percentage formatting, and any chart assumptions together. The [OpenAPI specification](/api-reference/openapi-integrator.json) defines the exact request and response schemas.
