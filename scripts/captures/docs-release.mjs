@@ -25,6 +25,7 @@ const subjects = [
   ['dashboard-en', '/get-to-know-your-dashboard'],
   ['dashboard-fr', '/fr/get-to-know-your-dashboard'],
 ];
+if (phase === 'after') subjects.push(['performance-guide', '/api-reference/vault-performance']);
 const captures = [];
 try {
   const context = await browser.newContext({ viewport: { width: 1440, height: 1100 }, colorScheme: 'light', reducedMotion: 'reduce' });
