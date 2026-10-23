@@ -6,6 +6,33 @@ import test from "node:test";
 
 import { exportIntegratorOpenApiAtCommit } from "../scripts/lib/api-openapi-export.mjs";
 
+test("exports the actual deployed document, preserving the route helper body", async (t) => {
+  const paths = await fixture(t);
+  const calls = [];
+  const routesSource = `fn integrator_openapi(deploy_env: Environment) -> utoipa::openapi::OpenApi {
+    let mut doc = IntegratorApiDoc::openapi();
+    doc.servers = Some(vec![ServerBuilder::new().url(deploy_env.api_base_url()).build()]);
+    doc
+}
+`;
+  await exportIntegratorOpenApiAtCommit({
+    ...paths, sourceCommit: SHA, deploymentEnvironment: "prod",
+    execFileImpl: fakeExec({calls, routesSource, inspectHarness: async (source, worktree) => {
+      assert.match(source, /routes::integrator_openapi\(byzantine_api::config::Environment::Prod\)/u);
+      assert.equal(await readFile(path.join(worktree, "src/routes.rs"), "utf8"), `pub ${routesSource}`);
+    }}),
+  });
+});
+
+test("rejects inherited or unknown deployment names before commands", async (t) => {
+  const paths = await fixture(t);
+  for (const deploymentEnvironment of ["constructor", "staging"]) {
+    const calls = [];
+    await assert.rejects(exportIntegratorOpenApiAtCommit({ ...paths, sourceCommit: SHA, deploymentEnvironment, execFileImpl: fakeExec({calls}) }), /deploymentEnvironment must/u);
+    assert.equal(calls.length, 0);
+  }
+});
+
 const SHA = "a".repeat(40);
 const SPEC = {
   openapi: "3.0.3",
@@ -30,6 +57,8 @@ function fakeExec({
   missingCommitOnce = false,
   failWorktreeRemoveOnce = false,
   calls,
+  routesSource = "// historical API without a deployment wrapper\n",
+  inspectHarness,
 }) {
   let cargoCalls = 0;
   let catFileCalls = 0;
@@ -48,6 +77,7 @@ function fakeExec({
     if (file === "git" && args.includes("add")) {
       const worktree = args.at(-2);
       await mkdir(path.join(worktree, "src", "bin"), { recursive: true });
+      await writeFile(path.join(worktree, "src", "routes.rs"), routesSource);
       await writeFile(path.join(worktree, "Cargo.toml"), '[package]\nname = "fixture"\nversion = "0.1.0"\n');
       await writeFile(
         path.join(worktree, "Cargo.lock"),
@@ -67,7 +97,8 @@ function fakeExec({
       const manifestText = await readFile(manifest, "utf8");
       const harness = path.join(path.dirname(manifest), "src", "bin", "__docs_openapi_export.rs");
       const source = await readFile(harness, "utf8");
-      assert.match(source, /IntegratorApiDoc::openapi\(\)/u);
+      if (inspectHarness) await inspectHarness(source, path.dirname(manifest));
+      else assert.match(source, /IntegratorApiDoc::openapi\(\)/u);
       if (cargoCalls > 1) {
         assert.match(manifestText, /package = "openssl"/u);
         assert.match(manifestText, /version = "=0\.10\.73"/u);
