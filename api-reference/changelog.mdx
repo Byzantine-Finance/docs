@@ -8,6 +8,17 @@ All notable changes to this project will be documented in this page.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Production deployment 2147af4 - 2026-10-27
+
+### Behavioral
+
+- Transaction-status emails are no longer sent for deposits, withdrawals, payment review or vault upgrades. Integrators continue to receive status changes through [outbound transaction webhooks](/api-reference/webhooks/transactions). Team-invitation emails are unchanged.
+- Invalid or empty company websites supplied through Sumsub are omitted from the downstream Bridge request instead of being sent as invalid values. This changes no public request field.
+
+### Contract
+
+- The OpenAPI document is byte-identical to deployment `fb3952a`: no endpoint, schema, enum or access-model change. This entry uses the deployed revision because no new API release version is established.
+
 ## Production deployment fb3952a - 2026-10-20
 
 <Note>
