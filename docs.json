@@ -127,7 +127,8 @@
                       "api-reference/api-authentication",
                       "api-reference/sandbox",
                       "api-reference/concepts",
-                      "api-reference/integration-guide"
+                      "api-reference/integration-guide",
+                      "api-reference/build-with-ai"
                     ]
                   },
                   "api-reference/authentication-methods",

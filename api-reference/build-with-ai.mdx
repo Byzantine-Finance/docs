@@ -1,0 +1,46 @@
+---
+title: "Build with AI"
+description: "Give your coding agent the Byzantine docs and integration skills."
+---
+
+Three things help a coding agent integrate Byzantine correctly. Use any combination.
+
+| | What it gives the agent | Install |
+| --- | --- | --- |
+| **Docs MCP server** | Search over this documentation | One command, below |
+| **Agent skills** | Step-by-step integration playbooks, request-signing and webhook helpers, checked against the API | `npx skills add Byzantine-Finance/agent-skills` |
+| **Plain-text docs** | Any page as markdown, for pasting into a chat | Add `.md` to a page URL; index at `/llms.txt` |
+
+## Docs MCP server
+
+`https://docs.byzantine.fi/mcp` lets your agent search these docs. It is read-only: it can look things up but cannot create accounts or move funds.
+
+```bash
+claude mcp add --transport http byzantine-docs https://docs.byzantine.fi/mcp     # Claude Code
+codex mcp add byzantine-docs --url https://docs.byzantine.fi/mcp                  # Codex
+gemini mcp add -t http byzantine-docs https://docs.byzantine.fi/mcp               # Gemini CLI
+```
+
+For Cursor, add `{"mcpServers": {"byzantine-docs": {"url": "https://docs.byzantine.fi/mcp"}}}` to `.cursor/mcp.json`. For VS Code, add `{"servers": {"byzantine-docs": {"type": "http", "url": "https://docs.byzantine.fi/mcp"}}}` to `.vscode/mcp.json`.
+
+## Agent skills
+
+The [Byzantine agent skills](https://github.com/Byzantine-Finance/agent-skills) teach Claude Code, Cursor, Codex, GitHub Copilot, Gemini CLI, Windsurf and other agents how Byzantine works and how to integrate it: onboarding and passkeys, request signing, deposits and withdrawals, balances and yield, webhooks.
+
+```bash
+npx skills add Byzantine-Finance/agent-skills
+```
+
+In Claude Code you can install them as a plugin, together with the docs MCP server:
+
+```text
+/plugin marketplace add Byzantine-Finance/agent-skills
+/plugin install byzantine@byzantine-agent-skills
+```
+
+## Safe defaults
+
+- **Build in the [sandbox](/api-reference/sandbox) first.** The bundled scripts only call sandbox and dev, never production.
+- **Never paste a private key into a chat.** If you did, revoke it in the [integrator dashboard](https://integrator.byzantine.fi) (Settings → API keys) and create a new one.
+- **Use a `read_only` key** for dashboards, reporting and support tools.
+- **Your agent cannot move funds on its own.** Every deposit and withdrawal needs the user's passkey approval. See the [Integration guide](/api-reference/integration-guide).
