@@ -11,12 +11,23 @@ You (the **integrator**: fintech, neobank, B2B platform, wealth manager) offer y
 
 Byzantine is **non-custodial**. Each end user has their own wallet, controlled by their own passkey, and every movement of funds must be approved by that user. Byzantine and you can prepare a transaction, but neither can sign it.
 
-| Actor | Role |
-| --- | --- |
-| Integrator | Calls the API with integrator keys, builds the UI, owns the user relationship. |
-| End user | An individual (KYC) or a company (KYB). Owns the funds. |
-| Signer (root user) | A person who can approve transactions with their passkey. Usually the end user; companies and wealth managers may have several. |
-| Byzantine | Provides the API, embedded wallets, vaults, transaction building and gas sponsorship. Never holds or controls funds. |
+<Columns cols={2}>
+  <Card title="Integrator" icon="building">
+    You. Call the API with integrator keys, build the UI, own the user relationship.
+  </Card>
+
+  <Card title="End user" icon="user">
+    An individual (KYC) or a company (KYB). Owns the funds.
+  </Card>
+
+  <Card title="Signer" icon="fingerprint">
+    A person who approves transactions with their passkey. Usually the end user; companies and wealth managers may have several.
+  </Card>
+
+  <Card title="Byzantine" icon="shield-check">
+    Provides the API, embedded wallets, vaults, transaction building and gas sponsorship. Never holds or controls funds.
+  </Card>
+</Columns>
 
 See [Concepts](/api-reference/concepts) for the objects (user, entity, account, wallet, vault).
 
