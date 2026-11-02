@@ -126,7 +126,8 @@
                       "api-reference/byzantine-sdk",
                       "api-reference/api-authentication",
                       "api-reference/sandbox",
-                      "api-reference/concepts"
+                      "api-reference/concepts",
+                      "api-reference/integration-guide"
                     ]
                   },
                   "api-reference/authentication-methods",
