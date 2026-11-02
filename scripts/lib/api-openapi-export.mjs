@@ -250,6 +250,7 @@ async function ensureCommitAvailable({ repository, sourceCommit, execFileImpl })
 export async function exportIntegratorOpenApiAtCommit({
   apiRepository,
   sourceCommit,
+  deploymentEnvironment = "prod",
   workspaceDirectory,
   cargoTargetDirectory,
   execFileImpl = execFileAsync,
@@ -257,6 +258,8 @@ export async function exportIntegratorOpenApiAtCommit({
   if (!SHA_PATTERN.test(sourceCommit ?? "")) {
     throw new Error("sourceCommit must be a 40-character lowercase commit SHA");
   }
+  const environmentVariant = new Map([["prod", "Prod"], ["dev", "Dev"], ["sandbox", "Sandbox"]]).get(deploymentEnvironment);
+  if (!environmentVariant) throw new Error("deploymentEnvironment must be prod, dev, or sandbox");
   const repository = validateAbsoluteDirectory(apiRepository, "apiRepository");
   const workspace = validateAbsoluteDirectory(workspaceDirectory, "workspaceDirectory");
   const cargoTarget = validateAbsoluteDirectory(cargoTargetDirectory, "cargoTargetDirectory");
@@ -278,7 +281,24 @@ export async function exportIntegratorOpenApiAtCommit({
     const binaryDirectory = path.join(worktree, "src", "bin");
     const harnessPath = path.join(binaryDirectory, `${HARNESS_NAME}.rs`);
     await mkdir(binaryDirectory, { recursive: true });
-    await writeFile(harnessPath, HARNESS_SOURCE, { encoding: "utf8", flag: "wx" });
+    // Reproduce the document served by create_docs, not just its derive input.
+    // The route helper is private; change visibility only in this disposable
+    // worktree. Its body, schema derives, features and dependencies stay exact.
+    const routesPath = path.join(worktree, "src", "routes.rs");
+    const routes = await readFile(routesPath, "utf8");
+    const privateHelper = "fn integrator_openapi(deploy_env: Environment) -> utoipa::openapi::OpenApi {";
+    let harnessSource = HARNESS_SOURCE;
+    if (routes.includes("integrator_openapi(")) {
+      if (!routes.includes(privateHelper) || routes.includes(`pub ${privateHelper}`)) {
+        throw new Error("Unrecognized deployment OpenAPI helper; review exporter against API source");
+      }
+      await writeFile(routesPath, routes.replace(privateHelper, `pub ${privateHelper}`));
+      harnessSource = harnessSource.replace(
+        "byzantine_api::doc::IntegratorApiDoc::openapi()",
+        `byzantine_api::routes::integrator_openapi(byzantine_api::config::Environment::${environmentVariant})`,
+      );
+    }
+    await writeFile(harnessPath, harnessSource, { encoding: "utf8", flag: "wx" });
 
     let result;
     try {
