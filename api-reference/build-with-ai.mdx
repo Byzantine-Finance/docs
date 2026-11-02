@@ -1,46 +1,147 @@
 ---
 title: "Build with AI"
 description: "Give your coding agent the Byzantine docs and integration skills."
+icon: "sparkles"
 ---
 
-Three things help a coding agent integrate Byzantine correctly. Use any combination.
+Integrate Byzantine faster with your coding agent. Pick what you need; they work well together.
 
-| | What it gives the agent | Install |
-| --- | --- | --- |
-| **Docs MCP server** | Search over this documentation | One command, below |
-| **Agent skills** | Step-by-step integration playbooks, request-signing and webhook helpers, checked against the API | `npx skills add Byzantine-Finance/agent-skills` |
-| **Plain-text docs** | Any page as markdown, for pasting into a chat | Add `.md` to a page URL; index at `/llms.txt` |
+<Columns cols={3}>
+  <Card title="Docs MCP" icon="magnifying-glass" href="#docs-mcp-server">
+    Your agent searches these docs. Read-only.
+  </Card>
+
+  <Card title="Agent skills" icon="wand-magic-sparkles" href="#agent-skills">
+    Step-by-step playbooks and helpers, checked against the API.
+  </Card>
+
+  <Card title="Plain-text docs" icon="file-lines" href="#plain-text-docs">
+    Any page as markdown, for pasting into a chat.
+  </Card>
+</Columns>
+
+## Quick start
+
+<Steps>
+  <Step title="Install the skills">
+    ```bash
+    npx skills add Byzantine-Finance/agent-skills
+    ```
+  </Step>
+  <Step title="Add the docs MCP server">
+    ```bash
+    claude mcp add --transport http byzantine-docs https://docs.byzantine.fi/mcp
+    ```
+  </Step>
+  <Step title="Ask your agent">
+    > "Integrate Byzantine in my app. Start with the sandbox: create an individual account, then a deposit."
+
+    Your agent follows the [Integration guide](/api-reference/integration-guide) and the skills.
+  </Step>
+</Steps>
 
 ## Docs MCP server
 
-`https://docs.byzantine.fi/mcp` lets your agent search these docs. It is read-only: it can look things up but cannot create accounts or move funds.
+`https://docs.byzantine.fi/mcp` lets your agent search these docs. It can look things up; it cannot create accounts or move funds.
 
-```bash
-claude mcp add --transport http byzantine-docs https://docs.byzantine.fi/mcp     # Claude Code
-codex mcp add byzantine-docs --url https://docs.byzantine.fi/mcp                  # Codex
-gemini mcp add -t http byzantine-docs https://docs.byzantine.fi/mcp               # Gemini CLI
-```
+<Tabs>
+  <Tab title="Claude Code">
+    ```bash
+    claude mcp add --transport http byzantine-docs https://docs.byzantine.fi/mcp
+    ```
+  </Tab>
+  <Tab title="Codex">
+    ```bash
+    codex mcp add byzantine-docs --url https://docs.byzantine.fi/mcp
+    ```
+  </Tab>
+  <Tab title="Gemini CLI">
+    ```bash
+    gemini mcp add -t http byzantine-docs https://docs.byzantine.fi/mcp
+    ```
+  </Tab>
+  <Tab title="Cursor">
+    Add to `.cursor/mcp.json`:
 
-For Cursor, add `{"mcpServers": {"byzantine-docs": {"url": "https://docs.byzantine.fi/mcp"}}}` to `.cursor/mcp.json`. For VS Code, add `{"servers": {"byzantine-docs": {"type": "http", "url": "https://docs.byzantine.fi/mcp"}}}` to `.vscode/mcp.json`.
+    ```json
+    {
+      "mcpServers": {
+        "byzantine-docs": { "url": "https://docs.byzantine.fi/mcp" }
+      }
+    }
+    ```
+  </Tab>
+  <Tab title="VS Code">
+    Add to `.vscode/mcp.json`:
+
+    ```json
+    {
+      "servers": {
+        "byzantine-docs": { "type": "http", "url": "https://docs.byzantine.fi/mcp" }
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
 
 ## Agent skills
 
-The [Byzantine agent skills](https://github.com/Byzantine-Finance/agent-skills) teach Claude Code, Cursor, Codex, GitHub Copilot, Gemini CLI, Windsurf and other agents how Byzantine works and how to integrate it: onboarding and passkeys, request signing, deposits and withdrawals, balances and yield, webhooks.
+The [Byzantine agent skills](https://github.com/Byzantine-Finance/agent-skills) teach Claude Code, Cursor, Codex, GitHub Copilot, Gemini CLI, Windsurf and other agents how Byzantine works and how to integrate it.
 
-```bash
-npx skills add Byzantine-Finance/agent-skills
-```
+<Columns cols={2}>
+  <Card title="Onboarding" icon="user-plus">
+    Individual KYC, company KYB, associated persons, passkeys.
+  </Card>
 
-In Claude Code you can install them as a plugin, together with the docs MCP server:
+  <Card title="Request signing" icon="key">
+    The signing contract, a request helper and a 401 diagnostic.
+  </Card>
 
-```text
-/plugin marketplace add Byzantine-Finance/agent-skills
-/plugin install byzantine@byzantine-agent-skills
-```
+  <Card title="Money movement" icon="arrow-right-arrow-left">
+    Passkey-approved deposits and withdrawals, statuses.
+  </Card>
+
+  <Card title="Webhooks" icon="webhook">
+    Signature verification, events, replay.
+  </Card>
+</Columns>
+
+<Tabs>
+  <Tab title="Any agent">
+    ```bash
+    npx skills add Byzantine-Finance/agent-skills
+    ```
+  </Tab>
+  <Tab title="Claude Code plugin">
+    Skills and docs MCP server together:
+
+    ```text
+    /plugin marketplace add Byzantine-Finance/agent-skills
+    /plugin install byzantine@byzantine-agent-skills
+    ```
+  </Tab>
+</Tabs>
+
+## Plain-text docs
+
+Append `.md` to any page URL to get it as markdown. The full index is at [`/llms.txt`](https://docs.byzantine.fi/llms.txt).
 
 ## Safe defaults
 
-- **Build in the [sandbox](/api-reference/sandbox) first.** The bundled scripts only call sandbox and dev, never production.
-- **Never paste a private key into a chat.** If you did, revoke it in the [integrator dashboard](https://integrator.byzantine.fi) (Settings → API keys) and create a new one.
-- **Use a `read_only` key** for dashboards, reporting and support tools.
-- **Your agent cannot move funds on its own.** Every deposit and withdrawal needs the user's passkey approval. See the [Integration guide](/api-reference/integration-guide).
+<CardGroup cols={2}>
+  <Card title="Sandbox first" icon="flask">
+    Build in the [sandbox](/api-reference/sandbox). The bundled scripts only call sandbox and dev, never production.
+  </Card>
+
+  <Card title="Keep keys out of chats" icon="lock">
+    If a private key was pasted into a conversation, revoke it in the [integrator dashboard](https://integrator.byzantine.fi) (Settings → API keys) and create a new one.
+  </Card>
+
+  <Card title="Read-only keys for reporting" icon="eye">
+    Use a `read_only` key for dashboards, reporting and support tools.
+  </Card>
+
+  <Card title="Funds stay under user control" icon="fingerprint">
+    Your agent cannot move funds on its own: every deposit and withdrawal needs the user's passkey. See the [Integration guide](/api-reference/integration-guide).
+  </Card>
+</CardGroup>
