@@ -17,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Breaking
 
 - Removed `/v1/query/apy/{vault_id}` and `/v1/query/history/{vault_id}`. Migrate to address/chain queries, new decimal-string APY windows and sampled history. The old yearly APY and period-day fields have no replacement. See the complete [request/response migration](/api-reference/vault-performance#breaking-migration-requests-and-fields).
-- New transaction webhooks use payload version 2: **`data.status` is removed**; use `data.transaction.status`, with the post-transition summary and nullable `data.previousStatus`. Maintain a version 1 parser for historical retries/replay; customer/test events remain version 1. See [before/after payloads](/api-reference/webhooks/transactions#breaking-version-1-to-version-2).
+- Transaction webhooks: the status is now in `data.transaction.status`, alongside the post-transition summary and a nullable `data.previousStatus`. See [Transaction webhooks](/api-reference/webhooks/transactions).
 
 ### Additive
 

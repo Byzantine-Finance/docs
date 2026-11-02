@@ -72,7 +72,7 @@ The transaction status can be checked by calling the [Get transaction](/api-refe
 
 The public `payment_in_review` status means a payment is under review; do not treat it as funding completion. `refunded` means the payment was refunded. Other observable statuses include `funds_received`, `simulation_failed`, and `reverted`; transactions do not necessarily visit every status.
 
-[Transaction webhooks](/api-reference/webhooks/transactions) now emit version 2 events for observable status transitions, including review, refunds, and cancellation. Read the current summary from `data.transaction` and its previous observable status from `data.previousStatus` (which can be `null`). Continue accepting the original version on retried historical deliveries.
+[Transaction webhooks](/api-reference/webhooks/transactions) emit events for observable status transitions, including review, refunds, and cancellation. Read the current summary from `data.transaction` and its previous observable status from `data.previousStatus` (which can be `null`).
 
 ## Retrieving transactions
 
