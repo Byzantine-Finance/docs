@@ -1,6 +1,6 @@
 ---
-name: byzantine
-description: Use when integrating Byzantine Finance, the non-custodial yield API for EUR and USD balances: account onboarding (KYC/KYB), request signing, passkey-approved deposits and withdrawals, balances and yield, webhooks.
+name: byzantine-docs
+description: Use when looking for Byzantine Finance documentation or the integration entry points - where the API contract, sandbox, integration guide, llms.txt and docs MCP live. For the full integration skills (onboarding, signing, deposits and withdrawals, webhooks, reporting) install Byzantine-Finance/agent-skills.
 license: Apache-2.0
 ---
 
