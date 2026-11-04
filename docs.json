@@ -126,7 +126,9 @@
                       "api-reference/byzantine-sdk",
                       "api-reference/api-authentication",
                       "api-reference/sandbox",
-                      "api-reference/concepts"
+                      "api-reference/concepts",
+                      "api-reference/integration-guide",
+                      "api-reference/build-with-ai"
                     ]
                   },
                   "api-reference/authentication-methods",
@@ -455,5 +457,15 @@
       "label": "Dashboard",
       "href": "https://byzantine.fi"
     }
+  },
+  "contextual": {
+    "options": [
+      "copy",
+      "chatgpt",
+      "claude",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
   }
 }

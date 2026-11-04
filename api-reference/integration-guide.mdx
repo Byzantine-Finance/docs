@@ -1,0 +1,121 @@
+---
+title: "Integration guide"
+description: "How Byzantine works for integrators, which flows to build, in which order, and what to call."
+---
+
+This page is the map. It explains what happens between your app, your backend, your users and Byzantine, then gives the order to build things in and the endpoints for each step. Each step links to the detailed reference page.
+
+## How it fits together
+
+You (the **integrator**: fintech, neobank, B2B platform, wealth manager) offer yield on EUR and USD balances to your own users through the API. Funds go into Byzantine Prime vaults (USDC and EURC). Returns are variable and not guaranteed.
+
+Byzantine is **non-custodial**. Each end user has their own wallet, controlled by their own passkey, and every movement of funds must be approved by that user. Byzantine and you can prepare a transaction, but neither can sign it.
+
+<Columns cols={2}>
+  <Card title="Integrator" icon="building">
+    You. Call the API with integrator keys, build the UI, own the user relationship.
+  </Card>
+
+  <Card title="End user" icon="user">
+    An individual (KYC) or a company (KYB). Owns the funds.
+  </Card>
+
+  <Card title="Signer" icon="fingerprint">
+    A person who approves transactions with their passkey. Usually the end user; companies and wealth managers may have several.
+  </Card>
+
+  <Card title="Byzantine" icon="shield-check">
+    Provides the API, embedded wallets, vaults, transaction building and gas sponsorship. Never holds or controls funds.
+  </Card>
+</Columns>
+
+See [Concepts](/api-reference/concepts) for the objects (user, entity, account, wallet, vault).
+
+## What is not possible
+
+- **No automatic or scheduled movements.** Every deposit and withdrawal needs the user's passkey approval at that moment. A "yield on my balance" feature is a user action ("Move €500 to savings"), which your app can suggest, not a background sweep.
+- **No integrator-held signing key for user funds.** No server, agent or cron job can approve a transaction.
+
+## The two-step transaction flow
+
+Every money movement follows the same pattern:
+
+```
+Browser / mobile app                  Your backend                      Byzantine API
+────────────────────                  ────────────                      ─────────────
+T&C + forms ───────────────────────▶  create/update account ─signed──▶  /v1/submit/*
+createPasskey() ── attestation ────▶  (rootUsers.authenticators)
+"Deposit" ─────────────────────────▶  prepare transaction   ─signed──▶  /v1/query/get-*-payload-passkey
+          ◀──── bodyToSign ────────   store the draft as text
+user approves with passkey ─ stamp ▶  sign-payload-passkey  ─signed──▶  /v1/submit/sign-payload-passkey
+          ◀──── status ────────────   track the transaction ─signed──▶  /v1/query/get-transaction
+                                      webhook receiver  ◀─────────────  signed webhook deliveries
+```
+
+Your integrator private key stays on your backend. The user's passkey stays on their device. Details: [Transactions](/api-reference/transactions-overview) and [Authentication methods](/api-reference/authentication-methods).
+
+## Before you start
+
+Decide these first; they shape the plan:
+
+1. **Stack**: backend language, and web, iOS, Android or React Native for the front end. The SDK's passkey helpers run in a browser; native apps need their own passkey code.
+2. **Customers**: individuals (KYC), companies (KYB), or both. A wealth manager acting for clients?
+3. **Money in and out**: stablecoins already held, fiat bank transfer, or both.
+4. **Products**: USDC vault, EUR vault, or both, and the chain (Ethereum or Base).
+5. **Keys**: you need a sandbox key first. Ask Byzantine ([info@byzantine.fi](mailto:info@byzantine.fi)); you can create more in the integrator dashboard afterwards.
+6. **Passkey domain (`rpId`)**: passkeys are bound to the domain used at creation. Choose your production domain deliberately.
+
+## Build in this order
+
+Finish and verify each step in the [sandbox](/api-reference/sandbox) before the next one.
+
+<Steps>
+  <Step title="Plumbing: authenticated requests">
+    Store the private key as a server secret per environment, sign every request, set the base URL explicitly (the SDK defaults to production). Verify with `GET /v1/integrator/whoami`. Store `accountId`, `userId` and the verification status for each of your users.
+    See [Authentication](/api-reference/api-authentication) and the [SDK](/api-reference/byzantine-sdk).
+  </Step>
+  <Step title="Onboarding: accounts and KYC/KYB">
+    Collect acceptance of the Terms and Conditions (keep the timestamp), create the user's passkey, create the account, and complete it with `update-*-account` until nothing is missing. Companies also add UBOs and representatives. Follow the status through `customer.*` webhooks or by polling.
+    See [KYC/KYB overview](/api-reference/kyc-kyb-overview), [KYC](/api-reference/kyc), [KYB](/api-reference/kyb) and [Terms and Conditions](/api-reference/terms-and-conditions).
+  </Step>
+  <Step title="Activation and first deposit">
+    On first use per chain, activate the account (prepare, passkey, sign). Then build the deposit screen: amount, prepare, the user approves with their passkey, submit, track. For fiat, show the bank instructions returned and wait for the transfer.
+    See [Account activation](/api-reference/account-activation) and [Deposits](/api-reference/deposit-overview).
+  </Step>
+  <Step title="Balances, yield and history">
+    Show positions and idle balance, vault APY and performance charts, and the transaction history.
+    See [Account balances](/api-reference/account-balances-idle), [Vault performance](/api-reference/vault-performance) and [Tracking transactions](/api-reference/tracking-transactions).
+  </Step>
+  <Step title="Webhooks">
+    Create a subscription, store its public key per environment, verify signatures on the raw request body, deduplicate by event id, and process asynchronously. Backfill with `GET /v1/query/events` after downtime.
+    See [Webhooks](/api-reference/webhooks/overview).
+  </Step>
+  <Step title="Withdrawals">
+    For a bank off-ramp, register the bank account first, then withdraw. Some vaults queue withdrawals; a queued withdrawal can be cancelled while it is pending.
+    See [Withdrawals](/api-reference/withdrawal-overview) and [Bank accounts](/api-reference/bank-account).
+  </Step>
+</Steps>
+
+## Environments
+
+| | Sandbox | Production |
+| --- | --- | --- |
+| API | `https://sandbox.api.byzantine.fi` | `https://api.byzantine.fi` |
+| KYC/KYB | Approved automatically | Real review |
+| Funds | No real funds, no on/off-ramp, no payment webhooks | Real funds |
+| Keys | Sandbox keys only | Production keys only |
+
+Keys are per environment: a sandbox key will not work in production. The [integrator dashboard](https://integrator.byzantine.fi) is where you manage keys, customers, transactions and webhook deliveries.
+
+## Go-live checklist
+
+- Production key issued and stored only on your server; a separate `read_only` key for reporting and support tools.
+- Base URL comes from configuration; no sandbox URL in production builds.
+- Passkey `rpId` is the production domain, tested on Safari, and Chrome on Android and desktop.
+- Every request is signed right before it is sent; retries sign again.
+- The `bodyToSign` returned when preparing a transaction is passed through untouched, stored as text. Only one unsigned draft exists per account at a time.
+- After signing, transaction status is tracked with backoff polling or webhooks; terminal statuses and queued withdrawals are handled.
+- A webhook receiver runs in production with the production subscription's key, plus a replay job.
+- 401, 403 and 429 errors raise alerts, and users see clear messages for KYC states and failed transactions.
+- Terms and Conditions acceptance is stored, and your product and risk wording has been reviewed with Byzantine.
+- Your support team has access to the integrator dashboard.
