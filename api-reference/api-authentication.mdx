@@ -80,7 +80,7 @@ Each authenticated API request requires the following headers:
       - **path_and_query**: Full path including query parameters (e.g., `/query/get-deposit?chain_id=1`)
       - **body**: JSON stringified request body (empty string for GET requests)
     2. Hashing the message using SHA-256
-    3. Signing the hash with your private key using ECDSA (secp256k1 curve)
+    3. Signing the hash with your private key using ECDSA (P-256 curve)
     4. Encoding the signature in DER format and converting to hex
 
     #### Implementation Example
