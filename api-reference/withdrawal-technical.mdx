@@ -23,7 +23,7 @@ The integrator will have to call different API endpoints based on the authentica
 </Tabs>
 
 <Info>
-For a fiat (off-ramp) withdrawal, pass the `bankAccountId` returned by [List bank accounts](/api-reference/account-management/list-bank-accounts). The payload and sign responses return the bank account as `destinationBankAccount`, with its `objectId` (the `bankAccountId`), its `name` and, when known, its `bankName`. A bank account cannot be [deleted](/api-reference/account-management/delete-bank-account) while a withdrawal to it is in progress, including while it is queued.
+For a fiat (off-ramp) withdrawal, pass the `bankAccountId` returned by [List bank accounts](/api-reference/account-management/list-bank-accounts). The payload and sign responses can return the bank account as `destinationBankAccount`; the field is optional and may be `null`, so check it before reading it. When present, it carries its `objectId` (the `bankAccountId`), its `name` and, when known, its `bankName`. A bank account cannot be [deleted](/api-reference/account-management/delete-bank-account) while a withdrawal to it is in progress, including while it is queued.
 </Info>
 
 ## Queued withdrawals

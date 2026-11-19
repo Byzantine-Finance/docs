@@ -75,7 +75,7 @@ Use the user-details endpoint to retrieve the current KYC information and the ac
 
 </Card>
 
-The response's `userInfo` includes `firstName`, `lastName`, and `email`, plus the available optional fields: `middleName`, `phone`, `birthDate`, `nationality`, `nationalities`, `countryOfBirth`, `cityOfBirth`, and `residentialAddress`.
+The response's `userInfo` includes `firstName`, `lastName`, and `email`, plus the available optional fields: `middleName`, `phone`, `birthDate`, `nationality`, `countryOfBirth`, and `residentialAddress`. `nationalities` and `cityOfBirth` can be submitted but are not returned.
 
 Once the customer is registered with Bridge, the account reads ([Get account details](/api-reference/account-management/get-details-of-a-single-account) and the accounts returned with the user details) include `fiatRequirements`, which lists what the USD (`base`) and EUR (`sepa`) rails still need. See [Fiat requirements](/api-reference/kyb#5-fiat-requirements) for how to read it.
 
