@@ -29,6 +29,11 @@ Only the following fields are required to create the account:
 - one signer in `rootUsers` (`firstName`, `lastName`, `email`)
 - `byzantineTermsSignedAt`
 
+Two optional fields can also be set on creation or later through the update endpoint:
+
+- `accountPurpose` - `investment_purposes`, `protect_wealth`, `personal_or_living_expenses` or `other`, with `accountPurposeOther` describing it;
+- `fiatCurrencies` - the fiat rails the customer will use: `usd` requests the `base` endorsement, `eur` the `sepa` endorsement. It defaults to both.
+
 The account receives an `accountId`, and every person on it gets their own `userId`: one for the verified customer in `userInfo`, and one for each signer in `rootUsers`. In a standard self-created account, `userInfo` and the single root user are the same person, so there is just one `userId`.
 
 <Warning>
@@ -49,12 +54,17 @@ Once the account is created, use the update endpoint to progressively provide th
 
 The following information can be submitted via one or multiple update calls:
 
-- Personal data (date of birth, nationality, address, phone number, etc.)
-- ID documents (passport or national ID card). See the [list of accepted documents](/api-reference/accepted-documents)
-- Proof of address. See the [list of accepted documents](/api-reference/accepted-documents)
+- Personal data (date of birth, nationality, address, phone number, etc.). Include `nationalities`, every nationality held, which is required for EEA residents, and `cityOfBirth`, recommended for EEA residents and required by EU law from 2027. `countryOfBirth` is required for EEA residents.
+- Additional information in `additionalUserInfo`, when requested. `actingAsIntermediary: true` is refused: customers sending or receiving funds on behalf of someone else cannot be onboarded.
+- ID documents (passport, national ID card, driver's licence or residence permit). See the [list of accepted documents](/api-reference/accepted-documents)
+- Proof of address, issued within the last 90 days. See the [list of accepted documents](/api-reference/accepted-documents)
+
+<Warning>
+  Customers residing in New York cannot be onboarded: a US residential address in the state of New York is refused.
+</Warning>
 
 <Info>
-  The response of both the create and update endpoints will include a `missingDocuments` field listing any remaining required documents that have not yet been submitted.
+  The response of both the create and update endpoints will include a `missingDocuments` field listing any remaining required items that have not yet been submitted: `IDENTITY_DOCUMENT`, `PROOF_OF_ADDRESS_DOCUMENT`, `RESIDENTIAL_ADDRESS` or `ADDITIONAL_USER_INFO`.
 </Info>
 
 ### 3. Read the current user details
@@ -65,7 +75,9 @@ Use the user-details endpoint to retrieve the current KYC information and the ac
 
 </Card>
 
-The response's `userInfo` includes `firstName`, `lastName`, and `email`, plus the available optional fields: `middleName`, `phone`, `birthDate`, `nationality`, `countryOfBirth`, and `residentialAddress`.
+The response's `userInfo` includes `firstName`, `lastName`, and `email`, plus the available optional fields: `middleName`, `phone`, `birthDate`, `nationality`, `nationalities`, `countryOfBirth`, `cityOfBirth`, and `residentialAddress`.
+
+Once the customer is registered with Bridge, the account reads ([Get account details](/api-reference/account-management/get-details-of-a-single-account) and the accounts returned with the user details) include `fiatRequirements`, which lists what the USD (`base`) and EUR (`sepa`) rails still need. See [Fiat requirements](/api-reference/kyb#5-fiat-requirements) for how to read it.
 
 ### 4. KYC verification
 

@@ -237,7 +237,9 @@
                         "group": "Bank accounts",
                         "pages": [
                           "GET /v1/query/get-bank-accounts",
-                          "POST /v1/submit/add-bank-account"
+                          "POST /v1/submit/add-bank-account",
+                          "PATCH /v1/submit/update-bank-account",
+                          "DELETE /v1/submit/delete-bank-account"
                         ]
                       },
                       {

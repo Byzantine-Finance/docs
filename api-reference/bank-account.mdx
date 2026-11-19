@@ -5,15 +5,19 @@ description: "Managing bank accounts for Byzantine accounts via the Integrator A
 
 This section explains how to manage bank accounts for Byzantine accounts once KYC/KYB is complete. Bank account covers configuration of an existing Byzantine account for day-to-day use.
 
-| Capability           | Description                                                                                                                                                                                                                      |
-| -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Add bank account** | Associate a bank account with an account so that withdrawals can be sent to it (off-ramp). At least one bank account must be added before any off-ramp withdrawal can be initiated. Can have multiple bank accounts per account. |
+| Capability              | Description                                                                                                                                                                                                                      |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Add bank account**    | Associate a bank account with an account so that withdrawals can be sent to it (off-ramp). At least one bank account must be added before any off-ramp withdrawal can be initiated. Can have multiple bank accounts per account. |
+| **Update bank account** | Rename a bank account. Only the label can change; it is returned as `name` wherever the bank account appears. Bank details cannot be edited: to change them, add a new bank account and delete the old one.                     |
+| **Delete bank account** | Remove a bank account. It is no longer listed and can no longer receive withdrawals, while past transactions still show it as their destination. Returns `409` while a transaction to it is in progress, such as a queued withdrawal. |
 
-To list or inspect existing bank accounts for an account, use this endpoint: 
+<CardGroup cols={2}>
+  <Card title="List bank accounts" icon="list" href="/api-reference/account-management/list-bank-accounts" />
+  <Card title="Add bank account" icon="plus" href="/api-reference/account-management/add-bank-account" />
+  <Card title="Update bank account" icon="pen" href="/api-reference/account-management/update-bank-account" />
+  <Card title="Delete bank account" icon="trash" href="/api-reference/account-management/delete-bank-account" />
+</CardGroup>
 
-<Card
-  title="Get all bank accounts"
-  icon="plus"
-  horizontal
-  href="/api-reference/account-management/list-bank-accounts"
-></Card>
+<Info>
+  Bank account details include a `bankName` when Bridge knows the bank. Treat it as optional: the field may be absent.
+</Info>

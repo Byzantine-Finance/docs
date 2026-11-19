@@ -8,6 +8,39 @@ All notable changes to this project will be documented in this page.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Production deployment b2e7075 - 2026-11-16
+
+<Note>
+  Version-label exception: no release version is established for this deployment. Both the prior and deployed OpenAPI advertise `0.2.0`, while the deployed Cargo package declares `0.1.0`; neither identifies a new release after `[1.21.1]`. This entry uses the deployed source revision instead of inventing an `[x.y.z]` version. It covers every production deployment since `fb3952a`, including `2147af4`.
+</Note>
+
+### Breaking
+
+- `HighRiskInfo`: `conductsMoneyServices` and `conductsMoneyServicesDescription` are removed and are now **silently ignored** if sent. Declare money services with the `moneyServices` object (`description`, `conductedThroughAccount`, `complianceScreeningExplanation`). `highRiskActivities` is now an array (`["none_of_the_above"]` when none), and it is required, with `operatesInProhibitedCountries`, whenever `highRiskInfo` is sent. `actingAsIntermediary: true` is refused. See [High-risk information](/api-reference/kyb#high-risk-information).
+- Associated persons: `ownershipPercentage` must be between 25 and 100 for UBOs, with a total of at most 100. Every person must own, control or sign for the business (a `director` must also be a UBO, a representative or a signer), and the entity needs at least one representative.
+- Person documents of type `other`, `proof_of_source_of_funds` and `proof_of_source_of_wealth` are refused for individuals and associated persons. A document the verification provider refuses now fails the request with `400` instead of being dropped.
+- New validations: customers residing, and businesses operating, in New York are refused; EEA residents need `countryOfBirth`; expired identity documents are refused; a proof of address must be issued within the last 90 days.
+- An unknown or foreign account now returns `404` instead of `400` on the KYC/KYB routes.
+
+### Additive
+
+- New `PATCH /v1/submit/update-bank-account` (rename) and `DELETE /v1/submit/delete-bank-account` (`204`; `409` while a transaction to the bank account is in progress). See [Bank account](/api-reference/bank-account).
+- Bank account details include an optional `bankName`. `destinationBankAccount` in the withdrawal payload, passkey payload and signing responses now includes `objectId` and `name`.
+- `fiatRequirements` on account, entity and user reads lists what the USD (`base`) and EUR (`sepa`) rails still need. See [Fiat requirements](/api-reference/kyb#5-fiat-requirements).
+- KYC fields: `accountPurpose`, `accountPurposeOther`, `fiatCurrencies`, `nationalities`, `cityOfBirth`, `additionalUserInfo.actingAsIntermediary`.
+- KYB fields: `phone`, `isDao`, `accountPurpose`, `accountPurposeOther`, `fiatCurrencies`, `publiclyTradedListings`, `regulatedActivity`, `otherWebsites`, `incorporationDate`, `activityInfo.isHoldingCompany`, `activityInfo.holdingDetails`, `activityInfo.customerAcquisitionChannels`, `financialInfo.sourceOfFundsDescription`, `beneficiaryDetails.isSigner`.
+- Documents accept `issueDate` and `expirationDate`; document reads return `issuedAt` and `expiresAt`.
+- Enum additions: `UserDocumentType` (driver's licence and residence permit front/back, `proof_of_signatory_authority`, `proof_of_source_of_funds`, `proof_of_source_of_wealth`), `EntityDocumentType` (`proof_of_nature_of_business`, `ownership_chart`, `source_of_wealth`, `flow_of_funds`, `regulatory_license`, `aml_policy`, `aml_comfort_letter`, `proof_of_entity_name_change`), `BeneficiaryType` (`director`, `signer`), `CountryCode` (`LIE`, treated as EEA). `missingDocuments` adds `HIGH_RISK_INFO_QUESTIONNAIRE`, `REGISTRY_EXTRACT_DOCUMENT` and conditional document codes. Exhaustive consumers must handle the new values. See [Required documents](/api-reference/accepted-documents).
+
+### Behavioral
+
+- Transaction status emails are no longer sent for deposits, withdrawals, payment review or vault upgrades; use [transaction webhooks](/api-reference/webhooks/transactions). Invitation emails are unchanged.
+- `update-associated-person` returns `409` when a person's title changes while their verification is under review.
+- The KYC/KYB create and update routes accept signed bodies up to 64 MiB; other routes keep 2 MiB.
+- The `activityInfo`, `financialInfo` and `highRiskInfo` questionnaires stay optional on creation, but the verification check waits for them (reported in `missingDocuments` and `missingCompanyData`).
+- `transaction.processing` and `transaction.completed` webhooks for fiat-sourced deposits now carry `destinationAmount`.
+- A deleted bank account can no longer receive withdrawals; past transactions keep returning it as their destination.
+
 ## Production deployment fb3952a - 2026-10-20
 
 <Note>
