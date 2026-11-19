@@ -69,7 +69,7 @@ The following information can be submitted via one or multiple update calls:
 
 `fiatCurrencies` (on create and update) sets the fiat rails the business will use: `usd` requests the `base` endorsement, `eur` the `sepa` endorsement. It defaults to both.
 
-In `activityInfo`, describe in `businessDescription` what the business sells or provides, to which customers, and how it finds them: a one-word description ("Holding", "Consulting") triggers a nature-of-business request for information. Set `customerAcquisitionChannels`, and for a holding company with no commercial activity of its own set `isHoldingCompany: true` and describe its holdings and income sources in `holdingDetails`.
+In `activityInfo`, describe in `businessDescription` what the business sells or provides, to which customers, and how it finds them: a one-word description ("Holding", "Consulting") triggers a nature-of-business request for information. Set `customerAcquisitionChannels`, one or more of `website`, `social_media`, `referrals`, `direct_sales`, `group_only` and `other`. For a holding company with no commercial activity of its own, set `isHoldingCompany: true` and describe in `holdingDetails` (free text, up to 1,024 characters) each holding (name, country, % held, activity) and the income sources, such as dividends or management fees; `holdingDetails` is required when `isHoldingCompany` is `true`.
 
 In `financialInfo`, set `hasMaterialIntermediaryEntityOwner: true` when at least one intermediate legal entity owns 25% or more of the business; an `ownership_chart` document is then required.
 
