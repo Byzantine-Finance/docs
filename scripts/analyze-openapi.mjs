@@ -13,6 +13,7 @@ function argument(name) {
 }
 
 async function writeOutput(path, content) {
+  if (path === "-") return process.stdout.write(content);
   const target = resolve(path);
   await mkdir(dirname(target), { recursive: true });
   await writeFile(target, content);
@@ -42,7 +43,9 @@ async function main() {
     await writeOutput(markdownTarget, `${renderOpenApiDiffMarkdown(report)}\n`);
   }
 
-  console.log(
+  // Keep stdout for the report when it is streamed there.
+  const log = [jsonTarget, markdownTarget].includes("-") ? console.error : console.log;
+  log(
     JSON.stringify({
       added: report.operations.added.length,
       removed: report.operations.removed.length,

@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "openapi:sync": "node scripts/sync-openapi.mjs",
+    "openapi:check": "node scripts/analyze-openapi.mjs --before api-reference/openapi-integrator.json --after https://api.byzantine.fi/api-docs/openapi-integrator.json --markdown-out -",
     "openapi:diff": "node scripts/analyze-openapi.mjs",
     "openapi:resolve-deployed": "node scripts/resolve-deployed-openapi.mjs",
     "delivery:queue": "node scripts/queue-delivery.mjs",

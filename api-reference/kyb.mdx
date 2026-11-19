@@ -51,14 +51,27 @@ Once the account is created, use the update endpoint to progressively provide or
 
 The following information can be submitted via one or multiple update calls:
 
-- Company details (legal name, trade name, business type, address, etc.) in `entityInfo`
+- Company details in `entityInfo`: legal name, trade name, business type, addresses, and:
+  - `phone`, with country code (E.164);
+  - `website`. When the business has no website, omit it and provide a `proof_of_nature_of_business` document instead. Business-registry pages (Pappers, Infogreffe, Companies House, ...) are not a website. Other websites and social media handles go in `otherWebsites`;
+  - `incorporationDate` (`yyyy-mm-dd`), which helps the automated business-registry match;
+  - `accountPurpose` (`investment_purposes`, `treasury_management`, `protect_wealth` or `other`, with `accountPurposeOther` describing it);
+  - `isDao`, `publiclyTradedListings` for listed companies, and `regulatedActivity` for regulated businesses (see [High-risk information](#high-risk-information));
+  - the `activityInfo`, `financialInfo` and `highRiskInfo` questionnaires.
 - Company documents in `entityDocuments`. Before verification can start, submit at least one document from each required group:
   - company details (`COMPANY_DETAILS_DOCUMENT`);
   - ownership structure (`OWNERSHIP_STRUCTURE_DOCUMENT`);
   - source of funds (`SOURCE_OF_FUNDS_DOCUMENT`);
-  - proof of the entity's physical address (`PROOF_OF_ADDRESS_DOCUMENT`).
-  See the [list of required documents](/api-reference/accepted-documents) for the accepted types in each group.
-- Personal data about every ultimate beneficial owner (UBO)/representative of the company in `associatedPersons`
+  - proof of the entity's physical address (`PROOF_OF_ADDRESS_DOCUMENT`);
+  - for businesses incorporated in the EEA, a registry extract (`REGISTRY_EXTRACT_DOCUMENT`) in addition to the formation document.
+  Some answers require additional documents. See the [list of required documents](/api-reference/accepted-documents) for the accepted types in each group and the conditional documents.
+- Personal data about every associated person of the company (UBO, representative, director or signer) in `associatedPersons`
+
+`fiatCurrencies` (on create and update) sets the fiat rails the business will use: `usd` requests the `base` endorsement, `eur` the `sepa` endorsement. It defaults to both.
+
+In `activityInfo`, describe in `businessDescription` what the business sells or provides, to which customers, and how it finds them: a one-word description ("Holding", "Consulting") triggers a nature-of-business request for information. Set `customerAcquisitionChannels`, one or more of `website`, `social_media`, `referrals`, `direct_sales`, `group_only` and `other`. For a holding company with no commercial activity of its own, set `isHoldingCompany: true` and describe in `holdingDetails` (free text, up to 1,024 characters) each holding (name, country, % held, activity) and the income sources, such as dividends or management fees; `holdingDetails` is required when `isHoldingCompany` is `true`.
+
+In `financialInfo`, set `hasMaterialIntermediaryEntityOwner: true` when at least one intermediate legal entity owns 25% or more of the business; an `ownership_chart` document is then required.
 
 <Info>
   The response of both the create and update endpoints will include a
@@ -73,7 +86,38 @@ The following information can be submitted via one or multiple update calls:
 
 - `PHYSICAL_ADDRESS_QUESTIONNAIRE` — complete `entityInfo.physicalAddress`;
 - `ACTIVITY_INFO_QUESTIONNAIRE` — complete `entityInfo.activityInfo`;
-- `FINANCIAL_INFO_QUESTIONNAIRE` — complete `entityInfo.financialInfo`.
+- `FINANCIAL_INFO_QUESTIONNAIRE` — complete `entityInfo.financialInfo`;
+- `HIGH_RISK_INFO_QUESTIONNAIRE` — complete `entityInfo.highRiskInfo`.
+
+It also reports conditional documents, required only by some answers:
+
+| Code | Required when |
+| --- | --- |
+| `PROOF_OF_NATURE_OF_BUSINESS_DOCUMENT` | The business has no `website`. |
+| `OWNERSHIP_CHART_DOCUMENT` | `financialInfo.hasMaterialIntermediaryEntityOwner` is `true`. |
+| `FLOW_OF_FUNDS_DOCUMENT` | Money services are conducted through the account (`highRiskInfo.moneyServices.conductedThroughAccount: true`). |
+| `REGULATORY_LICENSE_DOCUMENT` | `highRiskInfo.highRiskActivities` lists a regulated activity. |
+
+`missingCompanyData` can include, among the company fields still required:
+
+- `source_of_funds_description` — set `financialInfo.sourceOfFundsDescription`, required for high-risk businesses;
+- `regulated_activity` — set `entityInfo.regulatedActivity`, required for regulated activities;
+- `ASSOCIATED_PERSONS` — no representative is linked to the entity yet.
+
+### High-risk information
+
+`entityInfo.highRiskInfo` describes the business's exposure to high-risk activities. When the block is sent:
+
+- `operatesInProhibitedCountries` (boolean) and `highRiskActivities` are required. `highRiskActivities` is an **array** listing every high-risk activity the business is engaged in, or `["none_of_the_above"]`.
+- `highRiskActivitiesExplanation` is required when `highRiskActivities` lists anything other than `none_of_the_above`. Prohibited activities are refused.
+- To declare money services, send a `moneyServices` object with `description`, `conductedThroughAccount` and `complianceScreeningExplanation`, all required. Omit the object when the business conducts no money services.
+- `actingAsIntermediary: true` is refused: businesses that move funds on behalf of third parties cannot be onboarded.
+- A high-risk activity, money services, or operations in prohibited countries make `financialInfo.sourceOfFundsDescription` required.
+- A regulated activity requires `entityInfo.regulatedActivity` (description, primary regulatory authority and its country, licence number) and a `regulatory_license` document.
+
+<Warning>
+  `conductsMoneyServices` and `conductsMoneyServicesDescription` were removed, and `highRiskActivities` is now an array instead of a single value. The removed fields are **ignored, not rejected**: a request that still sends `conductsMoneyServices: true` succeeds but loses the money-services declaration. Migrate to `moneyServices`.
+</Warning>
 
 ### 3. Complete the beneficiaries/representatives information
 
@@ -88,9 +132,15 @@ To add a new beneficiary/representative to the entity, call:
 The request requires:
 
 - `accountId` - the entity's account ID
-- `associatedPerson.userInfo` - personal data (first name, last name, email, date of birth, nationality, address, phone number, etc.)
-- `associatedPerson.beneficiaryDetails` - including `beneficiaryType` (UBO, representative, or both), `ownershipPercentage` (required for UBOs) and `title` (required for representatives)
+- `associatedPerson.userInfo` - personal data (first name, last name, email, date of birth, nationality, address, phone number, etc.). Include `nationalities`, every nationality held, which is required for EEA residents, and `cityOfBirth`, recommended for EEA residents and required by EU law from 2027.
+- `associatedPerson.beneficiaryDetails` - including:
+  - `beneficiaryType`, one or more of `ubo`, `representative`, `director` and `signer`;
+  - `ownershipPercentage`, required for UBOs, between 25 and 100. The UBOs' total cannot exceed 100;
+  - `title`, required for representatives;
+  - `isSigner`, whether the person can authorise transactions on behalf of the business. It defaults to `true` for representatives and signers, `false` otherwise.
 - `associatedPerson.verificationDocuments` - ID documents and proof of address. See the [list of accepted documents](/api-reference/accepted-documents)
+
+Every associated person must own, control or sign for the business: a `director` must also be a UBO, a representative or a signer (`isSigner: true`). The entity needs at least one representative. A signer who is neither director, owner nor representative must provide a `proof_of_signatory_authority` document.
 
 A successful call returns a `beneficiaryId` and a `missingDocuments` field listing any remaining required documents that have not yet been submitted.
 
@@ -100,7 +150,7 @@ To amend an existing beneficiary/representative's details or submit additional d
 
 </Card>
 
-Only the `beneficiaryId` is required - any subset of `userInfo`, `beneficiaryDetails`, or `verificationDocuments` can be provided, and only the fields included will be updated.
+Only the `beneficiaryId` is required - any subset of `userInfo`, `beneficiaryDetails`, or `verificationDocuments` can be provided, and only the fields included will be updated. Changing a person's `title` while their verification is under review returns `409`.
 
 To read back one person's full record - personal information, beneficiary details, verification status, and the documents still missing - call:
 
@@ -122,3 +172,17 @@ Byzantine and Bridge will verify the entity's existence, ownership structure, an
 Throughout the KYB process, the root user receives email notifications at every stage with updates on their status.
 
 <Info>This process usually takes 24-48 hours.</Info>
+
+### 5. Fiat requirements
+
+Once the entity is registered with Bridge, [Get entity details](/api-reference/customer-management/get-details-of-a-single-entity) and [Get account details](/api-reference/account-management/get-details-of-a-single-account) return a `fiatRequirements` object describing what the fiat rails still need:
+
+- `status` - the customer's status at the fiat rails provider (`active`, `under_review`, `incomplete`, ...);
+- `actionRequired` - `true` when a field or document is missing on Byzantine's side, or the provider reported an issue;
+- `endorsements` - one entry per rail (`base` for USD, `sepa` for EUR), with:
+  - `missing` - the outstanding requirements, each with a `key`, the `associatedPerson` it applies to when relevant, and a `hint` naming the field or document that clears it. Read `missingExpression` for alternatives (`any_of`) and combinations (`all_of`);
+  - `pending` - checks the provider is running; nothing to do;
+  - `issues` - problems with data already received, such as `poa_past_90_days` or `pending_rfi`;
+  - `futureRequirements` - requirements that will apply from their `effectiveDate`.
+
+When `actionRequired` is `true`, follow the hints and submit the missing information with the update endpoints above. `fiatRequirements` is absent before the entity is registered with Bridge, or when Bridge cannot be reached.

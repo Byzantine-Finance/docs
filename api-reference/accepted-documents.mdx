@@ -10,29 +10,49 @@ We accept the following documents:
 
 ### ID documents
 
-- Passport
-- National ID card (back and front side)
+- Passport (`passport`)
+- National ID card, front and back (`national_id_front`, `national_id_back`)
+- Driver's licence, front and back (`drivers_license_front`, `drivers_license_back`)
+- Residence permit, front and back (`residence_permit_front`, `residence_permit_back`)
+
+<Info>
+  A passport or national ID card is preferred: it is accepted in every country supported by Bridge. Send the `expirationDate` of the document: expired documents are refused, and fiat endorsements are revoked when the document on file expires.
+</Info>
 
 ### Proof of address
 
 <Info>
-  All proof of address documents must be issued no more than 3 months ago.
+  All proof of address documents must be issued within the last 90 days. Send the document's `issueDate`.
 </Info>
+
+Upload it with the `proof_of_address` document type. Accepted documents include:
 
 - Utility bills
 - Recent bank statements
 - Mobile phone bills
 - Tax documentation
 
+### Signatory authority
+
+A signer of an entity who is neither director, owner nor representative must provide a letter of authority with the `proof_of_signatory_authority` document type. It is stored with the entity's documents.
+
+<Note>
+  `proof_of_source_of_funds`, `proof_of_source_of_wealth` and `other` are not accepted yet for individuals and associated persons: requests containing them are refused.
+</Note>
+
 ## For legal entities:
 
-Submit at least one document from each of the four required groups below. The `missingDocuments` field uses the code shown beside each heading until that group is covered. It can also contain questionnaire-backed requirements for the entity's physical address, business activity, or financial information; see the [KYB guide](/api-reference/kyb#2-complete-the-company-information).
+Submit at least one document from each of the four required groups below. The `missingDocuments` field uses the code shown beside each heading until that group is covered. It can also contain questionnaire-backed requirements for the entity's physical address, business activity, financial information, or high-risk information; see the [KYB guide](/api-reference/kyb#2-complete-the-company-information).
 
 ### Company details (`COMPANY_DETAILS_DOCUMENT`)
 
 - Certificate of incorporation (`incorporation_cert`)
 - Articles of association (`incorporation_articles`)
 - State or company registry extract (`state_registry`), including an attestation d’immatriculation au RNE or Kbis in France
+
+### Registry extract for EEA businesses (`REGISTRY_EXTRACT_DOCUMENT`)
+
+Businesses incorporated in the EEA must provide both a formation document (`incorporation_cert` or `incorporation_articles`) and a recent registry extract (`state_registry` or `good_standing_cert`).
 
 ### Ownership structure (`OWNERSHIP_STRUCTURE_DOCUMENT`)
 
@@ -52,12 +72,23 @@ Upload the supporting file with the `source_of_funds` document type. Common exam
 
 ### Proof of business address (`PROOF_OF_ADDRESS_DOCUMENT`)
 
-The document must be in the entity's name and prove its physical address. Upload it with the `proof_of_address` document type. Common examples include:
+The document must be in the entity's name, prove its physical address, and be issued within the last 90 days. Upload it with the `proof_of_address` document type. Common examples include:
 
 - utility bills;
 - lease agreements;
 - bank statements;
 - government or tax correspondence.
+
+### Conditional documents
+
+These documents are required only when the entity's answers call for them. None of them satisfies one of the four required groups above.
+
+| Document type | Code in `missingDocuments` | Required when |
+| --- | --- | --- |
+| `proof_of_nature_of_business` - invoices, contracts or service agreements showing the business performs the activities it declares | `PROOF_OF_NATURE_OF_BUSINESS_DOCUMENT` | The business has no website. |
+| `ownership_chart` - diagram of direct and indirect ownership adding up to 100% | `OWNERSHIP_CHART_DOCUMENT` | An intermediate legal entity owns 25% or more of the business. |
+| `flow_of_funds` - movement of money through the business and the account | `FLOW_OF_FUNDS_DOCUMENT` | Money services are conducted through the account. |
+| `regulatory_license` - proof of registration with the regulator | `REGULATORY_LICENSE_DOCUMENT` | The business declares a regulated activity. |
 
 ### Representatives authorisation
 
@@ -67,4 +98,8 @@ The document must be in the entity's name and prove its physical address. Upload
 
 - Power of attorney (`power_of_attorney`)
 
-Other optional entity document types include `directors_registry`, `good_standing_cert`, `incumbency_cert`, and `other`. They can provide supporting evidence but do not satisfy one of the four required groups above.
+### Optional documents
+
+Other entity document types include `directors_registry`, `good_standing_cert` (outside the EEA rule above), `incumbency_cert`, `source_of_wealth`, `aml_policy`, `aml_comfort_letter`, `proof_of_entity_name_change`, and `other`. They can provide supporting evidence but do not satisfy one of the required groups above.
+
+Send the `issueDate` of each document, and its `expirationDate` when it has one: a registry extract or proof of address must be recent.
