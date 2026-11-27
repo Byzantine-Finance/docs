@@ -190,6 +190,7 @@
                     "pages": [
                       "api-reference/webhooks/overview",
                       "api-reference/webhooks/customers",
+                      "api-reference/webhooks/accounts",
                       "api-reference/webhooks/transactions"
                     ]
                   }

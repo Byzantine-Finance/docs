@@ -7,17 +7,41 @@ This section explains how to manage bank accounts for Byzantine accounts once KY
 
 | Capability              | Description                                                                                                                                                                                                                      |
 | ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Add bank account**    | Associate a bank account with an account so that withdrawals can be sent to it (off-ramp). At least one bank account must be added before any off-ramp withdrawal can be initiated. Can have multiple bank accounts per account. |
-| **Update bank account** | Rename a bank account. Only the label can change; it is returned as `name` wherever the bank account appears. Bank details cannot be edited: to change them, add a new bank account and delete the old one.                     |
+| **Add bank account**    | Associate a bank account with an account so that withdrawals can be sent to it (off-ramp). At least one bank account must be added before any off-ramp withdrawal can be initiated. Can have multiple bank accounts per account. Adding one must be [authorized by the account](#adding-a-bank-account). |
+| **Update bank account** | Rename a bank account. Only the label can change; it is returned as `label` wherever the bank account appears. Bank details cannot be edited: to change them, add a new bank account and delete the old one.                     |
 | **Delete bank account** | Remove a bank account. It is no longer listed and can no longer receive withdrawals, while past transactions still show it as their destination. Returns `409` while a transaction to it is in progress, such as a queued withdrawal. |
 
 <CardGroup cols={2}>
   <Card title="List bank accounts" icon="list" href="/api-reference/account-management/list-bank-accounts" />
-  <Card title="Add bank account" icon="plus" href="/api-reference/account-management/add-bank-account" />
+  <Card title="Get add bank account payload" icon="signature" href="/api-reference/account-management/step-1-get-add-bank-account-payload-passkey-or-wallet" />
+  <Card title="Add bank account" icon="plus" href="/api-reference/account-management/step-2-add-bank-account-passkey-or-wallet" />
   <Card title="Update bank account" icon="pen" href="/api-reference/account-management/update-bank-account" />
   <Card title="Delete bank account" icon="trash" href="/api-reference/account-management/delete-bank-account" />
 </CardGroup>
 
-<Info>
-  Bank account details include a `bankName` when Bridge knows the bank. Treat it as optional: the field may be absent or `null`.
-</Info>
+## Adding a bank account
+
+Adding a bank account is a signed action, approved by the account itself, in two steps:
+
+1. **Get the payload to sign** - Call [Get add bank account payload](/api-reference/account-management/step-1-get-add-bank-account-payload-passkey-or-wallet) with the bank account details (`accountId`, `currency`, `label`, and `ibanBankAccountDetails` or `achBankAccountDetails`). Nothing is created yet. The KYC/KYB must already be approved, otherwise the call returns `400`.
+2. **Send the signed request** - Call [Add bank account](/api-reference/account-management/step-2-add-bank-account-passkey-or-wallet) with **the same bank account details**, on the same `chain_id`, together with the authorization.
+
+What you sign depends on the account:
+
+| Account | Step 1 returns | Step 2 sends, next to the bank account details |
+| --- | --- | --- |
+| Passkey (Turnkey) | `bodyToSign` | `signedBody` (the `bodyToSign`) and `webAuthnStamp`, its stamp by a root user's passkey. See [Authentication methods](/api-reference/authentication-methods). |
+| Self-custodial | `typedData` and `issuedAt` | `walletSignature`, the signature of `typedData` by the account wallet (`eth_signTypedData_v4`; an ERC-1271 signature is accepted for a smart wallet), and `issuedAt`, unchanged. |
+
+`chain_id` selects the chain the signed intent is bound to (`1` for Ethereum, `8453` for Base) and defaults to Ethereum. Step 2 returns `403` if the signature does not match the issued payload, does not come from the account wallet, or has expired.
+
+## Reading bank accounts
+
+A bank account is identified by its `bankAccountId` and named by its `label`. Next to its `liquidationAddress`, `destinationCurrency` and `destinationRail`, it carries:
+
+- `bankName` - the name of the bank, as declared when the bank account was added;
+- `last4` - the last four characters of the account number (IBAN or ACH). The full number is never stored.
+
+Treat both as optional: they are `null` when the details did not declare them, or for bank accounts added before they were recorded.
+
+Adding, renaming and deleting a bank account emit the `account.bank_account_added`, `account.bank_account_updated` and `account.bank_account_removed` [webhook events](/api-reference/webhooks/accounts).

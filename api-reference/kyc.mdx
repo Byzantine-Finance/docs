@@ -46,6 +46,15 @@ The account receives an `accountId`, and every person on it gets their own `user
 
 ### 2. Complete the application
 
+The rest of the KYC (personal data, ID document, proof of address, questionnaires) can be completed in two ways:
+
+- **Through the API**: you collect the data and documents in your own interface and send them to Byzantine.
+- **In the Sumsub Web SDK**: the customer provides them directly in the [Sumsub](https://docs.sumsub.com/docs/get-started-with-web-sdk) verification interface (ID scan, selfie, proof of address), so you have nothing to collect yourself.
+
+You can combine both: whatever has already been submitted is kept and never asked again. For example, send the personal data you already hold through the API, then let the Web SDK collect the documents.
+
+#### Through the API
+
 Once the account is created, use the update endpoint to progressively provide the remaining information needed for KYC verification:
 
 <Card icon="arrow-right" horizontal href="/api-reference/customer-management/update-an-individual-accounts-user-details" title="Update an individual account">
@@ -67,6 +76,56 @@ The following information can be submitted via one or multiple update calls:
   The response of both the create and update endpoints will include a `missingDocuments` field listing any remaining required items that have not yet been submitted: `IDENTITY_DOCUMENT`, `PROOF_OF_ADDRESS_DOCUMENT`, `RESIDENTIAL_ADDRESS` or `ADDITIONAL_USER_INFO`.
 </Info>
 
+#### In the Sumsub Web SDK
+
+Open a verification session for the account:
+
+<Card icon="arrow-right" horizontal href="/api-reference/customer-management/initialize-a-verification-session" title="Initialize a verification session">
+
+</Card>
+
+`mode` decides how you show the Web SDK to your customer:
+
+| `mode` | You get | Valid for | Best for |
+| --- | --- | --- | --- |
+| `link` | `verificationUrl`, a page hosted by Sumsub | 24 hours | No integration at all |
+| `access_token` | `accessToken`, for the Sumsub Web SDK | 10 minutes | A verification embedded in your own frontend |
+
+<Tabs>
+  <Tab title="link">
+    `verificationUrl` is a plain URL, so use it however fits your flow: redirect your customer to it, open it in a new tab, display it in an `<iframe>`, or send it by email or message.
+
+    Optionally set `language` for the page language, and `successUrl` / `rejectUrl` (HTTPS) to bring the customer back to your app once they have submitted, or if the verification is refused.
+
+    <Tip>
+      In an `<iframe>`, allow the camera so the customer can scan their ID document and take the selfie: `<iframe src="{verificationUrl}" allow="camera; microphone"></iframe>`.
+    </Tip>
+  </Tab>
+  <Tab title="access_token">
+    The `accessToken` only works with the Sumsub Web SDK, which you install in your frontend: from npm (`npm i @sumsub/websdk`, or [`@sumsub/websdk-react`](https://www.npmjs.com/package/@sumsub/websdk-react) for React) or with a `<script>` tag. Sumsub's [Web SDK integration guide](https://docs.sumsub.com/docs/get-started-with-web-sdk) covers the installation and the customisation options.
+
+    <Warning>
+      Skip the step of Sumsub's guide that generates the access token through the Sumsub API: Byzantine generates it. Call `init-verification` from your backend, since it is signed with your integrator key, and pass only the `accessToken` to your frontend.
+    </Warning>
+
+    ```js
+    import snsWebSdk from '@sumsub/websdk';
+
+    // accessToken: returned by init-verification, called by your backend
+    const sdk = snsWebSdk
+      // Called by the SDK when the token expires (after 10 minutes): have your backend
+      // call init-verification again and resolve with the new accessToken.
+      .init(accessToken, () => fetchNewAccessTokenFromYourBackend())
+      .withConf({ lang: 'en' })
+      .build();
+
+    sdk.launch('#sumsub-websdk-container');
+    ```
+  </Tab>
+</Tabs>
+
+Byzantine does not store the link or the token: when one expires, call `init-verification` again for a new one. Once the verification is under review, approved or finally rejected, the endpoint returns `409`. Follow the progress through the [customer webhooks](/api-reference/webhooks/customers) or with the user details (step 3).
+
 ### 3. Read the current user details
 
 Use the user-details endpoint to retrieve the current KYC information and the accounts associated with the person:
@@ -83,7 +142,7 @@ Once the customer is registered with Bridge, the account reads ([Get account det
 
 Byzantine and Bridge will verify the individual's identity and address. Both Bridge and Byzantine may ask for additional details during this process.
 
-Throughout the KYC process, the user receives email notifications at every stage with updates on their status.
+Byzantine does not email the customer about the verification: follow its status with the [customer webhooks](/api-reference/webhooks/customers), and notify the customer from your app when needed. See [Verification statuses](/api-reference/verification-statuses) for the meaning of each status.
 
 <Info>
   The KYC process usually takes only a few minutes.

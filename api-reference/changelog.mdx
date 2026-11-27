@@ -8,6 +8,33 @@ All notable changes to this project will be documented in this page.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Production deployment 947797a - 2026-11-23
+
+<Note>
+  Same version-label exception as `b2e7075`: the deployed OpenAPI still advertises `0.2.0` and the Cargo package `0.1.0`, so this entry uses the deployed source revision. It covers every production deployment since `b2e7075`.
+</Note>
+
+### Breaking
+
+- Bank accounts: the label is now returned as `label` instead of `name` everywhere a bank account appears (bank account lists, account details, `destinationBankAccount` in transactions and signing payloads).
+- `POST /v1/submit/add-bank-account` must now be authorized by the account. Call the new `POST /v1/query/get-add-bank-account-payload` first, then send the same bank account details with the passkey stamp (`signedBody`, `webAuthnStamp`) or, for a self-custodial account, the wallet signature (`walletSignature`, `issuedAt`). See [Adding a bank account](/api-reference/bank-account#adding-a-bank-account).
+- Invitation emails are no longer sent. Notify invited users from the `account.member_invited` webhook event. See [Inviting users](/api-reference/multi-users-account#inviting-users).
+- Invitations now expire after 7 days: `InvitationStatus` adds `expired`. `init-otp`, `otp-auth` and `create-authenticators-otp` return `409` once the user's invitation is rejected, cancelled or expired.
+- `WebhookEventType` adds the `account.*` events. Exhaustive consumers must handle the new values.
+
+### Additive
+
+- `POST /v1/query/get-invite-users-payload` replaces `get-invite-users-payload-passkey`, which stays reachable under its former name. Self-custodial accounts can now invite users with a wallet signature: they join right away with the `self_custodial` role. `InviteUsersRequestResponse.bodyToSign` is `null` for them, with `typedData` and `issuedAt` instead.
+- New `POST /v1/submit/resend-invitation` and `POST /v1/submit/reject-invitation`. Invitation reads return `expires_at` for a pending or expired invitation. See [Following, resending and rejecting invitations](/api-reference/multi-users-account#following-resending-and-rejecting-invitations).
+- New `POST /v1/query/get-remove-users-payload` and `POST /v1/submit/remove-users` to remove users from an account. See [Removing users](/api-reference/multi-users-account#removing-users).
+- New `POST /v1/submit/init-verification` hands the KYC/KYB over to the Sumsub Web SDK, as a hosted link or an access token for an embedded SDK. See [Individuals - KYC](/api-reference/kyc#in-the-sumsub-web-sdk).
+- Bank accounts carry `bankName` and `last4` (`null` when unknown).
+- New `account.*` webhook events for members, invitations, passkeys and bank accounts. See [Account webhooks](/api-reference/webhooks/accounts).
+
+### Behavioral
+
+- `get-update-users-role-payload-passkey` and `update-users-role` return `400` for a self-custodial account, which has no root quorum.
+
 ## Production deployment b2e7075 - 2026-11-16
 
 <Note>

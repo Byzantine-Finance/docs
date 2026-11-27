@@ -1,0 +1,176 @@
+---
+title: "Account webhooks"
+description: "Members, invitations, passkeys and bank accounts lifecycle webhook events."
+---
+
+Account events report the changes made through the API to an account's members (invitations, roles, removals), passkeys and bank accounts. Subscribe to them to keep your team and bank account screens in sync, and to notify your users.
+
+<Warning>
+  Byzantine does not send invitation emails. Use `account.member_invited` to notify the invited person, and `account.member_joined` to know when they have joined. See [Multi-users account](/api-reference/multi-users-account#inviting-users).
+</Warning>
+
+## Populated fields
+
+Every account event sets `accountId` in the envelope's `related` block. `userId` is also set on member, invitation and passkey events: it names the invited person or the affected member. Keys that do not apply are `null` rather than absent.
+
+## Event types
+
+### Members and invitations
+
+| Event | Fires when |
+|-------|------------|
+| `account.member_invited` | A user is invited, by [invite-users](/api-reference/account-management/step-2-send-invitations-passkey-or-wallet) (one event per invited user) or [resend-invitation](/api-reference/account-management/resend-an-invitation). |
+| `account.member_joined` | An invited user joins the account: when they accept their invitation, or right after `member_invited` when they join immediately (self-custodial account, or user invited with a passkey). |
+| `account.invitation_cancelled` | A pending invitation is replaced by a resent one, or its user is removed from the account. |
+| `account.invitation_rejected` | A pending invitation is [rejected](/api-reference/account-management/reject-an-invitation). |
+| `account.invitation_expired` | A pending invitation was not accepted within 7 days. |
+| `account.member_role_updated` | A member's role changes: through [update-users-role](/api-reference/account-management/step-2-update-users-role-passkey) (one event per member), or when a removed member stays on the account as `beneficiary`. |
+| `account.member_removed` | A member is removed from the account (one event per member). |
+
+An invitation always ends with exactly one of `member_joined`, `invitation_cancelled`, `invitation_rejected` or `invitation_expired`. A resent invitation is a new invitation, with its own `invitationId` and its own `member_invited`.
+
+### Passkeys
+
+| Event | Fires when |
+|-------|------------|
+| `account.authenticator_added` | A passkey is registered for a member: at account creation, with an invitation, or when a member creates their first passkey or accepts their invitation (one event per passkey). |
+| `account.authenticator_recovered` | A member who already had a passkey on the account registers a new one to recover their access (one event per passkey). |
+
+### Bank accounts
+
+| Event | Fires when |
+|-------|------------|
+| `account.bank_account_added` | A bank account is [added](/api-reference/bank-account#adding-a-bank-account). |
+| `account.bank_account_updated` | A bank account's label changes. |
+| `account.bank_account_removed` | A bank account is deleted. |
+
+## The `data` object
+
+Every account event carries `data.account`: `accountId` and `accountName`. The other keys depend on the event family, and are always present: set to `null` when they do not apply.
+
+| Events | Keys |
+| --- | --- |
+| `member_invited`, `member_joined`, `invitation_*` | `invitation`: `invitationId`, `role`, `invitee` and `invitedBy` (each with `userId`, `firstName`, `lastName`, `email`), `createdAt`, and `expiresAt`, set while the invitation is pending (`member_invited`) and on `invitation_expired`, `null` otherwise. |
+| `member_role_updated` | `user`, the member, with their new `role` and `previousRole`. |
+| `member_removed` | `user`, the removed member, their `previousRole`, and `removedBy`: the root member whose passkey authorized the removal, or `null` when the account wallet signed it. |
+| `authenticator_*` | `user`, the member, and `authenticator`: `credentialId`, `name` (`null` when the passkey has none) and `createdAt`. |
+| `bank_account_*` | `bankAccount`: `bankAccountId`, `label`, `bankName`, `last4`, `liquidationAddress`, `destinationCurrency`, `destinationRail`, `createdAt`. On `bank_account_removed`, it is the bank account as it was before deletion. `previousLabel` is set on `bank_account_updated` only. |
+
+## Example payloads
+
+### `account.member_invited`
+
+```json
+{
+  "id": "5f0c2b1e-8a5d-4c7e-9b2a-3d4e5f6a7b8c",
+  "type": "account.member_invited",
+  "occurredAt": "2026-11-23T10:15:02.418Z",
+  "livemode": true,
+  "payloadVersion": 1,
+  "related": {
+    "accountId": "34158778-3bb4-d6b6-3b18-60413b83d7cb",
+    "userId": "7c1d9e2f-4a3b-4c5d-8e6f-1a2b3c4d5e6f",
+    "entityId": null,
+    "beneficiaryId": null,
+    "transactionId": null
+  },
+  "data": {
+    "account": {
+      "accountId": "34158778-3bb4-d6b6-3b18-60413b83d7cb",
+      "accountName": "Analytical Engines Ltd"
+    },
+    "invitation": {
+      "invitationId": "e2a4c6b8-1d3f-4e5a-9b7c-0d2e4f6a8b1c",
+      "role": "view",
+      "invitee": {
+        "userId": "7c1d9e2f-4a3b-4c5d-8e6f-1a2b3c4d5e6f",
+        "firstName": "Charles",
+        "lastName": "Babbage",
+        "email": "charles@example.com"
+      },
+      "invitedBy": {
+        "userId": "bd4ca296-067f-5847-5854-d054d84d4a62",
+        "firstName": "Ada",
+        "lastName": "Lovelace",
+        "email": "ada@example.com"
+      },
+      "createdAt": "2026-11-23T10:15:02.301Z",
+      "expiresAt": "2026-11-30T10:15:02.301Z"
+    }
+  }
+}
+```
+
+### `account.member_removed`
+
+```json
+{
+  "id": "a9b8c7d6-e5f4-4a3b-8c2d-1e0f9a8b7c6d",
+  "type": "account.member_removed",
+  "occurredAt": "2026-11-24T08:02:44.910Z",
+  "livemode": true,
+  "payloadVersion": 1,
+  "related": {
+    "accountId": "34158778-3bb4-d6b6-3b18-60413b83d7cb",
+    "userId": "7c1d9e2f-4a3b-4c5d-8e6f-1a2b3c4d5e6f",
+    "entityId": null,
+    "beneficiaryId": null,
+    "transactionId": null
+  },
+  "data": {
+    "account": {
+      "accountId": "34158778-3bb4-d6b6-3b18-60413b83d7cb",
+      "accountName": "Analytical Engines Ltd"
+    },
+    "user": {
+      "userId": "7c1d9e2f-4a3b-4c5d-8e6f-1a2b3c4d5e6f",
+      "firstName": "Charles",
+      "lastName": "Babbage",
+      "email": "charles@example.com"
+    },
+    "previousRole": "view",
+    "removedBy": {
+      "userId": "bd4ca296-067f-5847-5854-d054d84d4a62",
+      "firstName": "Ada",
+      "lastName": "Lovelace",
+      "email": "ada@example.com"
+    }
+  }
+}
+```
+
+### `account.bank_account_updated`
+
+```json
+{
+  "id": "0e1d2c3b-4a59-4687-b7c6-d5e4f3a2b1c0",
+  "type": "account.bank_account_updated",
+  "occurredAt": "2026-11-24T14:30:12.007Z",
+  "livemode": true,
+  "payloadVersion": 1,
+  "related": {
+    "accountId": "34158778-3bb4-d6b6-3b18-60413b83d7cb",
+    "userId": null,
+    "entityId": null,
+    "beneficiaryId": null,
+    "transactionId": null
+  },
+  "data": {
+    "account": {
+      "accountId": "34158778-3bb4-d6b6-3b18-60413b83d7cb",
+      "accountName": "Analytical Engines Ltd"
+    },
+    "bankAccount": {
+      "bankAccountId": "c4d5e6f7-a8b9-4c0d-9e1f-2a3b4c5d6e7f",
+      "label": "Operating account",
+      "bankName": "BNP Paribas",
+      "last4": "1234",
+      "liquidationAddress": "0x9f2c4e6a8b0d1f3e5a7c9b2d4f6a8c0e1b3d5f7a",
+      "destinationCurrency": "eur",
+      "destinationRail": "sepa",
+      "createdAt": "2026-11-20T09:12:45.551Z"
+    },
+    "previousLabel": "Business account"
+  }
+}
+```
