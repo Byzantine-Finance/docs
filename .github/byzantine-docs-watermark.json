@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "sourceRepository": "Byzantine-Finance/byzantine-api",
-  "sourceCommit": "b2e707529c9907dcfe11558b342a70b0b7a9cfda",
-  "openapiSha256": "13fe55b7b7cb2fd41056b748ebc41f768fb373e38e16ae3e763060f7cc7ac0ae",
+  "sourceCommit": "947797a5ecb5c2acbe3a8f1517eee6d87ec93ab2",
+  "openapiSha256": "6ec9da6c598b455fddac1b3f32f08038784664c5c53a59bb5d4be342f9111469",
   "generatorVersion": 2
 }

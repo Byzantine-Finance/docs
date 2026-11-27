@@ -1,9 +1,9 @@
 ---
 title: "Overview"
-description: "Receive signed customer and transaction lifecycle events from Byzantine."
+description: "Receive signed customer, account and transaction lifecycle events from Byzantine."
 ---
 
-Webhooks let your integration receive asynchronous updates when customer status or transaction status changes. Create one or more webhook subscriptions, choose the event types you want, and Byzantine will deliver signed JSON payloads to your HTTPS endpoint.
+Webhooks let your integration receive asynchronous updates when a customer status, an account (members, invitations, passkeys, bank accounts) or a transaction status changes. Create one or more webhook subscriptions, choose the event types you want, and Byzantine will deliver signed JSON payloads to your HTTPS endpoint.
 
 Webhook management endpoints use the same API authentication as the rest of the Integrator API.
 
@@ -12,6 +12,7 @@ Webhook management endpoints use the same API authentication as the rest of the 
 Use webhooks when your system needs to react to events without polling Byzantine repeatedly:
 
 - update a customer onboarding status when KYC changes;
+- notify a user when they are invited to an account, and keep your team and bank account screens in sync;
 - mark a transaction as funded, processing, completed, reverted, or failed;
 - trigger internal support or compliance workflows when more information is required.
 
@@ -119,9 +120,10 @@ Delivery requests use a 5 second connection timeout and a 10 second total timeou
 
 ## Event types
 
-Byzantine emits two families of lifecycle events, documented on their own pages:
+Byzantine emits three families of lifecycle events, documented on their own pages:
 
 - [Customers](/api-reference/webhooks/customers) - KYC/KYB onboarding status changes;
+- [Accounts](/api-reference/webhooks/accounts) - members, invitations, passkeys and bank accounts changes;
 - [Transactions](/api-reference/webhooks/transactions) - deposit and withdrawal status changes.
 
 `webhook.test` is used for test deliveries and is not directly subscribable.

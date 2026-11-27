@@ -165,11 +165,15 @@ It takes the `beneficiaryId` as a query parameter. A person belonging to another
   company/beneficiary's information.
 </Info>
 
+### Completing the KYB in the Sumsub Web SDK
+
+Instead of submitting every document through the API, you can let the company or its beneficiaries complete the rest in the Sumsub Web SDK, with a hosted link or an SDK embedded in your frontend. Call [Initialize a verification session](/api-reference/customer-management/initialize-a-verification-session) without `beneficiaryId` to verify the entity itself, or with a `beneficiaryId` to verify one beneficiary or representative. Beneficiaries the company declares in the Web SDK are created by Byzantine and announced through a `customer.*` event carrying their `beneficiaryId`. The two modes (hosted link or embedded SDK) and the SDK setup are described in [Individuals - KYC](/api-reference/kyc#in-the-sumsub-web-sdk).
+
 ### 4. KYB verification
 
 Byzantine and Bridge will verify the entity's existence, ownership structure, and the identities of all UBOs and representatives of the company. Both Bridge and Byzantine may ask for additional details during this process.
 
-Throughout the KYB process, the root user receives email notifications at every stage with updates on their status.
+Byzantine does not email the customer about the verification: follow its status with the [customer webhooks](/api-reference/webhooks/customers), and notify the customer from your app when needed. See [Verification statuses](/api-reference/verification-statuses) for the meaning of each status.
 
 <Info>This process usually takes 24-48 hours.</Info>
 

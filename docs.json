@@ -190,6 +190,7 @@
                     "pages": [
                       "api-reference/webhooks/overview",
                       "api-reference/webhooks/customers",
+                      "api-reference/webhooks/accounts",
                       "api-reference/webhooks/transactions"
                     ]
                   }
@@ -223,7 +224,8 @@
                           "PATCH /v1/submit/update-individual-account",
                           "PATCH /v1/submit/update-entity-account",
                           "POST /v1/submit/add-associated-person",
-                          "PATCH /v1/submit/update-associated-person"
+                          "PATCH /v1/submit/update-associated-person",
+                          "POST /v1/submit/init-verification"
                         ]
                       }
                     ]
@@ -237,6 +239,7 @@
                         "group": "Bank accounts",
                         "pages": [
                           "GET /v1/query/get-bank-accounts",
+                          "POST /v1/query/get-add-bank-account-payload",
                           "POST /v1/submit/add-bank-account",
                           "PATCH /v1/submit/update-bank-account",
                           "DELETE /v1/submit/delete-bank-account"
@@ -251,8 +254,10 @@
                           {
                             "group": "Add team member",
                             "pages": [
-                              "POST /v1/query/get-invite-users-payload-passkey",
-                              "POST /v1/submit/invite-users"
+                              "POST /v1/query/get-invite-users-payload",
+                              "POST /v1/submit/invite-users",
+                              "POST /v1/submit/resend-invitation",
+                              "POST /v1/submit/reject-invitation"
                             ]
                           },
                           {
@@ -260,6 +265,13 @@
                             "pages": [
                               "POST /v1/query/get-update-users-role-payload-passkey",
                               "POST /v1/submit/update-users-role"
+                            ]
+                          },
+                          {
+                            "group": "Remove team member",
+                            "pages": [
+                              "POST /v1/query/get-remove-users-payload",
+                              "POST /v1/submit/remove-users"
                             ]
                           }
                         ]

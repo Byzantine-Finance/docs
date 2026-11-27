@@ -3,7 +3,7 @@ title: "Multi-users account"
 description: "Managing multi-users Byzantine accounts via the Integrator API."
 ---
 
-Multi-users account covers accounts with several signers, inviting users to an existing account, updating their roles, and allowing them to create their own passkeys.
+Multi-users account covers accounts with several signers, inviting users to an existing account, updating their roles, removing them, and allowing them to create their own passkeys.
 
 ## Which accounts can have multiple users
 
@@ -42,9 +42,9 @@ The client is the account's customer immediately, even before they sign anything
 
 ```mermaid
 flowchart LR
-    A[1 - Account root user invites someone to join the account] --> B[2 - Invited person accepts the invitation]
-    B --> C[3 - Optional - Invited person creates a passkey]
-    C --> D[4 - Invited person has an account and can sign transactions if passkey created]
+    A[1 - Account root user invites someone to join the account] --> B[2 - You notify the invited person on the account.member_invited webhook]
+    B --> C[3 - Invited person accepts by creating a passkey within 7 days]
+    C --> D[4 - Invited person is a member of the account]
 ```
 
 ### Updating roles
@@ -59,23 +59,36 @@ flowchart LR
 
 ### Inviting users
 
-1. **Get invite users payload** - Request the payload that a root user must sign with their passkey to invite new users to the account. Use this endpoint to get the payload:
+1. **Get invite users payload** - Request the payload that authorizes the invitation of new users to the account. Nothing is created yet. Use this endpoint to get the payload:
 
 <Card
   title="Get invite users payload"
   icon="plus"
   horizontal
-  href="/api-reference/account-management/step-1-get-invite-users-payload-passkey"
+  href="/api-reference/account-management/step-1-get-invite-users-payload-passkey-or-wallet"
 ></Card>
 
-2. **Submit signed invite-users payload** - Then call the below endpoint with the signed payload to execute the invitations:
+2. **Submit the signed payload** - Then call the below endpoint with the signed payload to execute the invitations:
 
 <Card
   title="Invite users to a account"
   icon="plus"
   horizontal
-  href="/api-reference/account-management/step-2-send-invitations-passkey"
+  href="/api-reference/account-management/step-2-send-invitations-passkey-or-wallet"
 ></Card>
+
+What you sign, and what happens to the invited users, depends on the account:
+
+| Account | Step 1 returns | Step 2 sends | Invited users |
+| --- | --- | --- | --- |
+| Passkey (Turnkey) | `bodyToSign` | `signedBody` (the `bodyToSign`) and `webAuthnStamp`, stamped by a root user's passkey, with `invitedBy` | Receive a `pending` invitation with the `view` role, to accept within 7 days (see below). |
+| Self-custodial | `typedData` and `issuedAt` | The same `accountId` and `newUsers`, the account wallet signature of `typedData` (`walletSignature`, `eth_signTypedData_v4`) and `issuedAt`, with `invitedBy` | Join the account right away with the `self_custodial` role. |
+
+For a self-custodial account, `chain_id` selects the chain the signed intent is bound to (`1` for Ethereum, `8453` for Base, Ethereum by default) and must be the same in both steps.
+
+<Warning>
+  Byzantine does not send any invitation email. Each invitation emits the `account.member_invited` [webhook event](/api-reference/webhooks/accounts): notify the invited person from it, with the link to your own sign-up or acceptance page. `account.member_joined` tells you when they have joined.
+</Warning>
 
 ### Accepting an invitation
 
@@ -88,7 +101,7 @@ flowchart LR
   href="/api-reference/otp-authentication/step-1-initialize-otp-send-email"
 ></Card>
 
-2. **Authenticate with OTP** - Invited user enters the OTP code to create a session and authenticate with OTP. Call this endpoint to submit the authenticated session to accept the invitation:
+2. **Authenticate with OTP** - The invited user enters the OTP code they received by email. Call this endpoint to authenticate them and open an OTP session:
 
 <Card
   title="Authenticate with OTP code and create a session"
@@ -97,7 +110,7 @@ flowchart LR
   href="/api-reference/otp-authentication/step-2-authenticate-with-otp-code"
 ></Card>
 
-3. **(Optional) Create a passkey for the new member** - Allow the new user to create a passkey by using the below endpoint. The user must have an active OTP session (from step 1 and 2).
+3. **Create a passkey and accept the invitation** - The invited user creates their passkey with the below endpoint, using the OTP session from steps 1 and 2. This is what accepts the invitation: until then, it stays `pending` and expires after 7 days.
 
 <Card
   title="Create authenticators"
@@ -107,12 +120,41 @@ flowchart LR
 ></Card>
 
 <Note>
-  This last option step is only required if the new user has the role of `root`
-  (Admin). Once passkeys are created, the user can use them for deposits and
-  withdrawals.
+  The OTP code is the only email sent, by our wallet provider. A user invited with a passkey already attached, or invited to a self-custodial account, joins right away and skips these steps.
 </Note>
 
-Invitations can be listed per account or per email via the [get-invitations-by-account-id](/api-reference/account-management/list-invitations-by-account) and [get-invitations-by-email](/api-reference/account-management/list-invitations-by-email) endpoints.
+Once an invitation is no longer `pending` (rejected, cancelled or expired), these three endpoints return `409` for that user on that account.
+
+### Following, resending and rejecting invitations
+
+An invitation is `pending` for 7 days, until `expires_at`. It then ends in exactly one of these statuses:
+
+| Status | When | Webhook event |
+| --- | --- | --- |
+| `accepted` | The invited person accepted it (step 3 above). | `account.member_joined` |
+| `rejected` | You rejected it on behalf of the invited person. | `account.invitation_rejected` |
+| `cancelled` | It was replaced by a resent invitation, or the user was removed from the account. | `account.invitation_cancelled` |
+| `expired` | It was not accepted within 7 days. | `account.invitation_expired` |
+
+Invitations can be listed per account or per email via the [get-invitations-by-account-id](/api-reference/account-management/list-invitations-by-account) and [get-invitations-by-email](/api-reference/account-management/list-invitations-by-email) endpoints. `expires_at` is returned for a `pending` or `expired` invitation.
+
+- **Resend an invitation** - Invite again a user who rejected their invitation, let it expire, or has not answered yet. A new `pending` invitation with a new 7-day window is created on behalf of the same inviter, and emits `account.member_invited` again; a still pending one is cancelled. No passkey stamp is needed, so it is up to you to decide who may trigger it. It returns `409` when the user already joined, was removed from the account (invite them again with the flow above), has a more recent invitation, or when the original inviter is no longer a root user.
+
+<Card
+  title="Resend an invitation"
+  icon="paper-plane"
+  horizontal
+  href="/api-reference/account-management/resend-an-invitation"
+></Card>
+
+- **Reject an invitation** - Decline a `pending` invitation on behalf of the invited person, for example when they decline it in your interface. It can no longer be accepted.
+
+<Card
+  title="Reject an invitation"
+  icon="xmark"
+  horizontal
+  href="/api-reference/account-management/reject-an-invitation"
+></Card>
 
 ### Promoting and demoting roles of a member
 
@@ -134,6 +176,39 @@ Invitations can be listed per account or per email via the [get-invitations-by-a
   href="/api-reference/account-management/step-2-update-users-role-passkey"
 ></Card>
 
+<Note>
+  Roles can only be updated on passkey (Turnkey) accounts: a role change updates the root quorum. A self-custodial account has its wallet as only signer and all its members carry the `self_custodial` role, so these endpoints return `400` for it.
+</Note>
+
+### Removing users
+
+1. **Get remove users payload** - Request the payload that authorizes the removal, with the `userIds` to remove. Nothing is removed yet.
+
+<Card
+  title="Get remove users payload"
+  icon="user-minus"
+  horizontal
+  href="/api-reference/account-management/step-1-get-remove-users-payload-passkey-or-wallet"
+></Card>
+
+2. **Submit the signed payload** - Then call the below endpoint with the signed payload. On a passkey account, send `signedBody` and `webAuthnStamp`: the root user whose passkey stamped it is the remover. On a self-custodial account, send the same `accountId` and `userIds` (in the same order), the account wallet signature of `typedData` (`walletSignature`) and `issuedAt`, on the same `chain_id`.
+
+<Card
+  title="Remove users"
+  icon="user-minus"
+  horizontal
+  href="/api-reference/account-management/step-2-remove-users-passkey-or-wallet"
+></Card>
+
+Some rules apply, whatever the account:
+
+- A `root` user cannot be removed: demote them to `view` first.
+- The account's KYC subject and the beneficiaries of an entity account (UBOs, directors) stay on the account with the `beneficiary` role: only their access is revoked (passkeys, OTP sessions). The response reports them with the `access_revoked` outcome, and the others with `removed`.
+- A self-custodial account must keep at least one member.
+- A pending invitation of a removed user is cancelled.
+
+Each removed member emits `account.member_removed`, and each member who keeps the `beneficiary` role emits `account.member_role_updated`.
+
 ## Roles and permissions
 
 Four different roles exist:
@@ -150,4 +225,4 @@ The roles and permissions are described in the table below:
 | `root`           | ✅       | ✅                     | ✅               | ✅                    |
 | `view`           | ✅       | ❌                     | ❌               | ❌                    |
 | `beneficiary`    | ✅       | ❌                     | ❌               | ❌                    |
-| `self_custodial` | ✅       | ✅                     | ❌               | ✅                    |
+| `self_custodial` | ✅       | ✅                     | ✅ (with the account wallet) | ✅                    |
